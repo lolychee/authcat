@@ -4,7 +4,7 @@ require "active_support/rails"
 module Authcat
   extend ActiveSupport::Autoload
 
-  autoload :Version
+  autoload :VERSION
 
   autoload :Authenticator
   autoload :Callbacks
