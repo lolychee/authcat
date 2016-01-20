@@ -1,5 +1,14 @@
-require "authcat/version"
+require "active_support"
+require "active_support/rails"
 
 module Authcat
-  # Your code goes here...
+  extend ActiveSupport::Autoload
+
+  autoload :Version
+
+  autoload :Authenticator
+  autoload :Callbacks
+  autoload :Core
+  autoload :Strategies
+  autoload :Validations
 end
