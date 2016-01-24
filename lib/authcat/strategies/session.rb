@@ -15,20 +15,22 @@ module Authcat
         request.session
       end
 
-      def _authenticate
-        global_id = session[session_name]
-        self.user = GlobalID::Locator.locate(global_id)
-      end
+      private
 
-      def _login
-        if user
-          session[session_name] = user.to_global_id.to_s
+        def __authenticate__
+          global_id = session[session_name]
+          self.user = GlobalID::Locator.locate(global_id)
         end
-      end
 
-      def _logout
-        session.delete(session_name)
-      end
+        def __login__
+          if user
+            session[session_name] = user.to_global_id.to_s
+          end
+        end
+
+        def __logout__
+          session.delete(session_name)
+        end
 
     end
   end

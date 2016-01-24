@@ -43,21 +43,21 @@ module Authcat
     # %w[authenticate login logout].each do |name|
     #   module_eval <<-METHOD
     #     def #{name}(*args, &block)
-    #       _#{name}(*args, &block)
+    #       __#{name}__(*args, &block)
     #     end
     #   METHOD
     # end
 
     def authenticate(*args, &block)
-      _authenticate(*args, &block)
+      __authenticate__(*args, &block)
     end
 
     def login(*args, &block)
-      _login(*args, &block)
+      __login__(*args, &block)
     end
 
     def logout(*args, &block)
-      _logout(*args, &block)
+      __logout__(*args, &block)
     end
 
   end
