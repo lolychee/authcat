@@ -4,33 +4,49 @@ module Authcat
 
     include ActiveSupport::Callbacks
 
-    CALLBACK_NAMES_AND_TYPES = {
+    CALLBACK_TYPES_AND_ACTIONS = {
       initialize:   %i[after],
-      validate:     %i[before after around],
+      validation:   %i[before after around],
       authenticate: %i[before after around],
       login:        %i[before after around],
-      logout:       %i[after]
+      logout:       %i[before after around]
     }
-    CALLBACK_NAMES = CALLBACK_NAMES_AND_TYPES.keys
+    CALLBACK_TYPES = CALLBACK_TYPES_AND_ACTIONS.keys
 
     included do |base|
-      define_callbacks *CALLBACK_NAMES
+      define_callbacks *CALLBACK_TYPES
     end
 
     module ClassMethods
-      CALLBACK_NAMES_AND_TYPES.each do |name, types|
-        types.each do |type|
-          define_method("#{type}_#{name}") do |*args, &block|
-            set_callback(name, type, *args, &block)
-          end
+
+      # 批量定义类方法，添加 callback 的快捷方法，完整代码如下：
+      #
+      #   def before_authenticate(*args, &block)
+      #     set_callback(:authenticate, :before, *args, &block)
+      #   end
+      #
+      CALLBACK_TYPES_AND_ACTIONS.each do |type, actions|
+        actions.each do |action|
+          module_eval <<-METHOD
+            def #{action}_#{type}(*args, &block)
+              set_callback(:#{type}, :#{action}, *args, &block)
+            end
+          METHOD
         end
       end
+
     end
 
-    CALLBACK_NAMES.each do |name|
+    # 批量增加 callback 调用，完整代码如下：
+    #
+    #   def authenticate(*)
+    #     run_callbacks(:authenticate) { super }
+    #   end
+    #
+    CALLBACK_TYPES.each do |type|
       module_eval <<-METHOD
-        def #{name}(*)
-          run_callbacks(:#{name}) { super }
+        def #{type}(*)
+          run_callbacks(:#{type}) { super }
         end
       METHOD
     end
