@@ -6,10 +6,9 @@ module Authcat
 
     CALLBACK_TYPES_AND_ACTIONS = {
       initialize:   %i[after],
-      validation:   %i[before after around],
       authenticate: %i[before after around],
-      login:        %i[before after around],
-      logout:       %i[before after around]
+      sign_in:      %i[before after around],
+      sign_out:     %i[before after around]
     }
     CALLBACK_TYPES = CALLBACK_TYPES_AND_ACTIONS.keys
 

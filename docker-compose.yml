@@ -1,0 +1,39 @@
+version: '2'
+services:
+  dev:
+    image: ruby:2.3
+    working_dir: /src/authcat
+    volumes:
+      - .:/src/authcat
+      - rubygems:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      - GEM_SOURCE=https://rubygems.org
+
+  postgres:
+    image: postgres:9.5
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=authcat
+      - POSTGRES_PASSWORD=authcat
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_USER=authcat
+      - MYSQL_PASSWORD=authcat
+
+  redis:
+    image: redis:3.0
+    volumes:
+      - redis_data:/data
+
+volumes:
+  rubygems: {}
+  pg_data: {}
+  mysql_data: {}
+  redis_data: {}
