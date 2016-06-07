@@ -2,42 +2,41 @@ require 'spec_helper'
 
 describe Authcat::Model::Extensions::Password do
 
-  class TestModel
+  class TestPasswordUser < ActiveRecord::Base
+    self.table_name = User.table_name
+
     include Authcat::Model::Extensions::Password
 
-    attr_accessor :password_digest
-    attr_accessor :password_second_hashed
+    attr_accessor :password
 
-    define_password_attribute :password
-    define_password_attribute :password_second, suffix: :hashed
+    password_attribute :password_digest
+
+    before_save {|record| record.create_password(:password_digest, record.password) }
   end
 
-  let(:model) { TestModel.new }
-  let(:password) { '123456' }
+  let(:password) { 'password' }
+  let(:user) { TestPasswordUser.create(email: 'someone@example.com', password: password) }
 
-  describe '.define_password_attribute' do
-    it '生成 password writer' do
-      expect(model).to respond_to(:password=)
+  describe '.password_attribute' do
+    it '生成 #password_digest' do
+      expect(user).to respond_to(:password_digest)
+    end
+
+    it '生成 #password_digest=' do
+      expect(user).to respond_to(:password_digest=)
     end
 
     it '生成密码摘要' do
-      model.password = password
-      hashed_password = Authcat::Digest::BCrypt.new(model.password_digest).digest(password)
-
-      expect(model.password_digest).to eq hashed_password
-    end
-
-    it '可以自定义后缀' do
-      model.password_second = password
-      expect(model.password_second_hashed).to be_present
+      expect(user.password_digest).to be_kind_of(Authcat::Password)
+      expect(user.password_digest.verify(password))
     end
   end
 
-  describe '#authenticate' do
-    it '' do
-      model.password = password
-      expect(model.authenticate(password: password))
-    end
-  end
+  # describe '#authenticate' do
+  #   it '' do
+  #     model.password = password
+  #     expect(model.password_verify(:password, password))
+  #   end
+  # end
 
 end

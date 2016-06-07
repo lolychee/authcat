@@ -1,8 +1,8 @@
 require 'bcrypt'
 
 module Authcat
-  class Digest
-    class BCrypt < Digest
+  class Password
+    class BCrypt < Password
       option(:cost, reader: true) { ::BCrypt::Engine.cost }
 
       option(:salt, reader: true) { ::BCrypt::Engine.generate_salt(cost) }
@@ -29,7 +29,7 @@ module Authcat
 
       private
 
-        def _hash(password)
+        def hash(password)
           ::BCrypt::Engine.hash_secret(password, salt)
         end
 
@@ -39,11 +39,11 @@ module Authcat
           @version = v.to_str
           options[:cost] = c.to_i
           options[:salt] = hashed_password[0, 29].to_str
-          self
+          hashed_password
         end
 
 
-        # Digest.register(:bcrypt, self)
+        Password.register(:bcrypt, self)
     end
   end
 end

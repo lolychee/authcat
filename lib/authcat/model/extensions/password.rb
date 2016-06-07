@@ -5,42 +5,57 @@ module Authcat
         extend ActiveSupport::Concern
 
         module ClassMethods
-          def password_attribute_options
-            @password_attribute_options ||= {}
+          def password_attributes
+            @password_attributes ||= Authcat::Registry.new
           end
 
-          def define_password_attribute(name, digest = :BCrypt, **options)
-            digest =  Authcat::Digest.lookup(digest) unless digest.is_a?(Class)
+          def password_attribute(attribute, algorithm = :bcrypt, **options)
+            algorithm =  Authcat::Password.lookup(algorithm) unless algorithm.is_a?(Class)
 
             # raise ArgumentError, "Unknown digest provider: %s" % digest.inspect unless digest.is_a?(Authcat::Digest)
 
-            options = {
-              suffix: 'digest'
-            }.merge(options)
+            password_attributes[attribute] = [algorithm, options]
 
-            password_attribute_options[name] = [digest, options]
+            # define_attribute_methods attribute
 
             class_eval <<-METHOD
-              def #{name}
-                @#{name}
+              def #{attribute}
+                #{}
+                read_password_attribute(:#{attribute})
               end
 
-              def #{name}=(password)
-                @#{name} = password
-                digest, options = self.class.password_attribute_options[:#{name}]
-                send("#{name}_\#{options[:suffix]}=", digest.digest(password))
+              def #{attribute}=(value)
+                write_password_attribute(:#{attribute}, value)
               end
             METHOD
-
           end
 
         end
 
-        def authenticate(**attributes)
-          attributes.all? do |name, value|
-            digest, options = self.class.password_attribute_options.fetch(name) { raise ArgumentError, "Unknown password attribute: #{name}" }
-            digest.compare(send("#{name}_#{options[:suffix]}"), value)
+        def read_password_attribute(attribute)
+          algorithm, options = self.class.password_attributes[attribute]
+          hashed_password = read_attribute(attribute)
+          hashed_password.nil? ? nil : algorithm.new(hashed_password, **options)
+        end
+
+        def write_password_attribute(attribute, password)
+          unless password.nil?
+            algorithm, _ = self.class.password_attributes[attribute]
+            raise ArgumentError unless password.is_a?(algorithm)
           end
+          write_attribute(attribute, password)
+        end
+
+        def verify_password(attribute, raw_password)
+          return false if raw_password.nil?
+
+          password = read_password_attribute(attribute)
+          password.nil? ? false : password.verify(raw_password)
+        end
+
+        def create_password(attribute, raw_password)
+          algorithm, options = self.class.password_attributes[attribute]
+          write_attribute(attribute, algorithm.create(raw_password, **options))
         end
 
       end

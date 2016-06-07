@@ -1,12 +1,12 @@
-<%= form_for(@user_session, url: basic_sign_in_path) do |f| %>
+<%= form_for(@user, url: basic_sign_in_path, method: :post) do |f| %>
 
   <%= f.label :email %>
   <%= f.text_field :email %>
-  <%= content_tag :div, @user_session.errors.full_messages_for(:email).first if @user_session.errors.include?(:email) %>
+  <%= content_tag :div, @user.errors.full_messages_for(:email).first if @user.errors.include?(:email) %>
 
   <%= f.label :password %>
   <%= f.password_field :password %>
-  <%= content_tag :div, @user_session.errors.full_messages_for(:password).first if @user_session.errors.include?(:password) %>
+  <%= content_tag :div, @user.errors.full_messages_for(:password).first if @user.errors.include?(:password) %>
 
   <%= f.submit 'Sign In' %>
 <% end %>

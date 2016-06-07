@@ -1,34 +1,46 @@
-require 'active_support/ordered_options'
+require 'global_id'
 
 module Authcat
   module Providers
-    class SimpleSessionProvider < Provider
+    class SessionProvider < Provider
 
       option :session_name, reader: true
 
-      def get_auth_hash(request, **options)
-        encoded = request.session[session_name]
-        decode_auth_hash(encoded)
-      rescue
-        nil
+      def authenticate(authenticator)
+        authenticator.user = from_token(get_token(authenticator.request))
       end
 
-      def set_auth_hash(request, auth_hash, **options)
-        request.session[session_name] = encode_auth_hash(auth_hash)
-      rescue
-        false
+      def sign_in(authenticator)
+        set_token(authenticator.request, to_token(authenticator.user))
+      end
+
+      def sign_out(authenticator)
+        set_token(authenticator.request, nil)
       end
 
       private
 
-        def encode_auth_hash(auth_hash)
-          auth_hash.to_json
+        def get_token(request)
+          request.session[session_name]
         end
 
-        def decode_auth_hash(encoded)
-          Authcat::AuthHash.new(JSON.parse(encoded))
+        def set_token(request, token)
+          if token.nil?
+            request.session.delete(session_name)
+          else
+            request.session[session_name] = token
+          end
         end
 
+        def from_token(token)
+          token.nil? ? nil : GlobalID::Locator.locate(token)
+        end
+
+        def to_token(user)
+          user.to_global_id.to_s
+        end
+
+        Providers.register(:session, self)
     end
   end
 end

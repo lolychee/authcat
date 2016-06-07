@@ -8,8 +8,9 @@ services:
       - rubygems:/usr/local/bundle
     ports:
       - "3000:3000"
-    environment:
-      - GEM_SOURCE=https://rubygems.org
+    command: ['spec/dummy/bin/rails', 's', '-b', '0.0.0.0']
+    # environment:
+    #   - GEM_SOURCE=https://rubygems.org
 
   postgres:
     image: postgres:9.5
@@ -24,6 +25,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
+      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=authcat
       - MYSQL_PASSWORD=authcat
 

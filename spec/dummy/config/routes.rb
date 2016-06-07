@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   namespace :basic do
-    get   '/sign_in', to: 'sessions#new', as: :sign_in
-    post  '/sign_in', to: 'sessions#create'
+    get   :status,  to: 'sessions#status', as: :status
+    get   :sign_in, to: 'sessions#new', as: :sign_in
+    post  :sign_in, to: 'sessions#create'
 
-    delete '/sign_out', to: 'sessions#destroy', as: :sign_out
+    delete :sign_out, to: 'sessions#destroy', as: :sign_out
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -4,64 +4,61 @@ module Authcat
 
     include Authcat::Options::Optionable
 
-    module ClassMethods
+    def initialize(request, **options)
+      raise ArgumentError unless request.is_a?(Rack::Request)
+      @request = request
 
-      def providers
-        @providers ||= []
-      end
-
-      def use(provider, **options)
-        provider = Authcat::Providers.lookup(provider) unless provider.is_a?(Class)
-        providers << provider.new(**options)
-      end
-
+      apply_options(options)
     end
 
-    def initialize(request, **options)
-      @request = request
-      apply_options(options)
+    def apply_options(options)
+      super
+      authenticate if options[:preload]
     end
 
     def request
       @request
     end
 
-    def authenticate
-
+    def user
+      @user
     end
 
-    def sign_in(session, **options)
-      # raise ArgumentError unless session.is_a?(Authcat::Session)
-      if session.present?
-        run_providers do |provider|
-          provider.set_auth_hash(request, user_session.to_auth_hash)
-        end
-
-        @session = session
-      else
-        false
+    def user=(user)
+      unless user.nil?
+        raise ArgumentError unless user.is_a?(Authcat::Model)
+        raise ArgumentError if user.new_record?
       end
+
+      @user = user
+    end
+
+    def authenticate
+      @authenticated = true
+      user
+    end
+
+    def authenticate!
+      authenticate || raise(Unauthenticated)
+    end
+
+    def authenticated?
+      @authenticated
+    end
+
+    def sign_in(user)
+      self.user = user
+    end
+
+    def signed_in?
+      authenticate unless authenticated?
+      !user.nil?
     end
 
     def sign_out
-      session.try(:destroy)
+      @authenticated = false
+      self.user = nil
     end
-
-    def session
-      @session
-    end
-
-    def user
-      session.try(:user)
-    end
-
-
-    private
-
-    def run_providers(**options, &block)
-      self.class.providers.each(&block)
-    end
-
 
   end
 end
