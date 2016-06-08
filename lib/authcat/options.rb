@@ -1,16 +1,6 @@
 module Authcat
   class Options < ActiveSupport::OrderedOptions
 
-    class ComputeValue
-      def initialize(&block)
-        @block = block
-      end
-
-      def compute(context)
-        context.instance_exec(&@block)
-      end
-    end
-
     module Optionable
       extend ActiveSupport::Concern
 
@@ -24,11 +14,7 @@ module Authcat
           define_option_reader(name) if options[:accessor] || options[:reader]
           define_option_writer(name) if options[:accessor] || options[:writer]
 
-          default_options[name] = if block_given?
-            Authcat::Options::ComputeValue.new(&block)
-          else
-            value
-          end
+          default_options[name] = block_given? ? block : value
         end
 
         def define_option_reader(name)
@@ -66,7 +52,7 @@ module Authcat
         def options
           @options ||= Authcat::Options.new do |options, key|
             value = self.class.default_options[key]
-            options[key] = value.is_a?(Authcat::Options::ComputeValue) ? value.compute(self) : value
+            options[key] = value.respond_to?(:call) ? value.call(self) : value
           end
         end
 

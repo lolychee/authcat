@@ -5,7 +5,7 @@ module Authcat
     class BCrypt < Password
       option(:cost, reader: true) { ::BCrypt::Engine.cost }
 
-      option(:salt, reader: true) { ::BCrypt::Engine.generate_salt(cost) }
+      option(:salt, reader: true) {|password| ::BCrypt::Engine.generate_salt(password.cost) }
 
       attr_reader :version
 
