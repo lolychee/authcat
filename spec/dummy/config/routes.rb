@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :basic do
-    get   :status,  to: 'sessions#status', as: :status
-    get   :sign_in, to: 'sessions#new', as: :sign_in
+    root to: 'sessions#index'
+    get   :sign_in, to: 'sessions#new',     as: :sign_in
     post  :sign_in, to: 'sessions#create'
 
     delete :sign_out, to: 'sessions#destroy', as: :sign_out

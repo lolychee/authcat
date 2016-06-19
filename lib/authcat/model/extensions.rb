@@ -5,7 +5,7 @@ module Authcat
     module Extensions
       extend ActiveSupport::Autoload
 
-      autoload :Login
+      autoload :SignIn
       autoload :Password
 
     end

@@ -7,18 +7,23 @@ module Authcat
   eager_autoload do
     autoload :VERSION
 
-    autoload :Authenticator
-    autoload :Core
-    autoload :Callbacks
-    autoload :Model
-    autoload :Password
-
-    autoload :Provider
-    autoload :Providers
-
-    autoload :Options
-    autoload :Registry
+    autoload :Railtie
   end
+
+  autoload :Authenticator
+  autoload :Core
+  autoload :Callbacks
+
+  autoload :Strategies
+  autoload :Credentials
+
+  autoload :Model
+  autoload :Password
+
+  autoload :Support
+  autoload :Registry
+
+  autoload :Authentication
 
   eager_load!
 end

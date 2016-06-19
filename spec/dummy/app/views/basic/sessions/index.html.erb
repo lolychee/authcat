@@ -1,6 +1,6 @@
 <div><%= flash[:success] %></div>
 
-<div><%= request.session.to_hash %></div>
+<div><%= render 'partials/status' %></div>
 
 <% if user_signed_in? %>
   <div><%= current_user.to_json %></div>

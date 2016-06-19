@@ -1,15 +1,17 @@
 require 'spec_helper'
 
-describe Authcat::Providers do
+describe Authcat::Strategies do
 
-  class TestProvidersAuthenticator
-    include Authcat::Core
-    include Authcat::Providers
+  let(:authenticator_class) do
+    Class.new do
+      include Authcat::Core
+      include Authcat::Strategies
 
-    use :session, session_name: :auth_token
+      use :session, key: :auth_token
+    end
   end
 
-  subject { TestProvidersAuthenticator.new(request) }
+  subject { authenticator_class.new(request) }
   let(:request) { mock_request }
   let(:user) { User.create(email: 'someone@example.com', password: 'password') }
 

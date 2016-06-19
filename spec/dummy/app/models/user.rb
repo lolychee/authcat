@@ -5,11 +5,16 @@ class User < ActiveRecord::Base
   attr_accessor :password
   password_attribute :password_digest
 
-  validates :email, presence: true, uniqueness: true
+  with_options on: :save do
+    validates :email, presence: true, uniqueness: true
+    validates :password_digest, presence: true
+  end
 
-  validates :email, record_found: true, on: :sign_in
-  validates :password, verify_password: :password_digest, on: :sign_in
+  with_options on: :sign_in do
+    validates :email, presence: true, record_found: true
+    validates :password, presence: true, verify_password: :password_digest
+  end
 
-  before_create {|user| user.create_password(:password_digest, user.password) }
+  before_create {|user| user.write_password(:password_digest, user.password) }
 
 end

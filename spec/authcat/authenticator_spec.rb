@@ -2,17 +2,15 @@ require 'spec_helper'
 
 describe Authcat::Authenticator do
 
-  class TestEmptyAuthenticator < Authcat::Authenticator
+  let!(:authenticator_class) do
+    Class.new(Authcat::Authenticator) do
+      use :session, key: :auth_token
+    end
   end
-
-  class TestAuthenticator < Authcat::Authenticator
-    use :session, session_name: :auth_token
-  end
-
 
   describe '#authenticate' do
     it '' do
-      auth = TestAuthenticator.new(mock_request)
+      auth = authenticator_class.new(mock_request)
       expect(auth.authenticate).to be nil
     end
   end

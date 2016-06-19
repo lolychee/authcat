@@ -1,7 +1,7 @@
 module Authcat
   module Model
     module Extensions
-      module Login
+      module SignIn
         extend ActiveSupport::Concern
 
         def sign_in

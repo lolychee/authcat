@@ -2,36 +2,17 @@ module Authcat
   module Core
     extend ActiveSupport::Concern
 
-    include Authcat::Options::Optionable
+    include Support::Configurable
 
     def initialize(request, **options)
       raise ArgumentError unless request.is_a?(Rack::Request)
       @request = request
 
-      apply_options(options)
+      config.merge!(options)
     end
 
-    def apply_options(options)
-      super
-      authenticate if options[:preload]
-    end
-
-    def request
-      @request
-    end
-
-    def user
-      @user
-    end
-
-    def user=(user)
-      unless user.nil?
-        raise ArgumentError unless user.is_a?(Authcat::Model)
-        raise ArgumentError if user.new_record?
-      end
-
-      @user = user
-    end
+    attr_reader :request
+    attr_accessor :user
 
     def authenticate
       @authenticated = true
@@ -51,7 +32,6 @@ module Authcat
     end
 
     def signed_in?
-      authenticate unless authenticated?
       !user.nil?
     end
 

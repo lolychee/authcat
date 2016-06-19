@@ -1,36 +1,20 @@
+require 'active_support/hash_with_indifferent_access'
+
 module Authcat
-  class Registry
+  class Registry < ActiveSupport::HashWithIndifferentAccess
 
-    def initialize(type = Object)
-      @type = type
-      @registry = ActiveSupport::OrderedOptions.new
+    def register(key, value)
+      raise AlreadyExists, "#{key.inspect} already exists." if key?(key)
+
+      self[key] = value
     end
 
-    def []=(key, value)
-      raise AlreadyExists, "#{key.inspect} already exist." if @registry.key?(key)
-      raise TypeError, "#{value.inspect} is not #{@type}." unless value.is_a?(@type)
-
-      @registry[key] = value
-    end
-    alias_method :register, :[]=
-
-    def [](key)
-      @registry.fetch(key) { raise NotFound, "#{key.inspect} not found." }
-    end
-    alias_method :lookup, :[]
-
-    def to_s
-      @registry.to_s
+    def lookup(key)
+      fetch(key) { raise NotFound, "#{key.inspect} not found." }
     end
 
-    class NotFound < StandardError
-    end
+    class NotFound < StandardError; end
 
-    class AlreadyExists < StandardError
-    end
-
-    class TypeError < StandardError
-    end
-
+    class AlreadyExists < StandardError; end
   end
 end

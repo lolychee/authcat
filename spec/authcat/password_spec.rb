@@ -17,12 +17,6 @@ describe Authcat::Password do
 
   let(:password) { 'password' }
 
-  describe '.registry' do
-    it 'return a registry' do
-      expect(described_class.registry).to be_an_instance_of(Authcat::Registry)
-    end
-  end
-
   describe '.create' do
     it do
       expect(Reverse.create(password)).to eq password.reverse

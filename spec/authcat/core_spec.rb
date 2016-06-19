@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe Authcat::Core do
 
-  class TestCoreAuthenticator
-    include Authcat::Core
+  let!(:authenticator_class) do
+    Class.new do
+      include Authcat::Core
+    end
   end
 
-
-  subject { TestCoreAuthenticator.new(mock_request) }
+  subject { authenticator_class.new(mock_request) }
 
   let(:user) { User.create(email: 'someone@example.com', password: 'password') }
 

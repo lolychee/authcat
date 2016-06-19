@@ -2,30 +2,11 @@ module Authcat
   class Password < String
     extend ActiveSupport::Autoload
 
+    extend Support::Registrable
+    include Support::Configurable
+
     eager_autoload do
       autoload :BCrypt, 'authcat/password/bcrypt'
-    end
-
-    class << self
-
-      def registry
-        @registry ||= Registry.new
-      end
-
-      delegate :register, :lookup, to: :registry
-
-      def secure_compare(a, b)
-        return false unless a.bytesize == b.bytesize
-
-        result = 0
-        a.each_byte.zip(b.each_byte) { |c, d| result |= c ^ d }
-        result == 0
-      end
-
-      def inherited(subclass)
-        subclass.include Authcat::Options::Optionable
-        subclass.extend ClassMethods
-      end
     end
 
     module ClassMethods
@@ -40,14 +21,26 @@ module Authcat
       end
 
       def valid?(hashed_password)
-        raise NotImplementedError, 'not implemented'
+        raise NotImplementedError, '.valid? not implemented.'
       end
+    end
+
+    def self.secure_compare(a, b)
+      return false unless a.bytesize == b.bytesize
+
+      result = 0
+      a.each_byte.zip(b.each_byte) { |c, d| result |= c ^ d }
+      result == 0
+    end
+
+    def self.inherited(subclass)
+      subclass.extend ClassMethods
     end
 
     def initialize(hashed_password = nil, **options)
       raise 'this is an abstract class.' if self === Authcat::Password
 
-      apply_options(options)
+      config.merge!(options)
 
       if hashed_password
         replace(hashed_password)
@@ -57,12 +50,12 @@ module Authcat
     end
 
     def replace(hashed_password)
-      raise InvalidHash, "invalid hash: #{hashed_password}" unless self.class.valid?(hashed_password)
+      raise InvalidHash, "invalid hash: #{hashed_password.inspect}." unless self.class.valid?(hashed_password)
       super
     end
 
     def update(password)
-      replace(hash(password))
+      replace(hash(password.to_s))
     end
     alias_method :<<, :update
 
@@ -78,14 +71,13 @@ module Authcat
       self.class.new(hash(password.to_s), **options)
     end
 
-    class InvalidHash < StandardError
-    end
-
     private
 
       def hash(password)
-        raise NotImplementedError, 'not implemented'
+        raise NotImplementedError, '#hash not implemented.'
       end
+
+      class InvalidHash < StandardError; end
 
       eager_load!
   end

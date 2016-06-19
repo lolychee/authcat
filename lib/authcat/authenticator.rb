@@ -2,7 +2,7 @@ module Authcat
   class Authenticator
 
     include Core
-    include Providers
+    include Strategies
     include Callbacks
   end
 end

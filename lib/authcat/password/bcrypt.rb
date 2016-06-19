@@ -3,33 +3,37 @@ require 'bcrypt'
 module Authcat
   class Password
     class BCrypt < Password
+      MIN_COST = ::BCrypt::Engine::MIN_COST
+
       option(:cost, reader: true) { ::BCrypt::Engine.cost }
 
-      option(:salt, reader: true) {|password| ::BCrypt::Engine.generate_salt(password.cost) }
+      option(:salt, reader: true) { generate_salt }
 
       attr_reader :version
 
       def self.valid?(hashed_password)
         ::BCrypt::Password.valid_hash?(hashed_password)
-      rescue
-        false
       end
 
-      def apply_options(options)
-        if cost = options[:cost]
-          range = ::BCrypt::Engine::MIN_COST..31
-          raise ArgumentError, "cost must in #{range}" unless range.include?(cost)
-        end
-        super
+      def self.valid_salt?(salt)
+        ::BCrypt::Engine.valid_salt?(salt)
       end
 
-      def replace(str)
+      def replace(hashed_password)
         extract_hash(super)
+      end
+
+      def generate_salt(cost = self.cost)
+        raise ArgumentError, "cost must be numeric and >= #{MIN_COST}" unless cost.is_a?(Integer) && cost >= MIN_COST
+
+        ::BCrypt::Engine.generate_salt(cost)
       end
 
       private
 
-        def hash(password)
+        def hash(password, salt = self.salt)
+          raise ArgumentError, "invalid salt: #{salt.inspect}" unless self.class.valid_salt?(salt)
+
           ::BCrypt::Engine.hash_secret(password, salt)
         end
 
@@ -37,11 +41,10 @@ module Authcat
           _, v, c, _ = hashed_password.split('$')
 
           @version = v.to_str
-          options[:cost] = c.to_i
-          options[:salt] = hashed_password[0, 29].to_str
+          config.cost = c.to_i
+          config.salt = hashed_password[0, 29].to_str
           hashed_password
         end
-
 
         Password.register(:bcrypt, self)
     end
