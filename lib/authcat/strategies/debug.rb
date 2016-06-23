@@ -2,17 +2,12 @@ module Authcat
   module Strategies
     class Debug < Base
 
-      def self.name
-        :debug
-      end
-
-      def read_credential(request)
-        credential = config.credential
+      def find_credential(request)
         credential.respond_to?(:call) ? credential.call(self) : credential
       end
 
-      def write_credential(request, credential)
-        config.credential = credential
+      def save_credential(request, credential)
+        self.credential = credential
       end
 
       def has_credential?(request)
@@ -23,11 +18,6 @@ module Authcat
         config.fetch(:readonly, super)
       end
 
-      def credential_class
-        config.credential_class || super
-      end
-
-      Strategies.register(self.name, self)
     end
   end
 end

@@ -4,45 +4,41 @@ module Authcat
       include Support::Configurable
 
       def initialize(**options)
-        raise 'this is an abstract class.' if self === Strategies::Base
-
         config.merge!(options)
       end
 
       def find_credential(request)
-        nil
+        raise NotImplementedError, '#find_credential not implemented.'
       end
 
       def save_credential(request, credential)
-        raise "#{self.class.inspect} is readonly strategy." if readonly?
-        raise ArgumentError, "given credential must be #{credential_class.inspect} instance." unless credential.nil? || credential.is_a?(credential_class)
+        raise NotImplementedError, '#save_credential not implemented.'
       end
 
       def has_credential?(request)
-        false
+        raise NotImplementedError, '#has_credential? not implemented.'
       end
 
       def find_user(request)
-        credential = find_credential(request)
-
-        credential.nil? ? nil : credential.to_user
+        find_credential(request).try(:find_user)
       end
 
       def save_user(request, user)
-        credential = user.nil? ? nil : create_credential(user)
-        save_credential(request, credential)
+        if user.nil?
+          save_credential(request, nil)
+        else
+          save_credential(request, generate_credential(user))
+        end
       end
 
       def parse_credential(credential)
-        credential_class.new(credential)
+        Credentials::GlobalID.new(credential)
+      rescue Credentials::InvalidCredential
+        nil
       end
 
-      def create_credential(user)
-        credential_class.create(user)
-      end
-
-      def credential_class
-        Credentials::GlobalID
+      def generate_credential(user)
+        Credentials::GlobalID.create(user)
       end
 
       def readonly?

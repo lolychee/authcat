@@ -31,7 +31,7 @@ module Authcat
           unless options[:accessor] == false
             if block_given?
               define_method("#{name}") do
-                config[name] ||= instance_exec(&block)
+                config.fetch(name) { instance_exec(self, &block) }
               end
             else
               define_method("#{name}") do

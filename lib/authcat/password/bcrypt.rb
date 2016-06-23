@@ -1,22 +1,28 @@
-require 'bcrypt'
-
 module Authcat
   class Password
     class BCrypt < Password
-      MIN_COST = ::BCrypt::Engine::MIN_COST
 
-      option(:cost, reader: true) { ::BCrypt::Engine.cost }
+      begin
+        require 'bcrypt'
+      rescue LoadError
+        $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
+        raise
+      end
 
-      option(:salt, reader: true) { generate_salt }
+      option(:cost) { ::BCrypt::Engine.cost }
+
+      option(:min_cost) { ::BCrypt::Engine::MIN_COST }
+
+      option(:salt) {|password| password.generate_salt }
 
       attr_reader :version
 
       def self.valid?(hashed_password)
-        ::BCrypt::Password.valid_hash?(hashed_password)
+        !!::BCrypt::Password.valid_hash?(hashed_password)
       end
 
       def self.valid_salt?(salt)
-        ::BCrypt::Engine.valid_salt?(salt)
+        !!::BCrypt::Engine.valid_salt?(salt)
       end
 
       def replace(hashed_password)
@@ -24,7 +30,7 @@ module Authcat
       end
 
       def generate_salt(cost = self.cost)
-        raise ArgumentError, "cost must be numeric and >= #{MIN_COST}" unless cost.is_a?(Integer) && cost >= MIN_COST
+        raise ArgumentError, "cost should be numeric and >= #{min_cost}" unless cost.is_a?(Integer) && cost >= min_cost
 
         ::BCrypt::Engine.generate_salt(cost)
       end
@@ -41,12 +47,12 @@ module Authcat
           _, v, c, _ = hashed_password.split('$')
 
           @version = v.to_str
-          config.cost = c.to_i
-          config.salt = hashed_password[0, 29].to_str
+          self.cost = c.to_i
+          self.salt = hashed_password[0, 29].to_str
+
           hashed_password
         end
 
-        Password.register(:bcrypt, self)
     end
   end
 end

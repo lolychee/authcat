@@ -1,36 +1,40 @@
 module Authcat
   module Credentials
-    class Base
+    class Base < String
       include Support::Configurable
 
       module ClassMethods
         def create(user, **options)
-          credential = new(nil, **options)
-          credential.user = user
-          credential
+          new(generate_credential(user), **options)
+        end
+
+        def valid?(credential)
+          raise NotImplementedError, '.valid? not implemented.'
+        end
+
+        def generate_credential(user)
+          raise NotImplementedError, '.generate_credential not implemented.'
         end
       end
+      extend ClassMethods
 
-      def self.inherited(subclass)
-        subclass.extend ClassMethods
-      end
-
-      def initialize(credential = nil, **options)
+      def initialize(credential, **options)
         config.merge!(options)
+
+        replace(credential)
       end
 
-      attr_reader :user
-
-      def user=(user)
-        @user = user
+      def replace(credential)
+        raise InvalidCredential, "invalid credential: #{credential.inspect}." unless self.class.valid?(credential)
+        super
       end
 
-      def to_user
-        user
+      def update(user)
+        replace(self.class.generate_credential(user))
       end
 
-      def to_s
-        nil
+      def find_user
+        raise NotImplementedError, '#find_user not implemented.'
       end
 
     end

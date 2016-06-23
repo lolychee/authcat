@@ -2,11 +2,7 @@ module Authcat
   module Support
     extend ActiveSupport::Autoload
 
-    eager_autoload do
-      autoload :Configurable
-      autoload :Registrable
-    end
+    autoload :Configurable
 
-    eager_load!
   end
 end
