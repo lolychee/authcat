@@ -1,6 +1,6 @@
 class Basic::SessionsController < ApplicationController
 
-  authcat :user
+  authcat :user, scope: :web
 
   # before_action :authenticate_user!
 
@@ -16,6 +16,7 @@ class Basic::SessionsController < ApplicationController
 
     if @user.validate(:sign_in)
       user_auth.sign_in(@user)
+
       flash.now[:success] = 'successly sign in.'
       redirect_to basic_root_url
     else
@@ -32,7 +33,7 @@ class Basic::SessionsController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:email, :password)
+      params.require(:user).permit(:email, :password, :remember_me)
     end
 
 end

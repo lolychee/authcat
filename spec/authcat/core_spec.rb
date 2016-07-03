@@ -18,9 +18,9 @@ describe Authcat::Core do
 
   describe 'authenticate' do
     it 'return #user' do
-      expect(subject.authenticate).to eq nil
+      expect(subject.authenticate).to eq subject.user
       subject.sign_in(user)
-      expect(subject.authenticate).to eq user
+      expect(subject.authenticate).to eq subject.user
     end
 
     it '#authenticated? be true' do
@@ -32,8 +32,9 @@ describe Authcat::Core do
 
   describe '#sign_in' do
     it 'sign in by user' do
-      subject.sign_in(user)
-      expect(subject.user).to eq user
+      expect {
+        subject.sign_in(user)
+      }.to change(subject, :user).from(nil).to(user)
     end
   end
 

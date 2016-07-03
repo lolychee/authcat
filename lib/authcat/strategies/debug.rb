@@ -2,15 +2,30 @@ module Authcat
   module Strategies
     class Debug < Base
 
-      def find_credential(request)
-        credential.respond_to?(:call) ? credential.call(self) : credential
+      def authenticate
+        if user = credential.find
+          throw :success, user
+        end
       end
 
-      def save_credential(request, credential)
-        self.credential = credential
+      def sign_in(user)
+        self.credential = credential_class.create(user)
       end
 
-      def has_credential?(request)
+      def sign_out
+        self.credential = nil
+      end
+
+      def credential
+        credential = config[:credential]
+        credential.respond_to?(:call) ? credential.() : credential
+      end
+
+      def credential=(credential)
+        config[:credential] = credential
+      end
+
+      def present?
         config.key?(:credential)
       end
 

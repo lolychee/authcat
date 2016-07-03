@@ -2,23 +2,40 @@ module Authcat
   module Strategies
     class Session < Base
 
-      option :key
+      option :key, require: true
 
-      def find_credential(request)
-        parse_credential(request.session[key])
-      end
-
-      def save_credential(request, credential)
-        if credential.nil?
-          request.session.delete(key)
-        else
-          raise ArgumentError, "credential should be Authcat::Credentials::Base instance" unless credential.is_a?(Authcat::Credentials::Base)
-          request.session[key] = credential.to_s
+      def authenticate
+        if user = credential.find
+          throw :success, user
         end
       end
 
-      def has_credential?(request)
-        request.session.key?(key)
+      def sign_in(user, params = {})
+        self.credential = credential_class.create(user, params)
+      end
+
+      def sign_out
+        clear_credential!
+      end
+
+      def credential
+        credential_class.new(session[key])
+      end
+
+      def credential=(credential)
+        session[key] = credential.to_s
+      end
+
+      def clear_credential!
+        session.delete(key)
+      end
+
+      def session
+        request.session
+      end
+
+      def present?
+        session.key?(key)
       end
 
       def readonly?

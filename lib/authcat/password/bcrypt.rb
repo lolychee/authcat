@@ -1,6 +1,6 @@
 module Authcat
-  class Password
-    class BCrypt < Password
+  module Password
+    class BCrypt < Base
 
       begin
         require 'bcrypt'

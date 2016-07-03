@@ -3,63 +3,74 @@ module Authcat
     extend ActiveSupport::Autoload
     extend ActiveSupport::Concern
 
+    extend Support::Registrable
+
     autoload :Base
     autoload :Debug
     autoload :Session
+    autoload :Cookies
 
-    SHORT_NAME_MAP = {
-      session: 'Session'
-    }.with_indifferent_access
+    register :debug,    :Debug
+    register :session,  :Session
+    register :cookies,  :Cookies
 
-    def self.const_get(name)
-      if SHORT_NAME_MAP.key?(name)
-        super(SHORT_NAME_MAP[name])
-      else
-        super
+    def self.lookup(name)
+      super do |value|
+        value.is_a?(Class) ? value : const_get(value)
       end
     end
 
     module ClassMethods
       def strategies
-        @strategies ||= []
+        @strategies ||= Hash.new {|hash, key| hash[key] = [] }
       end
 
-      def use(strategy_name, **options)
-        strategy_klass = Strategies.const_get(strategy_name) if strategy_name.is_a?(Symbol) || strategy_name.is_a?(String)
+      def use(name, **options)
+        strategy = (name.is_a?(Class) ? name : Strategies.lookup(name))[**options]
 
-        strategy = strategy_klass.new(**options)
         yield strategy if block_given?
 
-        strategies << strategy
+        strategies[@scope] << strategy
+      end
+
+      def scope(name)
+        @scope, old = name, @scope
+        yield if block_given?
+        @scope = old
       end
     end
 
+    included do
+      option :scope, nil, class_accessor: false
+    end
+
+    def strategies(**options)
+      @strategies ||= self.class.strategies[self.scope].map {|klass| klass.new(request) }
+
+      list = @strategies.dup
+      options.each do |name, boolean|
+        list.send(boolean ? :select! : :reject!, &:"#{name}?")
+      end
+      list
+    end
+
     def authenticate
-      self.class.strategies.each do |strategy|
-        next unless strategy.has_credential?(request)
-        if user = strategy.find_user(request)
-          self.user = user
-          break
-        end
+      self.user = catch :success do
+        strategies(present: true).each {|strategy| strategy.authenticate }
+        nil
       end
 
       super
     end
 
     def sign_in(user)
-      self.class.strategies.each do |strategy|
-        next if strategy.readonly?
-        strategy.save_user(request, user)
-      end
+      strategies(readonly: false).each {|strategy| strategy.sign_in(user) }
 
       super
     end
 
     def sign_out
-      self.class.strategies.each do |strategy|
-        next if strategy.readonly? || !strategy.has_credential?(request)
-        strategy.save_user(request, nil)
-      end
+      strategies(readonly: false, present: true).each {|strategy| strategy.sign_out }
 
       super
     end

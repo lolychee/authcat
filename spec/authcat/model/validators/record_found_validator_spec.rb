@@ -17,11 +17,11 @@ describe Authcat::Model::Validators::RecordFoundValidator do
     end
   end
 
-  describe '存在的邮件地址' do
+  context 'record exists' do
     # 时间存入SQLite数据库会丢失精度，reload来同步
     let(:someone) { user_class.create(email: 'someone@example.com', password: 'password').reload }
 
-    it '更新 user 属性' do
+    it 'replace @attributes' do
       user = user_class.new(email: someone.email)
 
       expect(user.valid?(:sign_in))
@@ -29,8 +29,8 @@ describe Authcat::Model::Validators::RecordFoundValidator do
     end
   end
 
-  describe '不存在的邮件地址' do
-    it 'errors 添加一个 email 项' do
+  context 'record not exists' do
+    it 'add a email error' do
       user = user_class.new(email: 'someone@example.com')
 
       expect(user.invalid?(:sign_in))

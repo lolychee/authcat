@@ -8,8 +8,8 @@ describe Authcat::Credentials::Base do
         credential =~ /^\w+:[0-9]+$/
       end
 
-      def klass.generate_credential(user)
-        [user.class.name, user.id].join(':')
+      def klass.create(user, **options)
+        new([user.class.name, user.id].join(':'), **options)
       end
 
       def find_user
@@ -25,31 +25,23 @@ describe Authcat::Credentials::Base do
 
   describe '.create' do
     context 'when gevin a user' do
-      it 'return a credential' do
+      it 'should be a credential' do
         expect(credential_class.create(user)).to be_is_a(credential_class)
       end
     end
   end
 
   describe '.valid?' do
-    it 'raise NotImplementedError' do
+    it 'should raise NotImplementedError' do
       expect {
         described_class.valid?('')
       }.to raise_error(NotImplementedError)
     end
   end
 
-  describe '.generate_credential' do
-    it 'raise NotImplementedError' do
-      expect {
-        described_class.generate_credential(nil)
-      }.to raise_error(NotImplementedError)
-    end
-  end
-
   describe '#replace' do
     context 'when gevin an invalid credential' do
-      it 'raise InvalidCredential' do
+      it 'should raise InvalidCredential' do
         expect {
           credential.replace('invalid credential')
         }.to raise_error(Authcat::Credentials::InvalidCredential)
@@ -57,7 +49,7 @@ describe Authcat::Credentials::Base do
     end
 
     context 'when gevin a valid credential' do
-      it 'replace with valid credential' do
+      it 'should replace with valid credential' do
         expect(credential.replace('User:1')).to eq 'User:1'
       end
     end
@@ -65,7 +57,7 @@ describe Authcat::Credentials::Base do
 
   describe '#update' do
     context 'when gevin a user' do
-      it 'update to new credential' do
+      it 'should update to new credential' do
         new_user = User.new(id: 2)
         expect(credential.update(new_user)).to eq 'User:2'
       end
@@ -73,7 +65,7 @@ describe Authcat::Credentials::Base do
   end
 
   describe '#find_user' do
-    it 'raise NotImplementedError' do
+    it 'should raise NotImplementedError' do
       expect {
         described_class.new('').find_user
       }.to raise_error(NotImplementedError)

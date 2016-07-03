@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   include Authcat::Model
 
   # has_secure_password
-  attr_accessor :password
+  attr_accessor :password, :remember_me
   password_attribute :password_digest
 
   with_options on: :save do
@@ -17,4 +17,7 @@ class User < ActiveRecord::Base
 
   before_create {|user| user.write_password(:password_digest, user.password) }
 
+  def remember_me=(value)
+    @remember_me = value.is_a?(String) ? value == '1' : value
+  end
 end

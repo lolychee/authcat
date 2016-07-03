@@ -29,7 +29,7 @@ describe Authcat::Model::Password do
     # end
 
     it '生成密码摘要' do
-      expect(user.password_digest).to be_kind_of(Authcat::Password)
+      expect(user.password_digest).to be_kind_of(Authcat::Password::Base)
       expect(user.password_digest.verify(password))
     end
   end

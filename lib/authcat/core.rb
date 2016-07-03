@@ -11,8 +11,20 @@ module Authcat
       config.merge!(options)
     end
 
-    attr_reader :request
-    attr_accessor :user
+    attr_reader :request, :user
+
+    def user=(user)
+      unless user.nil?
+        raise ArgumentError, "user should be ActiveRecord::Base instance and presisted." unless user.is_a?(ActiveRecord::Base) && user.persisted?
+      end
+
+      @user = user
+    end
+
+    def user_or_authenticate
+       authenticate unless authenticated?
+       user
+    end
 
     def authenticate
       @authenticated = true
@@ -32,7 +44,7 @@ module Authcat
     end
 
     def signed_in?
-      !user.nil?
+      !user_or_authenticate.nil?
     end
 
     def sign_out

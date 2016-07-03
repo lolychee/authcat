@@ -2,18 +2,16 @@ module Authcat
   module Credentials
     extend ActiveSupport::Autoload
 
+    extend Support::Registrable
+
     autoload :Base
-    autoload :GlobalID, 'authcat/credentials/global_id'
+    autoload :GlobalID, 'authcat/credentials/globalid'
 
-    SHORT_NAME_MAP = {
-      global_id: 'GlobalID'
-    }.with_indifferent_access
+    register :globalid, :GlobalID
 
-    def self.const_get(name)
-      if SHORT_NAME_MAP.key?(name)
-        super(SHORT_NAME_MAP[name])
-      else
-        super
+    def self.lookup(name)
+      super do |value|
+        value.is_a?(Class) ? value : const_get(value)
       end
     end
 

@@ -4,16 +4,16 @@ module Authcat
       include Support::Configurable
 
       module ClassMethods
+        def [](**options)
+          Class.new(self) do configure(**options); end
+        end
+
         def create(user, **options)
-          new(generate_credential(user), **options)
+          raise NotImplementedError, '.create not implemented.'
         end
 
         def valid?(credential)
           raise NotImplementedError, '.valid? not implemented.'
-        end
-
-        def generate_credential(user)
-          raise NotImplementedError, '.generate_credential not implemented.'
         end
       end
       extend ClassMethods
@@ -30,11 +30,11 @@ module Authcat
       end
 
       def update(user)
-        replace(self.class.generate_credential(user))
+        replace(self.class.create(user))
       end
 
-      def find_user
-        raise NotImplementedError, '#find_user not implemented.'
+      def find
+        raise NotImplementedError, '#find not implemented.'
       end
 
     end

@@ -9,9 +9,12 @@ module Authcat
         end
 
         def password_attribute(attribute, algorithm = :bcrypt, **options)
-          algorithm = ::Authcat::Password.const_get(algorithm) if algorithm.is_a?(Symbol) || algorithm.is_a?(String)
 
-          password_attributes[attribute] = [algorithm, options]
+          algorithm = (algorithm.is_a?(Class) ? algorithm : ::Authcat::Password.lookup(algorithm))[**options]
+
+          yield algorithm if block_given?
+
+          password_attributes[attribute] = algorithm
 
           class_eval <<-METHOD
             def #{attribute}
@@ -30,16 +33,16 @@ module Authcat
 
         return nil if hashed_password.nil?
 
-        algorithm, options = self.class.password_attributes[attribute]
-        algorithm.new(hashed_password, **options)
+        algorithm = self.class.password_attributes[attribute]
+        algorithm.new(hashed_password)
       end
 
       def write_password_attribute(attribute, hashed_password)
         if hashed_password.nil?
           write_attribute(attribute, nil)
         else
-          algorithm, options = self.class.password_attributes[attribute]
-          write_attribute(attribute, algorithm.new(hashed_password, **options).to_s)
+          algorithm = self.class.password_attributes[attribute]
+          write_attribute(attribute, algorithm.new(hashed_password).to_s)
         end
       end
 
@@ -53,8 +56,8 @@ module Authcat
       end
 
       def write_password(attribute, raw_password)
-        algorithm, options = self.class.password_attributes[attribute]
-        write_password_attribute(attribute, algorithm.create(raw_password, **options))
+        algorithm = self.class.password_attributes[attribute]
+        write_password_attribute(attribute, algorithm.create(raw_password))
       end
 
     end

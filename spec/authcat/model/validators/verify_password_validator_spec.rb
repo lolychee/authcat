@@ -19,16 +19,16 @@ describe Authcat::Model::Validators::VerifyPasswordValidator do
   let(:password) { 'password' }
   let(:user) { user_class.new.tap {|u| u.write_password(:password_digest, password) } }
 
-  describe '正确的密码' do
-    it '通过校验' do
+  context 'right password' do
+    it 'should be valid' do
       user.password = password
 
       expect(user).to be_valid(:sign_in)
     end
   end
 
-  describe '错误的密码' do
-    it 'errors 添加一个 password 项' do
+  context 'wrong password' do
+    it 'add a password error' do
       user.password = 'wrong_password'
 
       expect(user).to be_invalid(:sign_in)

@@ -3,46 +3,52 @@ module Authcat
     class Base
       include Support::Configurable
 
-      def initialize(**options)
+      module ClassMethods
+        def [](**options)
+          Class.new(self) do configure(**options); end
+        end
+      end
+      extend ClassMethods
+
+      option :credential_class, :globalid
+
+      attr_reader :request
+
+      def initialize(request, **options)
+        @request = request
         config.merge!(options)
       end
 
-      def find_credential(request)
-        raise NotImplementedError, '#find_credential not implemented.'
+      def authenticate
+        raise NotImplementedError, '#authenticate not implemented.'
       end
 
-      def save_credential(request, credential)
-        raise NotImplementedError, '#save_credential not implemented.'
+      def sign_in(*)
+        raise NotImplementedError, '#sign_in not implemented.'
       end
 
-      def has_credential?(request)
-        raise NotImplementedError, '#has_credential? not implemented.'
+      def sign_out
+        raise NotImplementedError, '#sign_out not implemented.'
       end
 
-      def find_user(request)
-        find_credential(request).try(:find_user)
-      end
-
-      def save_user(request, user)
-        if user.nil?
-          save_credential(request, nil)
+      def credential_class
+        case klass = super
+        when String, Symbol
+          self.credential_class = Credentials.lookup(klass)
+        when Array
+          type, options = klass
+          self.credential_class = Credentials.lookup(type)[**(options || {})]
         else
-          save_credential(request, generate_credential(user))
+          klass
         end
-      end
-
-      def parse_credential(credential)
-        Credentials::GlobalID.new(credential)
-      rescue Credentials::InvalidCredential
-        nil
-      end
-
-      def generate_credential(user)
-        Credentials::GlobalID.create(user)
       end
 
       def readonly?
         true
+      end
+
+      def present?
+        false
       end
 
     end
