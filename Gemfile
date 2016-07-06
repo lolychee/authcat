@@ -13,6 +13,8 @@ gem 'puma'
 
 gem 'bcrypt', require: false
 
+gem 'purecss-rails'
+
 group :test do
   gem 'rspec', '~> 3.4'
   gem 'database_cleaner', '~> 1.5'

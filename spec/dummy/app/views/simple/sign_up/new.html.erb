@@ -1,0 +1,25 @@
+<div class="pure-g">
+  <div class="pure-u-1">
+
+    <%= form_for(@user, as: :user, url: simple_sign_up_path, method: :post, html: { class: 'pure-form pure-form-aligned sign-up-form' }, builder: Dummy::FormBuilder) do |f| %>
+
+      <%= field_set_tag 'Sign Up' do %>
+        <%= f.group :email, class: 'pure-control-group' do %>
+          <%= f.label :email %>
+          <%= f.text_field :email, placeholder: 'Email' %>
+          <%= f.error_messages :email %>
+        <% end %>
+
+        <%= f.group :password, class: 'pure-control-group' do %>
+          <%= f.label :password %>
+          <%= f.password_field :password, placeholder: 'Password' %>
+          <%= f.error_messages :password %>
+        <% end %>
+      <% end %>
+      <div class="pure-controls">
+        <%= f.button 'Sign Up', type: :submit, class: 'pure-button pure-button-primary' %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

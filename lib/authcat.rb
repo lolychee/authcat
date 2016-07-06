@@ -20,6 +20,8 @@ module Authcat
 
   autoload :Authentication
 
+  autoload :Unauthenticated
+
   eager_autoload do
     autoload :Railtie
   end

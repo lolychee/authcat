@@ -1,11 +1,11 @@
-<table>
+<table class="pure-table pure-table-bordered">
   <tr><th colspan="2">Session</th></tr>
   <% request.session.to_hash.each do |key, value| %>
     <tr><td><%= key %></td><td><%= value %></td></tr>
   <% end %>
 </table>
 
-<table>
+<table class="pure-table pure-table-bordered">
   <tr><th colspan="2">Cookies</th></tr>
   <% request.cookies.to_hash.each do |key, value| %>
     <tr><td><%= key %></td><td><%= value %></td></tr>

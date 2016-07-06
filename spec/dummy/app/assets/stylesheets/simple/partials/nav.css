@@ -1,0 +1,7 @@
+.top-nav {
+  background-color: #FFF;
+  padding: 0.75em 1em;
+}
+.top-nav .session-menu {
+  float: right;
+}

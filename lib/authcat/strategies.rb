@@ -30,18 +30,23 @@ module Authcat
 
         yield strategy if block_given?
 
-        strategies[@scope] << strategy
+        strategies[current_scope] << strategy
+      end
+
+      def current_scope
+        @current_scope ||= default_scope
       end
 
       def scope(name)
-        @scope, old = name, @scope
+        @current_scope, old = name, current_scope
         yield if block_given?
-        @scope = old
+        @current_scope = old
       end
     end
 
     included do
-      option :scope, nil, class_accessor: false
+      option :default_scope, :default
+      option(:scope, class_accessor: false) { self.class.default_scope }
     end
 
     def strategies(**options)

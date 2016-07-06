@@ -1,0 +1,15 @@
+<div class="pure-menu pure-menu-horizontal top-nav">
+    <a href="<%= simple_root_path %>" class="pure-menu-heading pure-menu-link">BRAND</a>
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item"><a href="<%= simple_authenticated_path %>" class="pure-menu-link">Authenticate Page</a></li>
+    </ul>
+    <ul class="pure-menu-list session-menu">
+      <% if user_signed_in? %>
+        <li class="pure-menu-item"><%= current_user.email %></li>
+        <li class="pure-menu-item"><%= button_to 'Sign Out', simple_sign_out_path, method: :delete, class: 'pure-menu-link' %></li>
+      <% else %>
+        <li class="pure-menu-item"><a href="<%= simple_sign_up_path %>" class="pure-menu-link">Sign Up</a></li>
+        <li class="pure-menu-item"><a href="<%= simple_sign_in_path %>" class="pure-menu-link">Sign In</a></li>
+      <% end %>
+    </ul>
+</div>

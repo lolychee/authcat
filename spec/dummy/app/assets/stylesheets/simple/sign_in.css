@@ -1,0 +1,10 @@
+.sign-in-form {
+  background: white;
+  padding: 1em 1.5em;
+  margin: 5em  auto;
+  max-width: 20em;
+  color: #666;
+}
+.sign-in-form legend {
+  font-size: 1.6em;
+}

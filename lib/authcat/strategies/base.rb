@@ -12,6 +12,7 @@ module Authcat
 
       option :credential_class, :globalid
 
+      attr_accessor :name
       attr_reader :request
 
       def initialize(request, **options)

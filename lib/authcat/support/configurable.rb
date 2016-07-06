@@ -38,7 +38,7 @@ module Authcat
           self
         end
 
-        CONFIG_ATTRIBUTES_MODULE = 'ConfigAttributes'
+        OPTION_ATTRIBUTES_MODULE = 'OptionAttributes'
 
         def option(name, value = nil, **options, &block)
 
@@ -52,8 +52,8 @@ module Authcat
             end unless options[:class_writer] == false
           end
 
-          const_set(CONFIG_ATTRIBUTES_MODULE, Module.new) unless const_defined?(CONFIG_ATTRIBUTES_MODULE)
-          mod = const_get(CONFIG_ATTRIBUTES_MODULE)
+          const_set(OPTION_ATTRIBUTES_MODULE, Module.new) unless const_defined?(OPTION_ATTRIBUTES_MODULE)
+          mod = const_get(OPTION_ATTRIBUTES_MODULE)
 
           unless options[:accessor] == false
             if block_given?

@@ -4,5 +4,6 @@ module Authcat
     include Core
     include Strategies
     include Callbacks
+
   end
 end

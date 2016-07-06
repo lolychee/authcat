@@ -23,12 +23,12 @@ module Authcat
 
       def sign_in(user, params = {})
         if expires_at
-          cookies_options[:expires] = expires_at.respond_to?(:call) ? expires_at.(user) : expires_at
-        else
-          if expires_in
-            expires_in = expires_in.(user) if expires_in.respond_to?(:call)
-            cookies_options[:expires] = expires_in.is_a?(Integer) ? expires_in.from_now : expires_in
-          end
+          expires = expires_at.respond_to?(:call) ? expires_at.(user) : expires_at
+          cookies_options[:expires] = expires
+        elsif expires_in
+          expires = expires_in.respond_to?(:call) ? expires_in.(user) : expires_in
+          expires = expires.from_now  if expires.is_a?(ActiveSupport::Duration)
+          cookies_options[:expires] = expires
         end
 
         self.credential = credential_class.create(user, params)
@@ -39,15 +39,17 @@ module Authcat
       end
 
       def credential
-        credential_class.new(cookies[key])
+        @credential ||= credential_class.new(cookies[key])
       end
 
       def credential=(credential)
         cookies[key] = cookies_options.merge(value: credential.to_s)
+        @credential = credential
       end
 
       def clear_credential!
         request.cookie_jar.delete(key)
+        @credential = nil
       end
 
       def cookies

@@ -19,11 +19,12 @@ module Authcat
       end
 
       def credential
-        credential_class.new(session[key])
+        @credential ||= credential_class.new(session[key])
       end
 
       def credential=(credential)
         session[key] = credential.to_s
+        @credential = credential
       end
 
       def clear_credential!

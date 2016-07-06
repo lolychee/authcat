@@ -1,0 +1,25 @@
+.flash-messages {
+  margin: 0 0 1em;
+  padding: 0;
+  list-style-type: none;
+}
+.flash-messages li {
+  background-color: #CCC;
+  padding: 0.5em 2em;
+}
+.flash-messages .success-message {
+  color: #3c763d;
+  background-color: #d0e9c6;
+}
+.flash-messages .info-message {
+  color: #31708f;
+  background-color: #bcdff1;
+}
+.flash-messages .warning-message {
+  color: #8a6d3b;
+  background-color: #faf2cc;
+}
+.flash-messages .danger-message {
+  color: #a94442;
+  background-color: #ebcccc;
+}
