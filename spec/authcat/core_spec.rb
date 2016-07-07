@@ -17,10 +17,9 @@ describe Authcat::Core do
   end
 
   describe 'authenticate' do
-    it 'return #user' do
-      expect(subject.authenticate).to eq subject.user
+    it 'should be a user' do
       subject.sign_in(user)
-      expect(subject.authenticate).to eq subject.user
+      expect(subject.authenticate).to eq user
     end
 
     it '#authenticated? be true' do

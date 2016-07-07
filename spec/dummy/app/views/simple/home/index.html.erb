@@ -1,0 +1,8 @@
+<div><%= render 'partials/status' %></div>
+
+<% if user_signed_in? %>
+  <div><%= current_user.to_json %></div>
+  <%= button_to 'Sign Out', simple_sign_out_path, method: :delete %>
+<% else %>
+  <%= link_to 'Sign In', simple_sign_in_path %>
+<% end %>

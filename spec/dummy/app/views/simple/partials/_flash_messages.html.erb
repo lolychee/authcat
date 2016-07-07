@@ -1,0 +1,7 @@
+<% unless flash.empty? %>
+  <ul class="flash-messages">
+    <% flash.each do |type, message| %>
+      <li class="<%= type %>-message"><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>

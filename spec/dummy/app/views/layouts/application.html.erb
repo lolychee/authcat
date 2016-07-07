@@ -1,13 +1,1 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Dummy</title>
-    <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
-</html>
+<%= render(layout: 'layouts/barebone') { yield } %>

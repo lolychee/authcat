@@ -5,7 +5,7 @@ module Authcat
     include Support::Configurable
 
     def initialize(request, **options)
-      raise ArgumentError unless request.is_a?(Rack::Request)
+      # raise ArgumentError unless request.is_a?(Rack::Request)
       @request = request
 
       config.merge!(options)
