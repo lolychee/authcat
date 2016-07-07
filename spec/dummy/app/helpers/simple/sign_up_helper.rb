@@ -1,2 +1,0 @@
-module Simple::SignUpHelper
-end

@@ -43,5 +43,5 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 #   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 # end
 
-# Allow puma to be restarted by `touch tmp/restart.txt` command.
+# Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart

@@ -1,2 +1,0 @@
-module Simple::HomeHelper
-end
