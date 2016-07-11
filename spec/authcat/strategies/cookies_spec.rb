@@ -3,13 +3,13 @@ require 'spec_helper'
 describe Authcat::Strategies::Cookies do
   let(:identity) { User.create(email: 'test@example.com', password: '123456') }
 
-  let(:authenticator) { Authcat::Authenticator.new(mock_request) }
+  let(:auth) { Authcat::Authenticator.new(mock_request) }
 
-  let(:request) { authenticator.request }
+  let(:request) { auth.request }
 
   let(:key) { :remember_token }
 
-  subject { described_class.new(authenticator, key: key) }
+  subject { described_class.new(auth, key: key) }
 
   describe '#authenticate' do
     context 'when cookies[key] is nil' do
@@ -23,7 +23,7 @@ describe Authcat::Strategies::Cookies do
 
     context 'when cookies[key] is valid' do
       it 'should be a identity' do
-        request.cookie_jar[key] = subject.credential_class.create(identity).to_s
+        request.cookie_jar[key] = subject.create_credential(identity).to_s
         subject.encrypted = false
         expect(subject.authenticate).to eq identity
       end

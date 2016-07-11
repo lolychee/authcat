@@ -10,36 +10,34 @@ describe Authcat::Strategies::Base do
     end
   end
 
-  let(:user) { User.new(id: 1) }
+  let(:identity) { User.create(email: 'test@example.com', password: '123456') }
 
-  let(:global_id) { ::GlobalID.create(user).to_s }
-  let(:request) { mock_request }
+  let(:global_id) { ::GlobalID.create(identity).to_s }
 
-  subject { strategy_class.new(request) }
+  let(:auth) { Authcat::Authenticator.new(mock_request) }
+
+  let(:request) { auth.request }
+
+  subject { strategy_class.new(auth) }
 
   describe '#initialize'
 
   describe '#authenticate' do
-    it 'should raise NotImplementedError' do
-      expect {
-        described_class.new(request).authenticate
-      }.to raise_error(NotImplementedError)
+    it 'should be nil' do
+      expect(subject.authenticate).to be nil
     end
   end
 
   describe '#sign_in' do
-    it 'should raise NotImplementedError' do
-      expect {
-        described_class.new(request).sign_in
-      }.to raise_error(NotImplementedError)
+    it 'should be identity' do
+      auth.identity = identity
+      expect(subject.sign_in).to be identity
     end
   end
 
   describe '#sign_out' do
-    it 'should raise NotImplementedError' do
-      expect {
-        described_class.new(request).sign_out
-      }.to raise_error(NotImplementedError)
+    it 'should be nil' do
+      expect(subject.sign_out).to be nil
     end
   end
 
@@ -47,52 +45,54 @@ describe Authcat::Strategies::Base do
 
   describe '#save_user'
 
-  # describe '#parse_credential' do
-  #   context 'when gevin a valid credential' do
-  #     it 'return Authcat::Credentials::GlobalID instance' do
-  #       expect(subject.parse_credential(global_id)).to be_is_a(Authcat::Credentials::GlobalID)
-  #     end
-  #   end
-  #
-  #   context 'when gevin a invalid credential' do
-  #     it 'return nil' do
-  #       expect(subject.parse_credential('invalid credential')).to be nil
-  #     end
-  #   end
-  # end
-  #
-  # describe '#generate_credential' do
-  #   context 'when gevin a user' do
-  #     it 'return Authcat::Credentials::GlobalID instance' do
-  #       expect(subject.generate_credential(user)).to be_is_a(Authcat::Credentials::GlobalID)
-  #     end
-  #   end
-  #
-  #   context 'when gevin a nil' do
-  #     it 'raise ArgumentError' do
-  #       expect{
-  #         subject.generate_credential(nil)
-  #       }.to raise_error(ArgumentError)
-  #     end
-  #   end
-  # end
-
-  describe '#credential_class' do
-    it 'should be Credentials::GlobalID' do
-      expect(subject.credential_class).to be Authcat::Credentials::GlobalID
+  describe '#parse_credential' do
+    context 'when gevin a valid credential' do
+      it 'return Authcat::Credentials::GlobalID instance' do
+        expect(subject.parse_credential(global_id)).to be_is_a(Authcat::Credentials::GlobalID)
+      end
     end
 
-    it 'should be Credentials::GlobalID subclass' do
-      subject.credential_class = :globalid
-      expect(subject.credential_class.ancestors).to include Authcat::Credentials::GlobalID
+    context 'when gevin a invalid credential' do
+      it 'raise Authcat::Credentials::InvalidCredential' do
+        expect{
+          subject.parse_credential('invalid credential')
+        }.to raise_error(Authcat::Credentials::InvalidCredential)
+      end
     end
-
-    it 'should be Credentials::GlobalID subclass' do
-      subject.credential_class = [:globalid, signed: true]
-      expect(subject.credential_class.ancestors).to include Authcat::Credentials::GlobalID
-    end
-
   end
+
+  describe '#create_credential' do
+    context 'when gevin a identity' do
+      it 'return Authcat::Credentials::GlobalID instance' do
+        expect(subject.create_credential(identity)).to be_is_a(Authcat::Credentials::GlobalID)
+      end
+    end
+
+    context 'when gevin a nil' do
+      it 'raise ArgumentError' do
+        expect{
+          subject.create_credential(nil)
+        }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
+  # describe '#credential_class' do
+  #   it 'should be Credentials::GlobalID' do
+  #     expect(subject.credential_class).to be Authcat::Credentials::GlobalID
+  #   end
+  #
+  #   it 'should be Credentials::GlobalID subclass' do
+  #     subject.credential_class = :globalid
+  #     expect(subject.credential_class.ancestors).to include Authcat::Credentials::GlobalID
+  #   end
+  #
+  #   it 'should be Credentials::GlobalID subclass' do
+  #     subject.credential_class = [:globalid, signed: true]
+  #     expect(subject.credential_class.ancestors).to include Authcat::Credentials::GlobalID
+  #   end
+  #
+  # end
 
   describe '#readonly?' do
     it 'should be true' do

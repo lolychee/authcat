@@ -2,32 +2,20 @@ module Authcat
   module Strategies
     class Session < Base
 
-      option :key, require: true
-
-      def authenticate
-        identity = credential.find
-        yield identity if identity && block_given?
-        identity
-      end
-
-      def sign_in(identity = auth.identity)
-        self.credential = credential_class.create(identity)
-      end
-
-      def sign_out
-        clear
-      end
+      option :key, required: true
 
       def credential
-        credential_class.new(session[key])
+        super { parse_credential(session[key]) }
       end
 
       def credential=(credential)
         session[key] = credential.to_s
+        super
       end
 
       def clear
         session.delete(key)
+        super
       end
 
       def session

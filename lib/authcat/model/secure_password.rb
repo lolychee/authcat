@@ -1,6 +1,6 @@
 module Authcat
   module Model
-    module Password
+    module SecurePassword
       extend ActiveSupport::Concern
 
       module ClassMethods

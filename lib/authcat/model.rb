@@ -3,11 +3,12 @@ module Authcat
     extend ActiveSupport::Autoload
     extend ActiveSupport::Concern
 
-    autoload :Password
-    autoload :SignIn
+    autoload :SecurePassword
+    autoload :ToCredential
     autoload :Validators
 
-    include Password
+    include SecurePassword
+    include ToCredential
     include Validators
   end
 end

@@ -1,7 +1,7 @@
 module Authcat
   module Strategies
     class Cookies < Base
-      option :key, require: true
+      option :key, required: true
 
       option :permanent, false
       option :signed, false
@@ -15,32 +15,18 @@ module Authcat
       option :expires_at, nil
       option :expires_in, nil
 
-      def authenticate
-        identity = credential.find
-        yield identity if identity && block_given?
-        identity
-      end
-
-      def sign_in(identity = auth.identity)
-        self.credential = credential_class.create(identity)
-      end
-
-      def sign_out
-        clear
-      end
-
       def credential
-        @credential ||= credential_class.new(cookies[key])
+        super { parse_credential(cookies[key]) }
       end
 
       def credential=(credential)
         cookies[key] = cookies_options.merge(value: credential.to_s)
-        @credential = credential
+        super
       end
 
       def clear
         request.cookie_jar.delete(key)
-        @credential = nil
+        super
       end
 
       def cookies

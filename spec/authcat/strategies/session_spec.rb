@@ -4,13 +4,13 @@ describe Authcat::Strategies::Session do
 
   let(:identity) { User.create(email: 'test@example.com', password: '123456') }
 
-  let(:authenticator) { Authcat::Authenticator.new(mock_request) }
+  let(:auth) { Authcat::Authenticator.new(mock_request) }
 
-  let(:request) { authenticator.request }
+  let(:request) { auth.request }
 
   let(:key) { :remember_token }
 
-  subject { described_class.new(authenticator, key: key) }
+  subject { described_class.new(auth, key: key) }
 
   describe '#authenticate' do
     context 'when session[key] is nil' do
@@ -24,7 +24,7 @@ describe Authcat::Strategies::Session do
 
     context 'when session[key] is valid' do
       it 'should be a identity' do
-        request.session[key] = subject.credential_class.create(identity).to_s
+        request.session[key] = subject.create_credential(identity).to_s
         expect(subject.authenticate).to eq identity
       end
     end

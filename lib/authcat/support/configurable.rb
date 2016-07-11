@@ -40,35 +40,35 @@ module Authcat
 
         OPTION_ATTRIBUTES_MODULE = 'OptionAttributes'
 
-        def option(name, value = nil, **options, &block)
+        def option(name, value = nil, required: false, accessor: true, reader: true, writer: true, class_accessor: true, class_reader: true, class_writer: true, &block)
 
-          unless options[:class_accessor] == false
+          if class_accessor
             define_singleton_method("#{name}") do
               config[name]
-            end unless options[:class_reader] == false
+            end if class_reader
 
             define_singleton_method("#{name}=") do |value|
               config[name] = value
-            end unless options[:class_writer] == false
+            end if class_writer
           end
 
           const_set(OPTION_ATTRIBUTES_MODULE, Module.new) unless const_defined?(OPTION_ATTRIBUTES_MODULE)
           mod = const_get(OPTION_ATTRIBUTES_MODULE)
 
-          unless options[:accessor] == false
+          if accessor
             if block_given?
               mod.send(:define_method, "#{name}") do
                 config[name] ||= instance_exec(self, &block)
               end
             else
               mod.send(:define_method, "#{name}") do
-                config[name] || (raise ArgumentError, "option: :#{name} is required" if options[:require])
+                config[name] || (raise ArgumentError, "option: :#{name} is required" if required)
               end
-            end unless options[:reader] == false
+            end if reader
 
             mod.send(:define_method, "#{name}=") do |value|
               config[name] = value
-            end unless options[:writer] == false
+            end if writer
           end
 
           include mod

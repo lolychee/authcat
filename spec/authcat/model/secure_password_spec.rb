@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Authcat::Model::Password do
+describe Authcat::Model::SecurePassword do
 
   let!(:user_class) do
     Class.new(ActiveRecord::Base) do
       self.table_name = User.table_name
 
-      include Authcat::Model::Password
+      include Authcat::Model::SecurePassword
 
       attr_accessor :password
 

@@ -15,6 +15,16 @@ module Authcat
       end
     end
 
+    def self.create(type, identity, **options)
+      klass = lookup(type)
+      klass.create(identity, **options)
+    end
+
+    def self.parse(type, credential, **options)
+      klass = lookup(type)
+      klass.new(credential, **options)
+    end
+
     class InvalidCredential < StandardError; end
 
   end

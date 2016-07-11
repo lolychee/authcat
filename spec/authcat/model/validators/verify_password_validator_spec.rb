@@ -6,7 +6,7 @@ describe Authcat::Model::Validators::VerifyPasswordValidator do
     Class.new(ActiveRecord::Base) do
       self.table_name = User.table_name
 
-      include Authcat::Model::Password
+      include Authcat::Model::SecurePassword
       include Authcat::Model::Validators
 
       password_attribute :password_digest

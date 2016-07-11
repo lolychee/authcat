@@ -3,7 +3,9 @@ module Authcat
     class Base
       include Support::Configurable
 
-      option :credential_class, :globalid
+      option :credential_type, :globalid
+      option :credential_options
+      self.credential_options = {}
 
       attr_accessor :name
 
@@ -16,27 +18,43 @@ module Authcat
       end
 
       def authenticate
-        raise NotImplementedError, '#authenticate not implemented.'
+        identity = credential.find
+        yield identity if identity && block_given?
+        identity
       end
 
-      def sign_in(*)
-        raise NotImplementedError, '#sign_in not implemented.'
+      def sign_in(identity = auth.identity)
+        self.credential = create_credential(identity)
+        identity
       end
 
       def sign_out
-        raise NotImplementedError, '#sign_out not implemented.'
+        clear
       end
 
-      def credential_class
-        case klass = super
-        when String, Symbol
-          self.credential_class = Credentials.lookup(klass)
-        when Array
-          type, options = klass
-          self.credential_class = Credentials.lookup(type)[**(options || {})]
+      def credential
+        @credential = yield if block_given?
+        @credential
+      end
+
+      def credential=(credential)
+        @credential = credential
+      end
+
+      def clear
+        @credential = nil
+      end
+
+      def create_credential(identity)
+        if identity.respond_to?(:to_credential)
+          identity.to_credential(credential_type, **credential_options)
         else
-          klass
+          Authcat::Credentials.create(credential_type, identity, **credential_options)
         end
+      end
+
+      def parse_credential(credential)
+        Authcat::Credentials.parse(credential_type, credential, **credential_options)
       end
 
       def exists?
