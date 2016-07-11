@@ -16,26 +16,17 @@ module Authcat
       option :expires_in, nil
 
       def authenticate
-        if user = credential.find
-          throw :success, user
-        end
+        identity = credential.find
+        yield identity if identity && block_given?
+        identity
       end
 
-      def sign_in(user, params = {})
-        if expires_at
-          expires = expires_at.respond_to?(:call) ? expires_at.(user) : expires_at
-          cookies_options[:expires] = expires
-        elsif expires_in
-          expires = expires_in.respond_to?(:call) ? expires_in.(user) : expires_in
-          expires = expires.from_now  if expires.is_a?(ActiveSupport::Duration)
-          cookies_options[:expires] = expires
-        end
-
-        self.credential = credential_class.create(user, params)
+      def sign_in(identity = auth.identity)
+        self.credential = credential_class.create(identity)
       end
 
       def sign_out
-        clear_credential!
+        clear
       end
 
       def credential
@@ -47,7 +38,7 @@ module Authcat
         @credential = credential
       end
 
-      def clear_credential!
+      def clear
         request.cookie_jar.delete(key)
         @credential = nil
       end
@@ -58,10 +49,21 @@ module Authcat
       end
 
       def cookies_options
-        @cookies_options ||= config.slice(:domain, :path, :secure, :httponly)
+        @cookies_options ||= begin
+          opts = config.slice(:domain, :path, :secure, :httponly)
+          if expires_at
+            expires = expires_at.respond_to?(:call) ? expires_at.(auth.identity) : expires_at
+            opts[:expires] = expires
+          elsif expires_in
+            expires = expires_in.respond_to?(:call) ? expires_in.(auth.identity) : expires_in
+            expires = expires.from_now  if expires.is_a?(ActiveSupport::Duration)
+            opts[:expires] = expires
+          end
+          opts
+        end
       end
 
-      def present?
+      def exists?
         request.cookie_jar.key?(key)
       end
 

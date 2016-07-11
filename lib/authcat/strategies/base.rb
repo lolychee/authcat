@@ -3,20 +3,15 @@ module Authcat
     class Base
       include Support::Configurable
 
-      module ClassMethods
-        def [](**options)
-          Class.new(self) do configure(**options); end
-        end
-      end
-      extend ClassMethods
-
       option :credential_class, :globalid
 
       attr_accessor :name
-      attr_reader :request
 
-      def initialize(request, **options)
-        @request = request
+      attr_reader :auth
+      delegate :request, to: :auth
+
+      def initialize(auth, **options)
+        @auth = auth
         config.merge!(options)
       end
 
@@ -44,12 +39,12 @@ module Authcat
         end
       end
 
-      def readonly?
-        true
+      def exists?
+        false
       end
 
-      def present?
-        false
+      def readonly?
+        true
       end
 
     end

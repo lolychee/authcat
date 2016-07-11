@@ -29,8 +29,8 @@ module Authcat
         super
       end
 
-      def update(user)
-        replace(self.class.create(user))
+      def update(identity)
+        replace(self.class.create(identity))
       end
 
       def find

@@ -10,16 +10,16 @@ describe Authcat::Core do
 
   subject { authenticator_class.new(mock_request) }
 
-  let(:user) { User.create(email: 'someone@example.com', password: 'password') }
+  let(:identity) { User.create(email: 'someone@example.com', password: 'password') }
 
   describe '#initialize' do
 
   end
 
   describe 'authenticate' do
-    it 'should be a user' do
-      subject.sign_in(user)
-      expect(subject.authenticate).to eq user
+    it 'should be a identity' do
+      subject.sign_in(identity)
+      expect(subject.authenticate).to eq identity
     end
 
     it '#authenticated? be true' do
@@ -30,26 +30,20 @@ describe Authcat::Core do
   end
 
   describe '#sign_in' do
-    it 'sign in by user' do
+    it 'sign in by identity' do
       expect {
-        subject.sign_in(user)
-      }.to change(subject, :user).from(nil).to(user)
+        subject.sign_in(identity)
+      }.to change(subject, :identity).from(nil).to(identity)
     end
   end
 
   describe '#sign_out' do
-    before(:example) { subject.sign_in(user) }
+    before(:example) { subject.sign_in(identity) }
 
-    it '#user be nil' do
+    it '#identity be nil' do
       expect {
         subject.sign_out
-      }.to change(subject, :user).from(user).to(nil)
-    end
-
-    it '#authenticated? be false' do
-      expect {
-        subject.sign_out
-      }.to change(subject, :authenticated?).to(false)
+      }.to change(subject, :identity).from(identity).to(nil)
     end
   end
 end

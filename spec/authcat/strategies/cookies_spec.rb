@@ -1,13 +1,15 @@
 require 'spec_helper'
 
 describe Authcat::Strategies::Cookies do
-  let(:user) { User.create(email: 'test@example.com', password: '123456') }
+  let(:identity) { User.create(email: 'test@example.com', password: '123456') }
 
-  let(:request) { mock_request }
+  let(:authenticator) { Authcat::Authenticator.new(mock_request) }
+
+  let(:request) { authenticator.request }
 
   let(:key) { :remember_token }
 
-  subject { described_class.new(request, key: key) }
+  subject { described_class.new(authenticator, key: key) }
 
   describe '#authenticate' do
     context 'when cookies[key] is nil' do
@@ -20,12 +22,10 @@ describe Authcat::Strategies::Cookies do
     end
 
     context 'when cookies[key] is valid' do
-      it 'should be a user' do
-        request.cookie_jar[key] = subject.credential_class.create(user).to_s
+      it 'should be a identity' do
+        request.cookie_jar[key] = subject.credential_class.create(identity).to_s
         subject.encrypted = false
-        expect{
-          subject.authenticate
-        }.to throw_symbol(:success, user)
+        expect(subject.authenticate).to eq identity
       end
     end
 
@@ -40,10 +40,10 @@ describe Authcat::Strategies::Cookies do
   end
 
   describe '#sign_in' do
-    context 'when gevin a user' do
+    context 'when gevin a identity' do
       it 'cookies[key] equal credential' do
         expect {
-          subject.sign_in(user)
+          subject.sign_in(identity)
         }.to change { request.cookie_jar[key] }
       end
     end
@@ -85,10 +85,10 @@ describe Authcat::Strategies::Cookies do
     end
   end
 
-  describe '#present?' do
+  describe '#exists?' do
     context 'when cookies[key] is blank' do
       it 'should be false' do
-        expect(subject).not_to be_present
+        expect(subject).not_to be_exists
       end
     end
 

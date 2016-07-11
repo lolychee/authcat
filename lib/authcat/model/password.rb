@@ -8,13 +8,11 @@ module Authcat
           @password_attributes ||= Hash.new {|_, k| raise ArgumentError, "unknown password attribute: #{k.inspect}" }
         end
 
-        def password_attribute(attribute, algorithm = :bcrypt, **options)
+        def password_attribute(attribute, algorithm = :bcrypt, **options, &block)
 
-          algorithm = (algorithm.is_a?(Class) ? algorithm : ::Authcat::Password.lookup(algorithm))[**options]
+          algorithm = algorithm.is_a?(Class) ? algorithm : ::Authcat::Password.lookup(algorithm)
 
-          yield algorithm if block_given?
-
-          password_attributes[attribute] = algorithm
+          password_attributes[attribute] = proc {|hashed_password| algorithm.new(hashed_password, **options, &block) }
 
           class_eval <<-METHOD
             def #{attribute}
@@ -34,16 +32,18 @@ module Authcat
         return nil if hashed_password.nil?
 
         algorithm = self.class.password_attributes[attribute]
-        algorithm.new(hashed_password)
+        algorithm.(hashed_password)
       end
 
       def write_password_attribute(attribute, hashed_password)
-        if hashed_password.nil?
-          write_attribute(attribute, nil)
+        value = if hashed_password.nil?
+          nil
         else
           algorithm = self.class.password_attributes[attribute]
-          write_attribute(attribute, algorithm.new(hashed_password).to_s)
+          algorithm.(hashed_password).to_s
         end
+
+        write_attribute(attribute, value)
       end
 
       def verify_password(attribute, raw_password)
@@ -57,7 +57,7 @@ module Authcat
 
       def write_password(attribute, raw_password)
         algorithm = self.class.password_attributes[attribute]
-        write_password_attribute(attribute, algorithm.create(raw_password))
+        write_password_attribute(attribute, algorithm.().digest(raw_password))
       end
 
     end

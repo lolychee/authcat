@@ -22,35 +22,22 @@ module Authcat
 
     module ClassMethods
       def strategies
-        @strategies ||= Hash.new {|hash, key| hash[key] = [] }
+        @strategies ||= []
       end
 
-      def use(name, **options)
-        strategy = (name.is_a?(Class) ? name : Strategies.lookup(name))[**options]
+      def use(name, if: nil, unless: nil, on: nil, **options, &block)
+        strategy = name.is_a?(Class) ? name : Strategies.lookup(name)
 
-        yield strategy if block_given?
-
-        strategies[current_scope] << strategy
-      end
-
-      def current_scope
-        @current_scope ||= default_scope
-      end
-
-      def scope(name)
-        @current_scope, old = name, current_scope
-        yield if block_given?
-        @current_scope = old
+        strategies << proc {|request| strategy.new(request, **options, &block) }
       end
     end
 
     included do
-      option :default_scope, :default
-      option(:scope, class_accessor: false) { self.class.default_scope }
+      option :scope, :default
     end
 
     def strategies(**options)
-      @strategies ||= self.class.strategies[self.scope].map {|klass| klass.new(request) }
+      @strategies ||= self.class.strategies.map {|block| block.(self) }
 
       list = @strategies.dup
       options.each do |name, boolean|
@@ -60,24 +47,28 @@ module Authcat
     end
 
     def authenticate
-      self.user = catch :success do
-        strategies(present: true).each {|strategy| strategy.authenticate }
-        nil
+      strategies(exists: true).each do |strategy|
+        strategy.authenticate do |identity|
+          self.identity = identity
+          break
+        end
       end
 
       super
     end
 
-    def sign_in(user)
-      strategies(readonly: false).each {|strategy| strategy.sign_in(user) }
+    def sign_in(identity)
+      result = super
+      strategies(readonly: false).each {|strategy| strategy.sign_in }
 
-      super
+      result
     end
 
     def sign_out
-      strategies(readonly: false, present: true).each {|strategy| strategy.sign_out }
+      result = super
+      strategies(readonly: false, exists: true).each {|strategy| strategy.sign_out }
 
-      super
+      result
     end
 
   end

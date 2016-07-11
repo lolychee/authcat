@@ -11,7 +11,7 @@ describe Authcat::Password::BCrypt do
   end
 
   describe '.valid_salt?' do
-    it do
+    it 'should be true' do
       salt = ::BCrypt::Engine.generate_salt
       expect(described_class.valid_salt?(salt)).to eq true
     end
@@ -22,7 +22,7 @@ describe Authcat::Password::BCrypt do
   describe '#generate_salt'
 
   describe '#hash' do
-    it do
+    it 'should be true' do
       expect(described_class.valid?(subject.send(:hash, password))).to eq true
     end
   end
@@ -30,19 +30,19 @@ describe Authcat::Password::BCrypt do
   describe '#extract_hash' do
     let(:hashed_password) { '$2b$05$9eqmbgDaM9M9O54VG4gW8.BBzUMU6GapCD2g107F/gsiDUA5OWO9O' }
 
-    it do
+    it 'should change #version' do
       expect{
         subject.send(:extract_hash, hashed_password)
       }.to change(subject, :version).to('2b')
     end
 
-    it do
+    it 'should change #cost' do
       expect{
         subject.send(:extract_hash, hashed_password)
       }.to change(subject, :cost).to(5)
     end
 
-    it do
+    it 'should change #salt' do
       expect{
         subject.send(:extract_hash, hashed_password)
       }.to change(subject, :salt).to('$2b$05$9eqmbgDaM9M9O54VG4gW8.')

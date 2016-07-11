@@ -3,13 +3,12 @@ module Authcat
     class Debug < Base
 
       def authenticate
-        if user = credential.find
-          throw :success, user
-        end
+        identity = credential.find
+        yield identity if identity && block_given?
       end
 
-      def sign_in(user)
-        self.credential = credential_class.create(user)
+      def sign_in(identity = auth.identity)
+        self.credential = credential_class.create(identity = auth.identity)
       end
 
       def sign_out
@@ -25,7 +24,7 @@ module Authcat
         config[:credential] = credential
       end
 
-      def present?
+      def exists?
         config.key?(:credential)
       end
 

@@ -1,0 +1,17 @@
+.pure-control-group.has-error {
+  color: red;
+
+  input, input:focus {
+    border-color: red;
+    color: red;
+  }
+}
+
+.pure-form-aligned .pure-control-group > .errors {
+  margin-left: 11em;
+}
+
+button.pure-menu-link, input.pure-menu-link {
+  border: none;
+  background: transparent;
+}

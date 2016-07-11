@@ -19,7 +19,7 @@ module Authcat
             instance_variable_set("@#{name}_auth", klass.new(request, **options))
         end
 
-        mod.class_eval "def current_#{name}; #{name}_auth.user_or_authenticate end"
+        mod.class_eval "def current_#{name}; #{name}_auth.identity_or_authenticate end"
 
         mod.class_eval "def #{name}_signed_in?; #{name}_auth.signed_in? end"
 

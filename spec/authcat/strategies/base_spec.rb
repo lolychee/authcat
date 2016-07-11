@@ -100,9 +100,9 @@ describe Authcat::Strategies::Base do
     end
   end
 
-  describe '#present?' do
+  describe '#exists?' do
     it 'should be false' do
-      expect(described_class.new(request)).not_to be_present
+      expect(described_class.new(request)).not_to be_exists
     end
   end
 end

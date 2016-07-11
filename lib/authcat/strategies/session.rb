@@ -5,29 +5,28 @@ module Authcat
       option :key, require: true
 
       def authenticate
-        if user = credential.find
-          throw :success, user
-        end
+        identity = credential.find
+        yield identity if identity && block_given?
+        identity
       end
 
-      def sign_in(user, params = {})
-        self.credential = credential_class.create(user, params)
+      def sign_in(identity = auth.identity)
+        self.credential = credential_class.create(identity)
       end
 
       def sign_out
-        clear_credential!
+        clear
       end
 
       def credential
-        @credential ||= credential_class.new(session[key])
+        credential_class.new(session[key])
       end
 
       def credential=(credential)
         session[key] = credential.to_s
-        @credential = credential
       end
 
-      def clear_credential!
+      def clear
         session.delete(key)
       end
 
@@ -35,7 +34,7 @@ module Authcat
         request.session
       end
 
-      def present?
+      def exists?
         session.key?(key)
       end
 

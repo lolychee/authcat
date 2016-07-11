@@ -20,7 +20,7 @@ module Authcat
 
   autoload :Authentication
 
-  autoload :Unauthenticated
+  autoload :IdentityNotFound
 
   eager_autoload do
     autoload :Railtie

@@ -2,17 +2,10 @@ module Authcat
   module Credentials
     class GlobalID < Base
 
-      begin
-        require 'globalid'
-      rescue
-        $stderr.puts "You don't have globalid installed in your application. Please add it to your Gemfile and run bundle install"
-        raise
-      end
+      def self.create(identity, params: {}, **options)
+        raise ArgumentError, "identity should be ActiveRecord::Base instance." unless identity.is_a?(ActiveRecord::Base)
 
-      def self.create(user, params = {}, **options)
-        raise ArgumentError, "user should be ActiveRecord::Base instance." unless user.is_a?(ActiveRecord::Base)
-
-        new(::GlobalID.create(user, params), **options)
+        new(::GlobalID.create(identity, params), **options)
       end
 
       def self.valid?(credential)

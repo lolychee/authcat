@@ -21,7 +21,7 @@ class Simple::SessionsController < Simple::BaseController
 
   def destroy
     user_auth.sign_out
-    flash[:success] = 'You have successfully signed out.'
+    flash[:info] = 'You have successfully signed out.'
 
     redirect_to simple_root_url
   end

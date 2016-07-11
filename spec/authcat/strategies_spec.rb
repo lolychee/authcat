@@ -13,22 +13,22 @@ describe Authcat::Strategies do
 
   subject { authenticator_class.new(request) }
   let(:request) { mock_request }
-  let(:user) { User.create(email: 'someone@example.com', password: 'password') }
+  let(:identity) { User.create(email: 'someone@example.com', password: 'password') }
 
   describe '#authenticate' do
     it '' do
-      request.session[:auth_token] = user.to_global_id.to_s
+      request.session[:auth_token] = identity.to_global_id.to_s
       expect {
         subject.authenticate
-      }.to change(subject, :user).to(user)
+      }.to change(subject, :identity).to(identity)
     end
   end
 
   describe '#sign_in' do
     it '' do
       expect {
-        subject.sign_in(user)
-      }.to change(request, :session).to({auth_token: user.to_global_id.to_s})
+        subject.sign_in(identity)
+      }.to change(request, :session).to({auth_token: identity.to_global_id.to_s})
     end
   end
 

@@ -11,48 +11,45 @@ module Authcat
       config.merge!(options)
     end
 
-    def user_or_authenticate
+    attr_reader :request, :identity
+
+    def identity=(identity)
+      unless identity.nil?
+        raise ArgumentError, "identity should be ActiveRecord::Base instance and presisted." unless identity.is_a?(ActiveRecord::Base) && identity.persisted?
+      end
+
+      @identity = identity
+    end
+
+    def identity_or_authenticate
        authenticate unless authenticated?
-       user
+       identity
     end
 
     def authenticate
       @authenticated = true
-      user
+      identity
     end
 
     def authenticate!
-      authenticate || raise(Unauthenticated)
+      authenticate || raise(IdentityNotFound)
     end
 
     def authenticated?
       @authenticated
     end
 
-    def sign_in(user)
-      self.user = user
+    def sign_in(identity)
+      self.identity = identity
     end
 
     def signed_in?
-      !user_or_authenticate.nil?
+      !identity_or_authenticate.nil?
     end
 
     def sign_out
-      @authenticated = false
-      self.user = nil
+      self.identity = nil
     end
-
-    private
-
-      attr_reader :request, :user
-
-      def user=(user)
-        unless user.nil?
-          raise ArgumentError, "user should be ActiveRecord::Base instance and presisted." unless user.is_a?(ActiveRecord::Base) && user.persisted?
-        end
-
-        @user = user
-      end
 
   end
 end
