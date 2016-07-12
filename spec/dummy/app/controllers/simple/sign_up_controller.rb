@@ -1,11 +1,11 @@
 class Simple::SignUpController < Simple::BaseController
 
   def new
-    @user = Simple::User.new
+    @user = User.new
   end
 
   def create
-    @user = Simple::User.new(user_params)
+    @user = User.new(user_params)
 
     if @user.save
       user_auth.sign_in(@user)

@@ -17,7 +17,7 @@ module Dummy
       end
     end
 
-    def group(method, tag = :div, **options)
+    def field_group(method, tag = :div, **options)
       if @object.errors.include?(method)
         error_class = 'has-error'
         case options[:class]

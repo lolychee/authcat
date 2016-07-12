@@ -3,11 +3,11 @@ class Simple::SessionsController < Simple::BaseController
   # before_action :authenticate_user!
 
   def new
-    @user = Simple::User.new
+    @user = User.new
   end
 
   def create
-    @user = Simple::User.new(session_params)
+    @user = User.new(session_params)
 
     if @user.validate(:sign_in)
       user_auth.sign_in(@user)

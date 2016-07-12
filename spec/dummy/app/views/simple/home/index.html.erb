@@ -1,8 +1,18 @@
-<div><%= render 'partials/status' %></div>
+<div class="main-page">
+  <% if user_signed_in? %>
 
-<% if user_signed_in? %>
-  <div><%= current_user.to_json %></div>
-  <%= button_to 'Sign Out', simple_sign_out_path, method: :delete %>
-<% else %>
-  <%= link_to 'Sign In', simple_sign_in_path %>
-<% end %>
+    <table class="pure-table">
+      <thead>
+        <tr><th colspan="2">Current User</th></tr>
+      </thead>
+      <% current_user.attributes.each do |key, value| %>
+        <tr><td><%= key %></td><td><%= value %></td></tr>
+      <% end %>
+    </table>
+
+  <% else %>
+
+    <%= link_to 'Sign In', simple_sign_in_path %>
+
+  <% end %>
+</div>
