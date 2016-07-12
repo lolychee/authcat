@@ -1,4 +1,4 @@
-class Simple::SessionsController < Simple::BaseController
+class SessionsController < ApplicationController
 
   # before_action :authenticate_user!
 
@@ -13,7 +13,7 @@ class Simple::SessionsController < Simple::BaseController
       user_auth.sign_in(@user)
       flash[:success] = 'You have successfully signed in.'
 
-      redirect_to session.delete(:back_to) || simple_root_url
+      redirect_to session.delete(:back_to) || root_url
     else
       render :new
     end
@@ -23,7 +23,7 @@ class Simple::SessionsController < Simple::BaseController
     user_auth.sign_out
     flash[:info] = 'You have successfully signed out.'
 
-    redirect_to simple_root_url
+    redirect_to root_url
   end
 
   private

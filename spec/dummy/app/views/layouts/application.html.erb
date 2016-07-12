@@ -1,1 +1,5 @@
-<%= render(layout: 'layouts/barebone') { yield } %>
+<%= render layout: 'layouts/barebone', locals: {} do %>
+  <%= render partial: 'partials/nav' %>
+  <%= render partial: 'partials/flash_messages' %>
+  <%= yield %>
+<% end %>

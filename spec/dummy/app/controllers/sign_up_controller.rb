@@ -1,4 +1,4 @@
-class Simple::SignUpController < Simple::BaseController
+class SignUpController < ApplicationController
 
   def new
     @user = User.new
@@ -11,7 +11,7 @@ class Simple::SignUpController < Simple::BaseController
       user_auth.sign_in(@user)
       flash[:success] = 'Your account has been successfully created.'
 
-      redirect_to simple_root_url
+      redirect_to root_url
     else
       render :new
     end

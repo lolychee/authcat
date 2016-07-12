@@ -1,4 +1,4 @@
-class Simple::HomeController < Simple::BaseController
+class HomeController < ApplicationController
 
   before_action :authenticate_user!, only: :authenticated
 
