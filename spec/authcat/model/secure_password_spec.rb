@@ -17,7 +17,7 @@ describe Authcat::Model::SecurePassword do
   end
 
   let(:password) { 'password' }
-  let(:user) { user_class.create(email: 'someone@example.com', password: password) }
+  let(:user) { user_class.create(email: 'someone@example.com', name: 'someone', password: password) }
 
   describe '.password_attribute' do
     # it '生成 #password_digest' do

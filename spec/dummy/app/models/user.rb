@@ -24,7 +24,10 @@ class User < ApplicationRecord
     validates :password, presence: true, verify_password: :password_digest
   end
 
-  before_create {|user| user.write_password(:password_digest, user.password) }
+  before_create do |user|
+    user.write_password(:password_digest, user.password)
+    user.name = SecureRandom.base58
+  end
 
   def remember_me=(value)
     @remember_me = value.is_a?(String) ? value == '1' : value

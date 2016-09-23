@@ -19,7 +19,7 @@ describe Authcat::Model::Validators::RecordFoundValidator do
 
   context 'record exists' do
     # 时间存入SQLite数据库会丢失精度，reload来同步
-    let(:someone) { user_class.create(email: 'someone@example.com', password: 'password').reload }
+    let(:someone) { user_class.create(email: 'someone@example.com', name: 'someone', password: 'password').reload }
 
     it 'replace @attributes' do
       user = user_class.new(email: someone.email)
