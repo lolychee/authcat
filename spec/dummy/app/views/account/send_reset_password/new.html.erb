@@ -1,0 +1,15 @@
+<%= form_for @user, as: :send_reset_password, url: account_send_reset_password_path, method: :post, html: {class: 'pure-form pure-form-stacked page-block account-send-reset-password-form' }, builder: Dummy::FormBuilder do |f| %>
+  <%= field_set_tag 'Select reset password method' do %>
+
+    <%= f.field_group :method, class: 'pure-control-group' do %>
+      <%= label_tag do %>
+        <%= f.radio_button :method, :email %> Email a link to <%= @user.masked_email %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+
+  <div class="pure-controls">
+    <%= f.button 'Send', type: :submit, class: 'pure-button pure-button-primary' %>
+  </div>
+<% end %>
