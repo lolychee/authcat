@@ -26,7 +26,6 @@ class User < ApplicationRecord
 
   before_create do |user|
     user.write_password(:password_digest, user.password)
-    user.name = SecureRandom.base58
   end
 
   def remember_me=(value)
