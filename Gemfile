@@ -15,10 +15,12 @@ gemspec
 #
 # gem 'pure-css-rails'
 
+gem 'pry'
+
 group :test do
   gem 'rspec', '~> 3.5'
   gem 'database_cleaner', '~> 1.5'
 end
 
-ENV['GEM_DEV'] = 'true'
-eval_gemfile File.expand_path('spec/dummy/Gemfile', __dir__)
+dummy_gemfile = File.expand_path('spec/dummy/Gemfile', __dir__)
+eval_gemfile dummy_gemfile, File.read(dummy_gemfile).gsub(/(source|gem \'authcat\').*\n/, '')

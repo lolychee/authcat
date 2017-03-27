@@ -1,7 +1,6 @@
-unless ENV['GEM_DEV']
-  source 'https://rubygems.org'
-  gem 'authcat', path: '../../'
-end
+source 'https://rubygems.org'
+
+gem 'authcat', path: '../../'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
