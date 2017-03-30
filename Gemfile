@@ -20,6 +20,8 @@ gem 'pry'
 group :test do
   gem 'rspec', '~> 3.5'
   gem 'database_cleaner', '~> 1.5'
+
+  gem 'codecov', require: false
 end
 
 dummy_gemfile = File.expand_path('spec/dummy/Gemfile', __dir__)
