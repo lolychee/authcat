@@ -37,12 +37,12 @@ describe Authcat::Password::Base do
   end
 
   describe '#initialize' do
-    context 'when gevin a digest password' do
+    context 'when given a digest password' do
       it do
         expect(password_class.new(password_digest)).to be_is_a(password_class)
       end
     end
-    context 'when gevin a nil' do
+    context 'when given a nil' do
       it do
         expect(password_class.new(nil)).to be_is_a(password_class)
       end
@@ -50,7 +50,7 @@ describe Authcat::Password::Base do
   end
 
   describe '#replace' do
-    context 'when gevin a digest password' do
+    context 'when given a digest password' do
       it do
         expect{
           password.replace('=edcba')

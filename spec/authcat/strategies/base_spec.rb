@@ -46,13 +46,13 @@ describe Authcat::Strategies::Base do
   describe '#save_user'
 
   describe '#parse_credential' do
-    context 'when gevin a valid credential' do
+    context 'when given a valid credential' do
       it 'return Authcat::Credentials::GlobalID instance' do
         expect(subject.parse_credential(global_id)).to be_is_a(Authcat::Credentials::GlobalID)
       end
     end
 
-    context 'when gevin a invalid credential' do
+    context 'when given a invalid credential' do
       it 'raise Authcat::Credentials::InvalidCredential' do
         expect{
           subject.parse_credential('invalid credential')
@@ -62,13 +62,13 @@ describe Authcat::Strategies::Base do
   end
 
   describe '#create_credential' do
-    context 'when gevin a identity' do
+    context 'when given a identity' do
       it 'return Authcat::Credentials::GlobalID instance' do
         expect(subject.create_credential(identity)).to be_is_a(Authcat::Credentials::GlobalID)
       end
     end
 
-    context 'when gevin a nil' do
+    context 'when given a nil' do
       it 'raise ArgumentError' do
         expect{
           subject.create_credential(nil)

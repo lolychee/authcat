@@ -3,7 +3,7 @@ module Authcat
     class Base < String
     include Support::Configurable
 
-    module ClassMethods
+      module ClassMethods
         def [](**options)
           Class.new(self) do configure(**options); end
         end

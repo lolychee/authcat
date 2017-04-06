@@ -40,7 +40,7 @@ describe Authcat::Strategies::Cookies do
   end
 
   describe '#sign_in' do
-    context 'when gevin a identity' do
+    context 'when given a identity' do
       it 'cookies[key] equal credential' do
         expect {
           subject.sign_in(identity)
@@ -50,7 +50,7 @@ describe Authcat::Strategies::Cookies do
   end
 
   describe '#sign_out' do
-    context 'when gevin a nil' do
+    context 'when given a nil' do
       it 'delete cookies[key]' do
         request.cookie_jar[key] = 'token'
         expect{

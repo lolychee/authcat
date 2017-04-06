@@ -40,7 +40,7 @@ describe Authcat::Strategies::Session do
   end
 
   describe '#sign_in' do
-    context 'when gevin a user' do
+    context 'when given a user' do
       it 'session[key] equal credential' do
         expect {
           subject.sign_in(identity)
@@ -50,7 +50,7 @@ describe Authcat::Strategies::Session do
   end
 
   describe '#sign_out' do
-    context 'when gevin a nil' do
+    context 'when given a nil' do
       it 'delete session[key]' do
         request.session[key] = 'token'
         expect{

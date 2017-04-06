@@ -9,13 +9,13 @@ describe Authcat::Credentials::GlobalID do
   subject { described_class.new(global_id) }
 
   describe '.create' do
-    context 'when gevin a user' do
+    context 'when given a user' do
       it 'should be a credential' do
         expect(described_class.create(user)).to eq global_id
       end
     end
 
-    context 'when gevin a nil' do
+    context 'when given a nil' do
       it 'should be a credential' do
         expect{
           described_class.create(nil)
@@ -25,13 +25,13 @@ describe Authcat::Credentials::GlobalID do
   end
 
   describe '.valid?' do
-    context 'when gevin a valid credential' do
+    context 'when given a valid credential' do
       it 'should be true' do
         expect(described_class.valid?(global_id)).to eq true
       end
     end
 
-    context 'when gevin an invalid credential' do
+    context 'when given an invalid credential' do
       it 'should be false' do
         expect(described_class.valid?('invalid credential')).to eq false
       end

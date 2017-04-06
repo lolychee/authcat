@@ -11,7 +11,7 @@ describe Authcat::Authentication do
   subject { controller_class.new }
 
   describe '.authcat' do
-    context 'when gevin a :user' do
+    context 'when given a :user' do
       before(:example) { controller_class.authcat :user }
 
       it 'respond to #user_auth' do
