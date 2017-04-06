@@ -8,18 +8,18 @@ describe Authcat::Credentials::GlobalID do
 
   subject { described_class.new(global_id) }
 
-  describe '.create' do
+  describe '#update' do
     context 'when given a user' do
       it 'should be a credential' do
-        expect(described_class.create(user)).to eq global_id
+        expect(subject.update(user).to_s).to eq global_id
       end
     end
 
     context 'when given a nil' do
       it 'should be a credential' do
         expect{
-          described_class.create(nil)
-        }.to raise_error(ArgumentError)
+          subject.update(nil)
+        }.to raise_error(Authcat::Credentials::InvalidIdentityError)
       end
     end
   end

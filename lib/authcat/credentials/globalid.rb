@@ -1,12 +1,6 @@
 module Authcat
   module Credentials
-    class GlobalID < Base
-
-      def self.create(identity, params: {}, **options)
-        raise ArgumentError, "identity should be ActiveRecord::Base instance." unless identity.is_a?(ActiveRecord::Base)
-
-        new(::GlobalID.create(identity, params), **options)
-      end
+    class GlobalID < Abstract
 
       def self.valid?(credential)
         !::GlobalID.parse(credential).nil?
@@ -15,17 +9,26 @@ module Authcat
       attr_reader :global_id
       delegate :app, :model_name, :model_id, :params, to: :global_id
 
-      def replace(credential)
-        @global_id = credential.is_a?(::GlobalID) ? credential : ::GlobalID.parse(credential)
-
-        super(@global_id.to_s)
+      def _update(identity)
+        @global_id = ::GlobalID.create(identity)
+        @raw_data = global_id.to_s
       end
 
       def find
-        @global_id.find
+        global_id.find
       rescue ActiveRecord::RecordNotFound
         nil
       end
+
+      private
+
+        def global_id
+          @global_id ||= ::GlobalID.parse(raw_data)
+        end
+
+        def valid_identity?(identity)
+          identity.class < ActiveRecord::Base
+        end
     end
   end
 end
