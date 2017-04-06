@@ -5,7 +5,6 @@ module Authcat
     extend Support::Registrable
 
     autoload :Abstract
-    autoload :Base
     autoload :GlobalID, 'authcat/credentials/globalid'
 
     register :globalid, :GlobalID
