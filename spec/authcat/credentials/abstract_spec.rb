@@ -45,7 +45,7 @@ describe Authcat::Credentials::Abstract do
       it 'should raise InvalidCredential' do
         expect {
           credential_class.new('invalid credential')
-        }.to raise_error(Authcat::Credentials::InvalidCredentialError)
+        }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
 

@@ -16,11 +16,10 @@ module Authcat
   autoload :Model
   autoload :Password
 
+  autoload :Errors
   autoload :Support
 
   autoload :Authentication
-
-  autoload :IdentityNotFound
 
   eager_autoload do
     autoload :Railtie

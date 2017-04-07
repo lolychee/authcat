@@ -53,10 +53,10 @@ describe Authcat::Strategies::Base do
     end
 
     context 'when given a invalid credential' do
-      it 'raise Authcat::Credentials::InvalidCredential' do
+      it 'raise Authcat::Errors::InvalidCredential' do
         expect{
           subject.parse_credential('invalid credential')
-        }.to raise_error(Authcat::Credentials::InvalidCredential)
+        }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
   end

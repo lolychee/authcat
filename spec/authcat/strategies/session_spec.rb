@@ -18,7 +18,7 @@ describe Authcat::Strategies::Session do
         request.session[key] = nil
         expect {
           subject.authenticate
-        }.to raise_error(Authcat::Credentials::InvalidCredential)
+        }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
 
@@ -30,11 +30,11 @@ describe Authcat::Strategies::Session do
     end
 
     context 'when session[key] is invalid' do
-      it 'should raise Authcat::Credentials::InvalidCredential' do
+      it 'should raise Authcat::Errors::InvalidCredential' do
         request.session[key] = 'invalid value'
         expect {
           subject.authenticate
-        }.to raise_error(Authcat::Credentials::InvalidCredential)
+        }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
   end

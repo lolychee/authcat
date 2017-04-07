@@ -17,7 +17,7 @@ describe Authcat::Strategies::Cookies do
         request.cookie_jar[key] = nil
         expect {
           subject.authenticate
-        }.to raise_error(Authcat::Credentials::InvalidCredential)
+        }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
 
@@ -30,11 +30,11 @@ describe Authcat::Strategies::Cookies do
     end
 
     context 'when cookies[key] is invalid' do
-      it 'should raise Authcat::Credentials::InvalidCredential' do
+      it 'should raise Authcat::Errors::InvalidCredential' do
         request.cookie_jar[key] = 'invalid value'
         expect {
           subject.authenticate
-        }.to raise_error(Authcat::Credentials::InvalidCredential)
+        }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
   end

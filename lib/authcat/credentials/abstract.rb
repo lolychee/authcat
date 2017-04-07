@@ -45,11 +45,11 @@ module Authcat
         end
 
         def raise_invalid_credential_error
-          raise InvalidCredentialError
+          raise Errors::InvalidCredential
         end
 
         def raise_invalid_identity_error
-          raise InvalidIdentityError
+          raise Errors::InvalidIdentity
         end
 
     end
