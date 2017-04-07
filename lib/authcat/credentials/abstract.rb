@@ -54,10 +54,5 @@ module Authcat
 
     end
 
-    class Error < StandardError; end
-
-    class InvalidCredentialError < Error; end
-    class InvalidIdentityError   < Error; end
-
   end
 end
