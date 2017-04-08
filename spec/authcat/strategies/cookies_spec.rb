@@ -7,25 +7,26 @@ describe Authcat::Strategies::Cookies do
 
   let(:request) { auth.request }
 
-  let(:key) { :remember_token }
+  let(:key) { :token }
 
-  subject { described_class.new(auth, key: key) }
+  let(:credential) { credential_class.create(identity) }
 
-  describe '#authenticate' do
+  let(:credential_class) { Authcat::Credentials::GlobalID }
+
+  subject { described_class.new(auth, key: key, credential: credential_class) }
+
+  describe '#read' do
     context 'when cookies[key] is nil' do
       it 'should be nil' do
-        request.cookie_jar[key] = nil
-        expect {
-          subject.authenticate
-        }.to raise_error(Authcat::Errors::InvalidCredential)
+        expect(subject.read).to eq nil
       end
     end
 
     context 'when cookies[key] is valid' do
       it 'should be a identity' do
-        request.cookie_jar[key] = subject.create_credential(identity).to_s
+        request.cookie_jar[key] = credential.to_s
         subject.encrypted = false
-        expect(subject.authenticate).to eq identity
+        expect(subject.read).to be_a(Authcat::Credentials::Abstract)
       end
     end
 
@@ -33,28 +34,28 @@ describe Authcat::Strategies::Cookies do
       it 'should raise Authcat::Errors::InvalidCredential' do
         request.cookie_jar[key] = 'invalid value'
         expect {
-          subject.authenticate
+          subject.read
         }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
   end
 
-  describe '#sign_in' do
+  describe '#write' do
     context 'when given a identity' do
       it 'cookies[key] equal credential' do
         expect {
-          subject.sign_in(identity)
+          subject.write(credential)
         }.to change { request.cookie_jar[key] }
       end
     end
   end
 
-  describe '#sign_out' do
+  describe '#clear' do
     context 'when given a nil' do
       it 'delete cookies[key]' do
         request.cookie_jar[key] = 'token'
         expect{
-          subject.sign_out
+          subject.clear
         }.to change { request.cookie_jar.key?(key) }.to(false)
       end
     end
@@ -86,13 +87,13 @@ describe Authcat::Strategies::Cookies do
   end
 
   describe '#exists?' do
-    context 'when cookies[key] is blank' do
+    context 'when cookies[key] is nil' do
       it 'should be false' do
         expect(subject).not_to be_exists
       end
     end
 
-    context 'when cookies[key] is not blank' do
+    context 'when cookies[key] is not nil' do
       it 'should be true' do
         request.cookie_jar[key] = 'token'
         expect(subject).to be_present

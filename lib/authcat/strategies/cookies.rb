@@ -1,6 +1,6 @@
 module Authcat
   module Strategies
-    class Cookies < Base
+    class Cookies < Abstract
       option :key, required: true
 
       option :permanent, false
@@ -15,38 +15,34 @@ module Authcat
       option :expires_at, nil
       option :expires_in, nil
 
-      def credential
-        super { parse_credential(cookies[key]) }
+      def _read
+        credential_class.parse(cookies[key])
       end
 
-      def credential=(credential)
+      def _write(credential)
         cookies[key] = cookies_options.merge(value: credential.to_s)
-        super
       end
 
-      def clear
+      def _clear
         request.cookie_jar.delete(key)
-        super
       end
 
       def cookies
-        @cookies ||= config.slice(:permanent, :signed, :encrypted).select {|_, v| v }.keys \
+        config.slice(:permanent, :signed, :encrypted).select {|_, v| v }.keys \
           .reduce(request.cookie_jar) {|cookies, method_name| cookies.send(method_name) }
       end
 
       def cookies_options
-        @cookies_options ||= begin
-          opts = config.slice(:domain, :path, :secure, :httponly)
-          if expires_at
-            expires = expires_at.respond_to?(:call) ? expires_at.(auth.identity) : expires_at
-            opts[:expires] = expires
-          elsif expires_in
-            expires = expires_in.respond_to?(:call) ? expires_in.(auth.identity) : expires_in
-            expires = expires.from_now  if expires.is_a?(ActiveSupport::Duration)
-            opts[:expires] = expires
-          end
-          opts
+        opts = config.slice(:domain, :path, :secure, :httponly)
+        if expires_at
+          expires = expires_at.respond_to?(:call) ? expires_at.(auth.identity) : expires_at
+          opts[:expires] = expires
+        elsif expires_in
+          expires = expires_in.respond_to?(:call) ? expires_in.(auth.identity) : expires_in
+          expires = expires.from_now  if expires.is_a?(ActiveSupport::Duration)
+          opts[:expires] = expires
         end
+        opts
       end
 
       def exists?
