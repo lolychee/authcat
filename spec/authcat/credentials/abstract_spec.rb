@@ -41,14 +41,6 @@ describe Authcat::Credentials::Abstract do
   end
 
   describe '#initialize' do
-    context 'when given an invalid credential' do
-      it 'should raise InvalidCredential' do
-        expect {
-          credential_class.new('invalid credential')
-        }.to raise_error(Authcat::Errors::InvalidCredential)
-      end
-    end
-
     context 'when given a valid credential' do
       it 'should replace with valid credential' do
         expect(credential_class.new('User:1').to_s).to eq 'User:1'

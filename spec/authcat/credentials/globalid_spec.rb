@@ -19,7 +19,7 @@ describe Authcat::Credentials::GlobalID do
       it 'should be a credential' do
         expect{
           subject.update(nil)
-        }.to raise_error(Authcat::Credentials::InvalidIdentityError)
+        }.to raise_error(Authcat::Errors::InvalidIdentity)
       end
     end
   end
