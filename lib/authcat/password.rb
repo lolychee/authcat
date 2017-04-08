@@ -18,7 +18,7 @@ module Authcat
     def self.secure_compare(a, b)
       return false unless a.bytesize == b.bytesize
 
-      a.each_byte.zip(b.each_byte).reduce(0) {|num, bytes| num |= bytes[0] ^ bytes[1] }.zero?
+      a.each_byte.zip(b.each_byte).lazy.map {|a, b| a ^ b }.reduce(:|).zero?
     end
 
   end
