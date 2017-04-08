@@ -10,22 +10,24 @@ describe Authcat::Strategies::Session do
 
   let(:key) { :remember_token }
 
-  subject { described_class.new(auth, key: key) }
+  let(:credential) { credential_class.create(identity) }
 
-  describe '#authenticate' do
+  let(:credential_class) { Authcat::Credentials::GlobalID }
+
+  subject { described_class.new(auth, key: key, credential: credential_class) }
+
+  describe '#read' do
     context 'when session[key] is nil' do
-      it 'should be nil' do
+      it 'should eq nil' do
         request.session[key] = nil
-        expect {
-          subject.authenticate
-        }.to raise_error(Authcat::Errors::InvalidCredential)
+        expect(subject.read).to eq nil
       end
     end
 
     context 'when session[key] is valid' do
       it 'should be a identity' do
-        request.session[key] = subject.create_credential(identity).to_s
-        expect(subject.authenticate).to eq identity
+        request.session[key] = credential.to_s
+        expect(subject.read).to be_a(Authcat::Credentials::Abstract)
       end
     end
 
@@ -33,28 +35,28 @@ describe Authcat::Strategies::Session do
       it 'should raise Authcat::Errors::InvalidCredential' do
         request.session[key] = 'invalid value'
         expect {
-          subject.authenticate
+          subject.read
         }.to raise_error(Authcat::Errors::InvalidCredential)
       end
     end
   end
 
-  describe '#sign_in' do
+  describe '#write' do
     context 'when given a user' do
       it 'session[key] equal credential' do
         expect {
-          subject.sign_in(identity)
+          subject.write(credential)
         }.to change { request.session[key] }
       end
     end
   end
 
-  describe '#sign_out' do
+  describe '#clear' do
     context 'when given a nil' do
       it 'delete session[key]' do
         request.session[key] = 'token'
         expect{
-          subject.sign_out
+          subject.clear
         }.to change { request.session.key?(key) }.to(false)
       end
     end

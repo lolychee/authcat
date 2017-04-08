@@ -1,21 +1,19 @@
 module Authcat
   module Strategies
-    class Session < Base
+    class Session < Abstract
 
       option :key, required: true
 
-      def credential
-        super { parse_credential(session[key]) }
+      def _read
+        credential_class.new(session[key])
       end
 
-      def credential=(credential)
+      def _write(credential)
         session[key] = credential.to_s
-        super
       end
 
-      def clear
+      def _clear
         session.delete(key)
-        super
       end
 
       def session
@@ -23,7 +21,7 @@ module Authcat
       end
 
       def exists?
-        session.key?(key)
+        !session[key].nil?
       end
 
       def readonly?

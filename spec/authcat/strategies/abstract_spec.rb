@@ -32,13 +32,15 @@ describe Authcat::Strategies::Abstract do
 
   let(:identity) { User.create(email: 'test@example.com', password: '123456') }
 
-  let(:credential) { subject.credential_class.create(identity) }
+  let(:credential) { credential_class.create(identity) }
+
+  let(:credential_class) { Authcat::Credentials::GlobalID }
 
   let(:auth) { Authcat::Authenticator.new(mock_request) }
 
   let(:request) { auth.request }
 
-  subject { strategy_class.new(auth, credential: Authcat::Credentials::GlobalID) }
+  subject { strategy_class.new(auth, credential: credential_class) }
 
   describe '#read' do
 
@@ -51,7 +53,7 @@ describe Authcat::Strategies::Abstract do
     end
 
     context 'when credential data does not exists' do
-      it 'should be credential' do
+      it 'should eq nil' do
         expect(subject.read).to eq nil
       end
     end
