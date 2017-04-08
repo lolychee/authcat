@@ -4,7 +4,7 @@ module Authcat
 
       include Support::Configurable
 
-      option :credential
+      option :using
 
       attr_reader :auth
       delegate :request, :identity, to: :auth
@@ -38,7 +38,7 @@ module Authcat
       end
 
       def credential_class
-        credential
+        using
       end
 
       private

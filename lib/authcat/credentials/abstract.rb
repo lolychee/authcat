@@ -7,6 +7,11 @@ module Authcat
           new.update(identity)
         end
 
+        def parse(raw_data)
+          raise Errors::InvalidCredential unless valid?(raw_data)
+          new(raw_data)
+        end
+
         def valid?(raw_data)
           raise NotImplementedError, '.valid? not implemented.'
         end
@@ -15,8 +20,11 @@ module Authcat
       attr_reader :raw_data
 
       def initialize(raw_data = nil)
-        raise_invalid_credential_error unless raw_data.nil? || self.class.valid?(raw_data)
         @raw_data = raw_data
+      end
+
+      def valid?
+        self.class.valid?(raw_data)
       end
 
       def update(identity)
@@ -42,10 +50,6 @@ module Authcat
 
         def valid_identity?(identity)
           true
-        end
-
-        def raise_invalid_credential_error
-          raise Errors::InvalidCredential
         end
 
         def raise_invalid_identity_error

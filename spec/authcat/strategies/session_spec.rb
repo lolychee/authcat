@@ -8,18 +8,17 @@ describe Authcat::Strategies::Session do
 
   let(:request) { auth.request }
 
-  let(:key) { :remember_token }
+  let(:key) { :token }
 
   let(:credential) { credential_class.create(identity) }
 
   let(:credential_class) { Authcat::Credentials::GlobalID }
 
-  subject { described_class.new(auth, key: key, credential: credential_class) }
+  subject { described_class.new(auth, key: key, using: credential_class) }
 
   describe '#read' do
     context 'when session[key] is nil' do
       it 'should eq nil' do
-        request.session[key] = nil
         expect(subject.read).to eq nil
       end
     end

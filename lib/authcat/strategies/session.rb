@@ -5,7 +5,7 @@ module Authcat
       option :key, required: true
 
       def _read
-        credential_class.new(session[key])
+        credential_class.parse(session[key])
       end
 
       def _write(credential)
@@ -21,7 +21,7 @@ module Authcat
       end
 
       def exists?
-        !session[key].nil?
+        session.key?(key)
       end
 
       def readonly?

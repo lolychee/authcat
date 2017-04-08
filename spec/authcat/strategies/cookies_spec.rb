@@ -13,7 +13,7 @@ describe Authcat::Strategies::Cookies do
 
   let(:credential_class) { Authcat::Credentials::GlobalID }
 
-  subject { described_class.new(auth, key: key, credential: credential_class) }
+  subject { described_class.new(auth, key: key, using: credential_class) }
 
   describe '#read' do
     context 'when cookies[key] is nil' do

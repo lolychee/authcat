@@ -40,7 +40,7 @@ describe Authcat::Strategies::Abstract do
 
   let(:request) { auth.request }
 
-  subject { strategy_class.new(auth, credential: credential_class) }
+  subject { strategy_class.new(auth, using: credential_class) }
 
   describe '#read' do
 
