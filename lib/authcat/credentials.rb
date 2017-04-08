@@ -1,28 +1,21 @@
 module Authcat
   module Credentials
     extend ActiveSupport::Autoload
-
-    extend Support::Registrable
+    extend ActiveSupport::Concern
 
     autoload :Abstract
     autoload :GlobalID, 'authcat/credentials/globalid'
 
+    extend Support::Registrable
+    has_registry reader: ->(value) { value.is_a?(Class) ? value : Authcat::Credentials.const_get(value) }
+
+    extend SingleForwardable
+    def_delegators :registry, :register, :lookup
+
     register :globalid, :GlobalID
 
-    def self.lookup(name)
-      super do |value|
-        value.is_a?(Class) ? value : const_get(value)
-      end
-    end
-
-    def self.create(type, identity, **options)
-      klass = lookup(type)
-      klass.create(identity, **options)
-    end
-
-    def self.parse(type, credential, **options)
-      klass = lookup(type)
-      klass.new(credential, **options)
+    included do
+      has_registry :credentials
     end
 
   end

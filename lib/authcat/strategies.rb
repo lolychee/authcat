@@ -3,28 +3,23 @@ module Authcat
     extend ActiveSupport::Autoload
     extend ActiveSupport::Concern
 
-    extend Support::Registrable
-
     autoload :Abstract
     autoload :Base
     autoload :Debug
     autoload :Session
     autoload :Cookies
 
+    extend Support::Registrable
+    has_registry reader: ->(value) { value.is_a?(Class) ? value : Authcat::Strategies.const_get(value) }
+
+    extend SingleForwardable
+    def_delegators :registry, :register, :lookup
+
     register :debug,    :Debug
     register :session,  :Session
     register :cookies,  :Cookies
 
-    def self.lookup(name)
-      super do |value|
-        value.is_a?(Class) ? value : const_get(value)
-      end
-    end
-
     module ClassMethods
-      def strategies
-        @strategies ||= []
-      end
 
       def use(name, if: nil, unless: nil, on: nil, **options, &block)
         strategy = name.is_a?(Class) ? name : Strategies.lookup(name)
@@ -34,18 +29,20 @@ module Authcat
     end
 
     included do
+      has_registry :strategies
+
       option :scope, :default
     end
 
-    def strategies(**options)
-      @strategies ||= self.class.strategies.map {|block| block.(self) }
-
-      list = @strategies.dup
-      options.each do |name, boolean|
-        list.send(boolean ? :select! : :reject!, &:"#{name}?")
-      end
-      list
-    end
+    # def strategies(**options)
+    #   @strategies ||= self.class.strategies.map {|block| block.(self) }
+    #
+    #   list = @strategies.dup
+    #   options.each do |name, boolean|
+    #     list.send(boolean ? :select! : :reject!, &:"#{name}?")
+    #   end
+    #   list
+    # end
 
     def authenticate
       strategies(exists: true).each do |strategy|
