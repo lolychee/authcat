@@ -39,12 +39,12 @@ describe Authcat::Password::Base do
   describe '#initialize' do
     context 'when given a digest password' do
       it do
-        expect(password_class.new(password_digest)).to be_is_a(password_class)
+        expect(password_class.new(password_digest)).to be_a(password_class)
       end
     end
     context 'when given a nil' do
       it do
-        expect(password_class.new(nil)).to be_is_a(password_class)
+        expect(password_class.new(nil)).to be_a(password_class)
       end
     end
   end

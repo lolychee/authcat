@@ -27,7 +27,7 @@ describe Authcat::Credentials::Abstract do
   describe '.create' do
     context 'when given a identity' do
       it 'should be a credential' do
-        expect(credential_class.create(identity)).to be_is_a(credential_class)
+        expect(credential_class.create(identity)).to be_a(credential_class)
       end
     end
   end

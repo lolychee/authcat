@@ -65,7 +65,7 @@ describe Authcat::Strategies::Cookies do
     context 'when encrypted: true' do
       it 'should be ActionDispatch::Cookies::EncryptedCookieJar instance' do
         subject.encrypted = true
-        expect(subject.cookies).to be_is_a(ActionDispatch::Cookies::EncryptedCookieJar)
+        expect(subject.cookies).to be_a(ActionDispatch::Cookies::EncryptedCookieJar)
       end
     end
 
@@ -73,7 +73,7 @@ describe Authcat::Strategies::Cookies do
       it 'should be ActionDispatch::Cookies::PermanentCookieJar instance' do
         subject.encrypted = false
         subject.signed = true
-        expect(subject.cookies).to be_is_a(ActionDispatch::Cookies::SignedCookieJar)
+        expect(subject.cookies).to be_a(ActionDispatch::Cookies::SignedCookieJar)
       end
     end
 
@@ -81,7 +81,7 @@ describe Authcat::Strategies::Cookies do
       it 'should be ActionDispatch::Cookies::PermanentCookieJar instance' do
         subject.encrypted = false
         subject.permanent = true
-        expect(subject.cookies).to be_is_a(ActionDispatch::Cookies::PermanentCookieJar)
+        expect(subject.cookies).to be_a(ActionDispatch::Cookies::PermanentCookieJar)
       end
     end
   end
