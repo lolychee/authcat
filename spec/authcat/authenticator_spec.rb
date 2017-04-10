@@ -4,8 +4,16 @@ describe Authcat::Authenticator do
 
   let!(:authenticator_class) do
     Class.new(Authcat::Authenticator) do
-      use :session, key: :auth_token
+      credential :globalid, default: true
+
+      strategy :session, key: :token
+      strategy :cookies, key: :token
+
+
     end
+    # Class.new(Authcat::Authenticator) do
+    #   use :session, key: :auth_token
+    # end
   end
 
   describe '#authenticate' do

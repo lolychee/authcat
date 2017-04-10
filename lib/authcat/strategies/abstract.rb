@@ -1,13 +1,15 @@
 module Authcat
   module Strategies
     class Abstract
+      extend Forwardable
 
       include Support::Configurable
+
+      def_delegators :auth, :request, :identity
 
       option :using
 
       attr_reader :auth
-      delegate :request, :identity, to: :auth
 
       def initialize(auth, **options)
         config.merge!(options)
@@ -18,10 +20,19 @@ module Authcat
         exists? ? _read : nil
       end
 
+      def read_identity
+        read.try(:find)
+      end
+
       def write(credential)
         raise_readonly_error if readonly?
         raise_invalid_credential_error unless valid_credential?(credential)
         _write(credential)
+      end
+
+      def write_identity(identity)
+        credential = credential_class.create(identity)
+        write(credential)
       end
 
       def clear

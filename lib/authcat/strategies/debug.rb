@@ -1,35 +1,25 @@
 module Authcat
   module Strategies
-    class Debug < Base
+    class Debug < Abstract
 
-      def authenticate
-        identity = credential.find
-        yield identity if identity && block_given?
+      def _read
+        @credential ||= config.fetch(:credential)
       end
 
-      def sign_in(identity = auth.identity)
-        self.credential = credential_class.create(identity = auth.identity)
+      def _write(credential)
+        @credential = credential
       end
 
-      def sign_out
-        self.credential = nil
-      end
-
-      def credential
-        credential = config[:credential]
-        credential.respond_to?(:call) ? credential.() : credential
-      end
-
-      def credential=(credential)
-        config[:credential] = credential
+      def _clear
+        @credential = nil
       end
 
       def exists?
-        config.key?(:credential)
+        !@credential.nil?
       end
 
       def readonly?
-        config.fetch(:readonly, super)
+        config.fetch(:readonly) { super }
       end
 
     end

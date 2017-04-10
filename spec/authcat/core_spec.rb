@@ -5,6 +5,8 @@ describe Authcat::Core do
   let!(:authenticator_class) do
     Class.new do
       include Authcat::Core
+
+      strategy :debug, readonly: false, using: Authcat::Credentials::GlobalID
     end
   end
 
@@ -20,12 +22,6 @@ describe Authcat::Core do
     it 'should be a identity' do
       subject.sign_in(identity)
       expect(subject.authenticate).to eq identity
-    end
-
-    it '#authenticated? be true' do
-      expect {
-        subject.authenticate
-      }.to change(subject, :authenticated?).to(true)
     end
   end
 

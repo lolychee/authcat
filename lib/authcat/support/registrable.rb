@@ -3,10 +3,7 @@ module Authcat
     module Registrable
 
       class Registry
-        extend Forwardable
         include Enumerable
-
-        def_delegators :@hash, :empty?, :key?, :each, :to_hash
 
         def initialize(*args, reader: nil, writer: nil, &block)
           @reader = reader
@@ -26,6 +23,14 @@ module Authcat
           @reader.respond_to?(:call) ? @reader.call(value) : value
         end
         alias_method :lookup, :[]
+
+        def method_missing(method_name, *args, &block)
+          if @hash.respond_to?(method_name)
+            @hash.send(method_name, *args, &block)
+          else
+            super
+          end
+        end
 
         class NotFound < StandardError; end
         class AlreadyExists < StandardError; end
