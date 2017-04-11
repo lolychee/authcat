@@ -8,7 +8,7 @@ services:
       - rubygems:/usr/local/bundle
     ports:
       - "3000:3000"
-    command: ['spec/dummy/bin/rails', 's', '-b', '0.0.0.0']
+    command: ['./entrypoint.sh', 's', '-b', '0.0.0.0']
     # environment:
     #   - GEM_SOURCE=https://rubygems.org
 
