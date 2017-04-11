@@ -20,7 +20,7 @@ module Authcat
       end
 
       def _write(credential)
-        cookies[key] = cookies_options.merge(value: credential.to_s)
+        cookies[key] = build_cookies_options(credential)
       end
 
       def _clear
@@ -32,16 +32,17 @@ module Authcat
           .reduce(request.cookie_jar) {|cookies, method_name| cookies.send(method_name) }
       end
 
-      def cookies_options
+      def build_cookies_options(credential)
         opts = config.slice(:domain, :path, :secure, :httponly)
         if expires_at
-          expires = expires_at.respond_to?(:call) ? expires_at.(auth.identity) : expires_at
+          expires = expires_at.respond_to?(:call) ? expires_at.(credential.identity) : expires_at
           opts[:expires] = expires
         elsif expires_in
-          expires = expires_in.respond_to?(:call) ? expires_in.(auth.identity) : expires_in
+          expires = expires_in.respond_to?(:call) ? expires_in.(credential.identity) : expires_in
           expires = expires.from_now  if expires.is_a?(ActiveSupport::Duration)
           opts[:expires] = expires
         end
+        opts[:value] = credential.to_s
         opts
       end
 

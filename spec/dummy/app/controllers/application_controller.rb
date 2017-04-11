@@ -3,9 +3,9 @@ class ApplicationController < ActionController::Base
 
   authcat :user
 
-  rescue_from(Authcat::IdentityNotFound, with: :error_unauthorized)
+  rescue_from(Authcat::Errors::IdentityNotFound, with: :render_error_unauthorized)
 
-  def error_unauthorized
+  def render_error_unauthorized
     if request.get?
       session[:back_to] = request.path
       flash[:warning] = 'You need to sign in or sign up.'

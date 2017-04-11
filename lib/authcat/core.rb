@@ -8,11 +8,15 @@ module Authcat
       def credential(name, klass = nil, **options, &block)
         klass ||= Credentials.lookup(name)
 
+        credentials[:default] = klass if options[:default]
+
         credentials[name] = klass
       end
 
       def strategy(name, klass = nil, if: nil, unless: nil, on: nil, **options, &block)
         klass ||= Strategies.lookup(name)
+
+        options[:using] ||= credentials[:default]
 
         strategies[name] = ->(auth) { klass.new(auth, **options, &block) }
       end
@@ -45,6 +49,10 @@ module Authcat
         end
       end
       nil
+    end
+
+    def authenticate!
+      authenticate || raise(Errors::IdentityNotFound)
     end
 
     def sign_in(identity)

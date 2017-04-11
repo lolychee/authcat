@@ -14,7 +14,7 @@ module Authcat
         @raw_data = global_id.to_s
       end
 
-      def find
+      def _find
         global_id.find
       rescue ActiveRecord::RecordNotFound
         nil

@@ -17,7 +17,7 @@ module Authcat
         end
       end
 
-      attr_reader :raw_data
+      attr_reader :raw_data, :identity
 
       def initialize(raw_data = nil)
         @raw_data = raw_data
@@ -30,11 +30,12 @@ module Authcat
       def update(identity)
         raise_invalid_identity_error unless valid_identity?(identity)
         _update(identity)
+        @identity = identity
         self
       end
 
       def find
-        raise NotImplementedError, '#find not implemented.'
+        @identity = _find
       end
 
       def to_s
@@ -46,6 +47,10 @@ module Authcat
 
         def _update(identity)
           raise NotImplementedError, '#_update not implemented.'
+        end
+
+        def _find
+          raise NotImplementedError, '#_find not implemented.'
         end
 
         def valid_identity?(identity)
