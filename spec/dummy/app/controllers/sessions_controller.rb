@@ -10,20 +10,18 @@ class SessionsController < ApplicationController
     @user = User.new(session_params)
 
     if @user.validate(:sign_in)
-      user_auth.sign_in(@user)
-      flash[:success] = 'You have successfully signed in.'
+      authenticator.sign_in(@user)
 
-      redirect_to session.delete(:back_to) || root_url
+      redirect_to session.delete(:back_to) || root_url, flash: { success: 'You have successfully signed in.' }
     else
       render :new
     end
   end
 
   def destroy
-    user_auth.sign_out
-    flash[:info] = 'You have successfully signed out.'
+    authenticator.sign_out
 
-    redirect_to root_url
+    redirect_to root_url, flash: { info: 'You have successfully signed out.' }
   end
 
   private

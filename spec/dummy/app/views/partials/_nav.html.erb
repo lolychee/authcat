@@ -4,7 +4,7 @@
         <li class="pure-menu-item"><a href="<%= authenticated_path %>" class="pure-menu-link">Authenticate Page</a></li>
     </ul>
     <ul class="pure-menu-list session-menu">
-      <% if user_signed_in? %>
+      <% if signed_in? %>
         <li class="pure-menu-item"><%= current_user.email %></li>
         <li class="pure-menu-item"><%= button_to 'Sign Out', sign_out_path, method: :delete, class: 'pure-menu-link' %></li>
       <% else %>
