@@ -1,5 +1,4 @@
 class Account::ForgetPasswordController < ApplicationController
-
   def new
     @user = User.new
   end
@@ -20,5 +19,4 @@ class Account::ForgetPasswordController < ApplicationController
     def forget_password_params
       params.require(:forget_password).permit(:email)
     end
-
 end

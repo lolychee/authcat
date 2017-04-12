@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Simple::Users", type: :request do
   describe "GET /simple_users" do

@@ -1,29 +1,29 @@
-<%= form_for @user, as: :password, url: account_password_path, method: :patch, html: {class: 'pure-form pure-form-stacked account-password-form' }, builder: Dummy::FormBuilder do |f| %>
-  <%= field_set_tag 'Password' do %>
+<%= form_for @user, as: :password, url: account_password_path, method: :patch, html: {class: "pure-form pure-form-stacked account-password-form" }, builder: Dummy::FormBuilder do |f| %>
+  <%= field_set_tag "Password" do %>
 
-    <%= render partial: 'partials/flash_messages', locals: { flash: flash.select {|k, _| k.start_with?('account_password_form') } } %>
+    <%= render partial: "partials/flash_messages", locals: { flash: flash.select { |k, _| k.start_with?("account_password_form") } } %>
 
-    <%= f.field_group :old_password, class: 'pure-control-group' do %>
+    <%= f.field_group :old_password, class: "pure-control-group" do %>
       <%= f.label :old_password %>
-      <%= f.password_field :old_password, class: 'pure-input-1' %>
+      <%= f.password_field :old_password, class: "pure-input-1" %>
       <%= f.error_messages :old_password %>
     <% end %>
 
-    <%= f.field_group :password, class: 'pure-control-group' do %>
+    <%= f.field_group :password, class: "pure-control-group" do %>
       <%= f.label :password %>
-      <%= f.password_field :password, class: 'pure-input-1' %>
+      <%= f.password_field :password, class: "pure-input-1" %>
       <%= f.error_messages :password %>
     <% end %>
 
-    <%= f.field_group :password_confirmation, class: 'pure-control-group' do %>
+    <%= f.field_group :password_confirmation, class: "pure-control-group" do %>
       <%= f.label :password_confirmation %>
-      <%= f.password_field :password_confirmation, class: 'pure-input-1' %>
+      <%= f.password_field :password_confirmation, class: "pure-input-1" %>
       <%= f.error_messages :password_confirmation %>
     <% end %>
 
   <% end %>
 
   <div class="pure-controls">
-    <%= f.button 'Change', type: :submit, class: 'pure-button pure-button-primary' %>
+    <%= f.button "Change", type: :submit, class: "pure-button pure-button-primary" %>
   </div>
 <% end %>

@@ -9,9 +9,9 @@ class ApplicationController < ActionController::Base
     if request.get?
       session[:back_to] = request.path
 
-      redirect_to sign_in_path, flash: { warning: 'You need to sign in or sign up.' }
+      redirect_to sign_in_path, flash: { warning: "You need to sign in or sign up." }
     else
-      render text: '401 Unauthorized', status: :unauthorized
+      render text: "401 Unauthorized", status: :unauthorized
     end
   end
 end

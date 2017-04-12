@@ -1,19 +1,19 @@
-<%= form_for(@user, as: :user, url: sign_up_path, method: :post, html: { class: 'pure-form pure-form-aligned sign-up-form' }, builder: Dummy::FormBuilder) do |f| %>
+<%= form_for(@user, as: :user, url: sign_up_path, method: :post, html: { class: "pure-form pure-form-aligned sign-up-form" }, builder: Dummy::FormBuilder) do |f| %>
 
-  <%= field_set_tag 'Sign Up' do %>
-    <%= f.field_group :email, class: 'pure-control-group' do %>
+  <%= field_set_tag "Sign Up" do %>
+    <%= f.field_group :email, class: "pure-control-group" do %>
       <%= f.label :email %>
-      <%= f.text_field :email, placeholder: 'Email' %>
+      <%= f.text_field :email, placeholder: "Email" %>
       <%= f.error_messages :email %>
     <% end %>
 
-    <%= f.field_group :password, class: 'pure-control-group' do %>
+    <%= f.field_group :password, class: "pure-control-group" do %>
       <%= f.label :password %>
-      <%= f.password_field :password, placeholder: 'Password' %>
+      <%= f.password_field :password, placeholder: "Password" %>
       <%= f.error_messages :password %>
     <% end %>
   <% end %>
   <div class="pure-controls">
-    <%= f.button 'Sign Up', type: :submit, class: 'pure-button pure-button-primary' %>
+    <%= f.button "Sign Up", type: :submit, class: "pure-button pure-button-primary" %>
   </div>
 <% end %>

@@ -1,15 +1,15 @@
-<%= render layout: 'layouts/barebone', locals: {} do %>
-  <%= render partial: 'partials/header' %>
+<%= render layout: "layouts/barebone", locals: {} do %>
+  <%= render partial: "partials/header" %>
   <div class="pure-g container">
     <div class="pure-u-1-4">
       <div class="pure-menu account-menu">
         <span class="pure-menu-heading">Account</span>
 
         <ul class="pure-menu-list">
-          <li class="pure-menu-item <%= 'pure-menu-selected' if current_page?(account_profile_path) %>">
+          <li class="pure-menu-item <%= "pure-menu-selected" if current_page?(account_profile_path) %>">
             <a href="<%= account_profile_path %>" class="pure-menu-link">Profile</a>
           </li>
-          <li class="pure-menu-item <%= 'pure-menu-selected' if current_page?(account_password_path) %>">
+          <li class="pure-menu-item <%= "pure-menu-selected" if current_page?(account_password_path) %>">
             <a href="<%= account_password_path %>" class="pure-menu-link">Password</a>
           </li>
         </ul>

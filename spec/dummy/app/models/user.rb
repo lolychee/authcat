@@ -12,7 +12,7 @@ class User < ApplicationRecord
   end
 
   with_options on: :create do
-    validates :password, presence: true, length: { minimum:6, maximum: 72 }
+    validates :password, presence: true, length: { minimum: 6, maximum: 72 }
   end
 
   with_options on: :update do
@@ -29,7 +29,6 @@ class User < ApplicationRecord
   end
 
   def remember_me=(value)
-    @remember_me = value.is_a?(String) ? value == '1' : value
+    @remember_me = value.is_a?(String) ? value == "1" : value
   end
-
 end

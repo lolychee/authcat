@@ -1,5 +1,4 @@
 class SignUpController < ApplicationController
-
   def new
     @user = User.new
   end
@@ -9,7 +8,7 @@ class SignUpController < ApplicationController
 
     if @user.save
       authenticator.sign_in(@user)
-      flash[:success] = 'Your account has been successfully created.'
+      flash[:success] = "Your account has been successfully created."
 
       redirect_to root_url
     else
@@ -22,5 +21,4 @@ class SignUpController < ApplicationController
     def user_params
       params.require(:user).permit(:email, :password)
     end
-
 end

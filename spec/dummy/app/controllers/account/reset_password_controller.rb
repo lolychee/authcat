@@ -1,5 +1,4 @@
 class Account::ResetPasswordController < ApplicationController
-
   def new
   end
 
@@ -7,7 +6,7 @@ class Account::ResetPasswordController < ApplicationController
     @user.attributes = reset_password_params
 
     if @user.reset_password
-      flash['header.success'] = ''
+      flash["header.success"] = ""
       redirect_to sign_in_path
     else
       render :new
@@ -21,7 +20,5 @@ class Account::ResetPasswordController < ApplicationController
     end
 
     def set_user
-
     end
-
 end

@@ -1,22 +1,22 @@
-<%= form_for(@user, as: :session, url: sign_in_path, method: :post, html: { class: 'pure-form pure-form-stacked sign-in-form' }, builder: Dummy::FormBuilder) do |f| %>
+<%= form_for(@user, as: :session, url: sign_in_path, method: :post, html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder) do |f| %>
 
-  <%= field_set_tag 'Sign In' do %>
-    <%= f.field_group :email, class: 'pure-control-group' do %>
+  <%= field_set_tag "Sign In" do %>
+    <%= f.field_group :email, class: "pure-control-group" do %>
       <%= f.label :email %>
-      <%= f.text_field :email, placeholder: 'Email', class: 'pure-input-1' %>
+      <%= f.text_field :email, placeholder: "Email", class: "pure-input-1" %>
       <%= f.error_messages :email %>
     <% end %>
 
-    <%= f.field_group :password, class: 'pure-control-group' do %>
+    <%= f.field_group :password, class: "pure-control-group" do %>
       <%= f.label :password %>
-      <%= f.password_field :password, placeholder: 'Password', class: 'pure-input-1' %>
+      <%= f.password_field :password, placeholder: "Password", class: "pure-input-1" %>
       <%= f.error_messages :password %>
     <% end %>
 
-    <%= f.label :remember_me, class: 'pure-checkbox' do %>
+    <%= f.label :remember_me, class: "pure-checkbox" do %>
       <%= f.check_box :remember_me %> remember me
     <% end %>
   <% end %>
 
-  <%= f.button 'Sign In', type: :submit, class: 'pure-button pure-input-1 pure-button-primary' %>
+  <%= f.button "Sign In", type: :submit, class: "pure-button pure-input-1 pure-button-primary" %>
 <% end %>

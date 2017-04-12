@@ -1,5 +1,5 @@
 class AccountController < ApplicationController
-  layout 'account'
+  layout "account"
 
   before_action :authenticate_user!
   before_action :set_user

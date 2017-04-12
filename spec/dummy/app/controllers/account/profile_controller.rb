@@ -4,7 +4,7 @@ class Account::ProfileController < AccountController
 
   def update
     if @user.update(profile_params)
-      flash.now['account_profile_form.success'] = 'Your profile has been successfully updated.'
+      flash.now["account_profile_form.success"] = "Your profile has been successfully updated."
     end
 
     render :show

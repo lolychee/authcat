@@ -1,15 +1,15 @@
-<%= form_for @user, as: :forget_password, url: account_forget_password_path, method: :post, html: {class: 'pure-form pure-form-stacked page-block account-forget-password-form' }, builder: Dummy::FormBuilder do |f| %>
-  <%= field_set_tag 'Search your account' do %>
+<%= form_for @user, as: :forget_password, url: account_forget_password_path, method: :post, html: {class: "pure-form pure-form-stacked page-block account-forget-password-form" }, builder: Dummy::FormBuilder do |f| %>
+  <%= field_set_tag "Search your account" do %>
 
-    <%= f.field_group :email, class: 'pure-control-group' do %>
+    <%= f.field_group :email, class: "pure-control-group" do %>
       <%= f.label :email %>
-      <%= f.text_field :email, class: 'pure-input-1' %>
+      <%= f.text_field :email, class: "pure-input-1" %>
       <%= f.error_messages :email %>
     <% end %>
 
   <% end %>
 
   <div class="pure-controls">
-    <%= f.button 'Search', type: :submit, class: 'pure-button pure-button-primary' %>
+    <%= f.button "Search", type: :submit, class: "pure-button pure-button-primary" %>
   </div>
 <% end %>

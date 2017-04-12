@@ -6,7 +6,7 @@ class Account::PasswordController < AccountController
     @user.attributes = password_params
 
     if @user.save(context: :change_password)
-      flash.now['account_password_form.success'] = 'Your password has been successfully updated.'
+      flash.now["account_password_form.success"] = "Your password has been successfully updated."
     end
 
     render :show

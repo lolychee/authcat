@@ -8,18 +8,18 @@ module Dummy
       messages = messages.take(limit) if limit
 
       tag_options = {
-        class: 'errors'
+        class: "errors"
       }
       tag_options.merge!(options)
 
       @template.content_tag(:ul, **tag_options) do
-        messages.map {|message| block_given? ? yield(messages) : @template.content_tag(:li, message) }.join.html_safe
+        messages.map { |message| block_given? ? yield(messages) : @template.content_tag(:li, message) }.join.html_safe
       end
     end
 
     def field_group(method, tag = :div, **options)
       if @object.errors.include?(method)
-        error_class = 'has-error'
+        error_class = "has-error"
         case options[:class]
         when Array
           options[:class] << error_class
