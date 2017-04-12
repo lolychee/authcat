@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Authcat::Model::ToCredential do
 
@@ -9,6 +9,5 @@ describe Authcat::Model::ToCredential do
       include Authcat::Model::ToCredential
     end
   end
-
 
 end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Authcat::Support::Registrable do
 
@@ -6,8 +6,8 @@ describe Authcat::Support::Registrable do
 
   subject { Class.new { extend Authcat::Support::Registrable } }
 
-  describe 'ClassMethods' do
-    describe '#has_registry' do
+  describe "ClassMethods" do
+    describe "#has_registry" do
       it do
         subject.has_registry
         expect(subject).to respond_to(:registry)
@@ -16,21 +16,21 @@ describe Authcat::Support::Registrable do
     end
   end
 
-  describe 'Options' do
+  describe "Options" do
 
-    describe ':reader' do
+    describe ":reader" do
       it do
         subject.has_registry reader: ->(value) { value.reverse }
-        subject.registry[:key] = 'abc'
-        expect(subject.registry[:key]).to eq 'cba'
+        subject.registry[:key] = "abc"
+        expect(subject.registry[:key]).to eq "cba"
       end
     end
 
-    describe ':writer' do
+    describe ":writer" do
       it do
         subject.has_registry writer: ->(value) { value * 2 }
-        subject.registry[:key] = 'abc'
-        expect(subject.registry[:key]).to eq 'abcabc'
+        subject.registry[:key] = "abc"
+        expect(subject.registry[:key]).to eq "abcabc"
       end
     end
 

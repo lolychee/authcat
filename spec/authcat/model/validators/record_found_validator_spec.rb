@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Authcat::Model::Validators::RecordFoundValidator do
 
@@ -13,29 +13,29 @@ describe Authcat::Model::Validators::RecordFoundValidator do
 
       validates :email, record_found: true, on: :sign_in
 
-      before_save {|user| user.write_password(:password_digest, user.password) }
+      before_save { |user| user.write_password(:password_digest, user.password) }
     end
   end
 
-  context 'record exists' do
+  context "record exists" do
     # 时间存入SQLite数据库会丢失精度，reload来同步
-    let(:someone) { user_class.create(email: 'someone@example.com', password: 'password').reload }
+    let(:someone) { user_class.create(email: "someone@example.com", password: "password").reload }
 
-    it 'replace @attributes' do
+    it "replace @attributes" do
       user = user_class.new(email: someone.email)
 
       expect(user.valid?(:sign_in))
-      expect(user.instance_variable_get('@attributes')).to eq someone.instance_variable_get('@attributes')
+      expect(user.instance_variable_get("@attributes")).to eq someone.instance_variable_get("@attributes")
     end
   end
 
-  context 'record not exists' do
-    it 'add a email error' do
-      user = user_class.new(email: 'someone@example.com')
+  context "record not exists" do
+    it "add a email error" do
+      user = user_class.new(email: "someone@example.com")
 
       expect(user.invalid?(:sign_in))
       expect(user.errors).to include(:email)
-      expect(user.errors[:email]).to include('not found')
+      expect(user.errors[:email]).to include("not found")
     end
   end
 

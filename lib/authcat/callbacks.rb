@@ -17,7 +17,6 @@ module Authcat
     end
 
     module ClassMethods
-
       # 批量定义类方法，添加 callback 的快捷方法，完整代码如下：
       #
       #   def before_authenticate(*args, &block)
@@ -33,7 +32,6 @@ module Authcat
           METHOD
         end
       end
-
     end
 
     # 批量增加 callback 调用，完整代码如下：
@@ -49,6 +47,5 @@ module Authcat
         end
       METHOD
     end
-
   end
 end

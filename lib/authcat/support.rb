@@ -4,6 +4,5 @@ module Authcat
 
     autoload :Configurable
     autoload :Registrable
-
   end
 end

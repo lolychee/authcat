@@ -18,6 +18,5 @@ module Authcat
     register :debug,    :Debug
     register :session,  :Session
     register :cookies,  :Cookies
-
   end
 end

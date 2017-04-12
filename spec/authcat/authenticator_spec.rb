@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Authcat::Authenticator do
 
@@ -8,16 +8,14 @@ describe Authcat::Authenticator do
 
       strategy :session, key: :token
       strategy :cookies, key: :token
-
-
     end
     # Class.new(Authcat::Authenticator) do
     #   use :session, key: :auth_token
     # end
   end
 
-  describe '#authenticate' do
-    it '' do
+  describe "#authenticate" do
+    it "" do
       auth = authenticator_class.new(mock_request)
       expect(auth.authenticate).to be nil
     end

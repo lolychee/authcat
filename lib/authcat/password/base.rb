@@ -1,9 +1,9 @@
 module Authcat
   module Password
     class Base < String
-    include Support::Configurable
+      include Support::Configurable
 
-      module ClassMethods
+      class << self
         def [](**options)
           Class.new(self) do configure(**options); end
         end
@@ -19,16 +19,15 @@ module Authcat
         end
 
         def valid?(hashed_password)
-          raise NotImplementedError, '.valid? not implemented.'
+          raise NotImplementedError, ".valid? not implemented."
         end
       end
-      extend ClassMethods
 
       def initialize(hashed_password = nil, **options)
         config.merge!(options)
 
         if hashed_password.nil?
-          update('')
+          update("")
         else
           replace(hashed_password)
         end
@@ -59,11 +58,10 @@ module Authcat
       private
 
         def hash(password)
-          raise NotImplementedError, '#hash not implemented.'
+          raise NotImplementedError, "#hash not implemented."
         end
 
         class InvalidHash < StandardError; end
-
     end
   end
 end

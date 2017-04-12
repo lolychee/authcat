@@ -1,7 +1,6 @@
 module Authcat
   module Strategies
     class Debug < Abstract
-
       def _read
         @credential ||= config.fetch(:credential)
       end
@@ -21,7 +20,6 @@ module Authcat
       def readonly?
         config.fetch(:readonly) { super }
       end
-
     end
   end
 end

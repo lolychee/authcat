@@ -1,7 +1,6 @@
 module Authcat
   module Support
     module Registrable
-
       class Registry
         include Enumerable
 
@@ -34,7 +33,6 @@ module Authcat
 
         class NotFound < StandardError; end
         class AlreadyExists < StandardError; end
-
       end
 
       def has_registry(name = :registry, **options)

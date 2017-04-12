@@ -1,5 +1,5 @@
-require 'active_support'
-require 'active_support/rails'
+require "active_support"
+require "active_support/rails"
 
 module Authcat
   extend ActiveSupport::Autoload

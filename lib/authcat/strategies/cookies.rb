@@ -28,8 +28,8 @@ module Authcat
       end
 
       def cookies
-        config.slice(:permanent, :signed, :encrypted).select {|_, v| v }.keys \
-          .reduce(request.cookie_jar) {|cookies, method_name| cookies.send(method_name) }
+        config.slice(:permanent, :signed, :encrypted).select { |_, v| v }.keys \
+          .reduce(request.cookie_jar) { |cookies, method_name| cookies.send(method_name) }
       end
 
       def build_cookies_options(credential)
@@ -53,7 +53,6 @@ module Authcat
       def readonly?
         false
       end
-
     end
   end
 end

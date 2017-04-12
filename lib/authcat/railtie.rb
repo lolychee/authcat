@@ -1,11 +1,10 @@
 begin
-  require 'rails/railtie'
+  require "rails/railtie"
 rescue LoadError
 else
 
   module Authcat
     class Railtie < Rails::Railtie
-
       module ControllerMixin
         extend ActiveSupport::Concern
 
@@ -35,12 +34,11 @@ else
         end
       end
 
-      initializer 'authcat' do |app|
+      initializer "authcat" do |app|
         ActiveSupport.on_load(:action_controller) do
           send :include, Authcat::Railtie::ControllerMixin
         end
       end
-
     end
   end
 

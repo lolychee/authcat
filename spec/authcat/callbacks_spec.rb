@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Authcat::Callbacks do
 
@@ -40,7 +40,7 @@ describe Authcat::Callbacks do
     end
   end
 
-  it 'finish callbacks chain' do
+  it "finish callbacks chain" do
     callbacks_chain = %i[
       before_authenticate
       before_around_authenticate
@@ -53,7 +53,7 @@ describe Authcat::Callbacks do
     expect(authenticator.history).to eq callbacks_chain
   end
 
-  it 'set callback with helper method' do
+  it "set callback with helper method" do
     authenticator = callback_helper_authenticator_class.new
     authenticator.authenticate
     expect(authenticator.history).to include :before_authenticate_via_helper

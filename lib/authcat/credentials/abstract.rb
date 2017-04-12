@@ -1,7 +1,6 @@
 module Authcat
   module Credentials
     class Abstract
-
       class << self
         def create(identity)
           new.update(identity)
@@ -13,7 +12,7 @@ module Authcat
         end
 
         def valid?(raw_data)
-          raise NotImplementedError, '.valid? not implemented.'
+          raise NotImplementedError, ".valid? not implemented."
         end
       end
 
@@ -46,11 +45,11 @@ module Authcat
       private
 
         def _update(identity)
-          raise NotImplementedError, '#_update not implemented.'
+          raise NotImplementedError, "#_update not implemented."
         end
 
         def _find
-          raise NotImplementedError, '#_find not implemented.'
+          raise NotImplementedError, "#_find not implemented."
         end
 
         def valid_identity?(identity)
@@ -60,8 +59,6 @@ module Authcat
         def raise_invalid_identity_error
           raise Errors::InvalidIdentity
         end
-
     end
-
   end
 end

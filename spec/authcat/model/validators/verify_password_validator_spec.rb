@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Authcat::Model::Validators::VerifyPasswordValidator do
 
@@ -16,24 +16,24 @@ describe Authcat::Model::Validators::VerifyPasswordValidator do
     end
   end
 
-  let(:password) { 'password' }
-  let(:user) { user_class.new.tap {|u| u.write_password(:password_digest, password) } }
+  let(:password) { "password" }
+  let(:user) { user_class.new.tap { |u| u.write_password(:password_digest, password) } }
 
-  context 'right password' do
-    it 'should be valid' do
+  context "right password" do
+    it "should be valid" do
       user.password = password
 
       expect(user).to be_valid(:sign_in)
     end
   end
 
-  context 'wrong password' do
-    it 'add a password error' do
-      user.password = 'wrong_password'
+  context "wrong password" do
+    it "add a password error" do
+      user.password = "wrong_password"
 
       expect(user).to be_invalid(:sign_in)
       expect(user.errors).to include(:password)
-      expect(user.errors[:password]).to include('not match')
+      expect(user.errors[:password]).to include("not match")
     end
   end
 

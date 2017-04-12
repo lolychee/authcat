@@ -1,7 +1,6 @@
 module Authcat
   module Strategies
     class Session < Abstract
-
       option :key, required: true
 
       def _read
@@ -27,7 +26,6 @@ module Authcat
       def readonly?
         false
       end
-
     end
   end
 end

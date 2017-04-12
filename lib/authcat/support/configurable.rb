@@ -1,4 +1,4 @@
-require 'active_support/ordered_options'
+require "active_support/ordered_options"
 
 module Authcat
   module Support
@@ -6,7 +6,6 @@ module Authcat
       extend ActiveSupport::Concern
 
       class Configuration < ActiveSupport::InheritableOptions
-
         def initialize(parent = nil)
           @parent = parent
           super
@@ -22,7 +21,6 @@ module Authcat
       end
 
       module ClassMethods
-
         def config
           @config ||= if respond_to?(:superclass) && superclass.respond_to?(:config)
             superclass.config.inheritable_copy
@@ -38,10 +36,9 @@ module Authcat
           self
         end
 
-        OPTION_ATTRIBUTES_MODULE = 'OptionAttributes'
+        OPTION_ATTRIBUTES_MODULE = "OptionAttributes"
 
         def option(name, value = nil, required: false, accessor: true, reader: true, writer: true, class_accessor: true, class_reader: true, class_writer: true, &block)
-
           if class_accessor
             define_singleton_method("#{name}") do
               config[name]
@@ -75,7 +72,6 @@ module Authcat
 
           config[name] = value
         end
-
       end
 
       def config

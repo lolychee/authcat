@@ -1,7 +1,6 @@
 module Authcat
   module Credentials
     class GlobalID < Abstract
-
       def self.valid?(credential)
         !::GlobalID.parse(credential).nil?
       end

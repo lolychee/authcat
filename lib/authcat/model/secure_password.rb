@@ -5,14 +5,13 @@ module Authcat
 
       module ClassMethods
         def password_attributes
-          @password_attributes ||= Hash.new {|_, k| raise ArgumentError, "unknown password attribute: #{k.inspect}" }
+          @password_attributes ||= Hash.new { |_, k| raise ArgumentError, "unknown password attribute: #{k.inspect}" }
         end
 
         def password_attribute(attribute, algorithm = :bcrypt, **options, &block)
-
           algorithm = algorithm.is_a?(Class) ? algorithm : ::Authcat::Password.lookup(algorithm)
 
-          password_attributes[attribute] = proc {|hashed_password| algorithm.new(hashed_password, **options, &block) }
+          password_attributes[attribute] = proc { |hashed_password| algorithm.new(hashed_password, **options, &block) }
 
           class_eval <<-METHOD
             def #{attribute}
@@ -59,7 +58,6 @@ module Authcat
         algorithm = self.class.password_attributes[attribute]
         write_password_attribute(attribute, algorithm.().digest(raw_password))
       end
-
     end
   end
 end

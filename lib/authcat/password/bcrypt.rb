@@ -1,9 +1,8 @@
 module Authcat
   module Password
     class BCrypt < Base
-
       begin
-        require 'bcrypt'
+        require "bcrypt"
       rescue LoadError
         $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
         raise
@@ -13,7 +12,7 @@ module Authcat
 
       option(:min_cost) { ::BCrypt::Engine::MIN_COST }
 
-      option(:salt) {|password| password.generate_salt }
+      option(:salt) { |password| password.generate_salt }
 
       attr_reader :version
 
@@ -44,7 +43,7 @@ module Authcat
         end
 
         def extract_hash(hashed_password)
-          _, v, c, _ = hashed_password.split('$')
+          _, v, c, _ = hashed_password.split("$")
 
           @version = v.to_str
           self.cost = c.to_i
@@ -52,7 +51,6 @@ module Authcat
 
           hashed_password
         end
-
     end
   end
 end

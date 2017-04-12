@@ -39,7 +39,7 @@ module Authcat
     end
 
     def strategies
-      @strategies ||= self.class.strategies.map {|_, block| block[self] }
+      @strategies ||= self.class.strategies.map { |_, block| block[self] }
     end
 
     def authenticate
@@ -56,7 +56,7 @@ module Authcat
     end
 
     def sign_in(identity)
-      strategies.reject(&:readonly?).each {|strategy| strategy.write_identity(identity) }
+      strategies.reject(&:readonly?).each { |strategy| strategy.write_identity(identity) }
       @identity = identity
     end
 
@@ -65,9 +65,8 @@ module Authcat
     end
 
     def sign_out
-      strategies.reject(&:readonly?).each {|strategy| strategy.clear }
+      strategies.reject(&:readonly?).each { |strategy| strategy.clear }
       @identity = nil
     end
-
   end
 end

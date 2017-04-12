@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Authcat::Password::Base do
   let!(:password_class) do
@@ -17,62 +17,62 @@ describe Authcat::Password::Base do
   end
 
   let(:password) { password_class.new }
-  let(:raw_password) { 'password' }
-  let(:password_digest) { '=drowssap' }
+  let(:raw_password) { "password" }
+  let(:password_digest) { "=drowssap" }
 
-  describe '.create' do
+  describe ".create" do
     it do
       expect(password_class.create(raw_password)).to eq password_digest
     end
   end
 
-  describe '.verify'
+  describe ".verify"
 
-  describe '.valid?' do
-    it 'raise NotImplementedError' do
+  describe ".valid?" do
+    it "raise NotImplementedError" do
       expect {
         described_class.valid?(nil)
       }.to raise_error(NotImplementedError)
     end
   end
 
-  describe '#initialize' do
-    context 'when given a digest password' do
+  describe "#initialize" do
+    context "when given a digest password" do
       it do
         expect(password_class.new(password_digest)).to be_a(password_class)
       end
     end
-    context 'when given a nil' do
+    context "when given a nil" do
       it do
         expect(password_class.new(nil)).to be_a(password_class)
       end
     end
   end
 
-  describe '#replace' do
-    context 'when given a digest password' do
+  describe "#replace" do
+    context "when given a digest password" do
       it do
-        expect{
-          password.replace('=edcba')
-        }.to change(password, :to_s).to('=edcba')
+        expect {
+          password.replace("=edcba")
+        }.to change(password, :to_s).to("=edcba")
       end
     end
   end
 
-  describe '#update'
+  describe "#update"
 
-  describe '#=='
+  describe "#=="
 
-  describe '#verify'
+  describe "#verify"
 
-  describe '#digest' do
-    it 'return new password' do
+  describe "#digest" do
+    it "return new password" do
       expect(password.digest(raw_password)).not_to equal password
     end
   end
 
-  describe '#hash' do
-    it 'raise NotImplementedError' do
+  describe "#hash" do
+    it "raise NotImplementedError" do
       expect {
         described_class.new.send(:hash, nil)
       }.to raise_error(NotImplementedError)
