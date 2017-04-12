@@ -17,6 +17,8 @@ gemspec
 
 gem 'pry'
 
+gem 'rubocop'
+
 group :test do
   gem 'rspec', '~> 3.5'
   gem 'database_cleaner', '~> 1.5'
