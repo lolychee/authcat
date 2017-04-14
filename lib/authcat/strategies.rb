@@ -10,13 +10,13 @@ module Authcat
     autoload :Cookies
 
     extend Support::Registrable
-    has_registry reader: ->(value) { value.is_a?(Class) ? value : Authcat::Strategies.const_get(value) }
+    has_registry
 
     extend SingleForwardable
     def_delegators :registry, :register, :lookup
 
-    register :debug,    :Debug
-    register :session,  :Session
-    register :cookies,  :Cookies
+    register :debug,    Strategies::Debug
+    register :session,  Strategies::Session
+    register :cookies,  Strategies::Cookies
   end
 end

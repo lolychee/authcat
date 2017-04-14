@@ -11,6 +11,8 @@ module Authcat
         def password_attribute(attribute, algorithm = :bcrypt, **options, &block)
           algorithm = algorithm.is_a?(Class) ? algorithm : ::Authcat::Password.lookup(algorithm)
 
+          algorithm.check_dependencies if algorithm.respond_to?(:check_dependencies)
+
           password_attributes[attribute] = proc { |hashed_password| algorithm.new(hashed_password, **options, &block) }
 
           class_eval <<-METHOD

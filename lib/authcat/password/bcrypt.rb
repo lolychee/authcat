@@ -1,13 +1,6 @@
 module Authcat
   module Password
     class BCrypt < Base
-      begin
-        require "bcrypt"
-      rescue LoadError
-        $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
-        raise
-      end
-
       option(:cost) { ::BCrypt::Engine.cost }
 
       option(:min_cost) { ::BCrypt::Engine::MIN_COST }
@@ -16,12 +9,23 @@ module Authcat
 
       attr_reader :version
 
-      def self.valid?(hashed_password)
-        !!::BCrypt::Password.valid_hash?(hashed_password)
-      end
+      class << self
+        def check_dependencies
+          begin
+            require "bcrypt"
+          rescue LoadError
+            $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
+            raise
+          end
+        end
 
-      def self.valid_salt?(salt)
-        !!::BCrypt::Engine.valid_salt?(salt)
+        def valid?(hashed_password)
+          !!::BCrypt::Password.valid_hash?(hashed_password)
+        end
+
+        def valid_salt?(salt)
+          !!::BCrypt::Engine.valid_salt?(salt)
+        end
       end
 
       def replace(hashed_password)
