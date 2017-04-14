@@ -29,6 +29,6 @@ class User < ApplicationRecord
   end
 
   def remember_me=(value)
-    @remember_me = value.is_a?(String) ? value == "1" : value
+    @remember_me = ActiveModel::Type::Boolean.new.cast(value)
   end
 end
