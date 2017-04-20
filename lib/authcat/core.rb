@@ -32,7 +32,7 @@ module Authcat
     attr_reader :request, :identity
 
     def initialize(request, **options)
-      # raise ArgumentError unless request.class < Rack::Request
+      raise ArgumentError unless [Rack::Request, ActionDispatch::Request].any? { |mod| request.is_a? mod }
       config.merge!(options)
 
       @request = request
