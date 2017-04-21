@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe Authcat::Model::Validators::VerifyPasswordValidator do
+describe Authcat::Validators::VerifyPasswordValidator do
 
   let!(:user_class) do
     Class.new(ActiveRecord::Base) do
       self.table_name = User.table_name
 
       include Authcat::Model::SecurePassword
-      include Authcat::Model::Validators
+      include Authcat::Validators
 
       password_attribute :password_digest
       attr_accessor :password

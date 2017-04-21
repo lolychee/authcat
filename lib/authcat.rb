@@ -14,14 +14,15 @@ module Authcat
   autoload :Credentials
 
   autoload :Model
+  autoload :Validators
   autoload :Password
 
-  autoload :Errors
   autoload :Support
 
   autoload :Authentication
 
   eager_autoload do
+    autoload :Errors
     autoload :Railtie
   end
 

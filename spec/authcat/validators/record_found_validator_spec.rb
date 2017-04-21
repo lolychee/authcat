@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Authcat::Model::Validators::RecordFoundValidator do
+describe Authcat::Validators::RecordFoundValidator do
 
   let!(:user_class) do
     Class.new(ActiveRecord::Base) do
