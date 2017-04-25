@@ -21,9 +21,9 @@ describe Authcat::Password::BCrypt do
 
   describe "#generate_salt"
 
-  describe "#hash" do
+  describe "#hash_function" do
     it "should be true" do
-      expect(described_class.valid?(subject.send(:hash, password))).to eq true
+      expect(described_class.valid?(subject.send(:hash_function, password))).to eq true
     end
   end
 

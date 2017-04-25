@@ -4,21 +4,15 @@ module Authcat
       include Support::Configurable
 
       class << self
-        def [](**options)
-          Class.new(self) do configure(**options); end
-        end
-
         def create(password, **options)
           new(**options).update(password)
         end
 
-        def verify(hashed_password, password)
-          new(hashed_password).verify(password)
-        rescue InvalidHash
-          false
+        def parse(hashed_password, **options)
+          new(hashed_password, **options)
         end
 
-        def valid?(hashed_password)
+        def valid?(hash_password, **options)
           raise NotImplementedError, ".valid? not implemented."
         end
       end
@@ -39,7 +33,7 @@ module Authcat
       end
 
       def update(password)
-        replace(hash(password.to_s))
+        replace(hash_function(password.to_s))
       end
       alias_method :<<, :update
 
@@ -48,7 +42,7 @@ module Authcat
       end
 
       def verify(password)
-        self == hash(password.to_s)
+        self == hash_function(password.to_s)
       end
 
       def digest(password)
@@ -57,7 +51,7 @@ module Authcat
 
       private
 
-        def hash(password)
+        def hash_function(*)
           raise NotImplementedError, "#hash not implemented."
         end
 

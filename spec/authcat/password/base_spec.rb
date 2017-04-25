@@ -10,7 +10,7 @@ describe Authcat::Password::Base do
 
       private
 
-        def hash(password)
+        def hash_function(password)
           "=#{password.reverse}"
         end
     end

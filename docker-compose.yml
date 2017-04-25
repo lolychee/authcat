@@ -7,7 +7,7 @@ services:
       - .:/src/authcat
       - rubygems:/usr/local/bundle
     ports:
-      - "3000:3000"
+      - "3001:3000"
     command: ['./entrypoint.sh', 's', '-b', '0.0.0.0']
     environment:
       - LANG=C.UTF-8

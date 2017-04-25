@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   # has_secure_password
   attr_accessor :password, :remember_me
-  password_attribute :password_digest
+  has_password
 
   with_options on: :save do
     validates :email, presence: true, uniqueness: true, format: { with: EMAIL_REGEX }
@@ -19,14 +19,10 @@ class User < ApplicationRecord
     validates :password_digest, presence: true
   end
 
-  with_options on: :sign_in do
-    validates :email, presence: true, record_found: true
-    validates :password, presence: true, verify_password: :password_digest
-  end
-
-  before_create do |user|
-    user.write_password(:password_digest, user.password)
-  end
+  # with_options on: :sign_in do
+  #   validates :email, presence: true, record_found: true
+  #   validates :password, presence: true, verify_password: :password_digest
+  # end
 
   def remember_me=(value)
     @remember_me = ActiveModel::Type::Boolean.new.cast(value)

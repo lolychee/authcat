@@ -4,62 +4,70 @@ module Authcat
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def password_attributes
-          @password_attributes ||= Hash.new { |_, k| raise ArgumentError, "unknown password attribute: #{k.inspect}" }
-        end
+        def has_password(attribute = :password, column_name: "#{attribute}_digest", **options, &block)
+          attribute column_name, :password, **options
 
-        def password_attribute(attribute, algorithm = :bcrypt, **options, &block)
-          algorithm = algorithm.is_a?(Class) ? algorithm : ::Authcat::Password.lookup(algorithm)
-
-          algorithm.check_dependencies if algorithm.respond_to?(:check_dependencies)
-
-          password_attributes[attribute] = proc { |hashed_password| algorithm.new(hashed_password, **options, &block) }
-
-          class_eval <<-METHOD
-            def #{attribute}
-              read_password_attribute(:#{attribute})
-            end
+          class_eval <<-RUBY
+            attr_reader :#{attribute}
 
             def #{attribute}=(value)
-              write_password_attribute(:#{attribute}, value)
+              self.#{column_name} = ::Authcat::Password::Raw.new(value)
+              @#{attribute} = value
             end
-          METHOD
+          RUBY
         end
-      end
-
-      def read_password_attribute(attribute)
-        hashed_password = read_attribute(attribute)
-
-        return nil if hashed_password.nil?
-
-        algorithm = self.class.password_attributes[attribute]
-        algorithm.(hashed_password)
-      end
-
-      def write_password_attribute(attribute, hashed_password)
-        value = if hashed_password.nil?
-          nil
-        else
-          algorithm = self.class.password_attributes[attribute]
-          algorithm.(hashed_password).to_s
-        end
-
-        write_attribute(attribute, value)
-      end
-
-      def verify_password(attribute, raw_password)
-        return false if raw_password.nil?
-
-        password = read_password_attribute(attribute)
-        return false if password.nil?
-
-        password.verify(raw_password)
-      end
-
-      def write_password(attribute, raw_password)
-        algorithm = self.class.password_attributes[attribute]
-        write_password_attribute(attribute, algorithm.().digest(raw_password))
       end
     end
   end
+end
+
+begin
+  require "active_record/type"
+rescue LoadError
+else
+
+  module ActiveRecord
+    module Type
+      class Password < String
+        def initialize(**options)
+          @options = options
+        end
+
+        def type
+          :password
+        end
+
+        def options
+          @options ||= {}
+        end
+
+        def cast_value(value)
+          case value
+          when ::Authcat::Password::Raw
+            ::Authcat::Password.create(value, **options)
+          when String
+            ::Authcat::Password.parse(value, **options)
+          else
+            ::Authcat::Password.valid?(value, **options) ? value : nil
+          end
+        end
+
+        def serialize(value)
+          if ::Authcat::Password.valid?(value, **options)
+            value.to_str
+          else
+            nil
+          end
+        end
+
+        def deserialize(value)
+          return if value.nil?
+          ::Authcat::Password.parse(value, **options)
+        end
+
+      end
+    end
+  end
+
+  ActiveRecord::Type.register(:password, ActiveRecord::Type::Password)
 end

@@ -3,6 +3,7 @@ module Authcat
     extend ActiveSupport::Autoload
 
     autoload :Base
+    autoload :Raw
     autoload :BCrypt, "authcat/password/bcrypt"
 
     extend Support::Registrable
@@ -13,10 +14,27 @@ module Authcat
 
     register :bcrypt, Password::BCrypt
 
-    def self.secure_compare(a, b)
-      return false unless a.bytesize == b.bytesize
+    cattr_accessor :default_method
+    self.default_method = :bcrypt
 
-      a.each_byte.zip(b.each_byte).lazy.map { |a, b| a ^ b }.reduce(:|).zero?
+    class << self
+      def secure_compare(a, b)
+        return false unless a.bytesize == b.bytesize
+
+        a.each_byte.lazy.zip(b.each_byte).map { |a, b| a ^ b }.reduce(:|).zero?
+      end
+
+      def create(raw_password, method: default_method, **options)
+        lookup(method).create(raw_password, **options)
+      end
+
+      def parse(digest_password, method: default_method, **options)
+        lookup(method).parse(digest_password, **options)
+      end
+
+      def valid?(digest_password, method: default_method, **options)
+        lookup(method).valid?(digest_password, **options)
+      end
     end
   end
 end

@@ -15,7 +15,6 @@ module Authcat
 
   autoload :Model
   autoload :Validators
-  autoload :Password
 
   autoload :Support
 
@@ -23,6 +22,7 @@ module Authcat
 
   eager_autoload do
     autoload :Errors
+    autoload :Password
     autoload :Railtie
   end
 

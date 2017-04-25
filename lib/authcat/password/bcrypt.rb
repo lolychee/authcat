@@ -10,22 +10,24 @@ module Authcat
       attr_reader :version
 
       class << self
-        def check_dependencies
-          begin
-            require "bcrypt"
-          rescue LoadError
-            $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
-            raise
-          end
-        end
-
-        def valid?(hashed_password)
+        def valid?(hashed_password, *args)
           !!::BCrypt::Password.valid_hash?(hashed_password)
         end
 
         def valid_salt?(salt)
           !!::BCrypt::Engine.valid_salt?(salt)
         end
+      end
+
+      def initialize(*)
+        begin
+          require "bcrypt"
+        rescue LoadError
+          $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
+          raise
+        end
+
+        super
       end
 
       def replace(hashed_password)
@@ -40,7 +42,7 @@ module Authcat
 
       private
 
-        def hash(password, salt = self.salt)
+        def hash_function(password, salt = self.salt)
           raise ArgumentError, "invalid salt: #{salt.inspect}" unless self.class.valid_salt?(salt)
 
           ::BCrypt::Engine.hash_secret(password, salt)

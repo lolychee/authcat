@@ -8,11 +8,9 @@ describe Authcat::Model::SecurePassword do
 
       include Authcat::Model::SecurePassword
 
-      attr_accessor :password
+      has_password :password
 
-      password_attribute :password_digest
-
-      before_save { |record| record.write_password(:password_digest, record.password) }
+      # before_save { |record| record.write_password(:password_digest, record.password) }
     end
   end
 
