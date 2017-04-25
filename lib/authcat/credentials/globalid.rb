@@ -14,9 +14,7 @@ module Authcat
       end
 
       def _find
-        global_id.find
-      rescue ActiveRecord::RecordNotFound
-        nil
+        global_id.find rescue nil
       end
 
       private
@@ -26,7 +24,7 @@ module Authcat
         end
 
         def valid_identity?(identity)
-          identity.class < ActiveRecord::Base
+          identity.class < ::GlobalID::Identification
         end
     end
   end
