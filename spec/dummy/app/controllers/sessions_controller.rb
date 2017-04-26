@@ -2,16 +2,16 @@ class SessionsController < ApplicationController
   # before_action :authenticate_user!
 
   def new
-    @user = User.new
+    @session = Session.new
   end
 
   def create
-    @user = User.new(session_params)
+    @session = Session.new(session_params)
 
-    if @user.validate(:sign_in)
-      authenticator.sign_in(@user)
+    if @session.save
+      authenticator.sign_in(@session.user, remember_me: @session.remember_me)
 
-      redirect_to session.delete(:back_to) || root_url, flash: { success: "You have successfully signed in." }
+      redirect_to params[:redirect_to] || root_url, flash: { success: "You have successfully signed in." }
     else
       render :new
     end

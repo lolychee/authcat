@@ -35,10 +35,10 @@ module Authcat
       def build_cookies_options(credential)
         opts = config.slice(:domain, :path, :secure, :httponly)
         if expires_at
-          expires = expires_at.respond_to?(:call) ? expires_at.(credential.identity) : expires_at
+          expires = expires_at.respond_to?(:call) ? expires_at.(credential.identity, params) : expires_at
           opts[:expires] = expires
         elsif expires_in
-          expires = expires_in.respond_to?(:call) ? expires_in.(credential.identity) : expires_in
+          expires = expires_in.respond_to?(:call) ? expires_in.(credential.identity, params) : expires_in
           expires = expires.from_now  if expires.is_a?(ActiveSupport::Duration)
           opts[:expires] = expires
         end

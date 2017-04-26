@@ -3,9 +3,9 @@ module Authcat
     extend ActiveSupport::Autoload
     extend ActiveSupport::Concern
 
-    autoload :SecurePassword
+    autoload :HasPassword
 
-    include SecurePassword
+    include HasPassword
     include Authcat::Validators
   end
 end

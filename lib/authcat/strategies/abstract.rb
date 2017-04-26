@@ -9,11 +9,16 @@ module Authcat
 
       option :using
 
-      attr_reader :auth
+      attr_reader :auth, :params
 
       def initialize(auth, **options)
         config.merge!(options)
         @auth = auth
+      end
+
+      def with_params(params)
+        @params = params
+        self
       end
 
       def read

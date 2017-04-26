@@ -55,8 +55,8 @@ module Authcat
       authenticate || raise(Errors::IdentityNotFound)
     end
 
-    def sign_in(identity)
-      strategies.reject(&:readonly?).each { |strategy| strategy.write_identity(identity) }
+    def sign_in(identity, **params)
+      strategies.reject(&:readonly?).each { |strategy| strategy.with_params(params).write_identity(identity) }
       @identity = identity
     end
 

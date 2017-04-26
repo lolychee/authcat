@@ -1,6 +1,6 @@
 module Authcat
   module Model
-    module SecurePassword
+    module HasPassword
       extend ActiveSupport::Concern
 
       module ClassMethods
@@ -64,7 +64,6 @@ else
           return if value.nil?
           ::Authcat::Password.parse(value, **options)
         end
-
       end
     end
   end

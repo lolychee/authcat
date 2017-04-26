@@ -1,14 +1,14 @@
 require "spec_helper"
 
-describe Authcat::Model::SecurePassword do
+describe Authcat::Model::HasPassword do
 
   let!(:user_class) do
     Class.new(ActiveRecord::Base) do
       self.table_name = User.table_name
 
-      include Authcat::Model::SecurePassword
+      include Authcat::Model::HasPassword
 
-      has_password :password
+      has_password
 
       # before_save { |record| record.write_password(:password_digest, record.password) }
     end
@@ -17,7 +17,7 @@ describe Authcat::Model::SecurePassword do
   let(:password) { "password" }
   let(:user) { user_class.create(email: "someone@example.com", password: password) }
 
-  describe ".password_attribute" do
+  describe ".has_password" do
     # it "生成 #password_digest" do
     #   expect(user).to respond_to(:password_digest)
     # end
