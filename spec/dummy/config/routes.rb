@@ -9,6 +9,12 @@ Rails.application.routes.draw do
 
   delete :sign_out, to: "sessions#destroy", as: :sign_out
 
+  namespace :account do
+    root to: "profiles#show"
+    resource :profile,  except: [:new, :edit]
+    resource :password, except: [:new, :edit]
+  end
+
   [:authenticated].each do |action|
     get action, controller: "home", action: action, as: action
   end

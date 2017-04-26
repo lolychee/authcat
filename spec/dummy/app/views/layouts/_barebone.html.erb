@@ -8,8 +8,5 @@
     <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
   </head>
 
-  <body class="<%= body_class ||= nil %>">
-    <%= yield %>
-    <%= console if params[:console] %>
-  </body>
+  <%= content_tag(:body, body_options ||= {}) { yield } %>
 </html>

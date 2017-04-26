@@ -1,23 +1,9 @@
 <%= form_for @user, as: :profile, url: account_profile_path, method: :patch, html: {class: "pure-form pure-form-stacked account-profile-form" }, builder: Dummy::FormBuilder do |f| %>
   <%= field_set_tag "Profile" do %>
 
-    <%= render partial: "partials/flash_messages", locals: { flash: flash.select { |k, _| k.start_with?("account_profile_form") } } %>
-
     <%= f.field_group :email, class: "pure-control-group" do %>
       <%= f.label :email %>
       <%= f.text_field :email, readonly: true, class: "pure-input-1" %>
-    <% end %>
-
-    <%= f.field_group :name, class: "pure-control-group" do %>
-      <%= f.label :name %>
-      <%= f.text_field :name, class: "pure-input-1" %>
-      <%= f.error_messages :name %>
-    <% end %>
-
-    <%= f.field_group :bio, class: "pure-control-group" do %>
-      <%= f.label :bio %>
-      <%= f.text_area :bio, class: "pure-input-1" %>
-      <%= f.error_messages :bio %>
     <% end %>
 
   <% end %>

@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   authenticator :user
 
+  before_action { console if params[:console] }
+
   rescue_from(Authcat::Errors::IdentityNotFound, with: :render_error_unauthorized)
 
   def render_error_unauthorized
