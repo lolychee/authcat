@@ -1,20 +1,26 @@
 image: ruby:2.3
 
 before_script:
-  - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+  - apt-get update -qq && apt-get install -o dir::cache::archives="vendor/apt/archives" -y -qq sqlite3 libsqlite3-dev nodejs
   - ruby -v
   - which ruby
   - gem install bundler --no-ri --no-rdoc
-  - bundle install --jobs $(nproc)  "${FLAGS[@]}"
-
-cache:
-  key: "$CI_JOB_STAGE/$CI_COMMIT_REF_NAME"
-  untracked: true
+  - bundle install --without development --path vendor/bundle --jobs $(nproc)  "${FLAGS[@]}"
 
 # 定义 stages
 stages:
   - build
   - test
+
+install_deps:
+  stage: build
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - vendor/
+  script:
+    - echo 'ok'
 
 rspec:
   stage: test
