@@ -9,7 +9,8 @@ before_script:
   - bundle install --without development --path vendor/bundle --jobs $(nproc)  "${FLAGS[@]}"
 
 cache:
-  untracked: true
+  paths:
+    - vendor/
 
 # 定义 stages
 stages:
