@@ -1,9 +1,14 @@
 require "bundler/gem_tasks"
-require "rspec/core/rake_task"
 
-RSpec::Core::RakeTask.new(:spec)
+begin
+  require "rspec/core/rake_task"
 
-task default: :spec
+  RSpec::Core::RakeTask.new(:spec)
+  
+  task default: :spec
+rescue LoadError
+end
+
 
 rule /^dummy:?/ do |t|
   task_name = ARGV.shift.sub(/^dummy:?/, "")
