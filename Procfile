@@ -1,1 +1,1 @@
-web: cd spec/dummy && bundle exec rails server -p $PORT
+web: sh -c 'cd ./spec/dummy && cp -r /app/vendor ./vendor && RAILS_ENV=production bin/rails server'
