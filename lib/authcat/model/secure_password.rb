@@ -1,20 +1,20 @@
 module Authcat
   module Model
-    module HasPassword
+    module SecurePassword
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def has_password(attribute = :password, column_name: "#{attribute}_digest", **options, &block)
+        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", **options, &block)
           attribute column_name, :password, **options
 
-          class_eval <<-RUBY
+          class_eval <<-METHOD
             attr_reader :#{attribute}
 
             def #{attribute}=(value)
-              self.#{column_name} = ::Authcat::Password::Raw.new(value)
+              self.#{column_name} = ::Authcat::Password::Plaintext.new(value)
               @#{attribute} = value
             end
-          RUBY
+          METHOD
         end
       end
     end
@@ -29,7 +29,10 @@ else
   module ActiveRecord
     module Type
       class Password < String
-        def initialize(**options)
+        attr_reader :algorithm
+
+        def initialize(algorithm: :bcrypt, **options)
+          @algorithm = ::Authcat::Password.lookup(algorithm)
           @options = options
         end
 
@@ -43,26 +46,22 @@ else
 
         def cast_value(value)
           case value
-          when ::Authcat::Password::Raw
-            ::Authcat::Password.create(value, **options)
+          when ::Authcat::Password::Plaintext
+            algorithm.new(**options) { value }
           when String
-            ::Authcat::Password.parse(value, **options)
+            algorithm.new(value, **options)
           else
-            ::Authcat::Password.valid?(value, **options) ? value : nil
+            serialize(value)
           end
         end
 
         def serialize(value)
-          if ::Authcat::Password.valid?(value, **options)
-            value.to_str
-          else
-            nil
-          end
+            algorithm.valid?(value, **options) ? value.to_str : nil
         end
 
         def deserialize(value)
           return if value.nil?
-          ::Authcat::Password.parse(value, **options)
+          algorithm.new(value, **options)
         end
       end
     end

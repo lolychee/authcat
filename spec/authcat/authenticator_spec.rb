@@ -2,21 +2,20 @@ require "spec_helper"
 
 describe Authcat::Authenticator do
 
-  let!(:authenticator_class) do
-    Class.new(Authcat::Authenticator) do
-      credential :globalid, default: true
+  let!(:app) { Rails.application }
 
-      strategy :session, key: :token
-      strategy :cookies, key: :token
-    end
-    # Class.new(Authcat::Authenticator) do
-    #   use :session, key: :auth_token
-    # end
-  end
-
+  let(:user) { User.create!(email: "someone@example.com", password: "password") }
+  
   describe "#authenticate" do
     it "" do
-      auth = authenticator_class.new(mock_request)
+      # middleware = Authcat::Authenticator.new(app) do
+      #   from :session, User
+      # end
+
+      req = Rack::MockRequest.new(app)
+
+      req.get("/", {"HTTP_COOKIE" => "access_token=#{user.to_token}"})
+      # binding.pry
       expect(auth.authenticate).to be nil
     end
   end

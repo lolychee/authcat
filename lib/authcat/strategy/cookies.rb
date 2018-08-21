@@ -1,8 +1,10 @@
 module Authcat
   module Strategy
-    class Session < Abstract
+    class Cookies < Abstract
+      RACK_COOKIES = "rack.cookies".freeze
+
       def default_name
-        :session
+        :cookies
       end
 
       def key
@@ -10,10 +12,14 @@ module Authcat
       end
 
       def process(env, authenticator)
-        session = env[Rack::RACK_SESSION]
+        cookie_jar = if env.key?(RACK_COOKIES)
+          env[RACK_COOKIES]
+        elsif request = ActionDispatch::Request.new(env)
+          request.cookie_jar
+        end
 
-        if session.key?(key)
-          token = session[key]
+        if cookie_jar.key?(key)
+          token = cookie_jar[key]
           authenticator[name] = default_proc[finder, token]
         end
 

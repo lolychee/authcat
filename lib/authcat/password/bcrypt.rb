@@ -1,62 +1,51 @@
+begin
+  require "bcrypt"
+rescue LoadError
+  $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
+  raise
+end
+
 module Authcat
   module Password
-    class BCrypt < Base
-      option(:cost) { ::BCrypt::Engine.cost }
+    class BCrypt < Abstract
 
-      option(:min_cost) { ::BCrypt::Engine::MIN_COST }
-
-      option(:salt) { |password| password.generate_salt }
-
-      attr_reader :version
+      DEFAULT_OPTIONS = {
+        cost: ::BCrypt::Engine.cost,
+      }
 
       class << self
-        def valid?(hashed_password, *args)
-          !!::BCrypt::Password.valid_hash?(hashed_password)
+        def extract_options(hashed_password)
+          _, v, c, _ = hashed_password.split("$")
+
+          {
+            version:  v.to_str,
+            cost:     c.to_i,
+            salt:     hashed_password[0, 29].to_str
+          }
+        end
+
+        def valid?(hashed_password, **opts)
+          !!::BCrypt::Password.valid_hash?(hashed_password.to_str)
         end
 
         def valid_salt?(salt)
           !!::BCrypt::Engine.valid_salt?(salt)
         end
-      end
 
-      def initialize(*)
-        begin
-          require "bcrypt"
-        rescue LoadError
-          $stderr.puts "You don't have bcrypt installed in your application. Please add it to your Gemfile and run bundle install"
-          raise
-        end
-
-        super
-      end
-
-      def replace(hashed_password)
-        extract_hash(super)
-      end
-
-      def generate_salt(cost = self.cost)
-        raise ArgumentError, "cost should be numeric and >= #{min_cost}" unless cost.is_a?(Integer) && cost >= min_cost
-
-        ::BCrypt::Engine.generate_salt(cost)
-      end
-
-      private
-
-        def hash_function(password, salt = self.salt)
-          raise ArgumentError, "invalid salt: #{salt.inspect}" unless self.class.valid_salt?(salt)
+        def hash(password, **opts)
+          options = DEFAULT_OPTIONS.merge(opts)
+          salt = options[:salt] || ::BCrypt::Engine.generate_salt(options[:cost])
+          raise ArgumentError, "invalid salt: #{salt.inspect}" unless valid_salt?(salt)
 
           ::BCrypt::Engine.hash_secret(password, salt)
         end
 
-        def extract_hash(hashed_password)
-          _, v, c, _ = hashed_password.split("$")
-
-          @version = v.to_str
-          self.cost = c.to_i
-          self.salt = hashed_password[0, 29].to_str
-
-          hashed_password
+        def rehash(hashed_password, password, **opts)
+          hash(password, **extract_options(hashed_password))
         end
+      end
+
     end
+
   end
 end

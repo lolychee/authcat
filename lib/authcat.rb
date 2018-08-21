@@ -9,20 +9,16 @@ module Authcat
   autoload :Authenticator
   autoload :Core
   autoload :Callbacks
-
-  autoload :Strategies
-  autoload :Credentials
-
+  
   autoload :Model
-  autoload :Validators
-
+  
+  autoload :Strategy
   autoload :Support
 
-  autoload :Authentication
-
   eager_autoload do
-    autoload :Errors
     autoload :Password
+    autoload :Locator
+    autoload :Tokenizer
     autoload :Railtie
   end
 

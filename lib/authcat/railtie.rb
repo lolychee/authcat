@@ -9,34 +9,27 @@ else
         extend ActiveSupport::Concern
 
         module ClassMethods
-          def authenticator(name, klass = nil, **options)
-            klass ||= "#{name.to_s.capitalize}Authenticator".constantize
-
-            iv_name = "@authenticator"
-            define_method(:authenticator) do
-              instance_variable_get(iv_name) || instance_variable_set(iv_name, klass.new(request, **options))
-            end
-
-            class_eval <<-RUBY
-              def current_user
-                authenticator.identity || authenticator.authenticate
-              end
-
-              def authenticate_user!
-                authenticator.identity || authenticator.authenticate!
-              end
-
-              delegate :signed_in?, to: :authenticator
-
-              helper_method :current_user, :signed_in?
-            RUBY
+          def authenticator(*args, **opts, &block)
+            use ::Authcat::Authenticator, *args, **opts, &block
           end
+        end
+
+        def authenticator
+          request.authenticator
+        end
+      end
+
+      module RequestMixin
+        def authenticator
+          env[::Authcat::Authenticator::ENV_KEY]
         end
       end
 
       initializer "authcat" do |app|
+        ActionDispatch::Request.include RequestMixin
+
         ActiveSupport.on_load(:action_controller) do
-          send :include, Authcat::Railtie::ControllerMixin
+          send :include, ControllerMixin
         end
       end
     end

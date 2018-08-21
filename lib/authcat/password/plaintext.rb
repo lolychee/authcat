@@ -1,14 +1,19 @@
 module Authcat
   module Password
-    class Plaintext < Base
+    class Plaintext < Abstract
+
       class << self
         def valid?(password)
           String === password
         end
-      end
 
-      def hash_function(password)
-        password
+        def hash(password, **opts)
+          password
+        end
+        
+        def rehash(hashed_password, password, **opts)
+          password
+        end
       end
     end
   end

@@ -1,8 +1,7 @@
 class User < ApplicationRecord
   include Authcat::Model
 
-  # has_secure_password
-  has_password
+  has_secure_password
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
