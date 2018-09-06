@@ -6,7 +6,7 @@ rescue LoadError
 end
 
 module Authcat
-  module Tokenizer
+  module Tokenizers
     class JWT < Abstract
       DEFAULT_ALGORITHM = "HS256".freeze
 
@@ -42,5 +42,7 @@ module Authcat
           }
         end
     end
+
+    register :jwt, JWT
   end
 end

@@ -1,5 +1,5 @@
 module Authcat
-  module Tokenizer
+  module Tokenizers
     class Abstract
       attr_reader :options
 

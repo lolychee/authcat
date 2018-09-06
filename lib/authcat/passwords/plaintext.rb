@@ -1,9 +1,5 @@
 module Authcat
-  module Password
-    def self.Plaintext(hashed_password)
-      Plaintext.new(hashed_password)
-    end
-
+  module Passwords
     class Plaintext < Abstract
       class << self
         def valid?(password)
@@ -19,5 +15,11 @@ module Authcat
         end
       end
     end
+
+    def self.Plaintext(hashed_password)
+      Plaintext.new(hashed_password)
+    end
+
+    register :plaintext, Plaintext
   end
 end

@@ -6,11 +6,7 @@ rescue LoadError
 end
 
 module Authcat
-  module Password
-      def self.BCrypt(hashed_password)
-        BCrypt.new(hashed_password)
-      end
-
+  module Passwords
     class BCrypt < Abstract
       DEFAULT_OPTIONS = {
         cost: ::BCrypt::Engine.cost,
@@ -48,5 +44,11 @@ module Authcat
         end
       end
     end
+
+    def self.BCrypt(hashed_password)
+      BCrypt.new(hashed_password)
+    end
+
+    register :bcrypt, BCrypt
   end
 end

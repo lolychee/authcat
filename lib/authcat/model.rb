@@ -1,18 +1,11 @@
 module Authcat
   module Model
-    extend ActiveSupport::Autoload
-    extend ActiveSupport::Concern
-
-    eager_autoload do
-      autoload :SecurePassword
-      autoload :Tokenable
-      autoload :Validators
+    def self.included(base)
+      base.include SecurePassword
+      base.include Tokenable
     end
-
-    eager_load!
-
-    include SecurePassword
-    include Tokenable
-    include Validators
   end
 end
+
+require "authcat/model/secure_password"
+require "authcat/model/tokenable"

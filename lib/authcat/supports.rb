@@ -1,0 +1,1 @@
+require "authcat/supports/registrable"

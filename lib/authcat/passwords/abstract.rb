@@ -1,5 +1,5 @@
 module Authcat
-  module Password
+  module Passwords
     class Abstract
       class << self
         def valid?(password)

@@ -1,5 +1,5 @@
 module Authcat
-  module Strategy
+  module Strategies
     class Abstract
       attr_reader :app, :tokenizer, :options
       attr_reader :name

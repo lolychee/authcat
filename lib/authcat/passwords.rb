@@ -1,14 +1,6 @@
 module Authcat
-  module Password
-    extend ActiveSupport::Autoload
+  module Passwords
     extend Support::Registrable
-
-    autoload :Abstract
-    autoload :Plaintext
-    autoload :BCrypt, "authcat/password/bcrypt"
-
-    register :plaintext,  :Plaintext
-    register :bcrypt,     :BCrypt
 
     class << self
       def secure_compare(a, b)
@@ -19,3 +11,7 @@ module Authcat
     end
   end
 end
+
+require "authcat/passwords/abstract"
+require "authcat/passwords/plaintext"
+require "authcat/passwords/bcrypt"

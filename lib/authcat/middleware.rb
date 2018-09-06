@@ -14,7 +14,7 @@ module Authcat
     end
 
     def strategy(name, tokenizer, **opts)
-      strategy = Strategy.lookup(name)
+      strategy = Strategies.lookup(name)
       @builder.use strategy, tokenizer, **opts
     end
   end

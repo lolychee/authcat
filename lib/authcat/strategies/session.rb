@@ -1,5 +1,5 @@
 module Authcat
-  module Strategy
+  module Strategies
     class Session < Abstract
       attr_reader :key
 

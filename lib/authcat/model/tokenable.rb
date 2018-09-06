@@ -1,41 +1,20 @@
 module Authcat
   module Model
     module Tokenable
-      extend ActiveSupport::Concern
+      def self.included(base)
+        base.extend ClassMethods
 
-      included do |base|
-        tokenizer :jwt, signature_key: Authcat.secret_key
-
-        if const_defined?(:GlobalID) && base < ::GlobalID::Identification
-          extend ByGlobalID
-        else
-          extend ByID
-        end
+        base.tokenizer :jwt, signature_key: Authcat.secret_key
       end
 
       module ClassMethods
         def tokenizer(name = nil, **opts)
           return @tokenizer if name.nil?
 
-          klass = Tokenizer.lookup(name)
+          klass = Tokenizers.lookup(name)
           @tokenizer = klass.new(**opts)
         end
-      end
 
-      module ByGlobalID
-        def untokenize(token)
-          payload = tokenizer.untokenize(token)
-          ::GlobalID.find(payload["gid".freeze])
-        end
-
-        def tokenize(identity)
-          raise ArgumentError, "invalid identity: #{identity.inspect}" unless identity.is_a?(self)
-          payload = { "gid".freeze => ::GlobalID.create(identity) }
-          tokenizer.tokenize(payload)
-        end
-      end
-
-      module ByID
         def untokenize(token)
           payload = tokenizer.untokenize(token)
           find(payload["id".freeze])

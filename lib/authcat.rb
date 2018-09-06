@@ -1,25 +1,16 @@
-require "active_support"
-require "active_support/rails"
+require "authcat/version"
+require "authcat/supports"
+require "authcat/extensions"
+require "authcat/authenticator"
+require "authcat/middleware"
+require "authcat/model"
+require "authcat/passwords"
+require "authcat/strategies"
+require "authcat/tokenizers"
+require "authcat/railtie"
 
 module Authcat
-  extend ActiveSupport::Autoload
-
-  eager_autoload do
-    autoload :Password
-    autoload :Railtie
-    autoload :Support
-    autoload :Tokenizer
+  class << self
+    attr_accessor :secret_key
   end
-
-  eager_load!
-
-  autoload :VERSION
-
-  autoload :Authenticator
-  autoload :Callbacks
-  autoload :Middleware
-  autoload :Model
-  autoload :Strategy
-
-  cattr_accessor :secret_key
 end

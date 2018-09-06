@@ -1,8 +1,6 @@
 module Authcat
   module Model
     module SecurePassword
-      extend ActiveSupport::Concern
-
       module ClassMethods
         def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", **options, &block)
           attribute column_name, :password, **options
@@ -21,55 +19,10 @@ module Authcat
           METHOD
         end
       end
-    end
-  end
-end
 
-begin
-  require "active_record/type"
-rescue LoadError
-else
-
-  module ActiveRecord
-    module Type
-      class Password < String
-        attr_reader :algorithm
-
-        def initialize(algorithm: :bcrypt, **options)
-          @algorithm = ::Authcat::Password.lookup(algorithm)
-          @options = options
-        end
-
-        def type
-          :password
-        end
-
-        def options
-          @options ||= {}
-        end
-
-        def cast_value(value)
-          case value
-          when ::Authcat::Password::Plaintext
-            algorithm.new(**options) { value }
-          when String
-            algorithm.new(value, **options)
-          else
-            serialize(value)
-          end
-        end
-
-        def serialize(value)
-            algorithm.valid?(value, **options) ? value.to_str : nil
-        end
-
-        def deserialize(value)
-          return if value.nil?
-          algorithm.new(value, **options)
-        end
+      def self.included(base)
+        base.extend ClassMethods
       end
     end
   end
-
-  ActiveRecord::Type.register(:password, ActiveRecord::Type::Password)
 end

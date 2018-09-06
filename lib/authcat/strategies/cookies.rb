@@ -1,5 +1,5 @@
 module Authcat
-  module Strategy
+  module Strategies
     class Cookies < Abstract
       RACK_COOKIES = "rack.cookies".freeze
       DEFAULT_COOKIES_OPTIONS = {
