@@ -7,7 +7,7 @@ class SignUpController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      authenticator.sign_in(@user)
+      authenticator[:cookies] = @user
       flash[:success] = "Your account has been successfully created."
 
       redirect_to root_url

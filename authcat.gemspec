@@ -6,10 +6,10 @@ require "authcat/version"
 Gem::Specification.new do |spec|
   spec.name          = "authcat"
   spec.version       = Authcat::VERSION
-  spec.authors       = ["lychee"]
+  spec.authors       = ["lychee xing"]
   spec.email         = ["lolychee@gmail.com"]
 
-  spec.summary       = "Authentication Library for Rails App."
+  spec.summary       = "Authentication Library for Rack App."
   spec.description   = ""
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
@@ -28,5 +28,4 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "jwt", ">= 2.1"
-  spec.add_dependency "railties", ">= 5.0.0"
 end

@@ -1,7 +1,6 @@
 module Authcat
   module Strategy
     extend ActiveSupport::Autoload
-    extend ActiveSupport::Concern
     extend Support::Registrable
 
     autoload :Abstract

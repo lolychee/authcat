@@ -1,37 +1,46 @@
 module Authcat
   class Authenticator
+    include Enumerable
+
     ENV_KEY = "authcat.authenticator".freeze
 
-    def initialize(app, &block)
-      @builder = Rack::Builder.new(app)
-      @strategies = Hash.new {|_, key| raise ArgumentError, "unknown strategy: #{key.inspect}.".freeze }
-      @lazy = Hash.new
-      instance_eval(&block) if block_given?
+    attr_reader :tokens, :set_tokens, :delete_tokens
 
-      @app = @builder.to_app
+    def initialize(&block)
+      @tokenizers = {}
+      @tokens = {}
+      @set_tokens = {}
+      @delete_tokens = {}
     end
 
-    def call(env)
-      dup._call(env)
+    def use(name, tokenizer)
+      @tokenizers[name.to_sym] = tokenizer
     end
 
-    def _call(env)
-      env[ENV_KEY] = self
-      @app.call(env)
+    def update(other_hash)
+      @tokens.update(Hash[other_hash.map {|k, v| [k.to_sym, v] }])
     end
 
-    def strategy(name, finder, **opts)
-      strategy = Strategy.lookup(name)
-      @builder.use strategy, finder, **opts
+    def [](name)
+      tokenizer = get_tokenizer(name)
+      token = @tokens.fetch(name.to_sym) { return }
+      tokenizer.untokenize(token)
     end
 
-    def []=(key, value)
-      @lazy[key] = value.is_a?(Proc) ? value : proc { value }
+    def []=(name, identity)
+      tokenizer = get_tokenizer(name)
+      token = tokenizer.tokenize(identity)
+      @set_tokens[name.to_sym] = token
     end
 
-    def [](key)
-      proc = @lazy[key]
-      proc && proc[self]
+    def delete(name)
+      @delete_tokens[name.to_sym] = true
     end
+
+    private
+
+      def get_tokenizer(name)
+        @tokenizers.fetch(name.to_sym) { raise NameError, "Unknown name: #{name.inspect}" }
+      end
   end
 end

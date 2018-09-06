@@ -14,6 +14,10 @@ module Authcat
               self.#{column_name} = ::Authcat::Password::Plaintext.new(value)
               @#{attribute} = value
             end
+
+            def #{attribute}_verify(hashed_password)
+              #{column_name}.verify(hashed_password)
+            end
           METHOD
         end
       end

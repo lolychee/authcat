@@ -35,8 +35,8 @@ module Authcat
       alias_method :to_str, :to_s
 
       def inspect
-        to_s.inspect
-      end
+        "#{self.class}(#{to_s.inspect})"
+       end
     end
   end
 end

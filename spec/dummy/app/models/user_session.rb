@@ -1,4 +1,4 @@
-class Session
+class UserSession
   include ActiveModel::Model
 
   attr_accessor :user
@@ -29,6 +29,6 @@ class Session
     end
 
     def password_should_match
-      errors.add(:password, "not match") unless user.password_digest.verify(password)
+      errors.add(:password, "not match") unless user.password_verify(password)
     end
 end

@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  authenticator do
-    strategy :session, User, key: :access_token
+  authcat do
     strategy :cookies, User, key: :access_token
   end
 
@@ -11,13 +10,14 @@ class ApplicationController < ActionController::Base
   # rescue_from(Authcat::Errors::IdentityNotFound, with: :render_error_unauthorized)
 
   def current_user
-    @current_user ||= (authenticator[:session] || authenticator[:cookies])
+    return @current_user if instance_variable_defined?(:@current_user)
+    @current_user = authenticator[:cookies]
   end
 
-  def signed_in?
+  def user_signed_in?
     !current_user.nil?
   end
-  helper_method :current_user, :signed_in?
+  helper_method :current_user, :user_signed_in?
 
   def render_error_unauthorized
     if request.get?

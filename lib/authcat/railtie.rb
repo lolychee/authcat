@@ -9,8 +9,8 @@ else
         extend ActiveSupport::Concern
 
         module ClassMethods
-          def authenticator(*args, **opts, &block)
-            use ::Authcat::Authenticator, *args, **opts, &block
+          def authcat(*args, **opts, &block)
+            use ::Authcat::Middleware, *args, **opts, &block
           end
         end
 
@@ -21,11 +21,13 @@ else
 
       module RequestMixin
         def authenticator
-          env[::Authcat::Authenticator::ENV_KEY]
+          @authenticator ||= env[::Authcat::Authenticator::ENV_KEY]
         end
       end
 
       initializer "authcat" do |app|
+        Authcat.secret_key ||= Rails.application.secrets.secret_key_base
+
         ActionDispatch::Request.include RequestMixin
 
         ActiveSupport.on_load(:action_controller) do

@@ -4,23 +4,22 @@ require "active_support/rails"
 module Authcat
   extend ActiveSupport::Autoload
 
-  autoload :VERSION
-
-  autoload :Authenticator
-  autoload :Core
-  autoload :Callbacks
-  
-  autoload :Model
-  
-  autoload :Strategy
-  autoload :Support
-
   eager_autoload do
     autoload :Password
-    autoload :Locator
-    autoload :Tokenizer
     autoload :Railtie
+    autoload :Support
+    autoload :Tokenizer
   end
 
   eager_load!
+
+  autoload :VERSION
+
+  autoload :Authenticator
+  autoload :Callbacks
+  autoload :Middleware
+  autoload :Model
+  autoload :Strategy
+
+  cattr_accessor :secret_key
 end

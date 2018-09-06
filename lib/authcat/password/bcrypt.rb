@@ -7,8 +7,11 @@ end
 
 module Authcat
   module Password
-    class BCrypt < Abstract
+      def self.BCrypt(hashed_password)
+        BCrypt.new(hashed_password)
+      end
 
+    class BCrypt < Abstract
       DEFAULT_OPTIONS = {
         cost: ::BCrypt::Engine.cost,
       }
@@ -44,8 +47,6 @@ module Authcat
           hash(password, **extract_options(hashed_password))
         end
       end
-
     end
-
   end
 end

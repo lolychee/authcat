@@ -5,7 +5,7 @@ describe Authcat::Authenticator do
   let!(:app) { Rails.application }
 
   let(:user) { User.create!(email: "someone@example.com", password: "password") }
-  
+
   describe "#authenticate" do
     it "" do
       # middleware = Authcat::Authenticator.new(app) do
@@ -14,9 +14,9 @@ describe Authcat::Authenticator do
 
       req = Rack::MockRequest.new(app)
 
-      req.get("/", {"HTTP_COOKIE" => "access_token=#{user.to_token}"})
-      # binding.pry
-      expect(auth.authenticate).to be nil
+      resp = req.get("/", {"HTTP_COOKIE" => "access_token=#{User.tokenize(user)}"})
+
+      binding.pry
     end
   end
 end

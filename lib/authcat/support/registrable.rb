@@ -11,7 +11,7 @@ module Authcat
       
       def lookup(key)
         return key if key.is_a?(Class)
-        class_name = registry[key]
+        class_name = registry.fetch(key) {|name| raise NameError, "Unknown #{name.inspect}" }
         class_name.is_a?(Class) ? class_name : const_get(class_name)
       end
     end

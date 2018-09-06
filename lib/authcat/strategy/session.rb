@@ -1,23 +1,26 @@
 module Authcat
   module Strategy
     class Session < Abstract
-      def default_name
-        :session
-      end
-
-      def key
-        @key ||= options.fetch(:key) { raise ArgumentError, "option :key required.".freeze }
-      end
+      attr_reader :key
 
       def process(env, authenticator)
         session = env[Rack::RACK_SESSION]
+        return yield unless session
 
-        if session.key?(key)
-          token = session[key]
-          authenticator[name] = default_proc[finder, token]
-        end
+        token = session[key]
+        authenticator.update(name => token) if token
 
-        yield
+        response = yield
+
+        new_token = authenticator.set_tokens[name]
+        session[key] = new_token if new_token
+        session.delete(key) if authenticator.delete_tokens[name]
+        response
+      end
+
+      def extract_options(opts)
+        @key = opts.fetch(:key) { raise ArgumentError, "option :key required.".freeze }
+        super
       end
     end
   end

@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
-  before_action :set_user
+  before_action :find_user
 
   def show
   end
 
   private
 
-    def set_user
-      @user = User.find(params[:id])
+    def find_user(id = params[:id])
+      @user = User.find(id)
     end
 end

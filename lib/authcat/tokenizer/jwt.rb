@@ -5,27 +5,29 @@ rescue LoadError
   raise
 end
 
-
 module Authcat
   module Tokenizer
     class JWT < Abstract
-      def initialize(**opts)
-        super
-        @algorithm = opts.fetch(:algorithm, "HS256")
-        @secret_key = opts.fetch(:secret_key) do
-          @algorithm == "none" ? nil : raise(ArgumentError, "secret_key is required.")
-        end
+      DEFAULT_ALGORITHM = "HS256".freeze
+
+      def tokenize(payload, signature_key: @signature_key, algorithm: @algorithm)
+        ::JWT.encode(payload_with_claims(payload), signature_key, algorithm)
       end
 
-      def encode(payload)
-        ::JWT.encode(payload_with_claims(payload), @secret_key, @algorithm)
-      end
-
-      def decode(token, validate: true)
-        ::JWT.decode(token, @secret_key, validate, validate_headers)
+      def untokenize(token, signature_key: @signature_key, validate: true)
+        payload, _ = ::JWT.decode(token, signature_key, validate, validate_headers)
+        payload
       end
 
       private
+
+        def extract_options(opts)
+          @algorithm = opts.fetch(:algorithm, DEFAULT_ALGORITHM)
+          @signature_key = opts.fetch(:signature_key) do
+            @algorithm == "none".freeze ? nil : raise(ArgumentError, "option :signature_key is required.".freeze)
+          end
+          super
+        end
 
         def payload_with_claims(payload)
           payload[:exp] ||= (Time.now + expires_in).to_i if expires_in = @options[:expires_in]

@@ -3,7 +3,6 @@ PATH
   specs:
     authcat (0.1.0)
       jwt (>= 2.1)
-      railties (>= 5.0.0)
 
 GEM
   remote: https://gems.ruby-china.com/
@@ -101,7 +100,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.1.2)
       ast (~> 2.4.0)
-    pg (1.0.0)
+    pg (1.1.2)
     powerpack (0.1.2)
     pry (0.11.3)
       coderay (~> 1.1.0)
@@ -213,7 +212,7 @@ GEM
     uglifier (4.1.18)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.4.0)
-    web-console (3.6.2)
+    web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
@@ -254,4 +253,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.16.1
+   1.16.4
