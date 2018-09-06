@@ -18,6 +18,7 @@ gemspec
 gem "pry"
 
 gem "rubocop"
+gem "rubocop-github"
 
 group :test do
   gem "rspec", "~> 3.5"

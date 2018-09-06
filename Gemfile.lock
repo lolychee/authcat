@@ -168,6 +168,8 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
+    rubocop-github (0.10.0)
+      rubocop (~> 0.51)
     ruby-progressbar (1.10.0)
     sass (3.5.7)
       sass-listen (~> 4.0.0)
@@ -241,6 +243,7 @@ DEPENDENCIES
   rspec (~> 3.5)
   rspec-rails (~> 3.5)
   rubocop
+  rubocop-github
   sass-rails (~> 5.0)
   simplecov
   spring
