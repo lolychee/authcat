@@ -1,18 +1,17 @@
+# frozen_string_literal: true
+
 class UserSession
   include ActiveModel::Model
 
   attr_accessor :user
-  attr_accessor :email, :password, :remember_me
+  attr_accessor :email, :password
+  attr_reader :remember_me
 
   validates :email, presence: true
   validates :password, presence: true
 
   validate :email_should_found, if: -> { email.present? }
   validate :password_should_match, if: -> { user && password.present? }
-
-  def email=(value)
-    @email = value
-  end
 
   def remember_me=(value)
     @remember_me = ActiveModel::Type::Boolean.new.cast(value)

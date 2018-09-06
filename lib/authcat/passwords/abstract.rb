@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module Authcat
   module Passwords
     class Abstract
       class << self
         def valid?(password)
-          raise NotImplementedError, ".valid? not implemented.".freeze
+          raise NotImplementedError, ".valid? not implemented."
         end
 
         def hash(password, **opts)
-          raise NotImplementedError, ".hash not implemented.".freeze
+          raise NotImplementedError, ".hash not implemented."
         end
 
         def rehash(hashed_password, password, **opts)
-          raise NotImplementedError, ".rehash not implemented.".freeze
+          raise NotImplementedError, ".rehash not implemented."
         end
       end
 
@@ -36,7 +38,7 @@ module Authcat
 
       def inspect
         "#{self.class}(#{to_s.inspect})"
-       end
+      end
     end
   end
 end

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Authcat
   module Strategies
     class Cookies < Abstract
-      RACK_COOKIES = "rack.cookies".freeze
+      RACK_COOKIES = "rack.cookies"
       DEFAULT_COOKIES_OPTIONS = {
         httponly: true
       }
@@ -29,7 +31,7 @@ module Authcat
       end
 
       def extract_options(opts)
-        @key = opts.fetch(:key) { raise ArgumentError, "option :key required.".freeze }
+        @key = opts.fetch(:key) { raise ArgumentError, "option :key required." }
         @cookies_options = DEFAULT_COOKIES_OPTIONS.merge(opts[:cookies_options] || {})
         super
       end

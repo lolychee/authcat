@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Strategies
     class Session < Abstract
@@ -19,7 +21,7 @@ module Authcat
       end
 
       def extract_options(opts)
-        @key = opts.fetch(:key) { raise ArgumentError, "option :key required.".freeze }
+        @key = opts.fetch(:key) { raise ArgumentError, "option :key required." }
         super
       end
     end

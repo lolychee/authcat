@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dummy
   class FormBuilder < ActionView::Helpers::FormBuilder
     def error_messages(method, **options)

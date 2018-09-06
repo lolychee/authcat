@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::SendResetPasswordController < ApplicationController
   before_action :set_user
 

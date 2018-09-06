@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "authcat/extensions/active_model"
 
 module Authcat

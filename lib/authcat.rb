@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "authcat/version"
 require "authcat/supports"
 require "authcat/extensions"

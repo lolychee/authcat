@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::ProfilesController < AccountController
   def show
   end

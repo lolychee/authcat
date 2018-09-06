@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Authcat::Callbacks do
-
   let!(:authenticator_class) do
     Class.new do
       module Core
@@ -28,7 +29,6 @@ describe Authcat::Callbacks do
         block.call
         history << :after_around_authenticate
       end
-
     end
   end
 
@@ -58,5 +58,4 @@ describe Authcat::Callbacks do
     authenticator.authenticate
     expect(authenticator.history).to include :before_authenticate_via_helper
   end
-
 end

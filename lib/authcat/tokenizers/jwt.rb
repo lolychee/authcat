@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 begin
   require "jwt"
 rescue LoadError
@@ -8,7 +10,7 @@ end
 module Authcat
   module Tokenizers
     class JWT < Abstract
-      DEFAULT_ALGORITHM = "HS256".freeze
+      DEFAULT_ALGORITHM = "HS256"
 
       def tokenize(payload, signature_key: @signature_key, algorithm: @algorithm)
         ::JWT.encode(payload_with_claims(payload), signature_key, algorithm)
@@ -24,7 +26,7 @@ module Authcat
         def extract_options(opts)
           @algorithm = opts.fetch(:algorithm, DEFAULT_ALGORITHM)
           @signature_key = opts.fetch(:signature_key) do
-            @algorithm == "none".freeze ? nil : raise(ArgumentError, "option :signature_key is required.".freeze)
+            @algorithm == "none" ? nil : raise(ArgumentError, "option :signature_key is required.")
           end
           super
         end

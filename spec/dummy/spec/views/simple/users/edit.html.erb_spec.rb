@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe "simple/users/edit", type: :view do
   before(:each) do
-    @simple_user = assign(:simple_user, Simple::User.create!())
+    @simple_user = assign(:simple_user, Simple::User.create!)
   end
 
   it "renders the edit simple_user form" do

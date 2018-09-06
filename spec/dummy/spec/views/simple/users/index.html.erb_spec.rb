@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe "simple/users/index", type: :view do
   before(:each) do
     assign(:simple_users, [
-      Simple::User.create!(),
-      Simple::User.create!()
+      Simple::User.create!,
+      Simple::User.create!
     ])
   end
 

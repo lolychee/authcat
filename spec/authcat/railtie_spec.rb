@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Authcat::Railtie do
@@ -41,6 +43,5 @@ describe Authcat::Railtie do
         end
       end
     end
-
   end
 end

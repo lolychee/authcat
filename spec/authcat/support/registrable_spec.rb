@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Authcat::Support::Registrable do
-
   let(:registry_class) { described_class::Registry }
 
   subject { Class.new { extend Authcat::Support::Registrable } }
@@ -17,7 +18,6 @@ describe Authcat::Support::Registrable do
   end
 
   describe "Options" do
-
     describe ":reader" do
       it do
         subject.has_registry reader: ->(value) { value.reverse }
@@ -33,6 +33,5 @@ describe Authcat::Support::Registrable do
         expect(subject.registry[:key]).to eq "abcabc"
       end
     end
-
   end
 end

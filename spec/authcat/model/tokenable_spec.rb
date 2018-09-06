@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Authcat::Model::Tokenable do
-
   let(:user) { User.create(email: "someone@example.com", password: "password") }
 
   describe ".find_by_token" do

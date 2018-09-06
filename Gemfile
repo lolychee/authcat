@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source ENV["GEM_SOURCE"] || "https://rubygems.org"
 
 # Specify your gem"s dependencies in authcat.gemspec
@@ -21,8 +23,8 @@ gem "rubocop"
 gem "rubocop-github"
 
 group :test do
-  gem "rspec", "~> 3.5"
   gem "database_cleaner", "~> 1.5"
+  gem "rspec", "~> 3.5"
 
   gem "simplecov", require: false
 end

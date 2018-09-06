@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Authcat::Password::BCrypt do
-
   let(:password) { "password" }
   let(:hashed_password) { "$2a$10$wafe2Xu.r3jGbSuGKrxPcumjKFKrdiAYhod/XvR9UZxy9QTyhA2.W" }
   let(:new_password) { "new_password" }
@@ -28,7 +29,7 @@ describe Authcat::Password::BCrypt do
     it do
       hashed_password = described_class.hash(password)
       expect(described_class.valid?(hashed_password)).to eq true
-    end 
+    end
   end
 
   describe ".rehash" do

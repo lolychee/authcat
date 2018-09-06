@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::ForgetPasswordController < ApplicationController
   def new
     @user = User.new

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Extensions
     module ActiveModelExtension
@@ -25,7 +27,7 @@ module Authcat
           end
 
           def serialize(value)
-           algorithm.valid?(value, **options) ? algorithm.new(value, **options) : nil
+            algorithm.valid?(value, **options) ? algorithm.new(value, **options) : nil
           end
         end
 

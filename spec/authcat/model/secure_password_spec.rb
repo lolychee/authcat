@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Authcat::Model::SecurePassword do
-
   let!(:user_class) do
     Class.new(ActiveRecord::Base) do
       self.table_name = User.table_name
@@ -38,5 +39,4 @@ describe Authcat::Model::SecurePassword do
   #     expect(model.password_verify(:password, password))
   #   end
   # end
-
 end

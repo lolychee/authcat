@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Tokenizers
     class Abstract
@@ -8,11 +10,11 @@ module Authcat
       end
 
       def tokenize(payload)
-        raise NotImplementedError, "#tokenize not implemented.".freeze
+        raise NotImplementedError, "#tokenize not implemented."
       end
 
       def untokenize(token)
-        raise NotImplementedError, "#untokenize not implemented.".freeze
+        raise NotImplementedError, "#untokenize not implemented."
       end
 
       private

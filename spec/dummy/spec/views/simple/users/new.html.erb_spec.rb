@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe "simple/users/new", type: :view do
   before(:each) do
-    assign(:simple_user, Simple::User.new())
+    assign(:simple_user, Simple::User.new)
   end
 
   it "renders new simple_user form" do

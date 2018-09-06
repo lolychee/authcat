@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Model
     module Tokenable
@@ -17,12 +19,12 @@ module Authcat
 
         def untokenize(token)
           payload = tokenizer.untokenize(token)
-          find(payload["id".freeze])
+          find(payload["id"])
         end
 
         def tokenize(identity)
           raise ArgumentError, "invalid identity: #{identity.inspect}" unless identity.is_a?(self)
-          payload = { "id".freeze => identity.id }
+          payload = { "id" => identity.id }
           tokenizer.tokenize(payload)
         end
       end

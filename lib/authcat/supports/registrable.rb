@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Supports
     module Registrable
@@ -10,8 +12,8 @@ module Authcat
       end
 
       def lookup(key)
-        registry.fetch(key) {|name| raise NameError, "Unknown #{name.inspect}" }
-       end
+        registry.fetch(key) { |name| raise NameError, "Unknown #{name.inspect}" }
+      end
     end
   end
 end

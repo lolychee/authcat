@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Authcat
   class Authenticator
     include Enumerable
 
-    ENV_KEY = "authcat.authenticator".freeze
+    ENV_KEY = "authcat.authenticator"
 
     attr_reader :tokens, :set_tokens, :delete_tokens
 
@@ -18,7 +20,7 @@ module Authcat
     end
 
     def update(other_hash)
-      @tokens.update(Hash[other_hash.map {|k, v| [k.to_sym, v] }])
+      @tokens.update(Hash[other_hash.map { |k, v| [k.to_sym, v] }])
     end
 
     def [](name)

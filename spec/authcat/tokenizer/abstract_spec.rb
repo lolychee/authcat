@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Authcat::Tokenizer::Abstract do
-
   let!(:tokenizer_class) do
     Class.new(described_class) do |klass|
       def encode(payload)
@@ -21,7 +22,7 @@ describe Authcat::Tokenizer::Abstract do
 
   describe "#encode" do
     it do
-      payload = {data: "data"}
+      payload = { data: "data" }
       token = "eyJkYXRhIjoiZGF0YSJ9"
       expect(tokenizer.encode(payload)).to eq token
     end
@@ -30,9 +31,8 @@ describe Authcat::Tokenizer::Abstract do
   describe "#decode" do
     it do
       token = "eyJ0b2tlbiI6InRva2VuIn0="
-      payload = {"token" => 'token'}
+      payload = { "token" => "token" }
       expect(tokenizer.decode(token)).to eq payload
     end
   end
-
 end
