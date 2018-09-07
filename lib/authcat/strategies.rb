@@ -2,7 +2,7 @@
 
 module Authcat
   module Strategies
-    extend Support::Registrable
+    extend Supports::Registrable
   end
 end
 

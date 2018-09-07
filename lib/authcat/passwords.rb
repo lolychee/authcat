@@ -2,7 +2,7 @@
 
 module Authcat
   module Passwords
-    extend Support::Registrable
+    extend Supports::Registrable
 
     class << self
       def secure_compare(a, b)

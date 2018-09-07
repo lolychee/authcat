@@ -22,12 +22,13 @@ module Authcat
               algorithm.new(**options) { value }.to_s
             else
               value_str = value.to_s
-              algorithm.valid?(value_str, **options) ? value_str : nil
+              algorithm.valid?(value_str, **options) ? algorithm.new(value_str, **options) : nil
             end
           end
 
           def serialize(value)
-            algorithm.valid?(value, **options) ? algorithm.new(value, **options) : nil
+            value_str = value.to_s
+            algorithm.valid?(value_str, **options) ? value_str : nil
           end
         end
 

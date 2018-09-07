@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Tokenizer
-    extend Support::Registrable
+  module Tokenizers
+    extend Supports::Registrable
   end
 end
 
-require "authcat/tokenizer/abstract"
-require "authcat/tokenizer/jwt"
+require "authcat/tokenizers/abstract"
+require "authcat/tokenizers/jwt"

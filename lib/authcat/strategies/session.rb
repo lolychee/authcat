@@ -25,5 +25,7 @@ module Authcat
         super
       end
     end
+
+    register :session, Session
   end
 end

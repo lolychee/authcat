@@ -11,7 +11,7 @@ module Authcat
             attr_reader :#{attribute}
 
             def #{attribute}=(value)
-              self.#{column_name} = ::Authcat::Password::Plaintext.new(value)
+              self.#{column_name} = ::Authcat::Passwords::Plaintext.new(value)
               @#{attribute} = value
             end
 

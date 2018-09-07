@@ -17,7 +17,7 @@ describe Authcat::Authenticator do
 
       resp = req.get("/", "HTTP_COOKIE" => "access_token=#{User.tokenize(user)}")
 
-      binding.pry
+      # binding.pry
     end
   end
 end

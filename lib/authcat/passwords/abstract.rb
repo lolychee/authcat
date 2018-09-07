@@ -28,7 +28,7 @@ module Authcat
       end
 
       def verify(password)
-        Password.secure_compare(@hashed_password, self.class.rehash(@hashed_password, password, **@options))
+        Passwords.secure_compare(@hashed_password, self.class.rehash(@hashed_password, password, **@options))
       end
 
       def to_s
