@@ -19,14 +19,17 @@ gemspec
 
 gem "pry"
 
-gem "rubocop"
-gem "rubocop-github"
-
 group :test do
   gem "database_cleaner", "~> 1.5"
   gem "rspec", "~> 3.5"
 
   gem "simplecov", require: false
+end
+
+group :development do
+  gem "rubocop"
+  gem "rubocop-rails_config"
+  gem "rubocop-rspec"
 end
 
 dummy_gemfile = File.expand_path("spec/dummy/Gemfile", __dir__)
