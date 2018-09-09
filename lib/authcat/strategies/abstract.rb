@@ -23,8 +23,6 @@ module Authcat
       def call(env)
         authenticator = env[Authenticator::ENV_KEY] ||= Authenticator.new
 
-        authenticator.use(name, tokenizer)
-
         process(env, authenticator) do
           @app.call(env)
         end

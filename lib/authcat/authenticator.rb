@@ -6,43 +6,30 @@ module Authcat
 
     ENV_KEY = "authcat.authenticator"
 
-    attr_reader :tokens, :set_tokens, :delete_tokens
+    attr_reader :identities, :set_identities, :delete_identities
 
     def initialize(&block)
-      @tokenizers = {}
-      @tokens = {}
-      @set_tokens = {}
-      @delete_tokens = {}
-    end
-
-    def use(name, tokenizer)
-      @tokenizers[name.to_sym] = tokenizer
+      @identities = {}
+      @set_identities = {}
+      @delete_identities = {}
     end
 
     def update(other_hash)
-      @tokens.update(Hash[other_hash.map { |k, v| [k.to_sym, v] }])
+      @identities.update(Hash[other_hash.map { |k, v| [k.to_sym, v] }])
     end
 
     def [](name)
-      tokenizer = get_tokenizer(name)
-      token = @tokens.fetch(name.to_sym) { return }
-      tokenizer.untokenize(token)
+     @identities[name.to_sym]
     end
 
     def []=(name, identity)
-      tokenizer = get_tokenizer(name)
-      token = tokenizer.tokenize(identity)
-      @set_tokens[name.to_sym] = token
+      @identities[name.to_sym] = identity
+      @set_identities[name.to_sym] = identity
     end
 
     def delete(name)
-      @delete_tokens[name.to_sym] = true
+      @identities.delete(name.to_sym)
+      @delete_identities[name.to_sym] = true
     end
-
-    private
-
-      def get_tokenizer(name)
-        @tokenizers.fetch(name.to_sym) { raise NameError, "Unknown name: #{name.inspect}" }
-      end
   end
 end

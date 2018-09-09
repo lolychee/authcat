@@ -4,8 +4,8 @@ module Authcat
   module Model
     module SecurePassword
       module ClassMethods
-        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", **options, &block)
-          attribute column_name, :password, **options
+        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", algorithm: ::Authcat.default_password_algorithm, **options, &block)
+          attribute column_name, :password, algorithm: ::Authcat::Passwords.lookup(algorithm), **options
 
           class_eval <<-METHOD
             attr_reader :#{attribute}

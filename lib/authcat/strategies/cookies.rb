@@ -19,13 +19,18 @@ module Authcat
         return yield unless cookie_jar
 
         token = cookie_jar[key]
-        authenticator.update(name => token) if token
+        authenticator.update(name => tokenizer.untokenize(token)) if token
 
         response = yield
 
-        new_token = authenticator.set_tokens[name]
-        cookie_jar[key] = @cookies_options.merge(value: new_token) if new_token
-        cookie_jar.delete(key) if authenticator.delete_tokens[name]
+        new_identity, opts = Array(authenticator.set_identities[name])
+        if new_identity
+          cookie_hash = @cookies_options.merge(opts)
+          cookie_hash[:value] = tokenizer.tokenize(identity)
+          cookie_jar[key] = cookie_hash
+        end
+
+        cookie_jar.delete(key) if authenticator.delete_identities[name]
 
         response
       end

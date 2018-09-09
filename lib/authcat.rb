@@ -13,6 +13,9 @@ require "authcat/railtie"
 
 module Authcat
   class << self
+    attr_accessor :default_password_algorithm
     attr_accessor :secret_key
   end
+
+  self.default_password_algorithm = :bcrypt
 end

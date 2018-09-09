@@ -7,8 +7,8 @@ module Authcat
         class PasswordType < ActiveModel::Type::String
           attr_reader :algorithm, :options
 
-          def initialize(algorithm: :bcrypt, **opts)
-            @algorithm = ::Authcat::Passwords.lookup(algorithm)
+          def initialize(**opts)
+            @algorithm = opts.fetch(:algorithm) { raise ArgumentError, "option :algorithm required." }
             @options = opts
           end
 
