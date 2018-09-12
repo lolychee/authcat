@@ -2,6 +2,9 @@
 
 module Authcat
   module Passwords
+    # TODO 与 Digest 接口保持统一
+    # TODO 增加 HMAC 支持
+    # TODO 支持 argon2 算法
     class Abstract
       class << self
         def valid?(password)

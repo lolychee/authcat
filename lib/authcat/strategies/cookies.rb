@@ -41,7 +41,5 @@ module Authcat
         super
       end
     end
-
-    register :cookies, Cookies
   end
 end
