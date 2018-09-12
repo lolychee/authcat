@@ -11,10 +11,6 @@ module Authcat
         def hash(password, **opts)
           raise NotImplementedError, ".hash not implemented."
         end
-
-        def rehash(hashed_password, password, **opts)
-          raise NotImplementedError, ".rehash not implemented."
-        end
       end
 
       def initialize(hashed_password = nil, **opts)
@@ -28,17 +24,13 @@ module Authcat
       end
 
       def verify(password)
-        Passwords.secure_compare(@hashed_password, self.class.rehash(@hashed_password, password, **@options))
+        Passwords.secure_compare(@hashed_password, self.class.hash(password, **@options))
       end
 
       def to_s
-        @hashed_password
+        @hashed_password.to_s
       end
       alias_method :to_str, :to_s
-
-      def inspect
-        "#{self.class}(#{to_s.inspect})"
-      end
     end
   end
 end

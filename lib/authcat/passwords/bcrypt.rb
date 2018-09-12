@@ -15,16 +15,6 @@ module Authcat
       }
 
       class << self
-        def extract_options(hashed_password)
-          _, v, c, _ = hashed_password.split("$")
-
-          {
-            version:  v.to_str,
-            cost:     c.to_i,
-            salt:     hashed_password[0, 29].to_str
-          }
-        end
-
         def valid?(hashed_password, **opts)
           !!::BCrypt::Password.valid_hash?(hashed_password.to_str)
         end
@@ -40,17 +30,24 @@ module Authcat
 
           ::BCrypt::Engine.hash_secret(password, salt)
         end
-
-        def rehash(hashed_password, password, **opts)
-          hash(password, **extract_options(hashed_password))
-        end
       end
-    end
 
-    def self.BCrypt(hashed_password)
-      BCrypt.new(hashed_password)
-    end
+      def initialize(hashed_password, **opts)
+        super
+        @options.merge!(extract_options(hashed_password)) if hashed_password
+      end
 
-    register :bcrypt, BCrypt
+      private
+
+        def extract_options(hashed_password)
+          _, v, c, _ = hashed_password.split("$")
+
+          {
+            version:  v.to_str,
+            cost:     c.to_i,
+            salt:     hashed_password[0, 29].to_str
+          }
+        end
+    end
   end
 end

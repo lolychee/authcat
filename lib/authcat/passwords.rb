@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
+require "authcat/passwords/abstract"
+require "authcat/passwords/plaintext"
+require "authcat/passwords/bcrypt"
+
 module Authcat
   module Passwords
     extend Supports::Registrable
+
+    register :plaintext, Plaintext
+    register :bcrypt,    BCrypt
 
     class << self
       def secure_compare(a, b)
@@ -13,7 +20,3 @@ module Authcat
     end
   end
 end
-
-require "authcat/passwords/abstract"
-require "authcat/passwords/plaintext"
-require "authcat/passwords/bcrypt"
