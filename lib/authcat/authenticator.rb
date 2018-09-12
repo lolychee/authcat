@@ -19,7 +19,7 @@ module Authcat
     end
 
     def [](name)
-     @identities[name.to_sym]
+      @identities[name.to_sym]
     end
 
     def []=(name, identity)

@@ -44,7 +44,5 @@ module Authcat
           }
         end
     end
-
-    register :jwt, JWT
   end
 end
