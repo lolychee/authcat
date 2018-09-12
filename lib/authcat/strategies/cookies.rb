@@ -26,7 +26,7 @@ module Authcat
         new_identity, opts = Array(authenticator.set_identities[name])
         if new_identity
           cookie_hash = @cookies_options.merge(opts)
-          cookie_hash[:value] = tokenizer.tokenize(identity)
+          cookie_hash[:value] = tokenizer.tokenize(new_identity)
           cookie_jar[key] = cookie_hash
         end
 
