@@ -26,6 +26,14 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Todo
+* Password
+    * [ ] 与 Digest 接口保持统一
+    * [ ] 增加 HMAC 支持
+    * [ ] 支持 argon2 算法
+* Token
+    * [ ] 自定义signature_key，例如：使用密码作为signature_key，当修改密码后，之前的token自动失效。
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
