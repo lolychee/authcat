@@ -4,8 +4,8 @@ services:
     image: ruby:2.5
     working_dir: /src/authcat
     volumes:
-      - .:/src/authcat
-      - rubygems:/usr/local/bundle
+      - .:/src/authcat:cached
+      - rubygems:/usr/local/bundle:delegated
     ports:
       - "3001:3000"
     # command: ['./entrypoint.sh', 's', '-b', '0.0.0.0']
