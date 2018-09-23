@@ -8,8 +8,9 @@ module Authcat
           attr_reader :algorithm, :options
 
           def initialize(**opts)
-            @algorithm = opts.fetch(:algorithm) { raise ArgumentError, "option :algorithm required." }
+            @algorithm = opts.delete(:algorithm) || raise(ArgumentError, "option :algorithm required.")
             @options = opts
+            super
           end
 
           def type

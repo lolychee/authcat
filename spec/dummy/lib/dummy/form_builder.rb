@@ -15,7 +15,7 @@ module Dummy
       tag_options.merge!(options)
 
       @template.content_tag(:ul, **tag_options) do
-        messages.map { |message| block_given? ? yield(messages) : @template.content_tag(:li, message) }.safe_join
+        @template.safe_join messages.map { |message| block_given? ? yield(messages) : @template.content_tag(:li, message) }
       end
     end
 

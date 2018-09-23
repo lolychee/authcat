@@ -1,10 +1,10 @@
-<%= form_for(@user_session, url: sign_in_path(redirect_to: params[:redirect_to]), method: :post, html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder) do |f| %>
+<%= form_with(model: @user_session, url: sign_in_path(redirect_to: params[:redirect_to]), html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder) do |f| %>
 
   <%= field_set_tag "Sign In" do %>
-    <%= f.field_group :email, class: "pure-control-group" do %>
-      <%= f.label :email %>
-      <%= f.text_field :email, placeholder: "Email", class: "pure-input-1" %>
-      <%= f.error_messages :email %>
+    <%= f.field_group :identifier, class: "pure-control-group" do %>
+      <%= f.label :identifier %>
+      <%= f.text_field :identifier, placeholder: "Identifier", class: "pure-input-1" %>
+      <%= f.error_messages :identifier %>
     <% end %>
 
     <%= f.field_group :password, class: "pure-control-group" do %>
@@ -18,5 +18,5 @@
     <% end %>
   <% end %>
 
-  <%= f.button "Sign In", type: :submit, class: "pure-button pure-input-1 pure-button-primary" %>
+  <%= f.submit "Sign In", class: "pure-button pure-input-1 pure-button-primary" %>
 <% end %>

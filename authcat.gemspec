@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Authentication Library for Rack App."
   spec.description   = ""
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/lolychee/authcat"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting "allowed_push_host", or
@@ -30,5 +30,6 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "jwt", ">= 2.1"
+  spec.add_dependency "bcrypt", ">= 3.1"
+  spec.add_dependency "jwt",    ">= 2.1"
 end

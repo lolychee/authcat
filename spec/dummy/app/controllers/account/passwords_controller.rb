@@ -2,12 +2,13 @@
 
 class Account::PasswordsController < AccountController
   def show
+    @user_reset_password = UserResetPassword.new
   end
 
   def update
-    @user.attributes = password_params
+    @user_reset_password = UserResetPassword.new(user_reset_password_params.merge(user: current_user))
 
-    if @user.change_password
+    if @user_reset_password.save
       flash.now[:success] = "Your password has been successfully updated."
     end
 
@@ -16,7 +17,7 @@ class Account::PasswordsController < AccountController
 
   private
 
-    def password_params
-      params.require(:password).permit(:current_password, :password, :password_confirmation)
+    def user_reset_password_params
+      params.require(:user_reset_password).permit(:current_password, :password, :password_confirmation)
     end
 end

@@ -1,4 +1,4 @@
-<%= form_for @user, as: :password, url: account_password_path, method: :patch, html: {class: "pure-form pure-form-stacked account-password-form" }, builder: Dummy::FormBuilder do |f| %>
+<%= form_with model: @user_reset_password, url: account_password_path, method: :patch, html: {class: "pure-form pure-form-stacked account-password-form" }, builder: Dummy::FormBuilder do |f| %>
   <%= field_set_tag "Password" do %>
 
     <%= f.field_group :current_password, class: "pure-control-group" do %>

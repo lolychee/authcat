@@ -3,8 +3,8 @@
 Rails.application.routes.draw do
   root to: "home#index"
 
-  get   :sign_up, to: "sign_up#new", as: :sign_up
-  post  :sign_up, to: "sign_up#create"
+  get   :sign_up, to: "users#new", as: :sign_up
+  post  :sign_up, to: "users#create"
 
   get   :sign_in, to: "user_sessions#new", as: :sign_in
   post  :sign_in, to: "user_sessions#create"

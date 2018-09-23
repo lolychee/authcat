@@ -12,12 +12,6 @@ gemspec
 # gem "sqlite3"
 # # Use Puma as the app server
 # gem "puma"
-#
-# gem "bcrypt", require: false
-#
-# gem "pure-css-rails"
-
-gem "pry"
 
 group :test do
   gem "database_cleaner", "~> 1.5"
@@ -33,4 +27,4 @@ group :development do
 end
 
 dummy_gemfile = File.expand_path("spec/dummy/Gemfile", __dir__)
-eval_gemfile dummy_gemfile, File.read(dummy_gemfile).gsub(/(source|gem \"authcat\").*\n/, "")
+eval_gemfile dummy_gemfile, ["ENV['EMBED'] = true", File.read(dummy_gemfile)].join($/)

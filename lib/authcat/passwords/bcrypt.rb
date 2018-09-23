@@ -32,7 +32,7 @@ module Authcat
         end
       end
 
-      def initialize(hashed_password, **opts)
+      def initialize(hashed_password = nil, **opts)
         super
         @options.merge!(extract_options(hashed_password)) if hashed_password
       end

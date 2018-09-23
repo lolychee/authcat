@@ -1,14 +1,15 @@
 version: '2'
 services:
   dev:
-    image: ruby:2.3
+    image: ruby:2.5
     working_dir: /src/authcat
     volumes:
       - .:/src/authcat
       - rubygems:/usr/local/bundle
     ports:
       - "3001:3000"
-    command: ['./entrypoint.sh', 's', '-b', '0.0.0.0']
+    # command: ['./entrypoint.sh', 's', '-b', '0.0.0.0']
+    command: ['sleep', 'infinity']
     environment:
       - LANG=C.UTF-8
       - GEM_SOURCE=https://gems.ruby-china.com
@@ -31,7 +32,7 @@ services:
       - MYSQL_PASSWORD=authcat
 
   redis:
-    image: redis:3.0
+    image: redis:4.0
     volumes:
       - redis_data:/data
 

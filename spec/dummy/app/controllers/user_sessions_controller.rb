@@ -11,7 +11,7 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(user_session_params)
 
     if @user_session.save
-      authenticator[:cookies] = [@user_session.user, expires: @user_session.remember_me ? 20.years.from_now : nil]
+      user_sign_in(@user_session.user, @user_session.remember_me)
 
       redirect_to params[:redirect_to] || root_url, flash: { success: "You have successfully signed in." }
     else
@@ -20,7 +20,7 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    authenticator.delete(:cookies)
+    user_sign_out
 
     redirect_to root_url, flash: { info: "You have successfully signed out." }
   end
@@ -28,6 +28,6 @@ class UserSessionsController < ApplicationController
   private
 
     def user_session_params
-      params.require(:user_session).permit(:email, :password, :remember_me)
+      params.require(:user_session).permit(:identifier, :password, :remember_me)
     end
 end
