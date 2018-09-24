@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  PASSWORD_VALIDATES_OPTIONS = {length: { minimum: 6, maximum: 72 }}
+  PASSWORD_VALIDATES_OPTIONS = { length: { minimum: 6, maximum: 72 } }
 
   with_options on: :save do
     validates :email, presence: true, uniqueness: true, format: { with: EMAIL_REGEX }

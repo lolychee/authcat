@@ -3,3 +3,9 @@ require: rubocop-rspec
 inherit_gem:
   rubocop-rails_config:
     - config/rails.yml
+
+AllCops:
+  Exclude:
+    - "Gemfile.lock"
+    - "spec/dummy/Gemfile.lock"
+  TargetRubyVersion: 2.5

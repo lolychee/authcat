@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post :sign_in,  to: "user_sessions#create"
   post :sign_out, to: "user_sessions#destroy", as: :sign_out
 
-  resource :reset_password, controller: 'user_reset_password', only: [:new, :create, :show, :update]
+  resource :reset_password, controller: "user_reset_password", only: [:new, :create, :show, :update]
 
   namespace :account do
     root to: "profiles#show"
