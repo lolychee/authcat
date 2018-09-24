@@ -1,11 +1,5 @@
-<%= form_with model: @user, scope: :user_reset_password, url: account_password_path, method: :patch, html: {class: "pure-form pure-form-stacked account-password-form" }, builder: Dummy::FormBuilder do |f| %>
+<%= form_with model: @user, scope: :user_reset_password, url: reset_password_path, method: :patch, html: {class: "pure-form pure-form-stacked account-password-form" }, builder: Dummy::FormBuilder do |f| %>
   <%= field_set_tag "Password" do %>
-
-    <%= f.field_group :current_password, class: "pure-control-group" do %>
-      <%= f.label :current_password %>
-      <%= f.password_field :current_password, class: "pure-input-1" %>
-      <%= f.error_messages :current_password %>
-    <% end %>
 
     <%= f.field_group :password, class: "pure-control-group" do %>
       <%= f.label :password %>
@@ -22,6 +16,6 @@
   <% end %>
 
   <div class="pure-controls">
-    <%= f.button "Change", type: :submit, class: "pure-button pure-button-primary" %>
+    <%= f.button "Reset", type: :submit, class: "pure-button pure-button-primary" %>
   </div>
 <% end %>

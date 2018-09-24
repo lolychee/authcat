@@ -6,7 +6,7 @@
     <ul class="pure-menu-list session-menu">
       <% if user_signed_in? %>
         <li class="pure-menu-item"><a href="<%= account_root_path %>" class="pure-menu-link"><%= current_user.email %></a></li>
-        <li class="pure-menu-item"><%= button_to "Sign Out", sign_out_path, method: :delete, class: "pure-menu-link" %></li>
+        <li class="pure-menu-item"><%= button_to "Sign Out", sign_out_path, method: :post, class: "pure-menu-link" %></li>
       <% else %>
         <li class="pure-menu-item"><a href="<%= sign_up_path %>" class="pure-menu-link">Sign Up</a></li>
         <li class="pure-menu-item"><a href="<%= sign_in_path %>" class="pure-menu-link">Sign In</a></li>

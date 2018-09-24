@@ -1,4 +1,4 @@
-<%= form_for(@user, as: :user, url: sign_up_path, method: :post, html: { class: "pure-form pure-form-aligned sign-up-form" }, builder: Dummy::FormBuilder) do |f| %>
+<%= form_with model: @user, url: sign_up_path, html: { class: "pure-form pure-form-aligned sign-up-form" }, builder: Dummy::FormBuilder do |f| %>
 
   <%= field_set_tag "Sign Up" do %>
     <%= f.field_group :email, class: "pure-control-group" do %>
@@ -14,6 +14,6 @@
     <% end %>
   <% end %>
   <div class="pure-controls">
-    <%= f.button "Sign Up", type: :submit, class: "pure-button pure-button-primary" %>
+    <%= f.submit "Sign Up", class: "pure-button pure-button-primary" %>
   </div>
 <% end %>

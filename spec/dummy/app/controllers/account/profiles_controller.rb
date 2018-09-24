@@ -5,7 +5,7 @@ class Account::ProfilesController < AccountController
   end
 
   def update
-    if @user.update(profile_params)
+    if @user.update(user_profile_params)
       flash.now[:success] = "Your profile has been successfully updated."
     end
 
@@ -14,7 +14,7 @@ class Account::ProfilesController < AccountController
 
   private
 
-    def profile_params
-      params.require(:profile).permit(:name, :bio)
+    def user_profile_params
+      params.require(:user_profile).permit(:name, :bio)
     end
 end

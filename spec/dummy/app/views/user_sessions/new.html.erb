@@ -1,4 +1,4 @@
-<%= form_with(model: @user_session, url: sign_in_path(redirect_to: params[:redirect_to]), html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder) do |f| %>
+<%= form_with model: @user_session, url: sign_in_path(redirect_to: params[:redirect_to]), html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder do |f| %>
 
   <%= field_set_tag "Sign In" do %>
     <%= f.field_group :identifier, class: "pure-control-group" do %>
