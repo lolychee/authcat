@@ -10,11 +10,10 @@ end
 module Authcat
   module Passwords
     class BCrypt < Abstract
-      DEFAULT_OPTIONS = {
-        cost: ::BCrypt::Engine.cost,
-      }
-
       class << self
+        attr_accessor :cost
+        self.cost = ::BCrypt::Engine.cost
+
         def valid?(hashed_password, **opts)
           !!::BCrypt::Password.valid_hash?(hashed_password.to_str)
         end
@@ -24,7 +23,7 @@ module Authcat
         end
 
         def hash(password, **opts)
-          options = DEFAULT_OPTIONS.merge(opts)
+          options = { cost: self.cost }.merge(opts)
           salt = options[:salt] || ::BCrypt::Engine.generate_salt(options[:cost])
           raise ArgumentError, "invalid salt: #{salt.inspect}" unless valid_salt?(salt)
 

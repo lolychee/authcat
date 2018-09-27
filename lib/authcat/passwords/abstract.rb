@@ -26,11 +26,12 @@ module Authcat
       def verify(password)
         Passwords.secure_compare(@hashed_password, self.class.hash(password, **@options))
       end
+      alias == verify
 
       def to_s
         @hashed_password.to_s
       end
-      alias_method :to_str, :to_s
+      alias to_str to_s
     end
   end
 end

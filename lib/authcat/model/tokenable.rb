@@ -6,26 +6,25 @@ module Authcat
       def self.included(base)
         base.extend ClassMethods
 
-        base.tokenizer :jwt, signature_key: Authcat.secret_key
+        base.tokenable :jwt, signature_key: Authcat.secret_key
       end
 
       module ClassMethods
-        def tokenizer(name = nil, **opts)
-          return @tokenizer if name.nil?
-
+        def tokenable(name, **opts)
           klass = Tokenizers.lookup(name)
-          @tokenizer = klass.new(**opts)
+          @tokenizers ||= {}
+          @tokenizers[opts.fetch(:for, :default)] = klass.new(**opts)
         end
 
-        def untokenize(token)
-          payload = tokenizer.untokenize(token)
-          find(payload["id"])
+        def untokenize(token, **opts)
+          payload = @tokenizers[opts.fetch(:for, :default)].untokenize(token, **opts)
+          block_given? ? yield(payload) : find(payload["id"])
         end
 
-        def tokenize(identity)
+        def tokenize(identity, **opts)
           raise ArgumentError, "invalid identity: #{identity.inspect}" unless identity.is_a?(self)
-          payload = { "id" => identity.id }
-          tokenizer.tokenize(payload)
+          payload = block_given? ? yield(identity) : { "id" => identity.id }
+          @tokenizers[opts.fetch(:for, :default)].tokenize(payload, **opts)
         end
       end
     end

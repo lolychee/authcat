@@ -10,7 +10,10 @@ end
 module Authcat
   module Tokenizers
     class JWT < Abstract
-      DEFAULT_ALGORITHM = "HS256"
+      class << self
+        attr_accessor :algorithm
+        self.algorithm = "HS256"
+      end
 
       def tokenize(payload, signature_key: @signature_key, algorithm: @algorithm)
         ::JWT.encode(payload_with_claims(payload), signature_key, algorithm)
@@ -24,7 +27,7 @@ module Authcat
       private
 
         def extract_options(opts)
-          @algorithm = opts.fetch(:algorithm, DEFAULT_ALGORITHM)
+          @algorithm = opts.fetch(:algorithm, self.class.algorithm)
           @signature_key = opts.fetch(:signature_key) do
             @algorithm == "none" ? nil : raise(ArgumentError, "option :signature_key is required.")
           end
