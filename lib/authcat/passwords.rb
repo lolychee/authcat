@@ -10,6 +10,7 @@ module Authcat
 
     register :plaintext, Plaintext
     register :bcrypt,    BCrypt
+    register :totp,      TOTP
 
     class << self
       def secure_compare(a, b)
