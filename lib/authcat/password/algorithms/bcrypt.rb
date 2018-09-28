@@ -32,9 +32,10 @@ module Authcat
         end
         self.cost = ::BCrypt::Engine.cost
 
-        def initialize(hashed_password = nil, **opts)
+        def reset(hashed_password = nil)
           super
           @options.merge!(extract_options(hashed_password)) if hashed_password
+          self
         end
 
         private

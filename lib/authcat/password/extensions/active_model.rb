@@ -8,10 +8,8 @@ module Authcat
           class PasswordType < ActiveModel::Type::String
             attr_reader :algorithm, :options
 
-            def initialize(**opts)
-              @algorithm = ::Authcat::Password::Algorithms.lookup(opts.fetch(:algorithm, ::Authcat::Password.default_algorithm))
-              @options = opts
-              super
+            def initialize(algorithm:, **opts)
+              @algorithm = ::Authcat::Password.new(algorithm, **opts)
             end
 
             def type
@@ -21,16 +19,16 @@ module Authcat
             def cast_value(value)
               case value
               when ::Authcat::Password::Algorithms::Plaintext
-                algorithm.new(**options) { value }.to_s
+                algorithm.new.update(value)
               else
                 value_str = value.to_s
-                algorithm.valid?(value_str, **options) ? algorithm.new(value_str, **options) : nil
+                algorithm.valid?(value_str) ? algorithm.new(value_str) : nil
               end
             end
 
             def serialize(value)
               value_str = value.to_s
-              algorithm.valid?(value_str, **options) ? value_str : nil
+              algorithm.valid?(value_str) ? value_str : nil
             end
           end
 

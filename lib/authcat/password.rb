@@ -10,6 +10,11 @@ module Authcat
   module Password
     class << self
       attr_accessor :default_algorithm
+
+      def new(algorithm, **opts)
+        klass = Algorithms.lookup(algorithm)
+        klass.new(**opts)
+      end
     end
 
     self.default_algorithm = :bcrypt

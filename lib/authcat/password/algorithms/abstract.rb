@@ -15,13 +15,32 @@ module Authcat
         end
 
         def initialize(hashed_password = nil, **opts)
-          @options = opts
-          @hashed_password = if block_given?
-            self.class.hash(yield, opts)
+          @init_options = opts
+          reset(hashed_password)
+        end
+
+        def new(hashed_password = nil)
+          clone.reset(hashed_password)
+        end
+
+        def reset(hashed_password = nil)
+          @options = @init_options.dup
+          if hashed_password.nil?
+            update("")
           else
-            raise ArgumentError, "invalid hash: #{hashed_password.inspect}" unless self.class.valid?(hashed_password)
-            hashed_password
+            raise ArgumentError, "invalid hash: #{hashed_password.inspect}" unless valid?(hashed_password)
+            @hashed_password = hashed_password
           end
+          self
+        end
+
+        def update(password)
+          @hashed_password = self.class.hash(password, **@options)
+        end
+        alias << update
+
+        def valid?(hashed_password)
+          self.class.valid?(hashed_password)
         end
 
         def verify(password)
