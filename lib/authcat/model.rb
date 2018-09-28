@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
-require "authcat/model/secure_password"
-require "authcat/model/tokenable"
-require "authcat/model/validators"
-
 module Authcat
   module Model
     def self.included(base)
-      base.include SecurePassword
-      base.include Tokenable
-      base.include Validators
+      base.include Token::Tokenable
+      base.include Password::SecurePassword
+      base.include Password::Validators
     end
   end
 end

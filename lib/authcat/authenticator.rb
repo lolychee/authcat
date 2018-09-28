@@ -1,35 +1,40 @@
 # frozen_string_literal: true
 
+require "authcat/authenticator/strategies"
+require "authcat/authenticator/railtie"
+
 module Authcat
   class Authenticator
-    include Enumerable
+    attr_reader :identities
 
-    ENV_KEY = "authcat.authenticator"
+    class << self
+      attr_reader :strategies
 
-    attr_reader :identities, :set_identities, :delete_identities
-
-    def initialize(&block)
-      @identities = {}
-      @set_identities = {}
-      @delete_identities = {}
+      def strategy(name, tokenizer, **opts)
+        klass = Strategies.lookup(name)
+        strategy = klass.new(tokenizer, **opts)
+        @strategies ||= {}
+        @strategies[strategy.name] = strategy
+      end
     end
 
-    def update(other_hash)
-      @identities.update(Hash[other_hash.map { |k, v| [k.to_sym, v] }])
+    def initialize(env)
+      @identities = {}
+      @env = env
     end
 
     def [](name)
-      @identities[name.to_sym]
+      @identities[name] ||= self.class.strategies[name].read(@env)
     end
 
     def []=(name, identity)
-      @identities[name.to_sym] = identity
-      @set_identities[name.to_sym] = identity
+      self.class.strategies[name].write(@env, *Array(identity))
+      @identities[name] = identity
     end
 
     def delete(name)
-      @identities.delete(name.to_sym)
-      @delete_identities[name.to_sym] = true
+      self.class.strategies[name].delete(@env)
+      @identities.delete(name)
     end
   end
 end

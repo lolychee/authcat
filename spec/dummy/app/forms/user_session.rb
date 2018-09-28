@@ -4,7 +4,7 @@ class UserSession
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  include Authcat::Model::Validators
+  include Authcat::Password::Validators
 
   attribute :identifier,  :string
   attribute :password,    :string

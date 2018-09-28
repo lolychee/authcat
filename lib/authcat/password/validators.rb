@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "authcat/model/validators/password_verify_validator"
+require "authcat/password/validators/password_verify_validator"
 
 module Authcat
-  module Model
+  module Password
     module Validators
     end
   end

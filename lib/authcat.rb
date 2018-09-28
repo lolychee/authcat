@@ -2,20 +2,15 @@
 
 require "authcat/version"
 require "authcat/supports"
-require "authcat/extensions"
 require "authcat/authenticator"
-require "authcat/middleware"
-require "authcat/passwords"
-require "authcat/strategies"
-require "authcat/tokenizers"
+require "authcat/token"
+require "authcat/password"
+require "authcat/two_factor"
 require "authcat/model"
 require "authcat/railtie"
 
 module Authcat
   class << self
-    attr_accessor :default_password_algorithm
     attr_accessor :secret_key
   end
-
-  self.default_password_algorithm = :bcrypt
 end
