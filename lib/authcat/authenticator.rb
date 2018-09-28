@@ -8,13 +8,14 @@ module Authcat
     attr_reader :identities
 
     class << self
-      attr_reader :strategies
+      def strategies
+        @strategies ||= Hash.new {|h, k| raise NameError, "Unknown strategy #{k.inspect}" }
+      end
 
       def strategy(name, tokenizer, **opts)
         klass = Strategies.lookup(name)
         strategy = klass.new(tokenizer, **opts)
-        @strategies ||= {}
-        @strategies[strategy.name] = strategy
+        strategies[strategy.name] = strategy
       end
     end
 
@@ -24,7 +25,11 @@ module Authcat
     end
 
     def [](name)
-      @identities[name] ||= self.class.strategies[name].read(@env)
+      if @identities.key?(name)
+        @identities[name]
+      else
+        @identities[name] = self.class.strategies[name].read(@env)
+      end
     end
 
     def []=(name, identity)
