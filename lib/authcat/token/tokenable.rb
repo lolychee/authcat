@@ -6,7 +6,7 @@ module Authcat
       def self.included(base)
         base.extend ClassMethods
 
-        base.tokenable :jwt, signature_key_base: Authcat.secret_key
+        base.tokenable :jwt, secret_key_base: Authcat.secret_key
       end
 
       module ClassMethods

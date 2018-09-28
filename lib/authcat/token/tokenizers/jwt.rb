@@ -17,11 +17,11 @@ module Authcat
         self.default_algorithm = "HS256"
 
         def tokenize(payload, **opts)
-          ::JWT.encode(payload_with_claims(payload, **opts), get_signature_key(opts[:signature_key]), @algorithm)
+          ::JWT.encode(payload_with_claims(payload, **opts), fetch_secret_key(opts[:secret_key]), @algorithm)
         end
 
         def untokenize(token, validate: true, **opts)
-          payload, _ = ::JWT.decode(token, get_signature_key(opts[:signature_key]), validate, validate_headers)
+          payload, _ = ::JWT.decode(token, fetch_secret_key(opts[:secret_key]), validate, validate_headers)
           payload
         end
 
@@ -29,18 +29,18 @@ module Authcat
 
           def extract_options(opts)
             @algorithm = opts.fetch(:algorithm, self.class.default_algorithm)
-            @signature_key_base = opts.fetch(:signature_key_base) do
-              @algorithm == "none" ? nil : raise(ArgumentError, "option :signature_key_base is required.")
+            @secret_key_base = opts.fetch(:secret_key_base) do
+              @algorithm == "none" ? nil : raise(ArgumentError, "option :secret_key_base is required.")
             end
             opts
           end
 
-          def get_signature_key(key)
+          def fetch_secret_key(key)
             if key.nil?
-              @signature_key_base
+              @secret_key_base
             else
               raise ArgumentError, "#{key.inspect} is not a String" unless key.is_a?(String)
-              @signature_key_base + key
+              @secret_key_base + key
             end
           end
 
