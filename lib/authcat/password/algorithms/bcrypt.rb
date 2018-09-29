@@ -34,7 +34,7 @@ module Authcat
 
         def reset(hashed_password = nil)
           super
-          @options.merge!(extract_options(hashed_password)) if hashed_password
+          @options.merge!(extract_options(hashed_password.to_s)) unless hashed_password.nil? || hashed_password.is_a?(Plaintext)
           self
         end
 

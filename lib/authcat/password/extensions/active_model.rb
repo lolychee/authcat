@@ -17,13 +17,7 @@ module Authcat
             end
 
             def cast_value(value)
-              case value
-              when ::Authcat::Password::Algorithms::Plaintext
-                algorithm.new.update(value)
-              else
-                value_str = value.to_s
-                algorithm.valid?(value_str) ? algorithm.new(value_str) : nil
-              end
+              algorithm.new(value) rescue nil
             end
 
             def serialize(value)
