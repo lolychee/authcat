@@ -27,4 +27,4 @@ group :development do
 end
 
 dummy_gemfile = File.expand_path("spec/dummy/Gemfile", __dir__)
-eval_gemfile dummy_gemfile, ["ENV['EMBED'] = true", File.read(dummy_gemfile)].join($/)
+eval_gemfile dummy_gemfile, File.read(dummy_gemfile).gsub(/(source|gem \"authcat\").*\n/, "")
