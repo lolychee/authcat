@@ -9,7 +9,9 @@ else
     class Authenticator
       class Railtie < Rails::Railtie
         module ControllerMixin
-          extend ActiveSupport::Concern
+          def self.included(base)
+            base.send :extend, ClassMethods
+          end
 
           module ClassMethods
             def authcat(&block)
