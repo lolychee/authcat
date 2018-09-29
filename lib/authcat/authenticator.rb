@@ -9,7 +9,7 @@ module Authcat
 
     class << self
       def strategies
-        @strategies ||= Hash.new {|h, k| raise NameError, "Unknown strategy #{k.inspect}" }
+        @strategies ||= Hash.new { |h, k| raise NameError, "Unknown strategy #{k.inspect}" }
       end
 
       def strategy(name, tokenizer, **opts)
