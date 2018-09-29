@@ -23,11 +23,15 @@ module Authcat
           end
 
           def hash(password, **opts)
-            options = { cost: self.cost }.merge(opts)
+            options = default_options.merge(opts)
             salt = options[:salt] || ::BCrypt::Engine.generate_salt(options[:cost])
             raise ArgumentError, "invalid salt: #{salt.inspect}" unless valid_salt?(salt)
 
             ::BCrypt::Engine.hash_secret(password, salt)
+          end
+
+          def default_options
+            { cost: self.cost }
           end
         end
         self.cost = ::BCrypt::Engine.cost
