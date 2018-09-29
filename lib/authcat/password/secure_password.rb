@@ -4,17 +4,19 @@ module Authcat
   module Password
     module SecurePassword
       module ClassMethods
-        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", algorithm: Password.default_algorithm, **opts, &block)
+        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", algorithm: Password.default_algorithm, accessor: true, **opts, &block)
           attribute column_name, :password, algorithm: algorithm, **opts
 
-          class_eval <<-METHOD
-            attr_reader :#{attribute}
+          if accessor
+            class_eval <<-METHOD
+              attr_reader :#{attribute}
 
-            def #{attribute}=(value)
-              self.#{column_name} = ::Authcat::Password::Algorithms::Plaintext.new(value)
-              @#{attribute} = value
-            end
-          METHOD
+              def #{attribute}=(value)
+                self.#{column_name} = ::Authcat::Password::Algorithms::Plaintext.new(value)
+                @#{attribute} = value
+              end
+            METHOD
+          end
         end
       end
 
