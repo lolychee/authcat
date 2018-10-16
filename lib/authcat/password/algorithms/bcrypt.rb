@@ -36,13 +36,13 @@ module Authcat
         end
         self.cost = ::BCrypt::Engine.cost
 
-        def reset(hashed_password = nil)
-          super
-          @options.merge!(extract_options(hashed_password.to_s)) unless hashed_password.nil? || hashed_password.is_a?(Plaintext)
-          self
-        end
-
         private
+
+          def hashed_password=(value)
+            super
+            @options.merge!(extract_options(value.to_s))
+            value
+          end
 
           def extract_options(hashed_password)
             _, v, c, _ = hashed_password.split("$")

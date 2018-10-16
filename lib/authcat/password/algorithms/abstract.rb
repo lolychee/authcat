@@ -29,14 +29,14 @@ module Authcat
             update(hashed_password)
           else
             raise ArgumentError, "invalid hash: #{hashed_password.inspect}" unless valid?(hashed_password)
-            @hashed_password = hashed_password
+            self.hashed_password = hashed_password
           end
 
           self
         end
 
         def update(password)
-          @hashed_password = self.class.hash(password.to_s, **@options)
+          self.hashed_password = self.class.hash(password.to_s, **@options)
         end
         alias << update
 
@@ -53,6 +53,12 @@ module Authcat
           @hashed_password.to_s
         end
         alias to_str to_s
+
+        private
+
+          def hashed_password=(value)
+            @hashed_password = value
+          end
       end
     end
   end
