@@ -7,11 +7,17 @@ module Authcat
 
         class PasswordVerifyValidator < ActiveModel::EachValidator
           def validate_each(record, attribute, value)
-            password_digest = record.__send__(options[:with] || "#{attribute}_digest")
-
-            unless password_digest.respond_to?(:verify) && password_digest.verify(value)
-              record.errors[attribute] << (options[:message] || "is not verify")
+            passed = if options[:with]
+              record.__send__(options[:with]) == value
+            else
+              if record.respond_to?("#{attribute}_verify")
+                record.__send__("#{attribute}_verify", value)
+              else
+                record.__send__("#{attribute}_digest") == value
+              end
             end
+
+            record.errors[attribute] << (options[:message] || "is not verify") unless passed
           end
         end
 
