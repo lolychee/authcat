@@ -16,6 +16,11 @@ module Authcat
         end
         self.default_algorithm = "HS256"
 
+        def initialize(**opts)
+          opts[:secret_key_base] ||= Authcat.secret_key
+          super(**opts)
+        end
+
         def tokenize(payload, **opts)
           ::JWT.encode(payload_with_claims(payload, **opts), fetch_secret_key(opts[:secret_key]), @algorithm)
         end

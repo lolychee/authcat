@@ -5,12 +5,10 @@ module Authcat
     module Tokenable
       def self.included(base)
         base.extend ClassMethods
-
-        base.tokenable :jwt, secret_key_base: Authcat.secret_key
       end
 
       module ClassMethods
-        def tokenable(name, **opts)
+        def tokenable(name = Token.default_tokenizer, **opts)
           klass = Tokenizers.lookup(name)
           @tokenizer = klass.new(**opts)
         end
