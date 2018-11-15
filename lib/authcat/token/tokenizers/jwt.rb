@@ -17,7 +17,9 @@ module Authcat
         self.default_algorithm = "HS256"
 
         def initialize(**opts)
-          opts[:secret_key_base] ||= Authcat.secret_key
+          @algorithm = opts.fetch(:algorithm, self.class.default_algorithm)
+          @secret_key_base = opts.fetch(:secret_key_base, Authcat.secret_key)
+
           super(**opts)
         end
 
@@ -31,14 +33,6 @@ module Authcat
         end
 
         private
-
-          def extract_options(opts)
-            @algorithm = opts.fetch(:algorithm, self.class.default_algorithm)
-            @secret_key_base = opts.fetch(:secret_key_base) do
-              @algorithm == "none" ? nil : raise(ArgumentError, "option :secret_key_base is required.")
-            end
-            opts
-          end
 
           def fetch_secret_key(key)
             if key.nil?

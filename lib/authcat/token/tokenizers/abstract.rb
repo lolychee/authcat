@@ -7,7 +7,7 @@ module Authcat
         attr_reader :options
 
         def initialize(**opts)
-          @options = extract_options(opts)
+          @options = opts
         end
 
         def tokenize(payload)
@@ -17,12 +17,6 @@ module Authcat
         def untokenize(token)
           raise NotImplementedError, "#untokenize not implemented."
         end
-
-        private
-
-          def extract_options(opts)
-            opts
-          end
       end
     end
   end
