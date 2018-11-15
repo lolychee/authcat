@@ -56,9 +56,7 @@ module Authcat
 
         private
 
-          def hashed_password=(value)
-            @hashed_password = value
-          end
+          attr_writer :hashed_password
       end
     end
   end
