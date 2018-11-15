@@ -8,39 +8,42 @@ module Authcat
       end
 
       module ClassMethods
-        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", algorithm: Password.default_algorithm, accessor: true, **opts, &block)
+        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", algorithm: Password.default_algorithm, accessor: true, helper: true, **opts, &block)
           attribute column_name, :password, algorithm: algorithm, **opts
 
           if accessor
-            if opts[:array]
-              class_eval <<-METHOD
-                attr_reader :#{attribute}
+            mod = Module.new
 
+            mod.attr_reader attribute
+            if opts[:array]
+              mod.class_eval <<-RUBY
                 def #{attribute}=(value)
-                  self.#{column_name} = Array(value).map {|v| ::Authcat::Password.new(:plaintext, v) }
+                  self.#{column_name} = value.map {|v| ::Authcat::Password.new(:plaintext, v) }
                   @#{attribute} = value
                 end
+              RUBY
 
+              mod.class_eval <<-RUBY if helper
                 def #{attribute}_verify(password)
-                  value = self.#{column_name}
-                  value ? value.any? {|v| v.verify(password) } : false
+                  (self.#{column_name} || []).any? {|pwd| pwd == password }
                 end
-              METHOD
+              RUBY
             else
-              class_eval <<-METHOD
-                attr_reader :#{attribute}
-
+              mod.class_eval <<-RUBY
                 def #{attribute}=(value)
                   self.#{column_name} = ::Authcat::Password.new(:plaintext, value)
                   @#{attribute} = value
                 end
+              RUBY
 
+              mod.class_eval <<-RUBY if helper
                 def #{attribute}_verify(password)
-                  value = self.#{column_name}
-                  value ? value.verify(password) : false
+                  self.#{column_name} == password
                 end
-              METHOD
+              RUBY
             end
+
+            self.include mod
           end
         end
       end
