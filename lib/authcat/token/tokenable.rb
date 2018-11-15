@@ -15,14 +15,23 @@ module Authcat
 
         def untokenize(token, **opts)
           payload = @tokenizer.untokenize(token, **opts)
-          block_given? ? yield(payload) : find(payload["id"])
+          new.token_load(payload)
         end
 
         def tokenize(identity, **opts)
           raise ArgumentError, "invalid identity: #{identity.inspect}" unless identity.is_a?(self)
-          payload = block_given? ? yield(identity) : { "id" => identity.id }
+          payload = identity.token_dump
           @tokenizer.tokenize(payload, **opts)
         end
+      end
+
+      def token_dump
+        { "id" => self.id.to_s }
+      end
+
+      def token_load(payload)
+        self.id = payload["id"]
+        reload
       end
     end
   end
