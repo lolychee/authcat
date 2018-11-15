@@ -20,7 +20,7 @@ module Authcat
           @algorithm = opts.fetch(:algorithm, self.class.default_algorithm)
           @secret_key_base = opts.fetch(:secret_key_base, Authcat.secret_key)
 
-          super(**opts)
+          super
         end
 
         def tokenize(payload, **opts)
