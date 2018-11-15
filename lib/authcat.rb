@@ -7,6 +7,7 @@ require "authcat/token"
 require "authcat/password"
 require "authcat/two_factor"
 require "authcat/model"
+require "authcat/identity"
 require "authcat/railtie"
 
 module Authcat

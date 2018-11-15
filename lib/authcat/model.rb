@@ -3,9 +3,11 @@
 module Authcat
   module Model
     def self.included(base)
-      base.include Token::Tokenable
-      base.include Password::SecurePassword
-      base.include Password::Validators
+      base.include Token::Tokenable,
+                   Password::SecurePassword,
+                   Password::Validators,
+                   TwoFactor::OneTimePassword,
+                   TwoFactor::BackupCodes
     end
   end
 end
