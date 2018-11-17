@@ -45,9 +45,15 @@ module Authcat
 
           def payload_with_claims(payload, **opts)
             options = @options.merge(opts)
-            payload[:exp] ||= (Time.now + expires_in).to_i if expires_in = options[:expires_in]
-            payload[:exp] ||= expires_at.to_i if expires_at = options[:expires_at]
+
+            expires_in = options[:expires_in]
+            payload[:exp] ||= (Time.now + expires_in).to_i if expires_in
+
+            expires_at = options[:expires_at]
+            payload[:exp] ||= expires_at.to_i if expires_at
+
             payload[:iat] ||= Time.now.to_i
+
             payload
           end
 
