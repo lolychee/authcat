@@ -24,21 +24,25 @@ module Authcat
       @env = env
     end
 
+    def strategies
+      self.class.strategies
+    end
+
     def [](name)
       if @identities.key?(name)
         @identities[name]
       else
-        @identities[name] = self.class.strategies[name].read(@env)
+        @identities[name] = strategies[name].read(@env)
       end
     end
 
     def []=(name, identity)
-      self.class.strategies[name].write(@env, *Array(identity))
+      strategies[name].write(@env, *Array(identity))
       @identities[name] = identity
     end
 
     def delete(name)
-      self.class.strategies[name].delete(@env)
+      strategies[name].delete(@env)
       @identities.delete(name)
     end
   end
