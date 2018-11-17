@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
 class UserResetPasswordController < ApplicationController
-  before_action :find_user, only: [:show, :update]
 
   def new
-    @user_reset_password_verification = UserResetPasswordVerification.new
+    @user_reset_password = UserResetPassword.new
   end
 
   def create
-    @user_reset_password_verification = UserResetPasswordVerification.new(user_reset_password_verification_params)
+    @user_reset_password = UserResetPassword.new(user_reset_password_params)
 
-    if @user_reset_password_verification.save
-      session[:user_reset_password_token] = @user_reset_password_verification.token
+    if @user_reset_password.send_verification
+      @url = reset_password_url(token: @user_reset_password.generate_token)
       flash[:success] = "Your reset password verification has been successfully sent."
     end
 
@@ -19,11 +18,14 @@ class UserResetPasswordController < ApplicationController
   end
 
   def show
+    token = params[:user_reset_password].try(:[], :token) || params[:token]
+    @user_reset_password = UserResetPassword.new(token: token)
   end
 
   def update
-    if @user.reset_password(user_reset_password_params.merge(skip_current_password: true))
-      session.delete(:user_reset_password_token)
+    @user_reset_password = UserResetPassword.new(user_reset_password_params.merge(skip_current_password: true))
+
+    if @user_reset_password.reset_password
       flash[:success] = "Your password has been successfully updated."
       redirect_to root_path
     else
@@ -33,15 +35,7 @@ class UserResetPasswordController < ApplicationController
 
   private
 
-    def find_user(token = session[:user_reset_password_token])
-      @user = UserResetPasswordVerification.locate(token)
-    end
-
-    def user_reset_password_verification_params
-      params.require(:user_reset_password_verification).permit(:identifier)
-    end
-
     def user_reset_password_params
-      params.require(:user_reset_password).permit(:identifier, :code, :password, :password_confirmation)
+      params.require(:user_reset_password).permit(:token, :identifier, :password, :password_confirmation)
     end
 end

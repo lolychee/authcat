@@ -8,7 +8,7 @@ class User < ApplicationRecord
   concerning :Identifier do
     included do
       validates :email, presence: true, uniqueness: true, format: { with: EMAIL_REGEX }
-      before_save { |user| user.email = user.email.downcase if user.email }
+      before_save { |user| user.email.try(:downcase!) }
     end
 
     class_methods do

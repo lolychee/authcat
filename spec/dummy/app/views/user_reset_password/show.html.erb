@@ -1,5 +1,6 @@
-<%= form_with model: @user, scope: :user_reset_password, url: reset_password_path, method: :patch, html: {class: "pure-form pure-form-stacked account-password-form" }, builder: Dummy::FormBuilder do |f| %>
-  <%= field_set_tag "Password" do %>
+<%= form_with model: @user_reset_password, url: reset_password_path, method: :patch, html: {class: "pure-form pure-form-stacked account-password-form" }, builder: Dummy::FormBuilder do |f| %>
+  <%= field_set_tag "Reset Password" do %>
+    <%= f.hidden_field :token %>
 
     <%= f.field_group :password, class: "pure-control-group" do %>
       <%= f.label :password %>
