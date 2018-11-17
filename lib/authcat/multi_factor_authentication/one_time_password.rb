@@ -3,7 +3,7 @@
 require "rotp"
 
 module Authcat
-  module TwoFactor
+  module MultiFactorAuthentication
     module OneTimePassword
       DEFAULT_OPTIONS = {
       }
@@ -18,6 +18,7 @@ module Authcat
 
           mod.class_eval <<-RUBY
             def #{attribute}
+              return unless self.#{column_name}
               @#{attribute} ||= ::ROTP::TOTP.new(self.#{column_name}, issuer: #{opts[:issuer].inspect})
             end
 
@@ -26,6 +27,7 @@ module Authcat
             end
 
             def #{attribute}_verify(code, drift: #{drift.inspect}, timestamp: #{timestamp.inspect}, prior: nil)
+              return if code.nil?
               if prior
                 #{attribute}.verify_with_drift_and_prior(code, drift, prior)
               elsif timestamp

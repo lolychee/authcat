@@ -9,7 +9,7 @@ module Authcat
 
       base.tokenable
       base.include Password
-      base.include TwoFactor
+      base.include TwoFactorAuthentication
     end
 
     module Password
@@ -24,16 +24,14 @@ module Authcat
       end
     end
 
-    module TwoFactor
+    module TwoFactorAuthentication
       def self.included(base)
         base.has_one_time_password :otp
         base.has_backup_codes :otp_backup_codes
       end
 
-      def setup_two_factor
-        generate_otp
-        generate_otp_backup_codes
-        save
+      def two_factor_authentication_required?
+        !!otp
       end
 
       def authenticate(password, allow_backup_code: false)

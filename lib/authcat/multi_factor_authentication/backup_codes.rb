@@ -1,5 +1,5 @@
 module Authcat
-  module TwoFactor
+  module MultiFactorAuthentication
     module BackupCodes
 
       def self.included(base)

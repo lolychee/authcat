@@ -6,8 +6,8 @@ module Authcat
       base.include Token::Tokenable,
                    Password::SecurePassword,
                    Password::Validators,
-                   TwoFactor::OneTimePassword,
-                   TwoFactor::BackupCodes
+                   MultiFactorAuthentication::OneTimePassword,
+                   MultiFactorAuthentication::BackupCodes
     end
   end
 end
