@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Authcat
   module MultiFactorAuthentication
     module BackupCodes
-
       def self.included(base)
         base.include Password::SecurePassword
         base.extend ClassMethods

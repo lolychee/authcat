@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class UserResetPasswordController < ApplicationController
-
   def new
     @user_reset_password = UserResetPassword.new
   end
