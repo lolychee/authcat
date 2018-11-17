@@ -1,0 +1,13 @@
+<%= field_set_tag "Two-Factor Authentication" do %>
+    <%= f.hidden_field :step, value: :two_factor_authentication %>
+    <%= f.hidden_field :token, value: @user_session.generate_token %>
+    <%= f.hidden_field :remember_me %>
+
+    <%= f.field_group :otp_code, class: "pure-control-group" do %>
+        <%= f.label :otp_code %>
+        <%= f.text_field :otp_code, placeholder: "", class: "pure-input-1" %>
+        <%= f.error_messages :otp_code %>
+    <% end %>
+<% end %>
+
+<%= f.submit "Verify Code", class: "pure-button pure-input-1 pure-button-primary" %>
