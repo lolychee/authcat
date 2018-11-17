@@ -10,7 +10,7 @@ class UserSessionsController < ApplicationController
   def create
     @user_session = UserSession.new(user_session_params)
 
-    if @user_session.save
+    if @user_session.sign_in
       user_sign_in(@user_session.user, @user_session.remember_me)
 
       redirect_to params[:redirect_to] || root_url, flash: { success: "You have successfully signed in." }

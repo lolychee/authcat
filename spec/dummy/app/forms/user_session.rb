@@ -15,20 +15,23 @@ class UserSession
   attr_accessor :user
   delegate :password_verify, :two_factor_authentication_required?, to: :user, allow_nil: true
 
-  with_options if: :token do
+  with_options on: :password do
+    validates :identifier, presence: true
+    validate :identifier_should_founded
+    validates :password, presence: true, password_verify: true
+  end
+
+  with_options on: :two_factor_authentication do
     validate :token_should_founded
     validate :otp_code_should_match
   end
 
-  with_options unless: :token do
-    validates :identifier, presence: true
-    validate :identifier_should_founded
-    validates :password, presence: true, password_verify: true
-    validate :valid_two_factor_authentication_required?
-  end
-
-  def save(*)
-    valid?
+  def sign_in(*)
+    if token
+      valid?(:two_factor_authentication)
+    else
+      valid?(:password) && !two_factor_authentication_required?
+    end
   end
 
   def generate_token
@@ -43,10 +46,6 @@ class UserSession
 
     def token_should_founded
       errors.add(:token, "not found") unless self.user = User.untokenize(token, secret_key: "user_session") rescue nil
-    end
-
-    def valid_two_factor_authentication_required?
-      errors.add(:base, "two-factor authentication required") if two_factor_authentication_required?
     end
 
     def otp_code_should_match
