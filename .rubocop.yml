@@ -8,4 +8,5 @@ AllCops:
   Exclude:
     - "Gemfile.lock"
     - "spec/dummy/Gemfile.lock"
+    - "spec/dummy/db/schema.rb"
   TargetRubyVersion: 2.5
