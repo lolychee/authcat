@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "bcrypt", ">= 3.1"
   spec.add_dependency "jwt",    ">= 2.1"
-  spec.add_dependency "rotp",   ">= 3.3"
+  spec.add_dependency "rotp",   ">= 4.0"
 end

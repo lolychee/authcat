@@ -26,12 +26,12 @@ module Authcat
               #{attribute}.at(at)
             end
 
-            def #{attribute}_verify(code, drift: #{drift.inspect}, timestamp: #{timestamp.inspect}, prior: nil)
+            def #{attribute}_verify(code, drift: #{drift.inspect}, timestamp: #{timestamp.inspect}, after: nil)
               return if code.nil?
-              if prior
-                #{attribute}.verify_with_drift_and_prior(code, drift, prior)
+              if after
+                #{attribute}.verify(code, drift_behind: drift, after: after)
               elsif timestamp
-                t = #{attribute}.verify_with_drift_and_prior(code, drift, send(timestamp))
+                t = #{attribute}.verify(code, drift_behind: drift, after: send(timestamp))
                 if t
                   touch(timestamp, time: Time.at(t))
                   true
