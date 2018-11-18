@@ -13,16 +13,17 @@ class UserSession
   attribute :otp_code,    :string
 
   attr_accessor :user
+
   delegate :password_verify, :two_factor_authentication_required?, to: :user, allow_nil: true
 
   with_options on: :password do
     validates :identifier, presence: true
-    validate :identifier_should_founded
+    validate :identifier_should_founded, unless: :user
     validates :password, presence: true, password_verify: true
   end
 
   with_options on: :two_factor_authentication do
-    validate :token_should_founded
+    validate :token_should_founded, unless: :user
     validate :otp_code_should_match
   end
 

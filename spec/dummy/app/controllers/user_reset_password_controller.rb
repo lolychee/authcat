@@ -24,7 +24,7 @@ class UserResetPasswordController < ApplicationController
   def update
     @user_reset_password = UserResetPassword.new(user_reset_password_params.merge(skip_current_password: true))
 
-    if @user_reset_password.reset_password
+    if @user_reset_password.save
       flash[:success] = "Your password has been successfully updated."
       redirect_to root_path
     else

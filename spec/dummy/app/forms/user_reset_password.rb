@@ -19,9 +19,9 @@ class UserResetPassword
     validate :identifier_should_founded
   end
 
-  with_options on: :reset_password do
-    validates :token, presence: true
-    validate :token_should_founded
+  with_options on: :save do
+    validates :token, presence: true, unless: :user
+    validate :token_should_founded, unless: :user
     validates :password, presence: true, confirmation: true, length: { minimum: 6, maximum: 72 }
     validates :current_password, password_verify: true, unless: :skip_current_password
   end
@@ -34,8 +34,8 @@ class UserResetPassword
     user.password_verify(password)
   end
 
-  def reset_password
-    valid?(:reset_password) && user.update!(password: password)
+  def save
+    valid?(:save) && user.update(password: password)
   end
 
   def generate_token
