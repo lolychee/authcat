@@ -17,10 +17,10 @@ module Authcat
       end
     end
 
-    module Password
+    module Authenticate
       def self.included(base)
-        base.include Authcat::Password::SecurePassword,
-                     Authcat::Password::Validators
+        base.include Password::SecurePassword,
+                     Password::Validators
 
         base.has_secure_password :password
         base.validates :password, presence: true, on: :create
@@ -33,12 +33,19 @@ module Authcat
 
     module TwoFactorAuth
       def self.included(base)
-        base.include MultiFactor::TwoFactorAuth
-        base.has_two_factor_auth :otp
+        base.include MultiFactor::OneTimePassword
+        base.include MultiFactor::BackupCodes
+
+        base.has_one_time_password :otp
+        base.has_backup_codes :otp_backup_codes
+      end
+
+      def authenticate(password, allow_backup_code: false)
+        super(password) || (allow_backup_code && otp_backup_codes_verify(password, revoke: true) && self)
       end
     end
 
-    register :password, Password
+    register :authenticate, Authenticate
     register :two_factor_auth, TwoFactorAuth
   end
 end
