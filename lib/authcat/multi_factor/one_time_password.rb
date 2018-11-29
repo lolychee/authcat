@@ -3,17 +3,14 @@
 require "rotp"
 
 module Authcat
-  module MultiFactorAuthentication
+  module MultiFactor
     module OneTimePassword
-      DEFAULT_OPTIONS = {
-      }
-
       def self.included(base)
         base.extend ClassMethods
       end
 
       module ClassMethods
-        def has_one_time_password(attribute = :otp, column_name: "#{attribute}_secret", timestamp: "#{attribute}_at", drift: 30, **opts)
+        def has_one_time_password(attribute = :otp, column_name: "#{attribute}_secret", timestamp: "last_#{attribute}_at", drift: 30, **opts)
           mod = Module.new
 
           mod.class_eval <<-RUBY
@@ -39,10 +36,6 @@ module Authcat
                   false
                 end
               end
-            end
-
-            def #{attribute}_provisioning_uri(account)
-              #{attribute}.provisioning_uri(account)
             end
 
             def generate_#{attribute}
