@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserTwoFactorAuthentication
   include ActiveModel::Model
   include ActiveModel::Attributes

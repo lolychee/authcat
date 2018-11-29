@@ -40,6 +40,5 @@ module Authcat
 
     register :password, Password
     register :two_factor_auth, TwoFactorAuth
-
   end
 end
