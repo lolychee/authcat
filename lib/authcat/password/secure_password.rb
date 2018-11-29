@@ -18,7 +18,7 @@ module Authcat
             if opts[:array]
               mod.class_eval <<-RUBY
                 def #{attribute}=(value)
-                  self.#{column_name} = value.map {|v| ::Authcat::Password.new(:plaintext, v) }
+                  self.#{column_name} = value.respond_to?(:map) ? value.map {|v| ::Authcat::Password.new(:plaintext, v) } : nil
                   @#{attribute} = value
                 end
               RUBY
