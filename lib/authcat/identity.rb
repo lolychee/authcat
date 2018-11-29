@@ -13,17 +13,22 @@ module Authcat
 
     module ClassMethods
       def authcat(mod_name)
-        self.include Identity.lookup(mod_name)
+        mod = Identity.lookup(mod_name)
+        mod.setup(self) if mod.respond_to?(:setup)
       end
     end
 
     module Authenticate
-      def self.included(base)
-        base.include Password::SecurePassword,
-                     Password::Validators
+      def self.setup(base)
+        base.include self
 
         base.has_secure_password :password
         base.validates :password, presence: true, on: :create
+      end
+
+      def self.included(base)
+        base.include Password::SecurePassword,
+                     Password::Validators
       end
 
       def authenticate(password)
@@ -32,12 +37,16 @@ module Authcat
     end
 
     module TwoFactorAuth
-      def self.included(base)
-        base.include MultiFactor::OneTimePassword
-        base.include MultiFactor::BackupCodes
+      def self.setup(base)
+        base.include self
 
         base.has_one_time_password :otp
         base.has_backup_codes :otp_backup_codes
+      end
+
+      def self.included(base)
+        base.include MultiFactor::OneTimePassword,
+                     MultiFactor::BackupCodes
       end
 
       def authenticate(password, allow_backup_code: false)
