@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     root to: "profiles#show"
     resource :profile,  only: [:show, :update]
     resource :password, only: [:show, :update]
+    resource :two_factor_authentication, only: [:show, :update]
   end
 
   [:authenticated].each do |action|

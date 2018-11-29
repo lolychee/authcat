@@ -7,9 +7,11 @@ class CreateUsers < ActiveRecord::Migration[5.2]
     create_table :users do |t|
       t.string :email,            null: false
       t.string :password_digest,  null: false
+
+      t.boolean :otp_required,    null: false, default: false
       t.string :otp_secret
       t.string :otp_backup_codes_digest, array: true
-      t.datetime :otp_at
+      t.datetime :last_otp_at
 
       t.timestamps null: false
     end

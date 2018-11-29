@@ -19,9 +19,10 @@ ActiveRecord::Schema.define(version: 2016_06_20_165022) do
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
+    t.boolean "otp_required", default: false, null: false
     t.string "otp_secret"
     t.string "otp_backup_codes_digest", array: true
-    t.datetime "otp_at"
+    t.datetime "last_otp_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

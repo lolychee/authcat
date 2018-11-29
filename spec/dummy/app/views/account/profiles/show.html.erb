@@ -4,6 +4,7 @@
     <%= f.field_group :email, class: "pure-control-group" do %>
       <%= f.label :email %>
       <%= f.text_field :email, readonly: true, class: "pure-input-1" %>
+      <%= f.error_messages :email %>
     <% end %>
 
   <% end %>

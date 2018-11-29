@@ -1,0 +1,26 @@
+<%= form_with model: @user_two_factor_authentication, url: account_two_factor_authentication_path, method: :patch, html: {class: "pure-form pure-form-stacked account-two-factor-authentication-form" }, builder: Dummy::FormBuilder do |f| %>
+  <% if @user_two_factor_authentication.otp %>
+    <% if @user_two_factor_authentication.otp_required %>
+      text
+    <% else %>
+      <%= field_set_tag "Two-Factor Authentication" do %>
+
+        <%= f.field_group :otp_code, class: "pure-control-group" do %>
+          <%= f.label :otp_code %>
+          <%= f.text_field :otp_code, class: "pure-input-1" %>
+          <%= f.error_messages :otp_code %>
+        <% end %>
+
+      <% end %>
+
+      <div class="pure-controls">
+        <%= f.button "Save", type: :submit, class: "pure-button pure-button-primary" %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= f.hidden_field :enable_otp %>
+    <div class="pure-controls">
+      <%= f.button "Enable Two-Factor Authentication", type: :submit, class: "pure-button pure-button-primary" %>
+    </div>
+  <% end %>
+<% end %>
