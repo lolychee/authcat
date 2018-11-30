@@ -3,7 +3,7 @@
 class User < ApplicationRecord
   include Authcat::Identity
 
-  authcat :authenticate
+  authcat :password_auth
   authcat :two_factor_auth
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
