@@ -19,8 +19,7 @@ module Authcat
           end
 
           mod.define_method("#{attribute}_verify") do |code, revoke: false|
-            column_name = "#{attribute}_digest"
-            codes = self.send(column_name)
+            codes = self.send("#{attribute}#{self.class.password_suffix}")
             passcode = codes.try(:find) { |c| c == code }
             update(column_name => codes - [passcode]) if revoke && passcode
             !!passcode

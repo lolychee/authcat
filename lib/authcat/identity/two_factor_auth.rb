@@ -2,15 +2,12 @@ module Authcat
   module Identity
     module TwoFactorAuth
       def self.setup(base)
-        base.include self
+        base.include MultiFactor::OneTimePassword,
+                     MultiFactor::BackupCodes
+                     self
 
         base.has_one_time_password :otp
         base.has_backup_codes :otp_backup_codes
-      end
-
-      def self.included(base)
-        base.include MultiFactor::OneTimePassword,
-                     MultiFactor::BackupCodes
       end
 
       def authenticate(password, allow_backup_code: false)

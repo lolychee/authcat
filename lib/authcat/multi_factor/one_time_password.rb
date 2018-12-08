@@ -23,6 +23,10 @@ module Authcat
               #{attribute}.at(at)
             end
 
+            def #{attribute}_enabled
+              !#{attribute}.nil? && !#{timestamp || "true"}.nil?
+            end
+
             def #{attribute}_verify(code, drift: #{drift.inspect}, timestamp: #{timestamp.inspect}, after: nil)
               return if code.nil?
               if after
