@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   include Authcat::Identity
 
+  authcat :identifier
   authcat :password_auth
   authcat :two_factor_auth
 
@@ -10,21 +11,11 @@ class User < ApplicationRecord
 
   concerning :Identifier do
     included do
-      validates :email, presence: true, uniqueness: true, format: { with: EMAIL_REGEX }
-      before_save { |user| user.email.try(:downcase!) }
-    end
+      identifier :id, format: /^\d+$/
+      identifier :email, format: EMAIL_REGEX
 
-    class_methods do
-      def find_by_identifier(identifier)
-        case identifier
-        when EMAIL_REGEX
-          find_by(email: identifier.downcase)
-        # when /\d+/
-        #   find(identifier)
-        else
-          nil
-        end
-      end
+      validates :email, presence: true, uniqueness: true, on: :save
+      validates :email, format: EMAIL_REGEX, allow_nil: true
     end
   end
 
