@@ -5,14 +5,22 @@ module Authcat
     module SecurePassword
       def self.included(base)
         base.extend ClassMethods
+        class << base
+          attr_accessor :password_suffix
+        end
+        base.password_suffix ||= "_digest"
       end
 
       module ClassMethods
-        def has_secure_password(attribute = :password, column_name: "#{attribute}_digest", algorithm: Password.default_algorithm, accessor: true, helper: true, **opts, &block)
+        def has_secure_password(attribute = :password, column_name: "#{attribute}#{self.password_suffix}", algorithm: Password.default_algorithm, accessor: true, helper: true, validation: true, **opts, &block)
           attribute column_name, :password, algorithm: algorithm, **opts
 
           if accessor
             mod = Module.new
+
+            mod.define_singleton_method(:included) do |base|
+              base.validates column_name, presence: true, on: :save
+            end if validation
 
             mod.attr_reader attribute
             if opts[:array]
@@ -28,7 +36,9 @@ module Authcat
                   (self.#{column_name} || []).any? {|pwd| pwd == password }
                 end
               RUBY
+
             else
+
               mod.class_eval <<-RUBY
                 def #{attribute}=(value)
                   self.#{column_name} = ::Authcat::Password.new(:plaintext, value)
@@ -41,6 +51,7 @@ module Authcat
                   self.#{column_name} == password
                 end
               RUBY
+
             end
 
             self.include mod
