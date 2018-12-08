@@ -20,4 +20,8 @@ class User < ApplicationRecord
   end
 
   validates :password, length: { minimum: 6, maximum: 72 }, allow_nil: true
+
+  def send_reset_password_verification
+    !errors.any? && UserMailer.with(user: self).reset_password_verification_mail.deliver_later
+  end
 end

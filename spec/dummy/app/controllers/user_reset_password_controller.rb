@@ -2,29 +2,31 @@
 
 class UserResetPasswordController < ApplicationController
   def new
-    @user_reset_password = UserResetPassword.new
+    @user = User.new
   end
 
   def create
-    @user_reset_password = UserResetPassword.new(user_reset_password_params)
-
-    if @user_reset_password.send_verification
-      @url = reset_password_url(token: @user_reset_password.generate_token)
-      flash[:success] = "Your reset password verification has been successfully sent."
+    @user = User.find_by_identifier(user_params[:identifier]) do |u|
+      u.errors.add(:identifier, "not found")
     end
 
-    render :new
+    if @user.send_reset_password_verification
+      render :sent
+    else
+      render :new
+    end
   end
 
   def show
-    token = params[:user_reset_password].try(:[], :token) || params[:token]
-    @user_reset_password = UserResetPassword.new(token: token)
+    @user = User.untokenize(params[:token])
+  rescue
+    render :expired
   end
 
   def update
-    @user_reset_password = UserResetPassword.new(user_reset_password_params.merge(skip_current_password: true))
+    @user = User.untokenize(params[:token])
 
-    if @user_reset_password.save
+    if @user.update_password(user_params)
       flash[:success] = "Your password has been successfully updated."
       redirect_to root_path
     else
@@ -34,7 +36,7 @@ class UserResetPasswordController < ApplicationController
 
   private
 
-    def user_reset_password_params
-      params.require(:user_reset_password).permit(:token, :identifier, :password, :password_confirmation)
+    def user_params
+      params.require(:user).permit(:identifier, :password, :password_confirmation)
     end
 end
