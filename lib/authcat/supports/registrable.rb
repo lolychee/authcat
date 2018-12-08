@@ -4,15 +4,15 @@ module Authcat
   module Supports
     module Registrable
       def registry
-        @registry ||= Hash.new
+        @registry ||= Hash.new { |_, name| raise NameError, "Unknown #{name.inspect}" }
       end
 
-      def register(key, value)
-        registry[key] = value
+      def register(name, value)
+        registry[name] = value
       end
 
-      def lookup(key)
-        registry.fetch(key) { |name| raise NameError, "Unknown #{name.inspect}" }
+      def lookup(name)
+        registry[name]
       end
     end
   end
