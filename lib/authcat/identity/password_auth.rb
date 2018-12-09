@@ -30,7 +30,7 @@ module Authcat
           self.attributes = attributes
           valid?(:update_password) &&
           run_callbacks(:update_password) do
-            update(password: password)
+            save
           end
         end
       end

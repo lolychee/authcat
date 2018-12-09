@@ -7,10 +7,10 @@ class UserResetPasswordController < ApplicationController
 
   def create
     @user = User.find_by_identifier(user_params[:identifier]) do |u|
-      u.errors.add(:identifier, "not found")
+      u.errors.add(:identifier, "is not found")
     end
 
-    if @user.send_reset_password_verification
+    if !@user.errors.any? && @user.send_reset_password_verification
       render :sent
     else
       render :new
@@ -32,6 +32,8 @@ class UserResetPasswordController < ApplicationController
     else
       render :show
     end
+  rescue
+    render :expired
   end
 
   private

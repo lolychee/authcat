@@ -1,0 +1,13 @@
+<%= field_set_tag "Two-Factor Authentication" do %>
+
+    <%= f.field_group :tfa_code, class: "pure-control-group" do %>
+        <%= f.label :tfa_code %>
+        <%= f.text_field :tfa_code, value: @user.tfa.at(Time.now), class: "pure-input-1" %>
+        <%= f.error_messages :tfa_code %>
+    <% end %>
+
+<% end %>
+
+<div class="pure-controls">
+    <%= f.button "Register", type: :submit, class: "pure-button pure-button-primary" %>
+</div>

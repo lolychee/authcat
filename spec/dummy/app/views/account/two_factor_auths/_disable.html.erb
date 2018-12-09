@@ -1,0 +1,10 @@
+<ul>
+    <% @user.tfa_backup_codes.each do |code| %>
+        <li><%= code %></li>
+    <% end if @user.tfa_backup_codes %>
+</ul>
+
+<%= f.hidden_field :tfa, value: false %>
+<div class="pure-controls">
+    <%= f.button "Disable", type: :submit, class: "pure-button pure-button-primary" %>
+</div>

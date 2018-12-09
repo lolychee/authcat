@@ -11,6 +11,8 @@ module Authcat
 
       module ClassMethods
         def has_one_time_password(attribute = :otp, column_name: "#{attribute}_secret", timestamp: "last_#{attribute}_at", drift: 30, **opts)
+          self.attribute attribute, :boolean
+
           mod = Module.new
 
           mod.class_eval <<-RUBY
@@ -19,27 +21,20 @@ module Authcat
               @#{attribute} ||= ::ROTP::TOTP.new(self.#{column_name}, issuer: #{opts[:issuer].inspect})
             end
 
-            def #{attribute}_code(at: Time.now)
-              #{attribute}.at(at)
-            end
-
-            def #{attribute}_enabled
-              !#{attribute}.nil? && !#{timestamp || "true"}.nil?
+            def #{attribute}=(value)
+              if value
+                self.generate_#{attribute}
+              else
+                self.#{column_name} = nil
+                self.#{timestamp} = nil
+              end
             end
 
             def #{attribute}_verify(code, drift: #{drift.inspect}, timestamp: #{timestamp.inspect}, after: nil)
-              return if code.nil?
-              if after
-                #{attribute}.verify(code, drift_behind: drift, after: after)
-              elsif timestamp
-                t = #{attribute}.verify(code, drift_behind: drift, after: send(timestamp))
-                if t
-                  touch(timestamp, time: Time.at(t))
-                  true
-                else
-                  false
-                end
-              end
+              return false if code.nil?
+              t = #{attribute}.verify(code, drift_behind: drift, after: after || send(timestamp))
+              touch(timestamp, time: Time.at(t)) if timestamp && t
+              !!t
             end
 
             def generate_#{attribute}
