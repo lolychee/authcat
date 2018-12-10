@@ -1,9 +1,9 @@
-<%= form_with model: @user_session, url: sign_in_path(redirect_to: params[:redirect_to]), html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder do |f| %>
+<%= form_with model: @user, url: sign_in_path(redirect_to: params[:redirect_to]), method: :post, html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder do |f| %>
 
-  <% if @user_session.two_factor_authentication_required? %>
-    <%= render "two_factor_authentication", f: f %>
-  <% else %>
+  <%# if @user.tfa_enabled? %>
+    <%#= render "tfa", f: f %>
+  <%# else %>
     <%= render "password", f: f %>
-  <% end %>
+  <%# end %>
 
 <% end %>

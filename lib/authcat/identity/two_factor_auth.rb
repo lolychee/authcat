@@ -19,7 +19,7 @@ module Authcat
         super(password) || (allow_backup_code && tfa_backup_codes_verify(password, revoke: true) && self)
       end
 
-      def tfa_enabled
+      def tfa_enabled?
         !tfa.nil? && !last_tfa_at.nil?
       end
 
@@ -34,7 +34,7 @@ module Authcat
         end
 
         def update_tfa(attributes = {})
-          self.attributes = attributes
+          self.attributes = attributes.slice(:tfa, :tfa_code)
           valid?(:update_tfa) &&
           run_callbacks(:update_tfa) do
             save

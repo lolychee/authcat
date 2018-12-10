@@ -1,5 +1,5 @@
 <%= form_with model: @user, url: account_two_factor_auth_path, method: :patch, html: {class: "pure-form pure-form-stacked account-two-factor-authentication-form" }, builder: Dummy::FormBuilder do |f| %>
-  <% if @user.tfa_enabled %>
+  <% if @user.tfa_enabled? %>
     <%= render "disable", f: f %>
   <% elsif @user.tfa %>
     <%= render "register", f: f %>

@@ -11,6 +11,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :tfa_secret
       t.string :tfa_backup_codes_digest, array: true
       t.datetime :last_tfa_at
+      t.datetime :last_sign_in_at
 
       t.timestamps null: false
     end

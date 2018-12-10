@@ -29,7 +29,7 @@ module Authcat
             update(hashed_password)
           else
             raise ArgumentError, "invalid hash: #{hashed_password.inspect}" unless valid?(hashed_password)
-            self.hashed_password = hashed_password
+            self.hashed_password = hashed_password.to_s
           end
 
           self
