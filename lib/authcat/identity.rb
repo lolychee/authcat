@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
-require "authcat/identity/identifier"
 require "authcat/identity/password_auth"
 require "authcat/identity/two_factor_auth"
+require "authcat/identity/identifier"
+require "authcat/identity/sign_in"
 
 module Authcat
   module Identity
     extend Supports::Registrable
 
-    register :identifier,      Identifier
     register :password_auth,   PasswordAuth
     register :two_factor_auth, TwoFactorAuth
+    register :identifier,      Identifier
+    register :sign_in,         SignIn
 
     def self.included(base)
       base.extend ClassMethods
