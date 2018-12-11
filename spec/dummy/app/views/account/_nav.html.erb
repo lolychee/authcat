@@ -5,6 +5,8 @@
     </li>
     <li class="pure-menu-item <%= "pure-menu-selected" if current_page?(account_password_path) %>">
         <a href="<%= account_password_path %>" class="pure-menu-link">Password</a>
+    </li>
+    <li class="pure-menu-item <%= "pure-menu-selected" if current_page?(account_two_factor_auth_path) %>">
         <a href="<%= account_two_factor_auth_path %>" class="pure-menu-link">Two-Factor Auth</a>
     </li>
 </ul>

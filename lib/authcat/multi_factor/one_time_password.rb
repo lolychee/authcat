@@ -11,8 +11,6 @@ module Authcat
 
       module ClassMethods
         def has_one_time_password(attribute = :otp, column_name: "#{attribute}_secret", timestamp: "last_#{attribute}_at", drift: 30, **opts)
-          self.attribute attribute, :boolean
-
           mod = Module.new
 
           mod.class_eval <<-RUBY
@@ -22,7 +20,7 @@ module Authcat
             end
 
             def #{attribute}=(value)
-              if value
+              if ActiveModel::Type::Boolean.new.cast(value)
                 self.generate_#{attribute}
               else
                 self.#{column_name} = nil
