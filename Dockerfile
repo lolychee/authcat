@@ -21,7 +21,9 @@ WORKDIR $DUMMY_APP_HOME
 RUN gem install bundler \
     && bundle install --jobs 10 --deployment
 
-RUN bundle exec rails assets:precompile
+ENV RAILS_ENV production
+
+RUN bundle exec rails assets:precompile SECRET_KEY_BASE=for-assets-precompile
 
 EXPOSE 80
 
