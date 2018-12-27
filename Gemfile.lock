@@ -7,7 +7,7 @@ PATH
       rotp (>= 4.0)
 
 GEM
-  remote: https://gems.ruby-china.com/
+  remote: https://rubygems.org/
   specs:
     actioncable (5.2.1.1)
       actionpack (= 5.2.1.1)
@@ -209,17 +209,9 @@ GEM
     ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
-    sass (3.7.2)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.0.7)
-      railties (>= 4.0.0, < 6)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
+    sassc (2.0.0)
+      ffi (~> 1.9.6)
+      rake
     selenium-webdriver (3.141.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2, >= 1.2.2)
@@ -243,7 +235,6 @@ GEM
     sqlite3 (1.3.13)
     thor (0.20.3)
     thread_safe (0.3.6)
-    tilt (2.0.9)
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -288,7 +279,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails_config
   rubocop-rspec
-  sass-rails (~> 5.0)
+  sassc
   selenium-webdriver
   simplecov
   spring
@@ -303,4 +294,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.5
+   1.17.3
