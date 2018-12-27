@@ -9,6 +9,7 @@ module Authcat
             attr_reader :algorithm, :options
 
             def initialize(algorithm:, **opts)
+              @array = opts.delete(:array)
               @algorithm = ::Authcat::Password.new(algorithm, **opts)
             end
 
@@ -17,12 +18,42 @@ module Authcat
             end
 
             def cast_value(value)
-              algorithm.new(value) rescue nil
+              if @array
+                case value
+                when String
+                  JSON.parse(value).map {|pwd| algorithm.new(pwd) }
+                when Array
+                  p :cast_value
+                  p value
+                  value.map {|pwd| algorithm.new(pwd) }
+                else
+                  nil
+                end
+              else
+                algorithm.new(value)
+              end
+            rescue
+              nil
             end
 
             def serialize(value)
-              value_str = value.to_s
-              algorithm.valid?(value_str) ? value_str : nil
+              if @array
+                case value
+                when Array
+                  value.map(&:to_s).select {|pwd| algorithm.valid?(pwd) }.to_json
+                else
+                  nil
+                end
+              else
+                value_str = value.to_s
+                algorithm.valid?(value_str) ? value_str : nil
+              end
+            rescue
+              nil
+            end
+
+            def changed_in_place?(raw_old_value, new_value)
+              deserialize(raw_old_value) != new_value
             end
           end
 
