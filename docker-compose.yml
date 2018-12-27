@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 services:
   dev:
     image: ruby:2.5
@@ -9,12 +9,13 @@ services:
     depends_on:
       - postgres
     ports:
-      - "3001:3000"
-    # command: ['./entrypoint.sh', 's', '-b', '0.0.0.0']
-    command: ['sleep', 'infinity']
+      - "3001:80"
+    entrypoint: "./docker-entrypoint.sh"
+    command: ["rails", "s", "-b", "0.0.0.0", "-p", "80"]
+    # command: ['sleep', 'infinity']
     environment:
       - LANG=C.UTF-8
-      - GEM_SOURCE=https://gems.ruby-china.com
+      # - GEM_SOURCE=https://gems.ruby-china.com
       - DATABASE_URL=postgresql://authcat:authcat@postgres/
 
   postgres:
