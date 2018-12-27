@@ -22,7 +22,7 @@ module Authcat
             !!::BCrypt::Engine.valid_salt?(salt)
           end
 
-          def hash(password, **opts)
+          def __hash__(password, **opts)
             options = default_options.merge(opts)
             salt = options[:salt] || ::BCrypt::Engine.generate_salt(options[:cost])
             raise ArgumentError, "invalid salt: #{salt.inspect}" unless valid_salt?(salt)

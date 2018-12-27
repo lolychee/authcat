@@ -9,7 +9,7 @@ module Authcat
             raise NotImplementedError, ".valid? not implemented."
           end
 
-          def hash(password, **opts)
+          def __hash__(password, **opts)
             raise NotImplementedError, ".hash not implemented."
           end
         end
@@ -36,7 +36,7 @@ module Authcat
         end
 
         def update(password)
-          self.hashed_password = self.class.hash(password.to_s, **@options)
+          self.hashed_password = self.class.__hash__(password.to_s, **@options)
         end
         alias << update
 
@@ -45,7 +45,7 @@ module Authcat
         end
 
         def verify(password)
-          Utils.secure_compare(@hashed_password, self.class.hash(password, **@options))
+          Utils.secure_compare(@hashed_password, self.class.__hash__(password, **@options))
         end
         alias == verify
 

@@ -9,7 +9,7 @@ module Authcat
             password.is_a?(String)
           end
 
-          def hash(password, **opts)
+          def __hash__(password, **opts)
             password
           end
         end
