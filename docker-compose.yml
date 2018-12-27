@@ -1,13 +1,13 @@
 version: '3.7'
 services:
-  dev:
+  web:
     image: ruby:2.5
     working_dir: /src/authcat
     volumes:
       - .:/src/authcat:cached
       - rubygems:/usr/local/bundle:delegated
-    depends_on:
-      - postgres
+    # depends_on:
+    #   - postgres
     ports:
       - "3001:80"
     entrypoint: "./docker-entrypoint.sh"
