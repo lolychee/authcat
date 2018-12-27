@@ -16,7 +16,7 @@ services:
     environment:
       - LANG=C.UTF-8
       # - GEM_SOURCE=https://gems.ruby-china.com
-      - DATABASE_URL=postgresql://authcat:authcat@postgres/
+      # - DATABASE_URL=postgresql://authcat:authcat@postgres/
 
   postgres:
     image: postgres:9.5

@@ -12,16 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2016_06_20_165022) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
-  enable_extension "plpgsql"
-
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
     t.string "tfa_secret"
-    t.string "tfa_backup_codes_digest", array: true
+    t.string "tfa_backup_codes_digest"
     t.datetime "last_tfa_at"
+    t.datetime "last_sign_in_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
