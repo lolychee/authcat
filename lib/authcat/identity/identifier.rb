@@ -14,12 +14,12 @@ module Authcat
           @identifiers ||= Hash.new {|_, key| raise ArgumentError, "Unknown identifier: #{key.inspect}" }
         end
 
-        def identifier(attribute, **opts, &block)
+        def identifier(attribute, **opts)
           block ||= -> (value) { find_by(attribute => value) }
           identifiers[attribute] = opts.merge(finder: block)
         end
 
-        def find_by_identifier(attributes = {}, &block)
+        def find_by_identifier(attributes = {})
           finders = if attributes.is_a?(Hash)
             attributes.map { |attribute, id| [identifiers[attribute], value] }
           else
@@ -31,7 +31,8 @@ module Authcat
             found = self.instance_exec(value, &opts[:finder])
             return found if found
           end
-          new.tap(&block) if block_given?
+
+          nil
         end
       end
     end
