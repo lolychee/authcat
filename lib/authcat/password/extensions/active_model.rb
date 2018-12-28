@@ -23,8 +23,6 @@ module Authcat
                 when String
                   JSON.parse(value).map {|pwd| algorithm.new(pwd) }
                 when Array
-                  p :cast_value
-                  p value
                   value.map {|pwd| algorithm.new(pwd) }
                 else
                   nil
