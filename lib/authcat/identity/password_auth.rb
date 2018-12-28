@@ -21,13 +21,16 @@ module Authcat
       module UpdatePassword
         def self.included(base)
           base.define_callbacks :update_password
-          base.attr_accessor :current_password, :current_password_required
-          base.validates :current_password, presence: true, password_verify: { with: :password, was: true }, if: :current_password_required, on: :update_password
+
+          base.attr_accessor :old_password_needed
+          base.attribute :old_password, :string
+
+          base.validates :old_password, presence: true, password_verify: { with: :password, was: true }, if: :old_password_needed, on: :update_password
           base.validates :password, presence: true, confirmation: true, on: :update_password
         end
 
         def update_password(attributes = {})
-          self.attributes = attributes.slice(:current_password, :current_password_required, :password, :password_confirmation)
+          self.attributes = attributes.slice(:old_password, :old_password_needed, :password, :password_confirmation)
           valid?(:update_password) &&
           run_callbacks(:update_password) do
             save
