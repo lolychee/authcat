@@ -10,10 +10,10 @@ class User < ApplicationRecord
 
   attribute :remember_me, :boolean
 
+  EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+
   identifier :id, format: /^\d+$/
   identifier :email, format: EMAIL_REGEX
-
-  EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   validates :email, presence: true, uniqueness: true, on: :save
   validates :email, format: EMAIL_REGEX, allow_nil: true
