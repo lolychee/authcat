@@ -15,47 +15,43 @@ module Authcat
         def has_secure_password(attribute = :password, column_name: "#{attribute}#{self.password_suffix}", algorithm: Password.default_algorithm, accessor: true, helper: true, validation: true, **opts, &block)
           attribute column_name, :password, algorithm: algorithm, **opts
 
-          if accessor
-            mod = Module.new
+          self.validates column_name, presence: true, on: :save if validation
 
-            mod.define_singleton_method(:included) do |base|
-              base.validates column_name, presence: true, on: :save
-            end if validation
+          mod = Module.new
 
-            mod.attr_reader attribute
-            if opts[:array]
-              mod.class_eval <<-RUBY
-                def #{attribute}=(value)
-                  self.#{column_name} = value.respond_to?(:map) ? value.map {|v| ::Authcat::Password.new(:plaintext, v) } : nil
-                  @#{attribute} = value
-                end
-              RUBY
+          mod.attr_reader attribute if accessor
+          if opts[:array]
+            mod.class_eval <<-RUBY if accessor
+              def #{attribute}=(value)
+                self.#{column_name} = value.respond_to?(:map) ? value.map {|v| ::Authcat::Password.new(:plaintext, v) } : nil
+                @#{attribute} = value
+              end
+            RUBY
 
-              mod.class_eval <<-RUBY if helper
-                def #{attribute}_verify(password)
-                  (self.#{column_name} || []).any? {|pwd| pwd == password }
-                end
-              RUBY
+            mod.class_eval <<-RUBY if helper
+              def #{attribute}_verify(password)
+                (self.#{column_name} || []).any? {|pwd| pwd == password }
+              end
+            RUBY
 
-            else
+          else
 
-              mod.class_eval <<-RUBY
-                def #{attribute}=(value)
-                  self.#{column_name} = ::Authcat::Password.new(:plaintext, value)
-                  @#{attribute} = value
-                end
-              RUBY
+            mod.class_eval <<-RUBY if accessor
+              def #{attribute}=(value)
+                self.#{column_name} = ::Authcat::Password.new(:plaintext, value)
+                @#{attribute} = value
+              end
+            RUBY
 
-              mod.class_eval <<-RUBY if helper
-                def #{attribute}_verify(password)
-                  self.#{column_name} == password
-                end
-              RUBY
+            mod.class_eval <<-RUBY if helper
+              def #{attribute}_verify(password)
+                self.#{column_name} == password
+              end
+            RUBY
 
-            end
-
-            self.include mod
           end
+
+          self.include mod if mod.instance_methods(false).any?
         end
       end
     end
