@@ -22,10 +22,10 @@ module Authcat
     end
 
     module ClassMethods
-      def authcat(name)
+      def authcat(name, *args, **opts, &block)
         mod = ::Authcat::Identity.lookup(name)
         raise "Invalid module: #{name.inspect}" unless mod.respond_to?(:setup)
-        mod.setup(self)
+        mod.setup(self, *args, **opts, &block)
       end
     end
   end

@@ -1,7 +1,7 @@
 module Authcat
   module Identity
     module TwoFactorAuth
-      def self.setup(base)
+      def self.setup(base, update_tfa: true)
         base.include MultiFactor::OneTimePassword,
                      MultiFactor::BackupCodes,
                      self
@@ -12,7 +12,7 @@ module Authcat
         base.attribute :tfa_code, :string
         base.validate :verify_tfa_code, if: :tfa_code
 
-        base.include UpdateTFA
+        base.include UpdateTFA if update_tfa
       end
 
       def authenticate(password, allow_backup_code: false)
