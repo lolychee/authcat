@@ -8,10 +8,12 @@ class User < ApplicationRecord
   authcat :identifier
   authcat :sign_in
 
-  EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+  attribute :remember_me, :boolean
 
   identifier :id, format: /^\d+$/
   identifier :email, format: EMAIL_REGEX
+
+  EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   validates :email, presence: true, uniqueness: true, on: :save
   validates :email, format: EMAIL_REGEX, allow_nil: true
