@@ -30,7 +30,7 @@ module Authcat
         end
 
         def update_password(attributes = {})
-          self.attributes = attributes.slice(:old_password, :old_password_needed, :password, :password_confirmation)
+          self.attributes = attributes
           valid?(:update_password) &&
           run_callbacks(:update_password) do
             save
