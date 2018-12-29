@@ -1,13 +1,13 @@
 module Authcat
   module Identity
     module SignIn
-      def self.setup(base, password_auth: true, two_factor_auth: false)
+      def self.setup(base, identifier: :identifier, password_auth: true, two_factor_auth: false)
         base.include self
 
         base.define_callbacks :sign_in
 
-        base.attribute :identifier, :string
-        base.validates :identifier, presence: true, found: true, if: :new_record?, on: :sign_in
+        base.attribute identifier, :string
+        base.validates identifier, presence: true, found: true, if: :new_record?, on: :sign_in
 
         base.include SignIn::PasswordAuth if password_auth
         base.include SignIn::TwoFactorAuth if two_factor_auth
