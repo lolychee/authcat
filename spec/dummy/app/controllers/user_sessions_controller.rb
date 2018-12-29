@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserSessionsController < ApplicationController
-  # before_action :authenticate_user!
+  before_action :set_tfa_user, only: [:tfa, :tfa_verify]
 
   def new
     @user = User.new
@@ -13,10 +13,10 @@ class UserSessionsController < ApplicationController
     if @user.sign_in(via: :password)
       if @user.tfa_enabled?
         authenticator[:tfa_user] = [@user, expires: 5.minutes.from_now]
-        redirect_to tfa_sign_in_path and return
+        redirect_to tfa_sign_in_path
+        return
       end
 
-      @user.sign_in
       authenticator[:cookies] = [@user, expires: @user.remember_me ? User::REMEMBER_ME_DURATION.from_now : nil]
 
       redirect_to root_url, flash: { success: "You have successfully signed in." }
@@ -26,16 +26,10 @@ class UserSessionsController < ApplicationController
   end
 
   def tfa
-    @user = authenticator[:tfa_user]
-    redirect_to sign_in_path and return unless @user
-
     render :tfa
   end
 
   def tfa_verify
-    @user = authenticator[:tfa_user]
-    redirect_to sign_in_path and return unless @user
-
     @user.attributes = user_params
 
     if @user.sign_in(via: :tfa_code)
@@ -59,5 +53,10 @@ class UserSessionsController < ApplicationController
 
     def user_params
       params.require(:user).permit(:identifier, :password, :remember_me, :tfa_code)
+    end
+
+    def set_tfa_user
+      @user = authenticator[:tfa_user]
+      redirect_to sign_in_path unless @user
     end
 end
