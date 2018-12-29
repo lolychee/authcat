@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserMailer < ApplicationMailer
-  self.default_url_options = { host: 'example.com' }
+  self.default_url_options = { host: "example.com" }
 
   def welcome_mail
     @user = params[:user]

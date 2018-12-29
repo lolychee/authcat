@@ -28,10 +28,10 @@ class User < ApplicationRecord
     end
 
     def send_reset_password_verification
-       valid?(:send_reset_password_verification) &&
-      run_callbacks(:send_reset_password_verification) do
-        UserMailer.with(user: self).reset_password_verification_mail.deliver_later
-      end
+      valid?(:send_reset_password_verification) &&
+     run_callbacks(:send_reset_password_verification) do
+       UserMailer.with(user: self).reset_password_verification_mail.deliver_later
+     end
     end
   end
 end
