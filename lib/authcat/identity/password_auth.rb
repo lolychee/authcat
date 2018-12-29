@@ -29,8 +29,7 @@ module Authcat
           base.validates :password, presence: true, confirmation: true, on: :update_password
         end
 
-        def update_password(attributes = {})
-          self.attributes = attributes
+        def update_password
           valid?(:update_password) &&
           run_callbacks(:update_password) do
             save

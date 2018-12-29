@@ -1,0 +1,17 @@
+<%= form_with model: @user, url: tfa_sign_in_path, method: :post, html: { class: "pure-form pure-form-stacked sign-in-form" }, builder: Dummy::FormBuilder do |f| %>
+
+    <%= field_set_tag "Two-Factor Authentication" do %>
+        <%= f.field_group :tfa_code, class: "pure-control-group" do %>
+            <%= f.label :tfa_code %>
+            <%= f.text_field :tfa_code, placeholder: @user.tfa.at(Time.now), autocomplete: :off, class: "pure-input-1" %>
+            <%= f.error_messages :tfa_code %>
+        <% end %>
+
+        <%= f.label :remember_me, class: "pure-checkbox" do %>
+            <%= f.check_box :remember_me %> remember me
+        <% end %>
+    <% end %>
+
+    <%= f.submit "Verify Code", class: "pure-button pure-input-1 pure-button-primary" %>
+
+<% end %>

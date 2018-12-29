@@ -5,7 +5,9 @@ class Account::PasswordsController < AccountController
   end
 
   def update
-    if @user.update_password(user_params.merge(old_password_needed: true))
+    @user.attributes = user_params.merge(old_password_needed: true)
+
+    if @user.update_password
       flash.now[:success] = "Your password has been successfully updated."
     end
 

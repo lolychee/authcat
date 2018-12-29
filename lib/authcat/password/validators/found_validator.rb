@@ -17,14 +17,14 @@ module Authcat
             end
 
             if found
-              changes = record.changed_attributes
+              changes = record.changes.map {|k, v| [k, v.last] }.to_h
+              # FIX: record.attribute_was bug; ActiveModel::Dirty related
+              record.clear_changes_information
+
               coder = {}
               found.encode_with(coder)
               record.init_with(coder)
               record.attributes = changes
-
-              # FIX: record.attribute_was bug; ActiveModel::Dirty related
-              record.instance_variable_set(:@mutations_from_database, nil)
             end
 
             record.errors[attribute] << (options[:message] || "is not found") unless found

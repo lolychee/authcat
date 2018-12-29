@@ -23,8 +23,9 @@ class UserResetPasswordController < ApplicationController
 
   def update
     @user = User.untokenize(params[:token])
+    @user.attributes = user_params
 
-    if @user.update_password(user_params)
+    if @user.update_password
       flash[:success] = "Your password has been successfully updated."
       redirect_to root_path
     else

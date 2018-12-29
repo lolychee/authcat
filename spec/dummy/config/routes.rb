@@ -3,11 +3,13 @@
 Rails.application.routes.draw do
   root to: "home#index"
 
-  get  :sign_up,  to: "users#new",             as: :sign_up
-  post :sign_up,  to: "users#create"
-  get  :sign_in,  to: "user_sessions#new",     as: :sign_in
-  post :sign_in,  to: "user_sessions#create"
-  post :sign_out, to: "user_sessions#destroy", as: :sign_out
+  get  "sign_up",     to: "users#new",              as: :sign_up
+  post "sign_up",     to: "users#create"
+  get  "sign_in",     to: "user_sessions#new",      as: :sign_in
+  post "sign_in",     to: "user_sessions#create"
+  get  "sign_in/tfa", to: "user_sessions#tfa",      as: :tfa_sign_in
+  post "sign_in/tfa", to: "user_sessions#tfa_verify"
+  post "sign_out",    to: "user_sessions#destroy",  as: :sign_out
 
   resource :reset_password, controller: "user_reset_password", only: [:new, :create, :show, :update]
 

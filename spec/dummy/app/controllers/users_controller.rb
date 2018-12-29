@@ -11,11 +11,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      user_sign_in(@user, true)
+      authenticator[:cookies] = [@user, expires: User::REMEMBER_ME_DURATION.from_now]
 
-      flash[:success] = "Your account has been successfully created."
-
-      redirect_to root_url
+      redirect_to root_url, flash: { success: "Your account has been successfully created." }
     else
       render :new
     end

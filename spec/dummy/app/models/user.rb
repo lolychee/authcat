@@ -3,11 +3,12 @@
 class User < ApplicationRecord
   include Authcat::Identity
 
+  authcat :identifier
   authcat :password_auth
   authcat :two_factor_auth
-  authcat :identifier
-  authcat :sign_in
+  authcat :sign_in, two_factor_auth: true
 
+  REMEMBER_ME_DURATION = 60.days
   attribute :remember_me, :boolean
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i

@@ -5,30 +5,19 @@ class ApplicationController < ActionController::Base
 
   authcat do
     strategy :cookies, User, key: :access_token
+    strategy :cookies, User, key: :tfa_user_token, expires_in: 5.minutes, as: :tfa_user
   end
 
   before_action { console if params[:console] }
 
   concerning :Authentication do
     included do
-      helper_method :current_user, :user_signed_in?
+      helper_method :current_user
     end
 
     def current_user
       return @current_user if instance_variable_defined?(:@current_user)
       @current_user = authenticator[:cookies]
-    end
-
-    def user_signed_in?
-      !current_user.nil?
-    end
-
-    def user_sign_in(user, remember_me)
-      authenticator[:cookies] = [user, expires: remember_me ? 20.years.from_now : nil]
-    end
-
-    def user_sign_out
-      authenticator.delete(:cookies)
     end
 
     def find_user(id = params[:id])
