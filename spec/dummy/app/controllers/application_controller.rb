@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   authcat do
     strategy :cookies, User, key: :access_token
-    strategy :cookies, User, key: :tfa_user_token, expires_in: 5.minutes, as: :tfa_user
+    strategy :cookies, User, key: :tfa_user_token, as: :tfa_user
   end
 
   before_action { console if params[:console] }
