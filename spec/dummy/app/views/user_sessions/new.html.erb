@@ -2,7 +2,7 @@
     <%= field_set_tag "Sign In" do %>
         <%= f.field_group :identifier, class: "pure-control-group" do %>
             <%= f.label :identifier %>
-            <%= f.text_field :identifier, placeholder: "Identifier", class: "pure-input-1" %>
+            <%= f.text_field :identifier, placeholder: "Email", class: "pure-input-1" %>
             <%= f.error_messages :identifier %>
         <% end %>
 
@@ -12,8 +12,14 @@
             <%= f.error_messages :password %>
         <% end %>
 
-        <%= f.label :remember_me, class: "pure-checkbox" do %>
-            <%= f.check_box :remember_me %> remember me
+        <%= f.field_group :password, class: "pure-controls pure-g" do %>
+            <%= f.label :remember_me, class: "pure-checkbox  pure-u-1-2" do %>
+                <%= f.check_box :remember_me %> remember me
+            <% end %>
+
+            <div class=" pure-u-1-2">
+              <%= link_to "Forget password?", new_reset_password_path, class: "forget-password" %>
+            </div>
         <% end %>
     <% end %>
 
