@@ -5,7 +5,7 @@ module Authcat
     module Algorithms
       class Plaintext < Abstract
         class << self
-          def valid?(password)
+          def valid?(password, **opts)
             password.is_a?(String)
           end
 

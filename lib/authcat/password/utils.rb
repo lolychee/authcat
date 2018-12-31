@@ -6,6 +6,7 @@ module Authcat
       extend self
 
       def secure_compare(a, b)
+        a, b = a.to_s, b.to_s
         a.bytesize == b.bytesize &&
         a.each_byte.zip(b.each_byte).map { |a, b| a ^ b }.reduce(:|).zero?
       end

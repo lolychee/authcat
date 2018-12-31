@@ -15,7 +15,7 @@ module Authcat
           attr_accessor :cost
 
           def valid?(hashed_password, **opts)
-            !!::BCrypt::Password.valid_hash?(hashed_password.to_str)
+            !!::BCrypt::Password.valid_hash?(hashed_password.to_s)
           end
 
           def valid_salt?(salt)

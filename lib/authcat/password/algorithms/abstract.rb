@@ -26,7 +26,7 @@ module Authcat
         def reset(hashed_password = nil)
           @options = @init_options.dup
           if hashed_password.nil? || hashed_password.is_a?(Plaintext)
-            update(hashed_password)
+            update(hashed_password.to_s)
           else
             raise ArgumentError, "invalid hash: #{hashed_password.inspect}" unless valid?(hashed_password)
             self.hashed_password = hashed_password.to_s
@@ -36,21 +36,21 @@ module Authcat
         end
 
         def update(password)
-          self.hashed_password = self.class.__hash__(password.to_s, **@options)
+          self.hashed_password = self.class.__hash__(password, **@options)
         end
         alias << update
 
         def valid?(hashed_password)
-          self.class.valid?(hashed_password)
+          self.class.valid?(hashed_password, **@options)
         end
 
         def verify(password)
-          Utils.secure_compare(@hashed_password, self.class.__hash__(password, **@options))
+          Utils.secure_compare(@hashed_password, password) || Utils.secure_compare(@hashed_password, self.class.__hash__(password, **@options))
         end
         alias == verify
 
         def to_s
-          @hashed_password.to_s
+          @hashed_password
         end
         alias to_str to_s
 
