@@ -6,6 +6,7 @@ class Account::TwoFactorAuthsController < AccountController
 
   def update
     @user.attributes = user_params
+
     if @user.update_tfa
       flash.now[:success] = "Your two-factor auth has been successfully updated."
     end

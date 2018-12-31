@@ -1,6 +1,6 @@
 <ul>
     <% @user.tfa_backup_codes.each do |code| %>
-        <li><%= code %></li>
+        <li><code><%= code %></code></li>
     <% end if @user.tfa_backup_codes %>
 </ul>
 

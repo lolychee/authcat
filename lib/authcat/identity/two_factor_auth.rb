@@ -10,27 +10,31 @@ module Authcat
         base.has_backup_codes :tfa_backup_codes
 
         base.attribute :tfa_code, :string
-        base.validate :verify_tfa_code, if: :tfa_code
 
         base.include UpdateTFA if update_tfa
-       end
-
-      def authenticate(password, allow_backup_code: false)
-        super(password) || (allow_backup_code && tfa_backup_codes_verify(password, revoke: true) && self)
       end
 
       def tfa_enabled?
         !tfa.nil? && !last_tfa_at.nil?
       end
 
-      def verify_tfa_code
-        errors.add(:tfa_code, "is not verify") unless tfa_verify(tfa_code)
+      def validate_tfa_code
+        errors.add(:tfa_code, "is not verified") unless tfa_verify(tfa_code)
       end
 
       module UpdateTFA
         def self.included(base)
           base.define_callbacks :update_tfa
-          base.set_callback :update_tfa, :before, :generate_tfa_backup_codes, if: -> { !tfa_backup_codes && last_tfa_at }
+          base.set_callback(:update_tfa, :before) do
+            if tfa_enabled?
+              self.tfa_backup_codes_digest || self.generate_tfa_backup_codes
+            else
+              self.tfa_backup_codes_digest = nil
+            end
+          end
+          base.validate if: :tfa_code, on: :update_tfa do
+            validate_tfa_code
+          end
         end
 
         def update_tfa
