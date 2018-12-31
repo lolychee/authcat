@@ -29,8 +29,10 @@ module Authcat
             RUBY
 
             mod.class_eval <<-RUBY if helper
-              def #{attribute}_verify(password)
-                (self.#{column_name} || []).any? {|pwd| pwd == password }
+              def #{attribute}_verify(password, **opts)
+                column_name = #{column_name.to_s.inspect}
+                column_name += "_was" if opts[:was]
+                (send(column_name) || []).any? {|pwd| pwd == password }
               end
             RUBY
 
@@ -44,8 +46,11 @@ module Authcat
             RUBY
 
             mod.class_eval <<-RUBY if helper
-              def #{attribute}_verify(password)
-                self.#{column_name} == password
+              def #{attribute}_verify(password, **opts)
+                column_name = #{column_name.to_s.inspect}
+                column_name += "_was" if opts[:was]
+
+                send(column_name) == password
               end
             RUBY
 

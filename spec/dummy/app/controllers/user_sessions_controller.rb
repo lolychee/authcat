@@ -11,7 +11,7 @@ class UserSessionsController < ApplicationController
     @user = User.new(user_params)
 
     if @user.sign_in(via: :password)
-      if @user.tfa_enabled?
+      if @user.tfa_verify_needed?
         authenticator[:tfa_user] = [@user, expires: 5.minutes.from_now]
         redirect_to tfa_sign_in_path
         return

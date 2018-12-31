@@ -14,10 +14,6 @@ module Authcat
         base.include UpdatePassword if update_password
       end
 
-      def authenticate(password)
-        password_verify(password) && self
-      end
-
       module UpdatePassword
         def self.included(base)
           base.define_callbacks :update_password
