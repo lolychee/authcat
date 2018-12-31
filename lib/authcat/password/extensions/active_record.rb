@@ -7,7 +7,7 @@ module Authcat
     module Extensions
       module ActiveRecordExtension
         if defined?(ActiveRecord) && defined?(ActiveRecord::Type)
-          ActiveRecord::Type.register :password, ActiveModelExtension::PasswordType
+          ActiveRecord::Type.register :password, ActiveModelExtension::PasswordSupportArrayType
         end
       end
     end
