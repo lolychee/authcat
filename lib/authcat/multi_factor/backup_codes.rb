@@ -22,7 +22,7 @@ module Authcat
             column_name = "#{attribute}#{self.class.password_suffix}"
             codes = self.send(column_name)
             passcode = codes.try(:find) { |c| c == code }
-            update(column_name => codes - [passcode]) if revoke && passcode
+            update_column(column_name => codes - [passcode]) if revoke && passcode
             !!passcode
           end
 
