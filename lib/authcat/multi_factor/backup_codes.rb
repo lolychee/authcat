@@ -10,7 +10,7 @@ module Authcat
 
       module ClassMethods
         def has_backup_codes(attribute = :backup_codes, generator: ->(s) { s.times.map { SecureRandom.hex(8) } }, **opts)
-          self.has_secure_password attribute, array: true, **opts
+          column_name = self.has_secure_password attribute, array: true, **opts
 
           mod = Module.new
 
@@ -19,7 +19,6 @@ module Authcat
           end
 
           mod.define_method("#{attribute}_verify") do |code, revoke: false|
-            column_name = "#{attribute}#{self.class.password_suffix}"
             codes = self.send(column_name)
             passcode = codes.try(:find) { |c| c == code }
             update_column(column_name => codes - [passcode]) if revoke && passcode
@@ -27,6 +26,8 @@ module Authcat
           end
 
           self.include mod
+
+          column_name
         end
       end
     end

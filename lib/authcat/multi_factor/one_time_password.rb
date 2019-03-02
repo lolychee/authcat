@@ -41,6 +41,8 @@ module Authcat
           RUBY
 
           self.include mod
+
+          column_name
         end
       end
     end

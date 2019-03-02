@@ -57,6 +57,8 @@ module Authcat
           end
 
           self.include mod if mod.instance_methods(false).any?
+
+          column_name
         end
       end
     end
