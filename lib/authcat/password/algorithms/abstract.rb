@@ -14,49 +14,49 @@ module Authcat
           end
         end
 
-        def initialize(hashed_password = nil, **opts)
+        def initialize(password_digest = nil, **opts)
           @init_options = opts
-          reset(hashed_password)
+          reset(password_digest)
         end
 
-        def new(hashed_password = nil)
-          clone.reset(hashed_password)
+        def new(password_digest = nil)
+          clone.reset(password_digest)
         end
 
-        def reset(hashed_password = nil)
+        def reset(password_digest = nil)
           @options = @init_options.dup
-          if hashed_password.nil? || hashed_password.is_a?(Plaintext)
-            update(hashed_password.to_s)
+          if password_digest.nil? || password_digest.is_a?(Plaintext)
+            update(password_digest.to_s)
           else
-            raise ArgumentError, "invalid hash: #{hashed_password.inspect}" unless valid?(hashed_password)
-            self.hashed_password = hashed_password.to_s
+            raise ArgumentError, "invalid hash: #{password_digest.inspect}" unless valid?(password_digest)
+            self.password_digest = password_digest.to_s
           end
 
           self
         end
 
         def update(password)
-          self.hashed_password = self.class.__hash__(password, **@options)
+          self.password_digest = self.class.__hash__(password, **@options)
         end
         alias << update
 
-        def valid?(hashed_password)
-          self.class.valid?(hashed_password, **@options)
+        def valid?(password_digest)
+          self.class.valid?(password_digest, **@options)
         end
 
         def verify(password)
-          Utils.secure_compare(@hashed_password, password) || Utils.secure_compare(@hashed_password, self.class.__hash__(password, **@options))
+          Utils.secure_compare(@password_digest, password) || Utils.secure_compare(@password_digest, self.class.__hash__(password, **@options))
         end
         alias == verify
 
         def to_s
-          @hashed_password
+          @password_digest
         end
         alias to_str to_s
 
         private
 
-          attr_writer :hashed_password
+          attr_writer :password_digest
       end
     end
   end

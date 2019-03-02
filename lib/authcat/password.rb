@@ -11,9 +11,9 @@ module Authcat
     class << self
       attr_accessor :default_algorithm
 
-      def new(algorithm, hashed_password = nil, **opts)
+      def new(algorithm, password_digest = nil, **opts)
         klass = Algorithms.lookup(algorithm)
-        klass.new(hashed_password, **opts)
+        klass.new(password_digest, **opts)
       end
     end
 

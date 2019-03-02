@@ -14,8 +14,8 @@ module Authcat
         class << self
           attr_accessor :cost
 
-          def valid?(hashed_password, **opts)
-            !!::BCrypt::Password.valid_hash?(hashed_password.to_s)
+          def valid?(password_digest, **opts)
+            !!::BCrypt::Password.valid_hash?(password_digest.to_s)
           end
 
           def valid_salt?(salt)
@@ -38,19 +38,19 @@ module Authcat
 
         private
 
-          def hashed_password=(value)
+          def password_digest=(value)
             super
             @options.merge!(extract_options(value.to_s))
             value
           end
 
-          def extract_options(hashed_password)
-            _, v, c, _ = hashed_password.split("$")
+          def extract_options(password_digest)
+            _, v, c, _ = password_digest.split("$")
 
             {
               version:  v.to_str,
               cost:     c.to_i,
-              salt:     hashed_password[0, 29].to_str
+              salt:     password_digest[0, 29].to_str
             }
           end
       end
