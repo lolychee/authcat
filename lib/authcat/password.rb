@@ -5,6 +5,8 @@ require "authcat/password/extensions"
 require "authcat/password/validators"
 require "authcat/password/utils"
 require "authcat/password/secure_password"
+require "authcat/password/one_time_password"
+require "authcat/password/backup_codes"
 
 module Authcat
   module Password

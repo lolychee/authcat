@@ -2,8 +2,8 @@ module Authcat
   module Identity
     module TwoFactorAuth
       def self.setup(base, update_tfa: true)
-        base.include MultiFactor::OneTimePassword,
-                     MultiFactor::BackupCodes,
+        base.include Password::OneTimePassword,
+                     Password::BackupCodes,
                      self
 
         base.has_one_time_password :tfa

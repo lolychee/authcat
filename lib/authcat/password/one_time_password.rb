@@ -3,7 +3,7 @@
 require "rotp"
 
 module Authcat
-  module MultiFactor
+  module Password
     module OneTimePassword
       def self.included(base)
         base.extend ClassMethods
