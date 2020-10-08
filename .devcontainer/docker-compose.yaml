@@ -1,0 +1,35 @@
+version: "3"
+services:
+  dev:
+    user: vscode
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /workspace
+    volumes:
+      - zsh_history:/commandhistory
+      - rubygems:/usr/local/lib/ruby/gems
+      - ..:/workspace:delegated
+
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    environment:
+      - LANG=C.UTF-8
+      - BUNDLE_JOBS=8
+    command: ["sleep", "infinity"]
+    # command: ["rails", "s", "-b", "0.0.0.0", "-p", "3000"]
+
+  postgres:
+    image: postgres:12
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=authcat
+      - POSTGRES_PASSWORD=authcat
+
+volumes:
+  zsh_history:
+  rubygems:
+  postgres:
