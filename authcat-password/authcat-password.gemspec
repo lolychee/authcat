@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Write a short summary, because RubyGems requires one.'
   spec.description   = 'Write a longer description or delete this line.'
   spec.homepage      = 'https://github.com/lolychee/authcat'
-  spec.license       = 'MIT'
+  spec.license       = 'BSD'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
 
   # spec.metadata["allowed_push_host"] = "Set to 'http://mygemserver.com'"
@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files         = Dir['README.md', 'lib/**/*']
+  spec.files         = Dir['README.md', 'BSD-LICENSE', 'lib/**/*']
 
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
