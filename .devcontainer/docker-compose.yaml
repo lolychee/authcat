@@ -5,14 +5,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    working_dir: /workspace
     volumes:
       - zsh_history:/commandhistory
-      - rubygems:/usr/local/lib/ruby/gems
+      - bundle:/usr/local/bundle
       - ..:/workspace:delegated
 
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
     depends_on:
       - postgres
     environment:
@@ -31,5 +30,5 @@ services:
 
 volumes:
   zsh_history:
-  rubygems:
+  bundle:
   postgres:

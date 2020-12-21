@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=2.7.2
+ARG RUBY_VERSION=2.6.6
 FROM ruby:${RUBY_VERSION}
 
 ARG INSTALL_ZSH="true"
@@ -28,4 +28,4 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
     && chown -R $USERNAME /commandhistory \
     && echo $SNIPPET >> "/home/$USERNAME/.zshrc"
 
-ENV PATH ./bin:$PATH
+ENV PATH /workspace/bin:$PATH
