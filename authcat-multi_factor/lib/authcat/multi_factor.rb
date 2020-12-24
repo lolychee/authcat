@@ -1,8 +1,13 @@
-require "authcat/multi_factor/version"
+# frozen_string_literal: true
+
+require 'zeitwerk'
+loader = Zeitwerk::Loader.new
+loader.tag = File.basename(__FILE__, '.rb')
+loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
+loader.push_dir("#{__dir__}/..")
+loader.setup
 
 module Authcat
   module MultiFactor
-    class Error < StandardError; end
-    # Your code goes here...
   end
 end

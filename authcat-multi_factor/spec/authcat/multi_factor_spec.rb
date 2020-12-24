@@ -1,9 +1,7 @@
-RSpec.describe Authcat::MultiFactor do
-  it "has a version number" do
-    expect(Authcat::MultiFactor::VERSION).not_to be nil
-  end
+# frozen_string_literal: true
 
-  it "does something useful" do
+RSpec.describe Authcat::MultiFactor do
+  it 'does something useful' do
     expect(false).to eq(true)
   end
 end
