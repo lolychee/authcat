@@ -5,36 +5,54 @@ loader = Zeitwerk::Loader.new
 loader.tag = File.basename(__FILE__, '.rb')
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.push_dir("#{__dir__}/..")
-loader.ignore("#{__dir__}/password/algorithms")
 loader.setup
 
 module Authcat
   class Password < ::String
-    # require_relative "password/extensions"
+    class << self
+      # @return [Symbol, String, self]
+      attr_accessor :default_algorithm
+    end
+    self.default_algorithm = :b_crypt
 
     # @return [self]
-    def self.create(unencrypted_str, **opts)
-      encryptor = Encryptor.build(**opts)
-      new(encryptor.digest(unencrypted_str), encryptor: encryptor)
+    def self.create(unencrypted_str, algorithm:, **opts)
+      algorithm = Algorithm.build(algorithm, **opts)
+
+      new(algorithm.digest(unencrypted_str), algorithm: algorithm, plaintext: unencrypted_str)
     end
 
-    # @return [Encryptor]
-    attr_reader :encryptor
+    # @param original [String]
+    # @param other [String]
+    # @return [Boolean]
+    def self.secure_compare(original, other)
+      original.bytesize == other.bytesize &&
+        original.each_byte.zip(other.each_byte).reduce(0) { |sum, pair| sum | (pair.first ^ pair.last) }.zero?
+    end
+
+    # @return [Algorithm]
+    attr_reader :algorithm
+
+    # @return [String, nil]
+    attr_reader :plaintext
 
     # @return [self]
-    def initialize(encrypted_str, **opts)
-      @encryptor = Encryptor.build(**opts)
-      encryptor.valid!(encrypted_str)
+    def initialize(encrypted_str, algorithm:, plaintext: nil, **opts)
+      @algorithm = Algorithm.build(algorithm, **opts)
+      @algorithm.valid!(encrypted_str)
+      @plaintext = plaintext
       super(encrypted_str)
     end
 
     # @return [Boolean]
     def ==(other)
-      if other.is_a?(self.class)
-        Utils.secure_compare(self, other)
-      else
-        encryptor.verify(self, other)
-      end
+      other = algorithm.digest(other) unless other.is_a?(self.class)
+
+      self.class.secure_compare(to_s, other.to_s)
     end
   end
+end
+
+Authcat::Password.define_singleton_method(:camalize) do |name|
+  loader.inflector.camalize(name)
 end
