@@ -41,17 +41,21 @@ module Authcat
         def initialize(attribute, column_name, array: false, algorithm: Password.default_algorithm, **opts)
           super()
 
+          ivar = "@#{attribute}"
 
           if array
             # base.serialize attribute, Array if serialize
 
             define_method(attribute) do
-              ivar = "@#{attribute}"
-              if instance_variable_defined?(ivar)
-                instance_variable_get(ivar)
-              else
+              instance_variable_get(ivar) || begin
                 array = send(column_name)
-                instance_variable_set(ivar, array.nil? ? nil : array.map {|str| ::Authcat::Password.new(str, algorithm: algorithm, **opts) })
+                instance_variable_set(ivar, if array.nil?
+                                              nil
+                                            else
+                                              array.map do |str|
+                                                ::Authcat::Password.new(str, algorithm: algorithm, **opts)
+                                              end
+                                            end)
               end
             end
 
@@ -72,18 +76,23 @@ module Authcat
             end
           else
             define_method(attribute) do
-              ivar = "@#{attribute}"
-              if instance_variable_defined?(ivar)
-                instance_variable_get(ivar)
-              else
+              instance_variable_get(ivar) || begin
                 str = send(column_name)
-                instance_variable_set(ivar, str.nil? ?
-                nil : ::Authcat::Password.new(str, algorithm: algorithm, **opts))
+                instance_variable_set(ivar, if str.nil?
+                                              nil
+                                            else
+                                              ::Authcat::Password.new(str, algorithm: algorithm, **opts)
+                                            end)
               end
             end
 
             define_method("#{attribute}=") do |unencrypted_str|
-              value = unencrypted_str.nil? ? nil : ::Authcat::Password.create(unencrypted_str, algorithm: algorithm, **opts)
+              value = if unencrypted_str.nil?
+                        nil
+                      else
+                        ::Authcat::Password.create(unencrypted_str, algorithm: algorithm,
+                                                                    **opts)
+                      end
               send("#{column_name}=", value.to_s)
               instance_variable_set("@#{attribute}", value)
             end

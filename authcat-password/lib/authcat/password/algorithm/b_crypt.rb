@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
+gem 'bcrypt'
+require 'bcrypt'
+
 module Authcat
   class Password
     class Algorithm
       class BCrypt < Algorithm
-
-        # @return [void]
-        def initialize(*)
-          gem 'bcrypt'
-          require 'bcrypt'
-          super
-        end
-
         # @return [Integer]
         def cost
           @cost ||= ::BCrypt::Engine.cost

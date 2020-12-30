@@ -1,29 +1,30 @@
+# frozen_string_literal: true
+
+require 'dry/container'
+require 'forwardable'
+
 module Authcat
   class Password
     class Algorithm
-      def self.registry
-        @registry ||= {}
-      end
+      class << self
+        extend Forwardable
 
-      def self.register(name, class_name = Password.camalize(name), **opts)
-        names = Array(opts[:alias]).compact << name
-        names.each {|n| registry[n.to_s] = class_name }
-      end
+        def_delegators :registry, :register, :resolve
 
-      # @return [self]
-      def self.lookup(name)
-        const_get(registry.fetch(name.to_s) { raise NameError, "unknown algorithm name: #{name.inspect}" })
-      end
+        def registry
+          @registry ||= Dry::Container.new
+        end
 
-      # @param algorithm [Algorithm, Object, String, Symbol, #digest]
-      # @return [self]
-      def self.build(algorithm, **opts)
-        if algorithm.is_a?(Class) && algorithm < Algorithm
-          algorithm.new(**opts)
-        elsif algorithm.is_a?(Algorithm) || algorithm.respond_to?(:digest)
-          algorithm
-        else
-          Algorithm.lookup(algorithm).new(**opts)
+        # @param algorithm [Algorithm, Object, String, Symbol, #digest]
+        # @return [self]
+        def build(algorithm, **opts)
+          if algorithm.is_a?(Class) && algorithm < Algorithm
+            algorithm.new(**opts)
+          elsif algorithm.is_a?(Algorithm) || algorithm.respond_to?(:digest)
+            algorithm
+          else
+            Algorithm.resolve(algorithm).new(**opts)
+          end
         end
       end
 
@@ -78,8 +79,8 @@ module Authcat
       def extract_options_from_hash(_encrypted_str)
         {}
       end
+
+      register(:bcrypt) { BCrypt }
     end
   end
 end
-
-Authcat::Password::Algorithm.register(:b_crypt, 'Authcat::Password::Algorithm::BCrypt', alias: :bcrypt)

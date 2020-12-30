@@ -13,7 +13,7 @@ module Authcat
       # @return [Symbol, String, self]
       attr_accessor :default_algorithm
     end
-    self.default_algorithm = :b_crypt
+    self.default_algorithm = :bcrypt
 
     # @return [self]
     def self.create(unencrypted_str, algorithm:, **opts)
@@ -51,8 +51,4 @@ module Authcat
       self.class.secure_compare(to_s, other.to_s)
     end
   end
-end
-
-Authcat::Password.define_singleton_method(:camalize) do |name|
-  loader.inflector.camalize(name)
 end
