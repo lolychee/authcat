@@ -18,6 +18,8 @@ require:
 AllCops:
   NewCops: enable
   TargetRubyVersion: 2.5
+  Exclude:
+    - Gemfile.lock
 
 Naming/PredicateName:
   Enabled: false

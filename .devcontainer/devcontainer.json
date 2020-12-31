@@ -20,11 +20,12 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"eamodio.gitlens",
-		"walkme.ruby-extension-pack",
 		"soutaro.steep-vscode",
 		"redhat.vscode-yaml",
 		"mutantdino.resourcemonitor",
-		"castwide.solargraph"
+		"castwide.solargraph",
+		"castwide.ruby-debug",
+		"kaiwood.endwise"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
@@ -34,6 +35,6 @@
 	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
-	"postCreateCommand": ".devcontainer/post_create.sh",
-	"postStartCommand": "bundle install"
+	"postCreateCommand": ".devcontainer/post_create.sh"
+	// "postStartCommand": "bundle exec guard"
 }

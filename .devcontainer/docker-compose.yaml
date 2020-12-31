@@ -8,7 +8,7 @@ services:
     volumes:
       - zsh_history:/commandhistory
       - bundle:/usr/local/bundle
-      - ..:/workspace:delegated
+      - ..:/workspace:cached
 
     # ports:
     #   - 3000:3000
