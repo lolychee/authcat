@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/authcat/passport/version'
+version = File.read(File.expand_path('../AUTHCAT_VERSION', __dir__)).strip
 
 Gem::Specification.new do |spec|
   spec.name          = 'authcat-passport'
-  spec.version       = Authcat::Passport::VERSION
+  spec.version       = version
   spec.authors       = ['lychee xing']
   spec.email         = ['lolychee@gmail.com']
 
@@ -28,4 +28,8 @@ Gem::Specification.new do |spec|
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
+
+  spec.add_dependency 'dry-container', '>= 0.7.2'
+  spec.add_dependency 'rack'
+  spec.add_dependency 'zeitwerk', '>= 2.4.2'
 end
