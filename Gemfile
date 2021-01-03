@@ -7,10 +7,20 @@ gemspec
 
 gem 'rake', '~> 13.0'
 
-gem 'rspec', '~> 3.0'
+group :test do
+  gem 'rspec', '~> 3.0'
+end
 
-gem 'rubocop'
-gem 'rubocop-performance'
-gem 'rubocop-rake'
-gem 'rubocop-rspec'
-gem 'rubocop-rubycw'
+group :lint do
+  gem 'rubocop',                require: false
+  gem 'rubocop-packaging',      require: false
+  gem 'rubocop-performance',    require: false
+  gem 'rubocop-rake',           require: false
+  gem 'rubocop-rspec',          require: false
+  gem 'rubocop-rubycw',         require: false
+  gem 'rubocop-thread_safety',  require: false
+end
+
+group :doc do
+  gem 'rdoc'
+end

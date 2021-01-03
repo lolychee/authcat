@@ -10,10 +10,12 @@
 # See https://docs.rubocop.org/rubocop/configuration
 
 require:
+  - rubocop-packaging
+  - rubocop-performance
   - rubocop-rake
   - rubocop-rspec
   - rubocop-rubycw
-  - rubocop-performance
+  - rubocop-thread_safety
 
 AllCops:
   NewCops: enable
