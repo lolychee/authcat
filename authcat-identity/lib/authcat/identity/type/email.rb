@@ -7,7 +7,7 @@ module Authcat
         DEFAULT_VALIDATIONS_OPTIONS = { email: true }.freeze
         DEFAULT_MASK_OPTIONS = { pattern: /^.{1}(?<name_mask>.*).{2}@.{1}(?<domain_mask>.*)\..+$/ }.freeze
 
-        def initialize(attribute, validations: true, mask: true, &block)
+        def initialize(attribute, validations: true, mask: true)
           super()
 
           modules = []
@@ -22,7 +22,6 @@ module Authcat
             modules.each { |mod| base.include mod }
           end
         end
-
       end
     end
   end

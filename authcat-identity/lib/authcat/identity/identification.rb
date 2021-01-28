@@ -10,7 +10,6 @@ module Authcat
       end
 
       module ClassMethods
-
         # @param attribute [Symbol, String]
         # @return [Symbol]
         def identity(attribute, type: :token, **opts, &block)

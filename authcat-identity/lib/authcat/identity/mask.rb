@@ -15,7 +15,7 @@ module Authcat
           return if value.nil?
 
           if block
-            block.call(value, pattern: pattern, replacement: replacement)
+            yield(value, pattern: pattern, replacement: replacement)
           else
             m = value.match(pattern)
             m.names.each { |n| value[m.begin(n)...m.end(n)] = replacement * m[n].size }

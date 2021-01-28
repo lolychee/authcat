@@ -7,7 +7,7 @@ module Authcat
         DEFAULT_VALIDATIONS_OPTIONS = { format: /^.+$/ }.freeze
         DEFAULT_MASK_OPTIONS = {}.freeze
 
-        def initialize(attribute, validations: false, mask: false, &block)
+        def initialize(attribute, validations: false, mask: false)
           super()
 
           modules = []
