@@ -19,9 +19,8 @@ module Authcat
           else
             m = value.match(pattern)
             m.names.each { |n| value[m.begin(n)...m.end(n)] = replacement * m[n].size }
+            value
           end
-
-          value
         end
       end
     end

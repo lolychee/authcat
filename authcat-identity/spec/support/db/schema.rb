@@ -14,12 +14,13 @@
 
 ActiveRecord::Schema.define(version: 20_160_620_165_022) do
   create_table 'users', force: :cascade do |t|
-    t.string 'email', null: false
-    t.string 'otp_secret'
-    t.string 'backup_codes_digest'
-    t.string 'security_questions'
-    t.datetime 'otp_last_used_at'
+    t.string 'email_ciphertext'
+    t.string 'email_bidx'
+    t.string 'phone_number_ciphertext'
+    t.string 'phone_number_bidx'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.index ['email_bidx'], name: 'index_users_on_email_bidx', unique: true
+    t.index ['phone_number_bidx'], name: 'index_users_on_phone_number_bidx', unique: true
   end
 end

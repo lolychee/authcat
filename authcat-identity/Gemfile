@@ -15,4 +15,6 @@ gem 'database_cleaner', '~> 1.5'
 gem 'pg', require: false
 gem 'sqlite3'
 
-gem 'email_validator'
+gem 'blind_index'
+gem 'lockbox'
+gem 'valid_email2'

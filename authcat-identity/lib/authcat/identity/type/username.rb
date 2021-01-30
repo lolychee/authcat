@@ -3,7 +3,7 @@
 module Authcat
   module Identity
     class Type
-      class Username < Type
+      class Username < Module
       end
     end
   end

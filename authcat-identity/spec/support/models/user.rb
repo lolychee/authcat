@@ -13,5 +13,7 @@ class User < ActiveRecord::Base
   # serialize :backup_codes_digest, Array if connection.adapter_name == 'SQLite'
   # has_backup_codes
 
+  ENV['LOCKBOX_MASTER_KEY'] = '0000000000000000000000000000000000000000000000000000000000000000'
+
   identity :email, type: :email
 end
