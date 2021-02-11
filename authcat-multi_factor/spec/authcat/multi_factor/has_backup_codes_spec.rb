@@ -6,6 +6,7 @@ RSpec.describe Authcat::MultiFactor::HasBackupCodes do
     codes = user.regenerate_backup_codes
 
     expect(user).to be_persisted
-    expect(user.verify_backup_codes(codes.first)).to be true
+    expect(user.backup_codes).to eq codes.first
+    expect(user.burn_after_backup_codes(codes.first)).to eq true
   end
 end

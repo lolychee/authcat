@@ -45,10 +45,12 @@ module Authcat
     end
 
     # @return [Boolean]
-    def ==(other)
+    def verify(other)
       other = algorithm.digest(other) unless other.is_a?(self.class)
 
       self.class.secure_compare(to_s, other.to_s)
     end
+
+    alias == verify
   end
 end

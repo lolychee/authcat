@@ -10,11 +10,11 @@ module Authcat
 
       module ClassMethods
         # @return [Symbol]
-        def has_one_time_password(attribute = :otp, suffix: '_secret', column_name: "#{attribute}#{suffix}", last_at: "#{attribute}_last_used_at", drift: 30, **opts)
+        def has_one_time_password(attribute = :otp, suffix: '_secret', column_name: "#{attribute}#{suffix}", after_attribute: "#{attribute}_last_used_at", drift: 30, **opts)
           gem 'rotp'
           require 'rotp'
 
-          include InstanceMethodsOnActivation.new(attribute, column_name, last_at: last_at, drift: drift, **opts)
+          include InstanceMethodsOnActivation.new(attribute, column_name, after_attribute: after_attribute, drift: drift, **opts)
 
           column_name.to_sym
         end
@@ -35,13 +35,15 @@ module Authcat
             end
           end
 
-          define_method("verify_#{attribute}") do |code, drift: options[:drift], after: send(options[:last_at])|
-            if code.nil?
-              false
+          define_method("verify_#{attribute}") do |code, drift: options[:drift], after: send(options[:after_attribute])|
+            return false if code.nil?
+
+            t = send(attribute).verify(code, drift_behind: drift, after: after)
+            if t
+              touch(options[:after_attribute], time: Time.at(t)) if options[:after_attribute]
+              true
             else
-              t = send(attribute).verify(code, drift_behind: drift, after: after)
-              touch(options[:last_at], time: Time.at(t)) if options[:last_at] && t
-              !t.nil?
+              false
             end
           end
         end

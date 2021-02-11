@@ -43,63 +43,27 @@ module Authcat
 
           ivar = "@#{attribute}"
 
-          if array
-            # base.serialize attribute, Array if serialize
+          klass = array ? ::Authcat::Password::Collection : ::Authcat::Password
 
-            define_method(attribute) do
-              instance_variable_get(ivar) || begin
-                array = send(column_name)
-                instance_variable_set(ivar, if array.nil?
-                                              nil
-                                            else
-                                              array.map do |str|
-                                                ::Authcat::Password.new(str, algorithm: algorithm, **opts)
-                                              end
-                                            end)
-              end
+          define_method(attribute) do
+            instance_variable_get(ivar) || begin
+              value = send(column_name)
+              instance_variable_set(ivar, if value.nil?
+                                            nil
+                                          else
+                                            klass.new(value, algorithm: algorithm, **opts)
+                                          end)
             end
+          end
 
-            define_method("#{attribute}=") do |unencrypted_str|
-              value =
-                if unencrypted_str.respond_to?(:to_a)
-                  unencrypted_str.to_a.map do |str|
-                    str.nil? ? nil : ::Authcat::Password.create(str, algorithm: algorithm, **opts)
-                  end
-                end
-              send("#{column_name}=", value)
-              instance_variable_set("@#{attribute}", value)
-            end
-
-            define_method("verify_#{attribute}") do |unencrypted_str|
-              passwords = send(attribute)
-              !passwords.nil? && passwords.any? { |pwd| pwd == unencrypted_str }
-            end
-          else
-            define_method(attribute) do
-              instance_variable_get(ivar) || begin
-                str = send(column_name)
-                instance_variable_set(ivar, if str.nil?
-                                              nil
-                                            else
-                                              ::Authcat::Password.new(str, algorithm: algorithm, **opts)
-                                            end)
-              end
-            end
-
-            define_method("#{attribute}=") do |unencrypted_str|
-              value = if unencrypted_str.nil?
-                        nil
-                      else
-                        ::Authcat::Password.create(unencrypted_str, algorithm: algorithm,
-                                                                    **opts)
-                      end
-              send("#{column_name}=", value.to_s)
-              instance_variable_set("@#{attribute}", value)
-            end
-
-            define_method("verify_#{attribute}") do |unencrypted_str|
-              send(attribute) == unencrypted_str
-            end
+          define_method("#{attribute}=") do |unencrypted_str|
+            value = if unencrypted_str.nil?
+                      nil
+                    else
+                      klass.create(unencrypted_str, algorithm: algorithm, **opts)
+                    end
+            send("#{column_name}=", value)
+            instance_variable_set("@#{attribute}", value)
           end
         end
       end

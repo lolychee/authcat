@@ -41,11 +41,16 @@ module Authcat
             end
           end
 
-          define_method("verify_#{attribute}") do |code, burn: false|
+          define_method("burn_after_verify_#{attribute}") do |code|
             codes = send(attribute)
+
             passcode = codes.try(:find) { |c| c == code }
-            update_column(attribute, codes - [passcode]) if burn && passcode
-            !passcode.nil?
+            if passcode.nil?
+              false
+            else
+              update_column(attribute, codes - [passcode])
+              true
+            end
           end
         end
       end
