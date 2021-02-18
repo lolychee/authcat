@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-  include Authcat::Identity::Identification
+  include Authcat::Identity::Identifier
 
   # EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
   # EMAIL_VALIDATE_OPTIONS = { format: EMAIL_REGEX }.freeze
@@ -15,5 +15,5 @@ class User < ActiveRecord::Base
 
   ENV['LOCKBOX_MASTER_KEY'] = '0000000000000000000000000000000000000000000000000000000000000000'
 
-  identity :email, type: :email
+  identifier :email, type: :email
 end

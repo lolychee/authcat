@@ -2,7 +2,7 @@
 
 module Authcat
   module Identity
-    class Type
+    module Identifier
       class Username < Module
       end
     end

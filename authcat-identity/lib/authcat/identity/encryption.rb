@@ -3,9 +3,7 @@
 module Authcat
   module Identity
     class Encryption < Module
-      DEFAULT_QUERY_OPTIONS = {}.freeze
-
-      def initialize(attribute, query: true, **opts)
+      def initialize(attribute, index: true, **opts)
         super()
 
         define_singleton_method(:included) do |base|
@@ -13,10 +11,10 @@ module Authcat
           require 'lockbox'
           base.encrypts attribute, **opts
 
-          if query
+          if index
             gem 'blind_index'
             require 'blind_index'
-            base.blind_index attribute, **(query.is_a?(Hash) ? query : DEFAULT_QUERY_OPTIONS)
+            base.blind_index attribute, **(index.is_a?(Hash) ? index : {})
           end
         end
       end
