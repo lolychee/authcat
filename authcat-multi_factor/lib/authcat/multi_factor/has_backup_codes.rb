@@ -10,45 +10,48 @@ module Authcat
 
       module ClassMethods
         # @return [Symbol]
-        def has_backup_codes(attribute = :backup_codes, **opts, &block)
+        def has_backup_codes(attribute = :backup_codes, burn_after_verify: true, **opts, &block)
           gem 'authcat-password'
           require 'authcat/password'
 
           include Authcat::Password::HasPassword
 
-          column_name = has_password attribute, array: true, validations: false, **opts
+          column = has_password attribute, array: true, validations: false, **opts
 
-          block ||= begin
-            require 'securerandom'
-            ->(s = 8) { Array.new(s) { SecureRandom.hex(8) } }
-          end
-
-          include InstanceMethodsOnActivation.new(attribute, block)
+          include InstanceMethodsOnActivation.new(attribute, column, burn_after_verify: burn_after_verify, &block)
 
           # @type [Symbol]
-          column_name
+          column
         end
       end
 
       class InstanceMethodsOnActivation < Module
         # @return [void]
-        def initialize(attribute, generator)
+        def initialize(attribute, column, burn_after_verify:, &generator)
           super()
 
-          define_method("regenerate_#{attribute}") do |*args|
-            generator.call(*args).tap do |codes|
+          define_method("regenerate_#{attribute}") do |len = 8|
+            codes =
+              if generator
+                generator.call(len)
+              else
+                require 'securerandom'
+                Array.new(len) { SecureRandom.hex(8) }
+              end
+
+            codes.tap do
               update!(attribute => codes)
             end
           end
 
-          define_method("burn_after_verify_#{attribute}") do |code|
+          define_method("verify_#{attribute}") do |code, burn: burn_after_verify|
             codes = send(attribute)
 
             passcode = codes.try(:find) { |c| c == code }
             if passcode.nil?
               false
             else
-              update_column(attribute, codes - [passcode])
+              update_columns(column => codes - [passcode]) if burn
               true
             end
           end

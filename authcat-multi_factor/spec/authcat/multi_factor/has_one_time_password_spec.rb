@@ -2,7 +2,7 @@
 
 RSpec.describe Authcat::MultiFactor::HasOneTimePassword do
   it 'has one time password' do
-    user = User.create(email: "test@email.com")
+    user = User.create(email: 'test@email.com')
     user.regenerate_otp
 
     expect(user).to be_persisted

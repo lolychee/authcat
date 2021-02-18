@@ -19,6 +19,7 @@ gem 'sqlite3'
 
 gem 'bcrypt', require: false
 gem 'rotp', require: false
+gem 'webauthn', require: false
 
 path '..' do
   gem 'authcat-password', require: false

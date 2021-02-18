@@ -7,10 +7,15 @@ class CreateUsers < ActiveRecord::Migration[5.2]
     create_table :users do |t|
       t.string :email, null: false
       t.string :otp_secret
+      t.datetime :otp_last_used_at
+
       t.string :backup_codes_digest
+
       t.string :security_questions
 
-      t.datetime :otp_last_used_at
+      t.string :webauthn_id
+      t.string :webauthn_public_key
+      t.integer :webauthn_sign_count
 
       t.timestamps null: false
     end

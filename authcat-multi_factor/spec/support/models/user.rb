@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   include Authcat::MultiFactor::HasOneTimePassword
   include Authcat::MultiFactor::HasBackupCodes
   include Authcat::MultiFactor::HasSecurityQuestions
+  include Authcat::MultiFactor::HasWebAuthn
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
   EMAIL_VALIDATE_OPTIONS = { format: EMAIL_REGEX }.freeze
@@ -14,4 +15,6 @@ class User < ActiveRecord::Base
 
   serialize :backup_codes_digest, Array if connection.adapter_name == 'SQLite'
   has_backup_codes
+
+  has_webauthn
 end
