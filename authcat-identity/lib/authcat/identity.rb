@@ -9,5 +9,8 @@ loader.setup
 
 module Authcat
   module Identity
+    def self.included(base)
+      base.include Identifier
+    end
   end
 end
