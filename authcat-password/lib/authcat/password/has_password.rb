@@ -19,8 +19,11 @@ module Authcat
           suffix: '_digest',
           column_name: "#{attribute}#{suffix}",
           validations: true,
+          array: false,
           **opts
         )
+          serialize column_name, JSON if array && connection.adapter_name == 'SQLite'
+
           if validations
             include ActiveModel::Validations
 
@@ -31,7 +34,7 @@ module Authcat
             validates_confirmation_of attribute, allow_nil: true
           end
 
-          include InstanceMethodsOnActivation.new(attribute, column_name, **opts)
+          include InstanceMethodsOnActivation.new(attribute, column_name, array: array, **opts)
 
           column_name.to_sym
         end
