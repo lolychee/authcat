@@ -52,8 +52,9 @@ module Authcat
           |
             return false if code.nil?
 
-            t = send(attribute)?.verify(code, drift_ahead, drift_behind: drift, after: after)
-            if t
+            otp = send(attribute)
+
+            if (t = otp.verify(code, drift_ahead, drift_behind: drift, after: after))
               touch(options[:after_column], time: Time.at(t)) if options[:after_column]
               true
             else

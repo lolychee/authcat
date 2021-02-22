@@ -12,5 +12,11 @@ loader.setup
 
 module Authcat
   module MultiFactor
+
+    def self.included(base)
+      base.include HasOneTimePassword
+      base.include HasBackupCodes
+      base.include HasWebAuthn
+    end
   end
 end
