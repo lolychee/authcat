@@ -1,3 +1,16 @@
+PATH
+  remote: ..
+  specs:
+    authcat-identity (0.1.0)
+      dry-container (>= 0.7.2)
+      zeitwerk (>= 2.4.2)
+    authcat-multi_factor (0.1.0)
+      authcat-password (~> 0.1.0)
+      zeitwerk (>= 2.4.2)
+    authcat-password (0.1.0)
+      dry-container (>= 0.7.2)
+      zeitwerk (>= 2.4.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,7 +75,15 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    android_key_attestation (0.3.0)
+    argon2-kdf (0.1.5)
+    awrence (1.2.1)
+    bcrypt (3.1.16)
+    bindata (2.4.8)
     bindex (0.8.1)
+    blind_index (2.2.0)
+      activesupport (>= 5)
+      argon2-kdf (>= 0.1.1)
     bootsnap (1.7.2)
       msgpack (~> 1.0)
     builder (3.2.4)
@@ -75,9 +96,21 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    cbor (0.5.9.6)
     childprocess (3.0.0)
     concurrent-ruby (1.1.8)
+    cose (1.2.0)
+      cbor (~> 0.5.9)
+      openssl-signature_algorithm (~> 1.0)
     crass (1.0.6)
+    dry-configurable (0.12.1)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 0.5, >= 0.5.0)
+    dry-container (0.7.2)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 0.1, >= 0.1.3)
+    dry-core (0.5.0)
+      concurrent-ruby (~> 1.0)
     erubi (1.10.0)
     ffi (1.14.2)
     globalid (0.4.2)
@@ -86,9 +119,11 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    jwt (2.2.2)
     listen (3.4.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    lockbox (0.6.2)
     loofah (2.9.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -104,6 +139,10 @@ GEM
     nio4r (2.5.5)
     nokogiri (1.11.1-x86_64-linux)
       racc (~> 1.4)
+    openssl (2.2.0)
+    openssl-signature_algorithm (1.1.1)
+      openssl (~> 2.0)
+    phonelib (0.6.48)
     public_suffix (4.0.6)
     puma (5.2.1)
       nio4r (~> 2.0)
@@ -146,7 +185,10 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.0.3)
+    rotp (6.2.0)
     rubyzip (2.3.0)
+    safety_net_attestation (0.4.0)
+      jwt (~> 2.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -157,6 +199,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    securecompare (1.0.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -172,16 +215,32 @@ GEM
     sqlite3 (1.4.2)
     thor (1.1.0)
     tilt (2.0.10)
+    tpm-key_attestation (0.10.0)
+      bindata (~> 2.4)
+      openssl-signature_algorithm (~> 1.0)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    valid_email2 (3.6.0)
+      activemodel (>= 3.2)
+      mail (~> 2.5)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webauthn (2.4.1)
+      android_key_attestation (~> 0.3.0)
+      awrence (~> 1.1)
+      bindata (~> 2.4)
+      cbor (~> 0.5.9)
+      cose (~> 1.1)
+      openssl (~> 2.0)
+      safety_net_attestation (~> 0.4.0)
+      securecompare (~> 1.0)
+      tpm-key_attestation (~> 0.10.0)
     webdrivers (4.5.0)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
@@ -202,21 +261,31 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  authcat-identity!
+  authcat-multi_factor!
+  authcat-password!
+  bcrypt
+  blind_index
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  lockbox
+  phonelib
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.3)
+  rotp
   sass-rails (>= 6)
   selenium-webdriver
   spring
   sqlite3 (~> 1.4)
   turbolinks (~> 5)
   tzinfo-data
+  valid_email2
   web-console (>= 4.1.0)
+  webauthn
   webdrivers
   webpacker (~> 5.0)
 
