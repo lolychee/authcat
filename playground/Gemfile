@@ -69,3 +69,5 @@ gem 'phonelib'
 gem 'rotp'
 gem 'valid_email2'
 gem 'webauthn'
+
+gem "tailwindcss-rails", "~> 0.3.3"

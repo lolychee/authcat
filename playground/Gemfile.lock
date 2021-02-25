@@ -213,6 +213,8 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.2)
+    tailwindcss-rails (0.3.3)
+      rails (>= 6.0.0)
     thor (1.1.0)
     tilt (2.0.10)
     tpm-key_attestation (0.10.0)
@@ -281,6 +283,7 @@ DEPENDENCIES
   selenium-webdriver
   spring
   sqlite3 (~> 1.4)
+  tailwindcss-rails (~> 0.3.3)
   turbolinks (~> 5)
   tzinfo-data
   valid_email2
@@ -293,4 +296,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.2.9
+   2.2.11
