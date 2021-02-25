@@ -5,10 +5,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VARIANT: 2.6
     volumes:
-      - zsh_history:/commandhistory
       - bundle:/usr/local/bundle
-      - ..:/workspace:cached
+      - ..:/workspace:delegated
+      - tmp_cache:/workspace/playground/tmp/cache
+      - node_modules:/workspace/playground/node_modules
 
     # ports:
     #   - 3000:3000
@@ -29,6 +32,7 @@ services:
       - POSTGRES_PASSWORD=authcat
 
 volumes:
-  zsh_history:
   bundle:
   postgres:
+  tmp_cache:
+  node_modules:
