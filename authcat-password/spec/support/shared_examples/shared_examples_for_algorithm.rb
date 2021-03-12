@@ -2,14 +2,15 @@
 
 RSpec.shared_examples 'an algorithm' do
   let(:algorithm) { described_class.new }
+  let(:validator) { ->(ciphertext) { false } }
 
   describe '#digest' do
     context 'with empty string' do
       let(:password) { '' }
 
       it 'is valid hash string' do
-        encrypted_str = algorithm.digest(password)
-        expect(BCrypt::Password.valid_hash?(encrypted_str)).to eq true
+        ciphertext = algorithm.digest(password)
+        expect(validator.call(ciphertext)).to eq true
       end
     end
   end

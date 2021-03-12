@@ -6,25 +6,26 @@ module Authcat
       # @return [void]
       def self.included(base)
         base.extend ClassMethods
+        base.include Validators
       end
 
       module ClassMethods
         # @param Attribute [Symbol, String]
         # @param suffix [Symbol, String]
         # @param column_name [Symbol, String]
-        # @param validations [Boolean]
+        # @param validate [Boolean]
         # @return [Symbol]
         def has_password(
           attribute = :password,
           suffix: '_digest',
           column_name: "#{attribute}#{suffix}",
-          validations: true,
+          validate: true,
           array: false,
           **opts
         )
           serialize column_name, JSON if array && connection.adapter_name == 'SQLite'
 
-          if validations
+          if validate
             include ActiveModel::Validations
 
             validates_presence_of column_name, on: :save
