@@ -10,7 +10,21 @@ loader.setup
 module Authcat
   module Identity
     def self.included(base)
-      base.include Identifier
+      base.extend ClassMethods
+      base.include \
+        Identifier,
+        Validators
+    end
+
+    module ClassMethods
+      def identify(attributes)
+        case attributes
+        when String
+          where.or(fuzzy_identifier_attribute_names.map {|name| { name => attributes } }).first
+        when Hash
+          where(attributes).first
+        end
+      end
     end
   end
 end

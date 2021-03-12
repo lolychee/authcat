@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,15 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_160_620_165_022) do
-  create_table 'users', force: :cascade do |t|
-    t.string 'email_ciphertext'
-    t.string 'email_bidx'
-    t.string 'phone_number_ciphertext'
-    t.string 'phone_number_bidx'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['email_bidx'], name: 'index_users_on_email_bidx', unique: true
-    t.index ['phone_number_bidx'], name: 'index_users_on_phone_number_bidx', unique: true
+ActiveRecord::Schema.define(version: 2016_06_20_165022) do
+
+  create_table "users", force: :cascade do |t|
+    t.string "email_ciphertext"
+    t.string "email_bidx"
+    t.string "phone_number_ciphertext"
+    t.string "phone_number_bidx"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_bidx"], name: "index_users_on_email_bidx", unique: true
+    t.index ["phone_number_bidx"], name: "index_users_on_phone_number_bidx", unique: true
   end
+
 end
