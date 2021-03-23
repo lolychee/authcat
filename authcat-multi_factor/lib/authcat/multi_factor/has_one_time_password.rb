@@ -11,7 +11,7 @@ module Authcat
       module ClassMethods
         # @return [Symbol]
         def has_one_time_password(
-          attribute = :otp,
+          attribute = :one_time_password,
           suffix: '_secret',
           column: "#{attribute}#{suffix}",
           after_column: "#{attribute}_last_used_at",

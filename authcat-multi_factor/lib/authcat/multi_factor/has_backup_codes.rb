@@ -16,7 +16,7 @@ module Authcat
 
           include Authcat::Password::HasPassword
 
-          column = has_password attribute, array: true, validations: false, **opts
+          column = has_password attribute, array: true, validate: false, **opts
 
           include InstanceMethodsOnActivation.new(attribute, column, burn_after_verify: burn_after_verify, &block)
 
