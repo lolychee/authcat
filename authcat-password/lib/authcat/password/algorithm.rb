@@ -17,13 +17,13 @@ module Authcat
 
         # @param algorithm [Algorithm, Object, String, Symbol, #digest]
         # @return [self]
-        def build(algorithm, **opts)
+        def build(algorithm, encrypted_str = nil, **opts)
           if algorithm.is_a?(Class) && algorithm < Algorithm
-            algorithm.new(**opts)
+            algorithm.new(encrypted_str, **opts)
           elsif algorithm.is_a?(Algorithm) || algorithm.respond_to?(:digest)
             algorithm
           else
-            Algorithm.resolve(algorithm).new(**opts)
+            Algorithm.resolve(algorithm).new(encrypted_str, **opts)
           end
         end
       end

@@ -38,8 +38,7 @@ module Authcat
 
     # @return [self]
     def initialize(encrypted_str, algorithm:, plaintext: nil, **opts)
-      @algorithm = Algorithm.build(algorithm, **opts)
-      @algorithm.valid!(encrypted_str)
+      @algorithm = Algorithm.build(algorithm, encrypted_str, **opts)
       @plaintext = plaintext
       super(encrypted_str)
     end
