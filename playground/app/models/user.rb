@@ -1,21 +1,18 @@
 class User < ApplicationRecord
   include Authcat::Identity
-  include Authcat::Password::HasPassword
   include Authcat::MultiFactor
+
+  has_many :sessions
 
   ENV['LOCKBOX_MASTER_KEY'] = '0000000000000000000000000000000000000000000000000000000000000000'
 
-  identifier :email, type: :email
-  has_one_time_password :email_otp
-
-  identifier :phone_number, type: :phone_number
-  has_one_time_password :phone_number_otp
+  identifier :email, type: :email#, factors: %i[password verification_code]
+  identifier :phone_number, type: :phone_number#, factors: %i[password verification_code]
+  # identifier :github_oauth_token, type: :token
+  # identifier :google_oauth_token, type: :token
 
   has_password
-  has_one_time_password :password_otp
-  # serialize :backup_codes_digest, Array if connection.adapter_name == 'SQLite'
+  has_one_time_password
   has_backup_codes
 
-  identifier :github_id, type: :token
-  identifier :google_id, type: :token
 end

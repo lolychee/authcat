@@ -1,0 +1,35 @@
+<div class="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-blue-600.svg" alt="Workflow">
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Sign in to your account
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Or
+        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+          start your 14-day free trial
+        </a>
+      </p>
+    </div>
+
+    <%= form_with(model: session, url: sign_in_path, class: "mt-8 space-y-6") do |form| %>
+      <% if session.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(session.errors.count, "error") %> prohibited this sign_in_password from being saved:</h2>
+
+          <ul>
+            <% session.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form.hidden_field :id_type %>
+      <%= form.hidden_field :auth_type %>
+
+      <%= render form.object.auth_type.to_s, form: form %>
+    <% end %>
+  </div>
+</div>

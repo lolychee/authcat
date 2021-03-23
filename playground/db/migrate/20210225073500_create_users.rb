@@ -10,14 +10,14 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :phone_number_bidx, index: { unique: true }
 
       t.string :password_digest
-      t.string :password_otp_secret
+      t.string :one_time_password_secret
 
       t.string :backup_codes_digest, array: true
 
-      t.string :github_id
-      t.string :google_id
+      t.string :github_oauth_token
+      t.string :google_oauth_token
 
-      t.string :name, null: false
+      t.string :name
 
       t.timestamps
     end

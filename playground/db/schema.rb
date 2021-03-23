@@ -10,25 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_092708) do
+ActiveRecord::Schema.define(version: 2021_02_25_085855) do
+
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email_ciphertext"
     t.string "email_bidx"
-    t.string "email_otp_secret"
     t.string "phone_number_ciphertext"
     t.string "phone_number_bidx"
-    t.string "phone_number_otp_secret"
     t.string "password_digest"
-    t.string "password_otp_secret"
+    t.string "one_time_password_secret"
     t.string "backup_codes_digest"
-    t.string "github_id"
-    t.string "google_id"
-    t.string "name", null: false
+    t.string "github_oauth_token"
+    t.string "google_oauth_token"
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email_bidx"], name: "index_users_on_email_bidx", unique: true
     t.index ["phone_number_bidx"], name: "index_users_on_phone_number_bidx", unique: true
   end
 
+  add_foreign_key "sessions", "users"
 end
