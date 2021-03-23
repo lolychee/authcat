@@ -20,7 +20,7 @@ module Authcat
       def identify(attributes)
         case attributes
         when String
-          where.or(fuzzy_identifier_attribute_names.map {|name| { name => attributes } }).first
+          where.or(identifier_names(fuzzy_match: true).map {|name| { name => attributes } }).first
         when Hash
           where(attributes).first
         end

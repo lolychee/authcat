@@ -6,7 +6,7 @@ module Authcat
       class Email < Module
         DEFAULT_VALIDATIONS_OPTIONS = { 'valid_email_2/email': true, allow_nil: true }.freeze
         DEFAULT_MASK_OPTIONS = { pattern: /^.{1}(?<name_mask>.*).{2}@.{1}(?<domain_mask>.*)\..+$/ }.freeze
-        DEFAULT_ENCRYPT_OPTIONS = { index: { expression: ->(v) { v.downcase } } }.freeze
+        DEFAULT_ENCRYPT_OPTIONS = { index: { expression: ->(v) { v&.downcase } } }.freeze
 
         def initialize(attribute, encrypt: true, mask: true, validations: true)
           super()

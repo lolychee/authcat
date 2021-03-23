@@ -4,34 +4,40 @@ module Authcat
   module Identity
     module Validators
       class IdentifyValidator < ActiveModel::EachValidator
-        def validate_each(record, attribute, value)
-          klass = case options[:with]
-          when nil
-            reload = true
-            record.class
-          when Symbol
-            if options[:class_name]
-              options[:class_name].constantize
-            else
-              reflection = record.class.reflect_on_association(options[:with])
-              if reflection
-                reflection.klass
+        def initialize(options)
+          klass =
+            case options[:with]
+            when nil
+              reload = true
+              options[:class]
+            when Symbol
+              if options[:class_name]
+                options[:class_name].constantize
               else
-                record.errors.add(attribute, :invalid, strict: true, message: "#{options[:with].inspect} is not an association, please set class_name: ")
-                return
+                reflection = options[:class].reflect_on_association(options[:with])
+                if reflection
+                  reflection.klass
+                else
+                  raise ArgumentError, "#{options[:with].inspect} is not an association, please set class_name: "
+                end
               end
             end
-          end
 
+          raise ArgumentError, "#{klass.name} undefined singleton method 'identify'" unless klass.respond_to?(:identify)
+
+          super(options.merge(klass: klass, reload: reload))
+        end
+
+        def validate_each(record, attribute, value)
           identity =
-            if options[:fuzzy]
-              klass.identify(value)
+            if options[:fuzzy_match]
+              options[:klass].identify(value)
             else
-              klass.identify({ attribute => value })
+              options[:klass].identify({ attribute => value })
             end
 
           if identity
-            if reload
+            if options[:reload]
               reload(record, identity)
             else
               record.send("#{options[:with]}=", identity)
