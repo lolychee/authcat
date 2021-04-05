@@ -26,10 +26,7 @@
         </div>
       <% end %>
 
-      <%= form.hidden_field :id_type %>
-      <%= form.hidden_field :auth_type %>
-
-      <%= render form.object.auth_type.to_s, form: form %>
+      <%= render session.aasm(:sign_in_step).current_state.to_s, form: form %>
     <% end %>
 
     <div class="grid">

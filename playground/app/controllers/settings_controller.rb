@@ -1,6 +1,4 @@
 class SettingsController < ApplicationController
-  include Encryptor
-
   before_action :set_user
 
   def set_user

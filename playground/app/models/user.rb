@@ -100,6 +100,8 @@ class User < ApplicationRecord
     def update_one_time_password(attributes)
       self.attributes = attributes
       self.next && self.completed?
+    rescue AASM::InvalidTransition => e
+      false
     end
 
     def disable_one_time_password!

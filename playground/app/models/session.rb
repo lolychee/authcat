@@ -2,6 +2,7 @@ class Session < ApplicationRecord
   include Authcat::Identity::Validators
   include Authcat::Password::Validators
   include Authcat::MultiFactor
+  include AASM
 
   belongs_to :user, optional: true
   validates :user, presence: true, on: :save
@@ -9,46 +10,63 @@ class Session < ApplicationRecord
   concerning :SignIn do
     included do
       define_model_callbacks :sign_in
-      # delegate :password, :one_time_password, to: :user, prefix: true, allow_nil: true
+      delegate :password, :verify_one_time_password, to: :user, allow_nil: true
 
-      # attribute :id_type, :string, default: :user_token
-      # attribute :auth_type, :string, default: :one_time_password
-      # attribute :email, :string
-      # attribute :user_token, :string
-      # attribute :remember_me, :boolean
+      attribute :sign_in_step, :string
+      attribute :login, :string
+      attribute :email, :string
+      attribute :phone_number, :string
+      attribute :remember_me, :boolean
 
-      # with_options on: :sign_in do
-      #   validates :auth_type, inclusion: { in: %w[password one_time_password] }
-      #   validates :id_type, inclusion: { in: %w[login email phone_number] }, if: -> { auth_type == "password" }
-      #   validates :id_type, inclusion: { in: %w[user_token] }, if: -> { auth_type == "one_time_password" }
+      attribute :password_attempt, :string
+      attribute :one_time_password_attempt, :string
 
-      #   validates :email, identify: :user, if: -> { id_type == "email" }
-      #   validates :password, authenticate: :user_password, if: -> { auth_type == "password" && user }
+      aasm(:sign_in_step, enum: false) do
+        state :password, initial: true
+        state :one_time_password
+        state :completed
 
-      #   validates :user_token, identify: :user, if: -> { id_type == "user_token" }
-      #   validates :one_time_password, authenticate: :user_one_time_password, if: -> { auth_type == "one_time_password" }
-      # end
-    end
+        event :next do
+          transitions from: :password, to: :one_time_password do
+            guard do
+              valid?(:sign_in) && user&.one_time_password?
+            end
+          end
+          transitions from: :password, to: :completed do
+            guard do
+              valid?(:sign_in) && !user&.one_time_password?
+            end
+            after do
+              run_callbacks(:sign_in) { save }
+            end
+          end
+          transitions from: :one_time_password, to: :completed do
+            guard do
+              valid?(:sign_in)
+            end
+            after do
+              run_callbacks(:sign_in) { save }
+            end
+          end
+        end
+      end
 
-    def sign_in
-      user_authenticate && valid?(:sign_in) && run_callbacks(:sign_in) do
-        save
+      with_options on: :sign_in do
+        validates :email, identify: :user, if: :email?
+
+        validates :user, presence: true
+
+        validates :password_attempt, authenticate: :password, if: -> { sign_in_step == "password" && user }
+        validates :one_time_password_attempt, authenticate: :one_time_password, if: -> { sign_in_step == "one_time_password" && user }
       end
     end
 
-  end
-
-  attribute :email, :string
-  attribute :tsv_token, :string
-  attribute :remember_me, :boolean
-
-  multi_factor_authentication :user, default: %w[email password] do
-    factor :password,           identifier: %i[email phone_number login]
-    factor :verification_code,  identifier: %i[email phone_number]
-    factor :one_time_password,  identifier: %i[tsv_token]
-    factor :webauthn,           identifier: %i[tsv_token]
-
-    # identifier_factor :cross_login_token
+    def sign_in(attributes = {})
+      self.attributes = attributes
+      self.next && self.completed?
+    rescue AASM::InvalidTransition => e
+      false
+    end
   end
 
 end
