@@ -23,6 +23,13 @@ module Authcat
           # @type [Symbol]
           column
         end
+
+        def generate_backup_codes(len = 8)
+          require 'securerandom'
+          Array.new(len) {
+            block_given? ? yield : SecureRandom.hex(8)
+          }
+        end
       end
 
       class InstanceMethodsOnActivation < Module
@@ -30,14 +37,8 @@ module Authcat
         def initialize(attribute, column, burn_after_verify:, &generator)
           super()
 
-          define_method("regenerate_#{attribute}") do |len = 8|
-            codes =
-              if generator
-                generator.call(len)
-              else
-                require 'securerandom'
-                Array.new(len) { SecureRandom.hex(8) }
-              end
+          define_method("regenerate_#{attribute}") do |*args|
+            codes = self.class.generate_backup_codes(*args, &generator)
 
             codes.tap do
               update!(attribute => codes)
@@ -48,11 +49,8 @@ module Authcat
             codes = send(attribute)
 
             passcode = codes.try(:find) { |c| c == code }
-            if passcode.nil?
-              false
-            else
-              update_columns(column => codes - [passcode]) if burn
-              true
+            (!passcode.nil?).tap do |passed|
+              update_columns(column => codes - [passcode]) if burn && passed
             end
           end
         end

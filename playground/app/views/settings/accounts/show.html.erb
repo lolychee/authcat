@@ -1,0 +1,31 @@
+<%= form_with(model: @user, scope: :account, url: settings_account_url) do |form| %>
+  <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+      <div>
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Account</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          This information will be displayed publicly so be careful what you share.
+        </p>
+      </div>
+      <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-3 sm:col-span-2">
+            <%= form.label :email, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :email, class: "focus:ring-blue-500 focus:border-blue-500 flex-1 block mt-1 w-full rounded-none rounded-md sm:text-sm border-gray-300"  %>
+          </div>
+      </div>
+      <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-3 sm:col-span-2">
+            <%= form.label :phone_number, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :phone_number, class: "focus:ring-blue-500 focus:border-blue-500 flex-1 block mt-1 w-full rounded-none rounded-md sm:text-sm border-gray-300"  %>
+          </div>
+      </div>
+    </div>
+    <div class="px-4 py-3 bg-gray-50 text-left sm:px-6 space-x-4">
+      <%= form.button "Save", type: :submit, class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: "third_party_sign_on" %>
+
+<%= render partial: "deactive_account" %>

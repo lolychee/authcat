@@ -8,26 +8,32 @@ class Session < ApplicationRecord
 
   concerning :SignIn do
     included do
-      # define_model_callbacks :sign_in
+      define_model_callbacks :sign_in
       # delegate :password, :one_time_password, to: :user, prefix: true, allow_nil: true
 
       # attribute :id_type, :string, default: :user_token
-      # attribute :auth_type, :string, default: :one_time_code
+      # attribute :auth_type, :string, default: :one_time_password
       # attribute :email, :string
       # attribute :user_token, :string
       # attribute :remember_me, :boolean
 
       # with_options on: :sign_in do
-      #   validates :auth_type, inclusion: { in: %w[password one_time_code] }
+      #   validates :auth_type, inclusion: { in: %w[password one_time_password] }
       #   validates :id_type, inclusion: { in: %w[login email phone_number] }, if: -> { auth_type == "password" }
-      #   validates :id_type, inclusion: { in: %w[user_token] }, if: -> { auth_type == "one_time_code" }
+      #   validates :id_type, inclusion: { in: %w[user_token] }, if: -> { auth_type == "one_time_password" }
 
       #   validates :email, identify: :user, if: -> { id_type == "email" }
       #   validates :password, authenticate: :user_password, if: -> { auth_type == "password" && user }
 
       #   validates :user_token, identify: :user, if: -> { id_type == "user_token" }
-      #   validates :one_time_code, authenticate: :user_one_time_password, if: -> { auth_type == "one_time_code" }
+      #   validates :one_time_password, authenticate: :user_one_time_password, if: -> { auth_type == "one_time_password" }
       # end
+    end
+
+    def sign_in
+      user_authenticate && valid?(:sign_in) && run_callbacks(:sign_in) do
+        save
+      end
     end
 
   end

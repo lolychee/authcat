@@ -1,0 +1,5 @@
+<ul>
+  <% @user.backup_codes.each do |code| %>
+    <li><%= code.plaintext %></li>
+  <% end %>
+</ul>

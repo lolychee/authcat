@@ -1,0 +1,61 @@
+<div class="shadow sm:rounded-md sm:overflow-hidden">
+  <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+    <div>
+      <h3 class="text-lg font-medium leading-6 text-gray-900">Two Factor Authentication</h3>
+      <p class="mt-1 text-sm text-gray-600">
+        This information will be displayed publicly so be careful what you share.
+      </p>
+    </div>
+    <div class="grid grid-cols-3 gap-6">
+      <div class="col-span-3 sm:col-span-2">
+        <label class="block text-sm font-medium text-gray-700">Phone</label>
+        <div class="mt-4 space-x-2">
+          <div class="inline-flex justify-between items-center">
+            <% if @user.phone_number? %>
+              <div class="w-10 h-5 flex items-center bg-blue-500 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <div class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-4"></div>
+              </div>
+            <% else %>
+              <div class="w-10 h-5 flex items-center bg-gray-300 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <div class="bg-white w-4 h-4 rounded-full shadow-md"></div>
+              </div>
+              <%#= button_to "Enable", settings_account_url(action: "enable_tfa"), class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-3 sm:col-span-2">
+        <label class="block text-sm font-medium text-gray-700">One-Time Password (OTP)</label>
+        <div class="mt-4 space-x-2">
+          <% if @user.one_time_password? %>
+            <%= button_to settings_one_time_password_url, method: :delete, class: "w-10 h-5 flex items-center bg-blue-500 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500", title: "Disable One-Time Password" do %>
+              <div class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-4"></div>
+            <% end %>
+          <% else %>
+            <%= button_to settings_one_time_password_url, method: :post, confirm: "are you sure?", class: "w-10 h-5 flex items-center bg-gray-300 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500", title: "Enable One-Time Password" do %>
+              <div class="bg-white w-4 h-4 rounded-full shadow-md"></div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <% if @user.backup_codes? %>
+        <div class="col-span-3 sm:col-span-2">
+          <label class="block text-sm font-medium text-gray-700">Recovery Codes</label>
+          <div class="mt-2 space-x-2">
+            <button type="button" class="inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Regenerate Recovery Codes
+            </button>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="col-span-3 sm:col-span-2">
+        <label class="block text-sm font-medium text-gray-700">Universal 2nd Factor (U2F)</label>
+        <div class="mt-2 space-x-2">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

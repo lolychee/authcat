@@ -60,6 +60,10 @@ module Authcat
             end
           end
 
+          define_method("#{attribute}?") do
+            send("#{column_name}?")
+          end
+
           define_method("#{attribute}=") do |unencrypted_str|
             value = if unencrypted_str.nil?
                       nil

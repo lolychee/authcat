@@ -1,0 +1,31 @@
+<%= form_with(model: @user, scope: :one_time_password, url: settings_one_time_password_url) do |form| %>
+  <%= form.hidden_field :saved_state, value: encryptor.encrypt_and_sign(@user.slice(:update_one_time_password_step, :backup_codes_digest, :one_time_password_secret), expires_in: 15.minutes, purpose: controller_name) %>
+
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this sign_in_password from being saved:</h2>
+
+      <ul>
+        <% @user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+      <div>
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Enable One Time Password</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          This information will be displayed publicly so be careful what you share.
+        </p>
+      </div>
+      <%= render @user.aasm(:update_one_time_password_step).current_state.to_s, form: form %>
+    </div>
+    <div class="px-4 py-3 bg-gray-50 text-left sm:px-6 space-x-4">
+      <%= form.button "Next", type: :submit, class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+  </div>
+
+<% end %>

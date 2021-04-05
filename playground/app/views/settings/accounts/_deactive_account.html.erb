@@ -1,0 +1,23 @@
+<div class="shadow sm:rounded-md sm:overflow-hidden">
+  <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+    <div>
+      <h3 class="text-lg font-medium leading-6 text-gray-900">Deactive Account</h3>
+      <p class="mt-1 text-sm text-gray-600">
+        This information will be displayed publicly so be careful what you share.
+      </p>
+    </div>
+    <div class="grid grid-cols-3 gap-6">
+      <div class="col-span-3 sm:col-span-2">
+        <div class="mt-4 space-x-2">
+          <% if true %>
+            <button type="button" disabled class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-not-allowed">
+                Deactive Account
+            </button>
+          <% else %>
+            <%= button_to "Deactive Account", settings_password_url(two_factor_authentication: {switch: "on"}), class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

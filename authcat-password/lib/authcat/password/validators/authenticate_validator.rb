@@ -8,6 +8,8 @@ module Authcat
           passed =
             if record.respond_to?(:authenticate)
               record.authenticate({ options[:with] => value })
+            elsif record.respond_to?("verify_#{options[:with]}")
+              record.send("verify_#{options[:with]}", value)
             else
               !value.nil? && record.send(options[:with]) == value
             end

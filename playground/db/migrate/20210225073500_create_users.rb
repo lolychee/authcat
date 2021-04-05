@@ -11,6 +11,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
 
       t.string :password_digest
       t.string :one_time_password_secret
+      t.datetime :one_time_password_last_used_at
 
       t.string :backup_codes_digest, array: true
 

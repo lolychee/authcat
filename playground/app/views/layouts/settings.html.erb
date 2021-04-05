@@ -1,0 +1,27 @@
+
+<%= content_for :content do %>
+  <div class="container mx-auto">
+    <div class="md:grid md:grid-cols-4 md:gap-6 p-4">
+      <div class="md:col-span-1">
+        <div class="px-4 sm:px-0">
+          <div class="py-1 space-y-1" role="none">
+            <% {
+              "Profile" => settings_profile_url,
+              "Account" => settings_account_url,
+              "Password" => settings_password_url,
+              "Security" => settings_security_url,
+            }.each do |text, url| %>
+              <%= link_to_if (controller_name == text.tableize), text, url, class: "block px-4 py-2 text-sm font-bold rounded-md bg-gray-100 text-blue-500", role: "menuitem" do %>
+                <%= link_to text, url, class: "block px-4 py-2 text-sm font-bold text-gray-700 rounded-md hover:bg-gray-100 hover:text-blue-500", role: "menuitem" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="md:col-span-3 space-y-6">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<%= render template: "layouts/application" %>

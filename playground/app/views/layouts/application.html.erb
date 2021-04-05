@@ -13,6 +13,6 @@
   </head>
 
   <body class="antialiased font-sans bg-gray-50">
-    <%= yield %>
+    <%= content_for?(:content) ? yield(:content) : yield %>
   </body>
 </html>

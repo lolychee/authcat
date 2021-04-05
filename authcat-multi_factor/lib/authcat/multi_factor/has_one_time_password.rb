@@ -24,6 +24,10 @@ module Authcat
 
           column.to_sym
         end
+
+        def generate_one_time_password_secret
+          ROTP::Base32.random_base32
+        end
       end
 
       class InstanceMethodsOnActivation < Module
@@ -38,10 +42,12 @@ module Authcat
             instance_variable_set("@#{attribute}", ::ROTP::TOTP.new(secret, issuer: options[:issuer])) if secret
           end
 
+          define_method("#{attribute}?") do
+            send("#{column}?")
+          end
+
           define_method("regenerate_#{attribute}") do
-            ROTP::Base32.random_base32.tap do |secret|
-              update!(column => secret)
-            end
+            update!(column => self.class.generate_one_time_password_secret)
           end
 
           define_method("verify_#{attribute}") do |
@@ -54,7 +60,7 @@ module Authcat
 
             otp = send(attribute)
 
-            if (t = otp.verify(code, drift_ahead, drift_behind: drift, after: after))
+            if (t = otp.verify(code, drift_ahead: drift_ahead, drift_behind: drift_behind, after: after))
               touch(options[:after_column], time: Time.at(t)) if options[:after_column]
               true
             else

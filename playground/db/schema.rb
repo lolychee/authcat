@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2021_02_25_085855) do
     t.string "phone_number_bidx"
     t.string "password_digest"
     t.string "one_time_password_secret"
+    t.datetime "one_time_password_last_used_at"
     t.string "backup_codes_digest"
     t.string "github_oauth_token"
     t.string "google_oauth_token"
