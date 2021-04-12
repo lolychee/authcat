@@ -62,12 +62,12 @@ path '..' do
   gem 'authcat-password'
 end
 
-gem 'aasm'
 gem 'bcrypt'
 gem 'blind_index'
 gem 'lockbox'
 gem 'phonelib'
 gem 'rotp'
+gem 'state_machines-activerecord'
 gem 'valid_email2'
 gem 'webauthn'
 

@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include Authcat::Identity
   include Authcat::MultiFactor
-  include AASM
+  # include AASM
 
   has_many :sessions
 
@@ -56,37 +56,22 @@ class User < ApplicationRecord
     included do
       define_model_callbacks :update_one_time_password
 
-      attribute :update_one_time_password_step, :string
+      attribute :update_one_time_password_step, :string, default: "intro"
       attribute :one_time_password_attempt, :string
 
-      aasm(:update_one_time_password_step, enum: false) do
-        state :intro, initial: true
-        state :backup_codes
-        state :verify
-        state :completed
+      state_machine :update_one_time_password_step, initial: :intro, action: nil do
+        after_transition from: :intro, to: :backup_codes do |record, transition|
+          record.backup_codes = record.class.generate_backup_codes
+        end
+        after_transition from: :backup_codes, to: :verify do |record, transition|
+          record.one_time_password_secret = record.class.generate_one_time_password_secret
+        end
 
         event :next do
-          transitions from: :intro, to: :backup_codes do
-            after do
-              self.backup_codes = self.class.generate_backup_codes
-            end
-          end
-          transitions from: :backup_codes, to: :verify do
-            guard do
-              valid?(:update_one_time_password)
-            end
-            after do
-              self.one_time_password_secret = self.class.generate_one_time_password_secret
-            end
-          end
-          transitions from: :verify, to: :completed do
-            guard do
-              valid?(:update_one_time_password)
-            end
-            after do
-              run_callbacks(:update_one_time_password) { save }
-            end
-          end
+          transition intro: :backup_codes
+          transition backup_codes: :verify, if: ->(record) { record.valid?(:update_one_time_password) }
+          transition verify: :completed, if: -> (record) { record.valid?(:update_one_time_password) }
+          transition any => same
         end
       end
 
@@ -99,9 +84,8 @@ class User < ApplicationRecord
 
     def update_one_time_password(attributes)
       self.attributes = attributes
-      self.next && self.completed?
-    rescue AASM::InvalidTransition => e
-      false
+      self.next
+      self.completed? && run_callbacks(:update_one_time_password) { save }
     end
 
     def disable_one_time_password!

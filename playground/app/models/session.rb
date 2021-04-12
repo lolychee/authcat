@@ -2,7 +2,6 @@ class Session < ApplicationRecord
   include Authcat::Identity::Validators
   include Authcat::Password::Validators
   include Authcat::MultiFactor
-  include AASM
 
   belongs_to :user, optional: true
   validates :user, presence: true, on: :save
@@ -12,7 +11,7 @@ class Session < ApplicationRecord
       define_model_callbacks :sign_in
       delegate :password, :verify_one_time_password, :verify_backup_codes, to: :user, allow_nil: true
 
-      attribute :step, :string
+      attribute :step, :string, default: "authentication"
       attribute :auth_type, :string, default: "password"
       attribute :submit, :string
       attribute :login, :string
@@ -24,30 +23,32 @@ class Session < ApplicationRecord
       attribute :one_time_password_attempt, :string
       attribute :recovery_code_attempt, :string
 
-      aasm(:step, enum: false) do
-        state :authentication, initial: true
-        state :two_factor_authentication
-        state :completed
+      state_machine :step, initial: :authentication, action: nil do
+        before_transition from: :authentication, except_to: :authentication do |record, transition|
+          record.valid?(:authenticate)
+        end
+        before_transition from: :authentication, to: :two_factor_authentication do |record, transition|
+          record.user&.one_time_password?
+        end
+        before_transition from: :authentication, to: :completed do |record, transition|
+          !record.user&.one_time_password?
+        end
+        before_transition from: :two_factor_authentication, to: :completed do |record, transition|
+          record.valid?(:two_factor_authenticate)
+        end
+
+        after_transition from: :authentication, to: :two_factor_authentication do |record, transition|
+          record.auth_type = 'one_time_password'
+        end
 
         event :next do
-          transitions from: :authentication, to: :two_factor_authentication do
-            guard do
-              valid?(:authenticate) && user&.one_time_password?
-            end
-            after do
-              self.auth_type = "one_time_password"
-            end
-          end
-          transitions from: :authentication, to: :completed do
-            guard do
-              valid?(:authenticate) && !user&.one_time_password?
-            end
-          end
-          transitions from: :two_factor_authentication, to: :completed do
-            guard do
-              valid?(:two_factor_authenticate)
-            end
-          end
+          transition authentication: :two_factor_authentication
+          transition authentication: :completed
+          transition two_factor_authentication: :completed
+          transition any => same
+        end
+        event :stay do
+          transition any => same
         end
       end
 
@@ -72,12 +73,10 @@ class Session < ApplicationRecord
       when nil, "next"
         self.next
       when "stay"
-        nil # do nothing
+        self.stay
       end
 
       self.completed? && run_callbacks(:sign_in) { save }
-    rescue AASM::InvalidTransition => e
-      false
     end
   end
 end
