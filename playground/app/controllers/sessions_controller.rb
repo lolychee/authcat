@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def session_params
-      params.required(:session).permit(:saved_state, :login, :email, :phone_country_code, :phone_national, :password_attempt, :one_time_password_attempt, :remember_me).tap do |whitelist|
+      params.required(:session).permit(:saved_state, :login, :email, :phone_country_code, :phone_national, :password_attempt, :one_time_password_attempt, :recovery_code_attempt, :remember_me).tap do |whitelist|
         whitelist.reverse_merge!(encryptor.decrypt_and_verify(whitelist.delete(:saved_state), purpose: controller_name))
       rescue => _e
         nil

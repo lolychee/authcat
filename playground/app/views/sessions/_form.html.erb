@@ -26,12 +26,14 @@
         </div>
       <% end %>
 
-      <%= render session.aasm(:sign_in_step).current_state.to_s, form: form %>
+      <%= render session.auth_type, form: form %>
     <% end %>
 
     <div class="grid">
       <%= link_to "github" %>
       <%= link_to "twitter" %>
     </div>
+
+    <%= yield :bottom %>
   </div>
 </div>
