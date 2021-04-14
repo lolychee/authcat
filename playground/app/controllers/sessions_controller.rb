@@ -17,6 +17,8 @@ class SessionsController < ApplicationController
 
     respond_to do |format|
       if @session.sign_in
+        self.current_session = @session
+
         format.html { redirect_to root_url }
         format.json { render :show, status: :created, location: @session }
       else
@@ -45,8 +47,8 @@ class SessionsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def session_params
       params.required(:session).permit(:saved_state, :login, :email, :phone_country_code, :phone_national, :password_attempt, :one_time_password_attempt, :recovery_code_attempt, :remember_me).tap do |whitelist|
-        whitelist.reverse_merge!(encryptor.decrypt_and_verify(whitelist.delete(:saved_state), purpose: controller_name))
-      rescue => _e
+        whitelist.reverse_merge!(encryptor.decrypt_and_verify(whitelist.delete(:saved_state))) if whitelist.key?(:saved_state)
+      rescue ActiveSupport::MessageEncryptor::InvalidMessage => _e
         nil
       end
     end

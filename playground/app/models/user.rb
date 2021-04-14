@@ -1,7 +1,6 @@
 class User < ApplicationRecord
   include Authcat::Identity
   include Authcat::MultiFactor
-  # include AASM
 
   has_many :sessions
 
@@ -30,23 +29,22 @@ class User < ApplicationRecord
     end
   end
 
-  concerning :UpdatePassword do
+  concerning :ChangePassword do
     included do
-      define_model_callbacks :update_password
+      define_model_callbacks :change_password
 
-      attribute :old_password_required, :boolean, default: true
-      attribute :old_password, :string
+      attribute :password_required, :boolean, default: true
       attribute :new_password, :string
 
-      with_options on: :update_password do
-        validates :old_password, presence: true, authenticate: :password, if: :old_password_required
+      with_options on: :change_password do
+        validates :password, attempt: true, if: :password_required
         validates :new_password, presence: true, confirmation: true
       end
     end
 
-    def update_password(attributes = {})
+    def change_password(attributes = {})
       self.attributes = attributes
-      valid?(:update_password) && run_callbacks(:update_password) do
+      valid?(:change_password) && run_callbacks(:change_password) do
         update(password: self.new_password)
       end
     end
@@ -78,7 +76,7 @@ class User < ApplicationRecord
       with_options on: :update_one_time_password do
         validates :backup_codes_digest, presence: true, if: -> { self.update_one_time_password_step != "intro" }
         validates :one_time_password_secret, presence: true, if: -> { self.update_one_time_password_step == "verify" }
-        validates :one_time_password_attempt, authenticate: :one_time_password, if: -> { self.update_one_time_password_step == "verify" }
+        validates :one_time_password, attempt: true, if: -> { self.update_one_time_password_step == "verify" }
       end
     end
 

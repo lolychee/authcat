@@ -73,6 +73,10 @@ module Authcat
             send("#{column_name}=", value)
             instance_variable_set("@#{attribute}", value)
           end
+
+          define_method("verify_#{attribute}") do |unencrypted_str|
+            send(attribute) == unencrypted_str
+          end
         end
       end
     end

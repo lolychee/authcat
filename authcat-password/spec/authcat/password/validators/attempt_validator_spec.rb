@@ -1,4 +1,4 @@
-RSpec.describe Authcat::Password::Validators::AuthenticateValidator do
+RSpec.describe Authcat::Password::Validators::AttemptValidator do
   let(:email) { "email@example.com" }
   let(:password) { 'abc123456' }
 

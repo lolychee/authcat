@@ -8,5 +8,6 @@ RSpec.describe Authcat::Password::HasPassword do
 
     expect(user).to be_persisted
     expect(user.password).to eq password
+    expect(user.verify_password(password)).to eq true
   end
 end

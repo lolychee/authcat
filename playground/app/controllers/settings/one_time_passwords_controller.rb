@@ -24,8 +24,8 @@ class Settings::OneTimePasswordsController < SettingsController
 
   def one_time_password_params
     params.required(:one_time_password).permit(:saved_state, :one_time_password_attempt).tap do |whitelist|
-      whitelist.reverse_merge!(encryptor.decrypt_and_verify(whitelist.delete(:saved_state), purpose: controller_name))
-    rescue => _e
+      whitelist.reverse_merge!(encryptor.decrypt_and_verify(whitelist.delete(:saved_state))) if whitelist.key?(:saved_state)
+    rescue ActiveSupport::MessageEncryptor::InvalidMessage => _e
       nil
     end
   end
