@@ -37,7 +37,7 @@ class User < ApplicationRecord
       attribute :new_password, :string
 
       with_options on: :change_password do
-        validates :password, attempt: true, if: :password_required
+        validates :password, attempt: true, if: :password?
         validates :new_password, presence: true, confirmation: true
       end
     end
