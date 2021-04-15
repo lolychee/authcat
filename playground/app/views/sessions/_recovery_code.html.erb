@@ -1,5 +1,3 @@
-<%= form.hidden_field :saved_state, value: encryptor.encrypt_and_sign(form.object.slice(:step, :auth_type, :user_id), expires_in: 5.minutes) %>
-
 <div class="rounded-md shadow-sm -space-y-px">
   <div>
     <%= form.label :recovery_code_attempt, class: "sr-only" %>
@@ -19,5 +17,5 @@
 </div>
 
 <% content_for(:bottom) do %>
-  <%= button_to "Use one time password", sign_in_path, params: { session: { saved_state: encryptor.encrypt_and_sign(form.object.slice(:step, :auth_type, :user_id).merge(auth_type: :one_time_password, submit: :stay), expires_in: 5.minutes) }} %>
+  <%= button_to "Use one time password", sign_in_path, params: { session: { auth_type: :one_time_password, submit: false }} %>
 <% end %>

@@ -13,7 +13,7 @@ class Session < ApplicationRecord
 
       attribute :step, :string, default: "authentication"
       attribute :auth_type, :string, default: "password"
-      attribute :submit, :string
+      attribute :submit, :boolean, default: true
       attribute :login, :string
       attribute :email, :string
       attribute :phone_number, :string
@@ -41,9 +41,6 @@ class Session < ApplicationRecord
           transition authentication: :two_factor_authentication
           transition authentication: :completed
           transition two_factor_authentication: :completed
-          transition any => same
-        end
-        event :stay do
           transition any => same
         end
       end
@@ -94,12 +91,7 @@ class Session < ApplicationRecord
 
     def sign_in(attributes = {})
       self.attributes = attributes
-      case self.submit
-      when nil, "next"
-        self.next
-      when "stay"
-        self.stay
-      end
+      self.next if self.submit
 
       self.completed? && run_callbacks(:sign_in) { save }
     end

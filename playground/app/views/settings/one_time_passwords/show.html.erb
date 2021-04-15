@@ -1,5 +1,4 @@
 <%= form_with(model: @user, scope: :one_time_password, url: settings_one_time_password_url) do |form| %>
-  <%= form.hidden_field :saved_state, value: encryptor.encrypt_and_sign(@user.slice(:update_one_time_password_step, :backup_codes_digest, :one_time_password_secret), expires_in: 15.minutes) %>
 
   <% if @user.errors.any? %>
     <div id="error_explanation">
