@@ -115,6 +115,7 @@ GEM
     ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hashie (4.1.0)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
@@ -139,6 +140,13 @@ GEM
     nio4r (2.5.5)
     nokogiri (1.11.1-x86_64-linux)
       racc (~> 1.4)
+    omniauth (2.0.4)
+      hashie (>= 3.4.6)
+      rack (>= 1.6.2, < 3)
+      rack-protection
+    omniauth-rails_csrf_protection (1.0.0)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     openssl (2.2.0)
     openssl-signature_algorithm (1.1.1)
       openssl (~> 2.0)
@@ -150,6 +158,8 @@ GEM
     rack (2.2.3)
     rack-mini-profiler (2.3.1)
       rack (>= 1.2.0)
+    rack-protection (2.1.0)
+      rack
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -281,6 +291,8 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (~> 3.3)
   lockbox
+  omniauth (~> 2.0)
+  omniauth-rails_csrf_protection (~> 1.0)
   phonelib
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)

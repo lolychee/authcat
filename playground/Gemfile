@@ -70,5 +70,7 @@ gem 'rotp'
 gem 'state_machines-activerecord'
 gem 'valid_email2'
 gem 'webauthn'
+gem 'omniauth', '~> 2.0'
+gem 'omniauth-rails_csrf_protection', '~> 1.0'
 
-gem "tailwindcss-rails", "~> 0.3.3"
+gem 'tailwindcss-rails', '~> 0.3.3'

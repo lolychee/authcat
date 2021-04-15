@@ -104,4 +104,18 @@ class Session < ApplicationRecord
       self.completed? && run_callbacks(:sign_in) { save }
     end
   end
+
+  concerning :OmniAuth do
+    class_methods do
+      def find_or_create_from_auth_hash(auth_hash)
+        case auth_hash.provider
+        when "developer"
+          user = User.where(email: auth_hash.uid).first
+          create(user: user) if user
+        else
+          nil
+        end
+      end
+    end
+  end
 end

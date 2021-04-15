@@ -30,8 +30,9 @@
     <% end %>
 
     <div class="grid">
-      <%= link_to "github" %>
-      <%= link_to "twitter" %>
+      <%= button_to "developer", '/auth/developer' %>
+      <%= button_to "github", '/auth/github' %>
+      <%= button_to "twitter", '/auth/twitter' %>
     </div>
 
     <%= yield :bottom %>

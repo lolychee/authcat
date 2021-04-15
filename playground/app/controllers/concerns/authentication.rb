@@ -7,7 +7,11 @@ module Authentication
   end
 
   def current_session=(session)
-    (session.remember_me ? cookies.permanent : cookies)[:access_token] = session.signed_id(purpose: :access_token)
+    if session.nil?
+    cookies.delete(:access_token)
+    else
+      (session.remember_me ? cookies.permanent : cookies)[:access_token] = session.signed_id(purpose: :access_token)
+    end
   end
 
   def current_user

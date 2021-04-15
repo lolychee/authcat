@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get :sign_in, to: "sessions#new", as: :sign_in
   post :sign_in, to: "sessions#create"
   post :sign_out, to: "sessions#destroy", as: :sign_out
+  post '/auth/:provider/callback', to: 'sessions#omniauth'
 
   resources :users
 

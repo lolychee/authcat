@@ -1,5 +1,16 @@
 class SessionsController < ApplicationController
   before_action :set_session, only: %i[ show update destroy ]
+  skip_before_action :verify_authenticity_token, only: :omniauth
+
+  def omniauth
+    @session = Session.find_or_create_from_auth_hash(auth_hash)
+    self.current_session = @session
+
+    respond_to do |format|
+      format.html { redirect_to root_url }
+      format.json { render :show, status: :created, location: @session }
+    end
+  end
 
   # GET /sign_in
   def new
@@ -51,5 +62,9 @@ class SessionsController < ApplicationController
       rescue ActiveSupport::MessageEncryptor::InvalidMessage => _e
         nil
       end
+    end
+
+    def auth_hash
+      request.env['omniauth.auth']
     end
 end
