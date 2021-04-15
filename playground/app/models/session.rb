@@ -104,6 +104,11 @@ class Session < ApplicationRecord
         when "developer"
           user = User.where(email: auth_hash.uid).first
           create(user: user) if user
+        when "github"
+          user = User.find_or_create_by(github_oauth_token: auth_hash.uid) do |u|
+            u.name = auth_hash.info.nickname
+          end
+          create(user: user) if user
         else
           nil
         end
