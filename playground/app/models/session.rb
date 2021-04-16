@@ -20,27 +20,14 @@ class Session < ApplicationRecord
       attribute :remember_me, :boolean
 
       state_machine :step, initial: :authentication, action: nil do
-        before_transition from: :authentication, except_to: :authentication do |record, transition|
-          record.valid?(:authenticate)
-        end
-        before_transition from: :authentication, to: :two_factor_authentication do |record, transition|
-          record.two_factor_authentication_required?
-        end
-        before_transition from: :authentication, to: :completed do |record, transition|
-          !record.two_factor_authentication_required?
-        end
-        before_transition from: :two_factor_authentication, to: :completed do |record, transition|
-          record.valid?(:two_factor_authenticate)
-        end
-
-        after_transition from: :authentication, to: :two_factor_authentication do |record, transition|
+        after_transition authentication: :two_factor_authentication do |record, transition|
           record.auth_type = record.primary_two_factor
         end
 
         event :next do
-          transition authentication: :two_factor_authentication
-          transition authentication: :completed
-          transition two_factor_authentication: :completed
+          transition two_factor_authentication: :completed, if: -> (record) { record.valid?(:two_factor_authenticate) }
+          transition authentication: :two_factor_authentication, if: -> (record) { record.valid?(:authenticate) && record.two_factor_authentication_required? }
+          transition authentication: :completed, if: -> (record) { record.valid?(:authenticate) && !record.two_factor_authentication_required? }
           transition any => same
         end
       end

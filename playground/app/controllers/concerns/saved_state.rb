@@ -15,6 +15,6 @@ module SavedState
   end
 
   def clear_saved_state
-    cookies.delete(:saved_state)
+    cookies.delete(:saved_state, path: request.path)
   end
 end
