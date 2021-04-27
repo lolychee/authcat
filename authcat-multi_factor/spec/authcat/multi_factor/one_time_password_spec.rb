@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Authcat::MultiFactor::HasOneTimePassword do
+RSpec.describe Authcat::MultiFactor::OneTimePassword do
   it 'has one time password' do
     user = User.create(email: 'test@email.com')
     user.regenerate_otp

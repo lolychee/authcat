@@ -5,7 +5,7 @@ loader = Zeitwerk::Loader.new
 loader.tag = File.basename(__FILE__, '.rb')
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.inflector.inflect(
-  'has_webauthn' => 'HasWebAuthn'
+  'webauthn' => 'WebAuthn'
 )
 loader.push_dir("#{__dir__}/..")
 loader.setup
@@ -20,9 +20,9 @@ module Authcat
       base.include \
         Authcat::Password::HasPassword,
         Authcat::Password::Validators,
-        HasOneTimePassword,
-        HasBackupCodes,
-        HasWebAuthn
+        OneTimePassword,
+        BackupCodes,
+        WebAuthn
     end
   end
 end

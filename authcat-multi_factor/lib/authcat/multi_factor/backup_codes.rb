@@ -2,7 +2,7 @@
 
 module Authcat
   module MultiFactor
-    module HasBackupCodes
+    module BackupCodes
       # @return [void]
       def self.included(base)
         base.extend ClassMethods

@@ -2,7 +2,7 @@
 
 module Authcat
   module MultiFactor
-    module HasSecurityQuestions
+    module SecurityQuestions
       # @return [void]
       def self.included(base)
         base.extend ClassMethods

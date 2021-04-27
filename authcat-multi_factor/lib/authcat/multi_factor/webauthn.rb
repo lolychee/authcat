@@ -2,7 +2,7 @@
 
 module Authcat
   module MultiFactor
-    module HasWebAuthn
+    module WebAuthn
       # @return [void]
       def self.included(base)
         base.extend ClassMethods
@@ -36,7 +36,7 @@ module Authcat
                                               }
                                             end)
 
-                        WebAuthn::Credential.options_for_create(opts)
+                        ::WebAuthn::Credential.options_for_create(opts)
                       else
                         opts.reverse_merge!(if options_for_get.respond_to?(:call)
                                               options_for_get.call
@@ -46,7 +46,7 @@ module Authcat
                                               }
                                             end)
 
-                        WebAuthn::Credential.options_for_get(opts)
+                        ::WebAuthn::Credential.options_for_get(opts)
                       end
             send("#{attribute}_challenge=", options.challenge)
             send("#{attribute}_options=", options)
@@ -56,13 +56,13 @@ module Authcat
             id = send(column)
 
             if id.nil?
-              credential = WebAuthn::Credential.from_create(public_key_credential)
+              credential = ::WebAuthn::Credential.from_create(public_key_credential)
               credential.verify(challenge)
 
               update_columns(column => credential.id, public_key_column => credential.public_key,
                              sign_count_column => credential.sign_count)
             else
-              credential = WebAuthn::Credential.from_get(public_key_credential)
+              credential = ::WebAuthn::Credential.from_get(public_key_credential)
               credential.verify(
                 challenge,
                 public_key: send(public_key_column),
@@ -73,7 +73,7 @@ module Authcat
             end
 
             true
-          rescue WebAuthn::Error => e
+          rescue ::WebAuthn::Error => e
             raise e unless raise_error
 
             false

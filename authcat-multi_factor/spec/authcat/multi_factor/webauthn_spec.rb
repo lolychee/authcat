@@ -2,7 +2,7 @@
 
 require 'webauthn/fake_client'
 
-RSpec.describe Authcat::MultiFactor::HasWebAuthn do
+RSpec.describe Authcat::MultiFactor::WebAuthn do
   let(:origin) { 'http://localhost.test' }
   let(:client) { WebAuthn::FakeClient.new(origin) }
 

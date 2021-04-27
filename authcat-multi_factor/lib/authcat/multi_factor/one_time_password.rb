@@ -2,7 +2,7 @@
 
 module Authcat
   module MultiFactor
-    module HasOneTimePassword
+    module OneTimePassword
       # @return [void]
       def self.included(base)
         base.extend ClassMethods

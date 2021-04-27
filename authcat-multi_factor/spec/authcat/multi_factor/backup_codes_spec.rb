@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Authcat::MultiFactor::HasBackupCodes do
+RSpec.describe Authcat::MultiFactor::BackupCodes do
   it 'has backup codes' do
     user = User.create(email: 'test@email.com')
     codes = user.regenerate_backup_codes
