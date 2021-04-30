@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Authcat::Identity
+  include Authcat::Identifier
   include Authcat::MultiFactor
 
   has_many :sessions

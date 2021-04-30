@@ -1,5 +1,5 @@
 class Session < ApplicationRecord
-  include Authcat::Identity::Validators
+  include Authcat::Identifier::Validators
   include Authcat::Password::Validators
   include Authcat::MultiFactor
 
@@ -36,7 +36,7 @@ class Session < ApplicationRecord
         validates :email, identify: :user, if: :email?
 
         validates :user, presence: true
-        # validate :check_user_status, if: :user
+        # validate :validate_user_status, if: :user
 
         validates :password, attempt: true, if: -> { auth_type == "password" && user }
       end
@@ -48,7 +48,7 @@ class Session < ApplicationRecord
       end
     end
 
-    def check_user_status
+    def validate_user_status
       if user.locked?
         errors.add(:user, :locked)
       elsif user.blocked?
@@ -76,6 +76,14 @@ class Session < ApplicationRecord
       'one_time_password'
     end
 
+    def recovery_code
+      nil
+    end
+
+    def verify_recovery_code(code)
+      @user&.verify_backup_codes(code)
+    end
+
     def sign_in(attributes = {})
       self.attributes = attributes
       self.next if self.submit
@@ -87,18 +95,17 @@ class Session < ApplicationRecord
   concerning :OmniAuth do
     class_methods do
       def find_or_create_from_auth_hash(auth_hash)
-        case auth_hash.provider
+        user = case auth_hash.provider
         when "developer"
-          user = User.where(email: auth_hash.uid).first
-          create(user: user) if user
+          User.find_or_create_by(email: auth_hash.uid)
         when "github"
-          user = User.find_or_create_by(github_oauth_token: auth_hash.uid) do |u|
+          User.find_or_create_by(github_oauth_token: auth_hash.uid) do |u|
             u.name = auth_hash.info.nickname
           end
-          create(user: user) if user
         else
           nil
         end
+        create(user: user) if user
       end
     end
   end

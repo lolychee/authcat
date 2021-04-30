@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    authcat-identity (0.1.0)
+    authcat-identifier (0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
     authcat-multi_factor (0.1.0)
@@ -305,7 +305,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  authcat-identity!
+  authcat-identifier!
   authcat-multi_factor!
   authcat-password!
   bcrypt
@@ -343,4 +343,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.2.14
+   2.2.16
