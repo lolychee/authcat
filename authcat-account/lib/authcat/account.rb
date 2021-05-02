@@ -1,7 +1,9 @@
-require "authcat/session/version"
+# frozen_string_literal: true
+
+require_relative "account/version"
 
 module Authcat
-  module Session
+  module Account
     class Error < StandardError; end
     # Your code goes here...
   end

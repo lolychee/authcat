@@ -1,5 +1,6 @@
-require "bundler/setup"
-require "authcat/session"
+# frozen_string_literal: true
+
+require "authcat/account"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
