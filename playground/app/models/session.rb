@@ -9,7 +9,7 @@ class Session < ApplicationRecord
   concerning :SignIn do
     included do
       define_model_callbacks :sign_in
-      delegate :password, :verify_password, :one_time_password, :verify_one_time_password, :backup_codes, :verify_backup_codes, to: :user, allow_nil: true
+      delegate :verify_password, :verify_one_time_password, :verify_backup_codes, to: :user, allow_nil: true
 
       attribute :step, :string, default: "authentication"
       attribute :auth_type, :string, default: "password"
@@ -18,6 +18,10 @@ class Session < ApplicationRecord
       attribute :email, :string
       attribute :phone_number, :string
       attribute :remember_me, :boolean
+      attribute :password, :string
+      attribute :one_time_password, :string
+      attribute :recovery_code, :string
+
 
       state_machine :step, initial: :authentication, action: nil do
         after_transition authentication: :two_factor_authentication do |record, transition|
@@ -38,13 +42,13 @@ class Session < ApplicationRecord
         validates :user, presence: true
         # validate :validate_user_status, if: :user
 
-        validates :password, attempt: true, if: -> { auth_type == "password" && user }
+        validates :password, verify: true, if: -> { auth_type == "password" && user }
       end
       with_options on: :two_factor_authenticate do
         validates :user, presence: true
 
-        validates :one_time_password, attempt: true, if: -> { auth_type == "one_time_password" && user }
-        validates :recovery_code, attempt: true, if: -> { auth_type == "recovery_code" && user }
+        validates :one_time_password, verify: true, if: -> { auth_type == "one_time_password" && user }
+        validates :recovery_code, verify: :backup_codes, if: -> { auth_type == "recovery_code" && user }
       end
     end
 

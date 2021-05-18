@@ -11,8 +11,8 @@
       <div class="grid grid-cols-3 gap-6">
         <% if form.object.password? %>
           <div class="col-span-3 sm:col-span-2">
-            <%= form.label :password_attempt, class: "block text-sm font-medium text-gray-700" %>
-            <%= form.password_field :password_attempt, autocomplete: "current-password", class: "focus:ring-blue-500 focus:border-blue-500 flex-1 block mt-1 w-full rounded-none rounded-md sm:text-sm border-gray-300"  %>
+            <%= form.label :old_password, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.password_field :old_password, autocomplete: "current-password", class: "focus:ring-blue-500 focus:border-blue-500 flex-1 block mt-1 w-full rounded-none rounded-md sm:text-sm border-gray-300"  %>
           </div>
         <% end %>
 

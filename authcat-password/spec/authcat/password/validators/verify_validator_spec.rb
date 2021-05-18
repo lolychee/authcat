@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Authcat::Password::Validators::AttemptValidator do
+RSpec.describe Authcat::Password::Validators::VerifyValidator do
   let(:email) { "email@example.com" }
   let(:password) { "abc123456" }
 

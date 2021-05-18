@@ -33,11 +33,10 @@ class User < ApplicationRecord
     included do
       define_model_callbacks :change_password
 
-      attribute :password_required, :boolean, default: true
-      attribute :new_password, :string
+      attr_accessor :old_password, :new_password
 
       with_options on: :change_password do
-        validates :password, attempt: true, if: :password?
+        validates :old_password, verify: :password, if: :password?
         validates :new_password, presence: true, confirmation: true
       end
     end
@@ -76,7 +75,7 @@ class User < ApplicationRecord
       with_options on: :update_one_time_password do
         validates :backup_codes_digest, presence: true, if: -> { self.update_one_time_password_step != "intro" }
         validates :one_time_password_secret, presence: true, if: -> { self.update_one_time_password_step == "verify" }
-        validates :one_time_password, attempt: true, if: -> { self.update_one_time_password_step == "verify" }
+        validates :one_time_password_attempt, verify: :one_time_password, if: -> { self.update_one_time_password_step == "verify" }
       end
     end
 

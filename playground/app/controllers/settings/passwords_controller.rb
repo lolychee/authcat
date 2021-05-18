@@ -13,6 +13,6 @@ class Settings::PasswordsController < SettingsController
   private
 
   def change_password_params
-    params.required(:change_password).permit(:password_attempt, :new_password, :new_password_confirmation)
+    params.required(:change_password).permit(:old_password, :new_password, :new_password_confirmation)
   end
 end

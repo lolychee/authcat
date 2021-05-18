@@ -63,7 +63,7 @@ class SessionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def session_params
-      params.required(:session).permit(:auth_type, :submit, :login, :email, :phone_country_code, :phone_national, :password_attempt, :one_time_password_attempt, :recovery_code_attempt, :remember_me)
+      params.required(:session).permit(:auth_type, :submit, :login, :email, :phone_country_code, :phone_national, :password, :one_time_password, :recovery_code, :remember_me)
     end
 
     def auth_hash
