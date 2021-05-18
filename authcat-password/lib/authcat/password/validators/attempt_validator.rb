@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_model/validator"
 
 module Authcat
@@ -22,15 +24,16 @@ module Authcat
         end
 
         private
-          def setup!(klass)
-            klass.attr_reader(*attributes.map do |attribute|
-              :"#{attribute}_attempt" unless klass.method_defined?(:"#{attribute}_attempt")
-            end.compact)
 
-            klass.attr_writer(*attributes.map do |attribute|
-              :"#{attribute}_attempt" unless klass.method_defined?(:"#{attribute}_attempt=")
-            end.compact)
-          end
+        def setup!(klass)
+          klass.attr_reader(*attributes.map do |attribute|
+            :"#{attribute}_attempt" unless klass.method_defined?(:"#{attribute}_attempt")
+          end.compact)
+
+          klass.attr_writer(*attributes.map do |attribute|
+            :"#{attribute}_attempt" unless klass.method_defined?(:"#{attribute}_attempt=")
+          end.compact)
+        end
       end
     end
   end

@@ -13,14 +13,14 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20_160_620_165_022) do
-  create_table 'users', force: :cascade do |t|
-    t.string 'email', null: false
-    t.string 'password_digest', null: false
-    t.string 'tfa_secret'
-    t.string 'tfa_backup_codes_digest'
-    t.datetime 'last_tfa_at'
-    t.datetime 'last_sign_in_at'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "users", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.string "tfa_secret"
+    t.string "tfa_backup_codes_digest"
+    t.datetime "last_tfa_at"
+    t.datetime "last_sign_in_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-gem 'bcrypt'
-require 'bcrypt'
+gem "bcrypt"
+require "bcrypt"
 
 module Authcat
   class Password
@@ -49,7 +49,7 @@ module Authcat
         # @param unencrypted_str [String]
         # @return [void]
         def extract_options_from_hash(unencrypted_str)
-          _, v, c, = unencrypted_str.split('$')
+          _, v, c, = unencrypted_str.split("$")
 
           @version = v.to_str
           @cost = c.to_i

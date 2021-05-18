@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   class Password
     class Collection < Array
@@ -7,7 +9,9 @@ module Authcat
 
           algorithm = Algorithm.build(algorithm, **opts)
 
-          new(unencrypted_strs.to_a.map { |unencrypted_str| Password.create(unencrypted_str, algorithm: algorithm, **opts) }, algorithm: algorithm, **opts)
+          new(unencrypted_strs.to_a.map do |unencrypted_str|
+                Password.create(unencrypted_str, algorithm: algorithm, **opts)
+              end, algorithm: algorithm, **opts)
         end
       end
 

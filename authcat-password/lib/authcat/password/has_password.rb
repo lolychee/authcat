@@ -17,13 +17,13 @@ module Authcat
         # @return [Symbol]
         def has_password(
           attribute = :password,
-          suffix: '_digest',
+          suffix: "_digest",
           column_name: "#{attribute}#{suffix}",
           validate: true,
           array: false,
           **opts
         )
-          serialize column_name, JSON if array && connection.adapter_name == 'SQLite'
+          serialize column_name, JSON if array && connection.adapter_name == "SQLite"
 
           if validate
             include ActiveModel::Validations

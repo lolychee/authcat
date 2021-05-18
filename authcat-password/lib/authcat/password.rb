@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'zeitwerk'
+require "zeitwerk"
 loader = Zeitwerk::Loader.new
-loader.tag = File.basename(__FILE__, '.rb')
+loader.tag = File.basename(__FILE__, ".rb")
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.push_dir("#{__dir__}/..")
 loader.setup
