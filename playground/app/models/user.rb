@@ -15,39 +15,20 @@ class User < ApplicationRecord
   has_one_time_password
   has_backup_codes
 
-
-  concerning :UpdateAccount do
+  concerning :UpdateProfile do
     included do
-      define_model_callbacks :update_account
+      define_model_callbacks :update_profile
     end
 
-    def update_account(attributes = {})
+    def update_profile(attributes = {})
       self.attributes = attributes
-      valid?(:update_account) && run_callbacks(:update_account) do
+      valid?(:update_profile) && run_callbacks(:update_profile) do
         save
       end
     end
   end
 
-  concerning :ChangePassword do
-    included do
-      define_model_callbacks :change_password
-
-      attr_accessor :old_password, :new_password
-
-      with_options on: :change_password do
-        validates :old_password, verify: :password, if: :password?
-        validates :new_password, presence: true, confirmation: true
-      end
-    end
-
-    def change_password(attributes = {})
-      self.attributes = attributes
-      valid?(:change_password) && run_callbacks(:change_password) do
-        update(password: self.new_password)
-      end
-    end
-  end
+  include Authcat::Account::UpdatePassword[:password]
 
   concerning :UpdateOneTimePassword do
     included do

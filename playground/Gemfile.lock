@@ -1,6 +1,10 @@
 PATH
   remote: ..
   specs:
+    authcat-account (0.1.0)
+      authcat-identifier (~> 0.1.0)
+      authcat-multi_factor (~> 0.1.0)
+      zeitwerk (>= 2.4.2)
     authcat-identifier (0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
@@ -303,6 +307,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  authcat-account!
   authcat-identifier!
   authcat-multi_factor!
   authcat-password!

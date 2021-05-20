@@ -24,11 +24,11 @@ class SessionsController < ApplicationController
   # POST /sign_in
   # POST /session
   def create
-    @session = Session.new(saved_state)
+    @session = Session.new(saved_state || {})
 
     respond_to do |format|
       if @session.sign_in(session_params)
-        self.clear_saved_state
+        self.saved_state = nil
 
         self.current_session = @session
 

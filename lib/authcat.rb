@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'authcat/version'
+require "authcat/version"
 
 module Authcat
   class Error < StandardError; end

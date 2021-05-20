@@ -3,7 +3,7 @@ class Settings::PasswordsController < SettingsController
   end
 
   def update
-    if @user.change_password(change_password_params)
+    if @user.update_password(change_password_params)
       render action: :show, status: :ok
     else
       render action: :show, status: :unprocessable_entity
