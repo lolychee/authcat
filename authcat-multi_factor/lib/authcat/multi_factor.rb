@@ -21,7 +21,7 @@ module Authcat
         Authcat::Password::HasPassword,
         Authcat::Password::Validators,
         OneTimePassword,
-        BackupCodes,
+        RecoveryCodes,
         WebAuthn
     end
   end

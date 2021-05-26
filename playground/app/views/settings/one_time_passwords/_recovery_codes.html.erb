@@ -1,5 +1,5 @@
 <ul>
-  <% @user.backup_codes.each do |code| %>
+  <% @user.recovery_codes.each do |code| %>
     <li><%= code.plaintext %></li>
   <% end %>
 </ul>

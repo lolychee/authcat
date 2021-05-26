@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
 
   # has_one_time_password
 
-  # serialize :backup_codes_digest, Array if connection.adapter_name == 'SQLite'
-  # has_backup_codes
+  # serialize :recovery_codes_digest, Array if connection.adapter_name == 'SQLite'
+  # has_recovery_codes
 
   ENV['LOCKBOX_MASTER_KEY'] = '0000000000000000000000000000000000000000000000000000000000000000'
 

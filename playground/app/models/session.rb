@@ -9,7 +9,7 @@ class Session < ApplicationRecord
   concerning :SignIn do
     included do
       define_model_callbacks :sign_in
-      delegate :verify_password, :verify_one_time_password, :verify_backup_codes, to: :user, allow_nil: true
+      delegate :verify_password, :verify_one_time_password, :verify_recovery_codes, to: :user, allow_nil: true
 
       attribute :step, :string, default: "authentication"
       attribute :auth_type, :string, default: "password"
@@ -48,7 +48,7 @@ class Session < ApplicationRecord
         validates :user, presence: true
 
         validates :one_time_password, verify: true, if: -> { auth_type == "one_time_password" && user }
-        validates :recovery_code, verify: :backup_codes, if: -> { auth_type == "recovery_code" && user }
+        validates :recovery_code, verify: :recovery_codes, if: -> { auth_type == "recovery_code" && user }
       end
     end
 
@@ -85,7 +85,7 @@ class Session < ApplicationRecord
     end
 
     def verify_recovery_code(code)
-      @user&.verify_backup_codes(code)
+      @user&.verify_recovery_codes(code)
     end
 
     def sign_in(attributes = {})

@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20_160_620_165_022) do
     t.string "email", null: false
     t.string "password_digest", null: false
     t.string "tfa_secret"
-    t.string "tfa_backup_codes_digest"
+    t.string "tfa_recovery_codes_digest"
     t.datetime "last_tfa_at"
     t.datetime "last_sign_in_at"
     t.datetime "created_at", null: false

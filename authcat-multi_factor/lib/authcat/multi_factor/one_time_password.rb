@@ -46,8 +46,17 @@ module Authcat
             send("#{column}?")
           end
 
-          define_method("regenerate_#{attribute}") do
-            update!(column => self.class.generate_one_time_password_secret)
+          regenerate_metehod_name = "regenerate_#{attribute}"
+
+          define_method(regenerate_metehod_name) do
+            secret = self.class.generate_one_time_password_secret
+            self.attributes = { column => secret }
+
+            secret
+          end
+
+          define_method("#{regenerate_metehod_name}!") do
+            send(regenerate_metehod_name) && save!
           end
 
           define_method("verify_#{attribute}") do |

@@ -2,7 +2,7 @@
 
 class User < ActiveRecord::Base
   include Authcat::MultiFactor::OneTimePassword
-  include Authcat::MultiFactor::BackupCodes
+  include Authcat::MultiFactor::RecoveryCodes
   include Authcat::MultiFactor::SecurityQuestions
   include Authcat::MultiFactor::WebAuthn
 
@@ -13,8 +13,8 @@ class User < ActiveRecord::Base
 
   has_one_time_password
 
-  serialize :backup_codes_digest, Array if connection.adapter_name == 'SQLite'
-  has_backup_codes
+  serialize :recovery_codes_digest, Array if connection.adapter_name == 'SQLite'
+  has_recovery_codes
 
   has_webauthn
 end

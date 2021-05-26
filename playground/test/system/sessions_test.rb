@@ -17,7 +17,8 @@ class SessionsTest < ApplicationSystemTestCase
   end
 
   test "sign in with password & one-time-password" do
-    @user.regenerate_one_time_password
+    @user.regenerate_one_time_password!
+    @user.save
 
     visit sign_in_url
     fill_in "Email address", with: @email
@@ -33,7 +34,8 @@ class SessionsTest < ApplicationSystemTestCase
 
   test "sign in with password & recovery code" do
     @user.regenerate_one_time_password
-    codes = @user.regenerate_backup_codes
+    codes = @user.regenerate_recovery_codes
+    @user.save
 
     visit sign_in_url
     fill_in "Email address", with: @email

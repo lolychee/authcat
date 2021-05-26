@@ -3,7 +3,7 @@ class Settings::ProfilesController < SettingsController
   end
 
   def update
-    if @user.update(profile_params)
+    if @user.update_profile(profile_params)
       render action: :show, status: :ok
     else
       render action: :show, status: :unprocessable_entity

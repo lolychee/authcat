@@ -2,7 +2,7 @@
 
 module Authcat
   module MultiFactor
-    module BackupCodes
+    module RecoveryCodes
       # @return [void]
       def self.included(base)
         base.extend ClassMethods
@@ -10,7 +10,7 @@ module Authcat
 
       module ClassMethods
         # @return [Symbol]
-        def has_backup_codes(attribute = :backup_codes, burn_after_verify: true, **opts, &block)
+        def has_recovery_codes(attribute = :recovery_codes, burn_after_verify: true, **opts, &block)
           gem 'authcat-password'
           require 'authcat/password'
 
@@ -24,7 +24,7 @@ module Authcat
           column
         end
 
-        def generate_backup_codes(len = 8)
+        def generate_recovery_codes(len = 8)
           require 'securerandom'
           Array.new(len) {
             block_given? ? yield : SecureRandom.hex(8)
@@ -37,12 +37,17 @@ module Authcat
         def initialize(attribute, column, burn_after_verify:, &generator)
           super()
 
-          define_method("regenerate_#{attribute}") do |*args|
-            codes = self.class.generate_backup_codes(*args, &generator)
+          regenerate_method_name = "regenerate_#{attribute}"
 
-            codes.tap do
-              update!(attribute => codes)
-            end
+          define_method(regenerate_method_name) do
+            codes = self.class.generate_recovery_codes(&generator)
+
+            self.attributes = { attribute => codes }
+            codes
+          end
+
+          define_method("#{regenerate_method_name}!") do
+            send(regenerate_method_name) && save!
           end
 
           define_method("verify_#{attribute}") do |code, burn: burn_after_verify|

@@ -9,7 +9,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :otp_secret
       t.datetime :otp_last_used_at
 
-      t.string :backup_codes_digest
+      t.string :recovery_codes_digest
 
       t.string :security_questions
 
