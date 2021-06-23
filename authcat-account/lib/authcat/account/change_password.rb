@@ -2,12 +2,12 @@
 
 module Authcat
   module Account
-    class UpdatePassword < Module
+    class ChangePassword < Module
       class << self
         alias [] new
       end
 
-      def initialize(attribute, action_name: :"update_#{attribute}")
+      def initialize(attribute, action_name: :"change_#{attribute}")
         super()
         old_password = :"old_#{attribute}"
         new_password = :"new_#{attribute}"

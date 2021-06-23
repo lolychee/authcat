@@ -24,6 +24,8 @@ gem "lockbox",      require: false
 gem "phonelib",     require: false
 gem "valid_email2", require: false
 
+gem "state_machines-activerecord", require: false
+
 path ".." do
   gem "authcat-identifier"
   gem "authcat-multi_factor"

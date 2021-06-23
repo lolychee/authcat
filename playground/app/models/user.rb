@@ -25,6 +25,6 @@ class User < ApplicationRecord
     end
   end
 
-  include Authcat::Account::UpdatePassword[:password]
-  include Authcat::Account::UpdateOneTimePassword[:one_time_password]
+  include Authcat::Account::ChangePassword[:password]
+  include Authcat::Account::EnableOneTimePassword[:one_time_password]
 end

@@ -14,6 +14,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :phone_number_bidx, index: { unique: true }
 
       t.string :password_digest
+      t.string :one_time_password_digest
 
       t.timestamps null: false
     end

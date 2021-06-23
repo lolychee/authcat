@@ -1,19 +1,18 @@
 module Authcat
   module Account
-    class UpdateOneTimePassword < Module
+    class EnableOneTimePassword < Module
       class << self
         alias [] new
       end
 
-      def initialize(attribute, action_name: :"update_#{attribute}", recovery_codes_attribute: :recovery_codes)
+      def initialize(attribute, action_name: :"enable_#{attribute}", recovery_codes_attribute: :recovery_codes)
         super()
 
         step = :"#{action_name}_step"
         attempt = :"#{attribute}_attempt"
 
         define_singleton_method(:included) do |base|
-          case base
-          when ActiveRecord::Base
+          if base < ActiveRecord::Base
             gem 'state_machines-activerecord'
             require 'state_machines-activerecord'
           end

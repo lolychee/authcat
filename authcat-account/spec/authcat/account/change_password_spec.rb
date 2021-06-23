@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Authcat::Account::UpdatePassword do
+RSpec.describe Authcat::Account::ChangePassword do
   before(:context) { User.include described_class[:password] }
 
   after(:context) { Object.send(:remove_const, :User) }
@@ -13,7 +13,7 @@ RSpec.describe Authcat::Account::UpdatePassword do
 
     expect(user.password).to eq old_password
     expect {
-      user.update_password(
+      user.change_password(
         old_password: old_password,
         new_password: new_password,
         new_password_confirmation: new_password
