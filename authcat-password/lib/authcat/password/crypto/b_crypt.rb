@@ -5,8 +5,8 @@ require "bcrypt"
 
 module Authcat
   class Password
-    class Algorithm
-      class BCrypt < Algorithm
+    class Crypto
+      class BCrypt < Crypto
         # @return [Integer]
         def cost
           @cost ||= ::BCrypt::Engine.cost
@@ -15,7 +15,7 @@ module Authcat
         # @param value [Integer]
         # @return [Integer]
         def cost=(value)
-          raise ArgumentError if value < ::BCrypt::Engine::MIN_COST || value > ::BCrypt::Engine::MAX_COST
+          raise ArgumentError unless value.between?(::BCrypt::Engine::MIN_COST, ::BCrypt::Engine::MAX_COST)
 
           @cost = value
         end
@@ -33,27 +33,31 @@ module Authcat
           @salt = value
         end
 
-        # @param encrypted_str [String]
+        # @param ciphertext [String]
         # @return [Boolean]
-        def valid?(encrypted_str)
-          !!::BCrypt::Password.valid_hash?(encrypted_str.to_s)
+        def valid?(ciphertext)
+          !!::BCrypt::Password.valid_hash?(ciphertext.to_s)
         end
 
         # @return [String]
-        def digest(unencrypted_str)
-          ::BCrypt::Engine.hash_secret(unencrypted_str, salt)
+        def generate(plaintext)
+          ::BCrypt::Engine.hash_secret(plaintext, salt)
         end
 
         private
 
-        # @param unencrypted_str [String]
+        # @param ciphertext [String]
         # @return [void]
-        def extract_options_from_hash(unencrypted_str)
-          _, v, c, = unencrypted_str.split("$")
+        def extract_options(ciphertext, **opts)
+          if !ciphertext.nil? && valid!(ciphertext)
+            _, v, c, = ciphertext.split("$")
 
-          @version = v.to_str
-          @cost = c.to_i
-          @salt = unencrypted_str[0, 29].to_str
+            @version = v.to_str
+            @cost = c.to_i
+            @salt = ciphertext[0, 29].to_str
+          end
+
+          super
         end
       end
     end

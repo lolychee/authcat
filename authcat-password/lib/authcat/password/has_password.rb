@@ -17,65 +17,37 @@ module Authcat
         # @return [Symbol]
         def has_password(
           attribute = :password,
-          suffix: "_digest",
-          column_name: "#{attribute}#{suffix}",
           validate: true,
           array: false,
+          crypto: Password.default_crypto,
           **opts
         )
-          serialize column_name, JSON if array && connection.adapter_name == "SQLite"
+          serialize attribute, Coder.new(crypto: crypto, **opts)
 
           if validate
             include ActiveModel::Validations
 
-            validates_presence_of column_name, on: :save
-
-            attr_accessor "#{attribute}_confirmation"
+            validates_presence_of attribute, on: :save
 
             validates_confirmation_of attribute, allow_nil: true
           end
 
-          include InstanceMethodsOnActivation.new(attribute, column_name, array: array, **opts)
+          include InstanceMethodsOnActivation.new(attribute, array: array, **opts)
 
-          column_name.to_sym
+          attribute.to_sym
         end
       end
 
       class InstanceMethodsOnActivation < Module
-        def initialize(attribute, column_name, array: false, algorithm: Password.default_algorithm, **opts)
+        def initialize(attribute, array: false, **opts)
           super()
 
-          ivar = "@#{attribute}"
-
-          klass = array ? ::Authcat::Password::Collection : ::Authcat::Password
-
-          define_method(attribute) do
-            instance_variable_get(ivar) || begin
-              value = send(column_name)
-              instance_variable_set(ivar, if value.nil?
-                                            nil
-                                          else
-                                            klass.new(value, algorithm: algorithm, **opts)
-                                          end)
-            end
+          define_method("#{attribute}=") do |plaintext|
+            super(plaintext.nil? ? nil : Password.new(plaintext, crypto: :plaintext))
           end
 
-          define_method("#{attribute}?") do
-            send("#{column_name}?")
-          end
-
-          define_method("#{attribute}=") do |unencrypted_str|
-            value = if unencrypted_str.nil?
-                      nil
-                    else
-                      klass.create(unencrypted_str, algorithm: algorithm, **opts)
-                    end
-            send("#{column_name}=", value)
-            instance_variable_set("@#{attribute}", value)
-          end
-
-          define_method("verify_#{attribute}") do |unencrypted_str|
-            send(attribute) == unencrypted_str
+          define_method("verify_#{attribute}") do |plaintext|
+            !plaintext.nil? && send(attribute) == plaintext
           end
         end
       end

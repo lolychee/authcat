@@ -4,6 +4,13 @@ RSpec.describe Authcat::Password::Validators::VerifyValidator do
   let(:email) { "email@example.com" }
   let(:password) { "abc123456" }
 
+  before {
+    User.attr_accessor :password_attempt
+    User.validates :password_attempt, verify: :password, on: :sign_in
+  }
+
+  # after { Object.send :remove_const, :User }
+
   it "" do
     user = User.create(email: email, password: password)
 

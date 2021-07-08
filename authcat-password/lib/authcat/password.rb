@@ -11,43 +11,31 @@ module Authcat
   class Password < ::String
     class << self
       # @return [Symbol, String, self]
-      attr_accessor :default_algorithm
+      attr_accessor :default_crypto
+
+      # @return [self]
+      def create(plaintext, crypto:, **opts)
+         crypto = Crypto.build(crypto, **opts)
+
+        new(crypto.generate(plaintext), crypto: crypto)
+      end
+
     end
-    self.default_algorithm = :bcrypt
+
+    self.default_crypto = :bcrypt
+
+    # @return [Crypto]
+    attr_reader :crypto
 
     # @return [self]
-    def self.create(unencrypted_str, algorithm:, **opts)
-      algorithm = Algorithm.build(algorithm, **opts)
-
-      new(algorithm.digest(unencrypted_str), algorithm: algorithm, plaintext: unencrypted_str)
-    end
-
-    # @param original [String]
-    # @param other [String]
-    # @return [Boolean]
-    def self.secure_compare(original, other)
-      original.bytesize == other.bytesize &&
-        original.each_byte.zip(other.each_byte).reduce(0) { |sum, pair| sum | (pair.first ^ pair.last) }.zero?
-    end
-
-    # @return [Algorithm]
-    attr_reader :algorithm
-
-    # @return [String, nil]
-    attr_reader :plaintext
-
-    # @return [self]
-    def initialize(encrypted_str, algorithm:, plaintext: nil, **opts)
-      @algorithm = Algorithm.build(algorithm, encrypted_str, **opts)
-      @plaintext = plaintext
-      super(encrypted_str)
+    def initialize(ciphertext, crypto:, **opts)
+      @crypto = Crypto.build(crypto, ciphertext, **opts)
+      super(ciphertext)
     end
 
     # @return [Boolean]
     def verify(other)
-      other = algorithm.digest(other) unless other.is_a?(self.class)
-
-      self.class.secure_compare(to_s, other.to_s)
+      @crypto.verify(self, other)
     end
 
     alias == verify

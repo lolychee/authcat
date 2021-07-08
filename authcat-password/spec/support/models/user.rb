@@ -8,13 +8,13 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, on: :save
   validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
-  has_password
+  # has_password
   # serialize :password_digest, Array if connection.adapter_name == "SQLite"
   PASSWORD_VALIDATE_OPTIONS = { length: { minimum: 6, maximum: 72 } }.freeze
   validates :password, allow_nil: true, **PASSWORD_VALIDATE_OPTIONS
 
-  attr_accessor :password_attempt
-  validates :password_attempt, verify: :password, on: :sign_in
+  # attr_accessor :password_attempt
+  # validates :password_attempt, verify: :password, on: :sign_in
 
   # concerning :SendResetPasswordVerification do
   #   included do |base|
