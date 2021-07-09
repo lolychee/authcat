@@ -79,7 +79,7 @@ GEM
     argon2-kdf (0.1.5)
     awrence (1.2.1)
     bcrypt (3.1.16)
-    bindata (2.4.8)
+    bindata (2.4.10)
     bindex (0.8.1)
     blind_index (2.2.0)
       activesupport (>= 5)
