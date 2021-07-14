@@ -14,10 +14,9 @@ module Authcat
       def dump(password)
         return if password.nil?
         if password.is_a?(Password) && password.crypto.is_a?(Crypto::Plaintext)
-          Password.create(password, **@opts).to_s
-        else
-          password.to_s
+          password = Password.create(password, **@opts)
         end
+        password.to_s
       end
     end
   end

@@ -14,12 +14,11 @@ module Authcat
       attr_accessor :default_crypto
 
       # @return [self]
-      def create(plaintext, crypto:, **opts)
-         crypto = Crypto.build(crypto, **opts)
+      def create(*args, crypto:, **opts)
+        crypto = Crypto.build(crypto, **opts)
 
-        new(crypto.generate(plaintext), crypto: crypto)
+        new(crypto.generate(*args), crypto: crypto)
       end
-
     end
 
     self.default_crypto = :bcrypt
@@ -34,8 +33,8 @@ module Authcat
     end
 
     # @return [Boolean]
-    def verify(other)
-      @crypto.verify(self, other)
+    def verify(other, **opts)
+      @crypto.verify(self, other, **opts)
     end
 
     alias == verify

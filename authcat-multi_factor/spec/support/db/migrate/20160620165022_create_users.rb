@@ -6,8 +6,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
 
     create_table :users do |t|
       t.string :email, null: false
-      t.string :otp_secret
-      t.datetime :otp_last_used_at
+      t.string :one_time_password
 
       t.string :recovery_codes_digest
 

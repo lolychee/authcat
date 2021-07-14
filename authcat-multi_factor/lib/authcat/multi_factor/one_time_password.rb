@@ -5,75 +5,39 @@ module Authcat
     module OneTimePassword
       # @return [void]
       def self.included(base)
+        gem 'authcat-password'
+        require 'authcat/password'
+
         base.extend ClassMethods
+
+        Password::Crypto.register(:totp) { MultiFactor::Crypto::TOTP }
+        Password::Crypto.register(:hotp) { MultiFactor::Crypto::HOTP }
       end
 
       module ClassMethods
         # @return [Symbol]
-        def has_one_time_password(
-          attribute = :one_time_password,
-          suffix: '_secret',
-          column: "#{attribute}#{suffix}",
-          after_column: "#{attribute}_last_used_at",
-          interval: 30,
-          drift_ahead: 0,
-          drift_behind: 30,
-          **opts
-        )
-          include InstanceMethodsOnActivation.new(attribute, column, after_column: after_column, interval: interval, drift_ahead: drift_ahead, drift_behind: drift_behind, **opts)
+        def has_one_time_password(attribute = :one_time_password, type: :totp, **opts)
+          include Authcat::Password::HasPassword,
+                  Authcat::Password::Validators
 
-          column.to_sym
-        end
+          result = has_password attribute, crypto: type, **opts
+          include InstanceMethodsOnActivation.new(attribute)
 
-        def generate_one_time_password_secret
-          ROTP::Base32.random_base32
+          result
         end
       end
 
       class InstanceMethodsOnActivation < Module
-        def initialize(attribute, column, **options)
-          gem 'rotp'
-          require 'rotp'
-
+        def initialize(attribute)
           super()
 
-          define_method(attribute) do
-            secret = send(column)
-            instance_variable_set("@#{attribute}", ::ROTP::TOTP.new(secret, issuer: options[:issuer])) if secret
-          end
-
-          define_method("#{attribute}?") do
-            send("#{column}?")
-          end
-
-          regenerate_metehod_name = "regenerate_#{attribute}"
-
-          define_method(regenerate_metehod_name) do
-            secret = self.class.generate_one_time_password_secret
-            self.attributes = { column => secret }
-
-            secret
-          end
-
-          define_method("#{regenerate_metehod_name}!") do
-            send(regenerate_metehod_name) && save!
-          end
-
-          define_method("verify_#{attribute}") do |
-            code,
-            drift_ahead: options[:drift_ahead],
-            drift_behind: options[:drift_behind],
-            after: send(options[:after_column])
-          |
+          define_method("verify_#{attribute}") do |code, **opts|
             return false if code.nil?
 
             otp = send(attribute)
 
-            if (t = otp.verify(code, drift_ahead: drift_ahead, drift_behind: drift_behind, after: after))
-              touch(options[:after_column], time: Time.at(t)) if options[:after_column]
-              true
-            else
-              false
+            !otp.nil? && otp.verify(code, **opts) do
+              update(attribute => otp)
             end
           end
         end

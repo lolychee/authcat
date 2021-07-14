@@ -43,7 +43,7 @@ module Authcat
           super()
 
           define_method("#{attribute}=") do |plaintext|
-            super(plaintext.nil? ? nil : Password.new(plaintext, crypto: :plaintext))
+            super(plaintext.nil? ? nil : Password.new(plaintext.to_s, crypto: :plaintext))
           end
 
           define_method("verify_#{attribute}") do |plaintext|
