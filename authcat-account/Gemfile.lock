@@ -67,6 +67,7 @@ GEM
     rake (13.0.3)
     regexp_parser (2.1.1)
     rexml (3.2.4)
+    rotp (6.2.0)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -125,6 +126,7 @@ DEPENDENCIES
   pg
   phonelib
   rake (~> 13.0)
+  rotp
   rspec (~> 3.0)
   rubocop (~> 1.7)
   sqlite3
@@ -132,4 +134,4 @@ DEPENDENCIES
   valid_email2
 
 BUNDLED WITH
-   2.2.18
+   2.2.22

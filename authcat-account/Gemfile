@@ -19,6 +19,7 @@ gem "pg", require: false
 gem "sqlite3"
 
 gem "bcrypt"
+gem "rotp",         require: false
 gem "blind_index",  require: false
 gem "lockbox",      require: false
 gem "phonelib",     require: false

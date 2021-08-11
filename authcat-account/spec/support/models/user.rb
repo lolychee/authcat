@@ -9,10 +9,9 @@ class User < ActiveRecord::Base
   # validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
   has_password
-  # has_one_time_password
+  has_one_time_password
 
-  # serialize :recovery_codes_digest, Array if connection.adapter_name == 'SQLite'
-  # has_recovery_codes
+  has_recovery_codes
 
   ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 

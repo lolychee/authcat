@@ -11,14 +11,17 @@ RSpec.describe Authcat::Account::EnableOneTimePassword do
   it "enable one_time_password successfully" do
     user = User.create
 
-    expect(user.password).to eq old_password
+    expect(user.one_time_password).to eq nil
     expect {
-      user.update_password(
-        old_password: old_password,
-        new_password: new_password,
-        new_password_confirmation: new_password
-      )
-    }.to change(user, :password)
-    expect(user.password).to eq new_password
+      user.enable_one_time_password
+      user.enable_one_time_password
+      otp = ROTP::TOTP.new(user.one_time_password)
+
+      user.enable_one_time_password(one_time_password_attempt: otp.now)
+    }.to change(user, :one_time_password)
+
+    user.reload
+    expect(user.one_time_password).to be_present
+    expect(user.recovery_codes).to be_present
   end
 end
