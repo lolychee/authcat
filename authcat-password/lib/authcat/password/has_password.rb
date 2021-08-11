@@ -22,7 +22,7 @@ module Authcat
           crypto: Password.default_crypto,
           **opts
         )
-          serialize attribute, Coder.new(crypto: crypto, **opts)
+          serialize attribute, Coder.new(array: array, crypto: crypto, **opts)
 
           if validate
             include ActiveModel::Validations
@@ -41,10 +41,6 @@ module Authcat
       class InstanceMethodsOnActivation < Module
         def initialize(attribute, array: false, **opts)
           super()
-
-          define_method("#{attribute}=") do |plaintext|
-            super(plaintext.nil? ? nil : Password.new(plaintext.to_s, crypto: :plaintext))
-          end
 
           define_method("verify_#{attribute}") do |plaintext|
             !plaintext.nil? && send(attribute) == plaintext

@@ -17,7 +17,7 @@ module Authcat
       def create(*args, crypto:, **opts)
         crypto = Crypto.build(crypto, **opts)
 
-        new(crypto.generate(*args), crypto: crypto)
+        new(crypto.valid_or_generate(*args), crypto: crypto)
       end
     end
 

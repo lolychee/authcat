@@ -65,6 +65,12 @@ module Authcat
         ciphertext.to_s
       end
 
+      # @param ciphertext [#to_s]
+      # @return [String]
+      def valid_or_generate(ciphertext)
+        valid?(ciphertext) ? ciphertext : generate(ciphertext)
+      end
+
       def verify(ciphertext, other)
         other = generate(other.to_s) unless other.is_a?(Password) && self == other.crypto
         self.class.secure_compare(ciphertext, other.to_s)
