@@ -2,7 +2,7 @@
 
   <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this sign_in_password from being saved:</h2>
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this one_time_password from being saved:</h2>
 
       <ul>
         <% @user.errors.each do |error| %>
@@ -20,7 +20,7 @@
           This information will be displayed publicly so be careful what you share.
         </p>
       </div>
-      <%= render @user.update_one_time_password_step, form: form %>
+      <%= render @user.enable_one_time_password_step, form: form %>
     </div>
     <div class="px-4 py-3 bg-gray-50 text-left sm:px-6 space-x-4">
       <%= form.button "Next", type: :submit, class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>

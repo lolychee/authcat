@@ -1,20 +1,22 @@
 module SavedState
   extend ActiveSupport::Concern
 
-  def saved_state
-    cookies.encrypted[:saved_state]
-  end
+  def with_saved_state(record, scope: :saved_state, expires: 10.minutes, setter: :attributes=, getter: :attributes, &block)
+    saved_state = cookies.encrypted[scope]
+    record.send(setter, saved_state) if saved_state
 
-  def saved_state=(data, **opts)
-    if data.nil?
-      cookies.delete(:saved_state, path: request.path)
+    yield
+
+    saved_state = record.send(getter)
+    if saved_state.nil?
+      cookies.delete(scope, path: request.path)
     else
-      cookies.encrypted[:saved_state] = {
-        value: data,
+      cookies.encrypted[scope] = {
+        value: saved_state,
         path: request.path,
-        expires: 10.minutes,
+        expires: expires,
         httponly: true
-      }.merge(opts)
+      }
     end
   end
 end

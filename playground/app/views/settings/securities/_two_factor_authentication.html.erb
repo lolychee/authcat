@@ -28,11 +28,11 @@
         <label class="block text-sm font-medium text-gray-700">One-Time Password (OTP)</label>
         <div class="mt-4 space-x-2">
           <% if @user.one_time_password? %>
-            <%= button_to settings_one_time_password_url, method: :delete, class: "w-10 h-5 flex items-center bg-blue-500 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500", title: "Disable One-Time Password" do %>
+            <%= button_to settings_one_time_password_url, method: :delete, confirm: "are you sure?", class: "w-10 h-5 flex items-center bg-blue-500 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500", title: "Disable One-Time Password" do %>
               <div class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-4"></div>
             <% end %>
           <% else %>
-            <%= button_to settings_one_time_password_url, method: :post, confirm: "are you sure?", class: "w-10 h-5 flex items-center bg-gray-300 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500", title: "Enable One-Time Password" do %>
+            <%= button_to settings_one_time_password_url, method: :post, class: "w-10 h-5 flex items-center bg-gray-300 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500", title: "Enable One-Time Password" do %>
               <div class="bg-white w-4 h-4 rounded-full shadow-md"></div>
             <% end %>
           <% end %>

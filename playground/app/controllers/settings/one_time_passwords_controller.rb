@@ -1,4 +1,6 @@
 class Settings::OneTimePasswordsController < SettingsController
+  around_action { |_controller, action| with_saved_state(@user, getter: :enable_one_time_password_saved_state, &action) }
+
   def show
   end
 
@@ -7,15 +9,11 @@ class Settings::OneTimePasswordsController < SettingsController
   end
 
   def update
-    @user.attributes = saved_state || {}
-
     if @user.enable_one_time_password(one_time_password_params)
       redirect_to settings_security_url
     else
       render action: :show, status: :unprocessable_entity
     end
-
-    self.saved_state = @user.enable_one_time_password_saved_state
   end
 
   def destroy
