@@ -9,9 +9,6 @@ module Authcat
         require 'authcat/password'
 
         base.extend ClassMethods
-
-        Password::Crypto.register(:totp) { MultiFactor::Crypto::TOTP }
-        Password::Crypto.register(:hotp) { MultiFactor::Crypto::HOTP }
       end
 
       module ClassMethods
@@ -20,7 +17,12 @@ module Authcat
           include Authcat::Password::HasPassword,
                   Authcat::Password::Validators
 
-          result = has_password attribute, crypto: type, **opts
+          crypto = case type
+          when :totp then Crypto::TOTP
+          when :hotp then Crypto::HOTP
+          end
+
+          result = has_password attribute, crypto: crypto, **opts
           include InstanceMethodsOnActivation.new(attribute)
 
           result
@@ -30,6 +32,10 @@ module Authcat
       class InstanceMethodsOnActivation < Module
         def initialize(attribute)
           super()
+
+          define_method("regenerate_#{attribute}") do
+            send("#{attribute}=", ::ROTP::Base32.random)
+          end
 
           define_method("verify_#{attribute}") do |code, **opts|
             return false if code.nil?
