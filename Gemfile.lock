@@ -78,7 +78,7 @@ GEM
     rubocop-rspec (2.4.0)
       rubocop (~> 1.0)
       rubocop-ast (>= 1.1.0)
-    rubocop-rubycw (0.1.5)
+    rubocop-rubycw (0.1.6)
       rubocop (~> 1.0)
     rubocop-thread_safety (0.4.2)
       rubocop (>= 0.53.0)
