@@ -1,5 +1,5 @@
 class Settings::OneTimePasswordsController < SettingsController
-  around_action { |_controller, action| with_saved_state(@user, getter: :enable_one_time_password_saved_state, &action) }
+  around_action(only: %i[create update]) { |_controller, action| with_saved_state(@user, getter: :enable_one_time_password_saved_state, &action) }
 
   def show
   end

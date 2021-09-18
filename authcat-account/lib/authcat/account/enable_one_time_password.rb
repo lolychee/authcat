@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Account
     class EnableOneTimePassword < Module
@@ -13,14 +15,14 @@ module Authcat
 
         define_singleton_method(:included) do |base|
           if base < ActiveRecord::Base
-            gem 'state_machines-activerecord'
-            require 'state_machines-activerecord'
+            gem "state_machines-activerecord"
+            require "state_machines-activerecord"
           end
 
           base.define_model_callbacks action_name
 
           base.attr_writer step
-          base.class_eval <<~METHOD
+          base.class_eval <<~METHOD, __FILE__, __LINE__ + 1
             def #{step}
               return @#{step} if defined?(@#{step})
               @#{step} = self.class.state_machines[#{step.inspect}].initial_state(self).value
@@ -33,13 +35,15 @@ module Authcat
           verify_name = :"#{action_name}_verify"
 
           base.state_machine step, namespace: action_name, initial: :intro, action: nil do
-            after_transition from: :intro, to: :recovery_codes, do: ->(record) { record.send("#{recovery_codes_attribute}_plaintext=", record.send("regenerate_#{recovery_codes_attribute}")) }
+            after_transition from: :intro, to: :recovery_codes, do: lambda { |record|
+                                                                      record.send("#{recovery_codes_attribute}_plaintext=", record.send("regenerate_#{recovery_codes_attribute}"))
+                                                                    }
             after_transition from: :recovery_codes, to: :verify, do: :"regenerate_#{attribute}"
 
             event :next do
               transition intro: :recovery_codes
               transition recovery_codes: :verify, if: ->(record) { record.valid?(recovery_codes_name) }
-              transition verify: :completed, if: -> (record) { record.valid?(verify_name) }
+              transition verify: :completed, if: ->(record) { record.valid?(verify_name) }
               transition any => same
             end
           end
