@@ -24,3 +24,20 @@ end
 group :doc do
   gem "rdoc"
 end
+
+gem "activerecord", "~> 5.2"
+
+gem "database_cleaner", "~> 1.5"
+
+gem "pg", require: false
+gem "sqlite3"
+
+gem "bcrypt"
+gem "blind_index",  require: false
+gem "lockbox",      require: false
+gem "phonelib",     require: false
+gem 'rotp',         require: false
+gem 'webauthn',     require: false
+gem "valid_email2", require: false
+
+gem "state_machines-activerecord", require: false

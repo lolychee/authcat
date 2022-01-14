@@ -22,6 +22,7 @@ AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - Gemfile.lock
+    - "**/db/schema.rb"
 
 Style/StringLiterals:
   Enabled: true

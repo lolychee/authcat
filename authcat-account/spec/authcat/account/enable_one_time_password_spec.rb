@@ -1,27 +1,22 @@
 # frozen_string_literal: true
 
 RSpec.describe Authcat::Account::EnableOneTimePassword do
-  before(:context) { User.include described_class[:one_time_password] }
-
-  after(:context) { Object.send(:remove_const, :User) }
+  class CustomUser < User
+    include Authcat::Account::EnableOneTimePassword[:one_time_password]
+  end
 
   let(:old_password) { "123456" }
   let(:new_password) { "qwerty" }
 
   it "enable one_time_password successfully" do
-    user = User.create
+    user = CustomUser.create
 
-    expect(user.one_time_password).to eq nil
-    expect {
-      user.enable_one_time_password
-      user.enable_one_time_password
+    expect do
+      user.enable_one_time_password # intro
+      user.enable_one_time_password # recovery_codes
       otp = ROTP::TOTP.new(user.one_time_password)
 
       user.enable_one_time_password(one_time_password_attempt: otp.now)
-    }.to change(user, :one_time_password)
-
-    user.reload
-    expect(user.one_time_password).to be_present
-    expect(user.recovery_codes).to be_present
+    end.to change(CustomUser.where.not(one_time_password: nil, recovery_codes: nil), :count).by(1)
   end
 end
