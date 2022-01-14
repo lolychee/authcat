@@ -27,7 +27,7 @@ end
 
 gem "activerecord", "~> 5.2"
 
-gem "database_cleaner", "~> 1.5"
+gem "database_cleaner", "~> 2.0"
 
 gem "pg", require: false
 gem "sqlite3"
