@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   class Password
     class Coder
@@ -9,12 +11,13 @@ module Authcat
 
       def load(data)
         return if data.nil?
+
         if @array
           JSON.parse(data).each do |str|
             Password.new(str, crypto: @crypto, **@opts)
           end
         else
-          Password.new(data,crypto: @crypto, **@opts)
+          Password.new(data, crypto: @crypto, **@opts)
         end
       end
 

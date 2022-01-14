@@ -39,7 +39,7 @@ module Authcat
       end
 
       class InstanceMethodsOnActivation < Module
-        def initialize(attribute, array: false, **opts)
+        def initialize(attribute, array: false, **_opts)
           super()
 
           define_method("verify_#{attribute}") do |plaintext|

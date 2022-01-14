@@ -8,7 +8,7 @@ loader.push_dir("#{__dir__}/..")
 loader.setup
 
 module Authcat
-  class Password < ::String
+  class Password < DelegateClass(::String)
     class << self
       # @return [Symbol, String, self]
       attr_accessor :default_crypto
