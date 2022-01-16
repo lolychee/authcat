@@ -51,7 +51,12 @@ GEM
     cose (1.2.0)
       cbor (~> 0.5.9)
       openssl-signature_algorithm (~> 1.0)
-    database_cleaner (1.99.0)
+    database_cleaner (2.0.1)
+      database_cleaner-active_record (~> 2.0.0)
+    database_cleaner-active_record (2.0.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     diff-lcs (1.4.4)
     dry-configurable (0.12.0)
       concurrent-ruby (~> 1.0)
@@ -168,7 +173,7 @@ DEPENDENCIES
   authcat!
   bcrypt
   blind_index
-  database_cleaner (~> 1.5)
+  database_cleaner (~> 2.0)
   lockbox
   pg
   phonelib
