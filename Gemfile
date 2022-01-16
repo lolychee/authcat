@@ -25,7 +25,7 @@ group :doc do
   gem "rdoc"
 end
 
-gem "activerecord", "~> 5.2"
+gem "activerecord", "~> 6.1"
 
 gem "database_cleaner", "~> 2.0"
 
