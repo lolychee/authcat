@@ -1,0 +1,44 @@
+.git
+.gitignore
+README.md
+
+#
+# OS X
+#
+.DS_Store
+.AppleDouble
+.LSOverride
+# Thumbnails
+._*
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+.apdisk
+
+
+#
+# Rails
+#
+*.rbc
+capybara-*.html
+.rspec
+tmp/*
+log/*
+public/system
+coverage/
+spec/tmp
+**.orig
+.env
+.env.*
+
+
+## Environment normalisation:
+.bundle
+
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
+
+node_modules/
