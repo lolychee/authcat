@@ -36,8 +36,8 @@ gem "bcrypt"
 gem "blind_index",  require: false
 gem "lockbox",      require: false
 gem "phonelib",     require: false
-gem 'rotp',         require: false
-gem 'webauthn',     require: false
+gem "rotp",         require: false
 gem "valid_email2", require: false
+gem "webauthn",     require: false
 
 gem "state_machines-activerecord", require: false

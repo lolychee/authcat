@@ -10,6 +10,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: playground
     strategy:
       fail-fast: false
       matrix:
@@ -22,14 +25,6 @@ jobs:
 
       # If running on a self-hosted runner, check it meets the requirements
       # listed at https://github.com/ruby/setup-ruby#using-self-hosted-runners
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby_version }}
-          bundler-cache: true
-      - name: Install Ruby dependencies
-        run: cd playground && bundle install
-
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
@@ -37,17 +32,27 @@ jobs:
           cache: "yarn"
           cache-dependency-path: "**/yarn.lock"
       - name: Install Node dependencies
-        run: cd playground && yarn install
+        run: yarn install
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby_version }}
+          bundler-cache: true
+          working-directory: playground
 
       - name: Test run
-        run: cd playground && bundle exec rails test
+        run: bundle exec rails test
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku

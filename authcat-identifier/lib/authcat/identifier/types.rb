@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/container'
-require 'forwardable'
+require "dry/container"
+require "forwardable"
 # require 'activemodel/attribute_methods'
 
 module Authcat

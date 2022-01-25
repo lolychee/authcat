@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module Authentication
   extend ActiveSupport::Concern
 
   def current_session
     return @current_session if defined?(@current_session)
+
     @current_session = Session.find_signed(cookies[:access_token], purpose: :access_token)
   end
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'zeitwerk'
+require "zeitwerk"
 loader = Zeitwerk::Loader.new
-loader.tag = File.basename(__FILE__, '.rb')
+loader.tag = File.basename(__FILE__, ".rb")
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.push_dir("#{__dir__}/..")
 loader.setup
@@ -28,14 +28,12 @@ module Authcat
         attribute.to_sym
       end
 
-      def define_identifier(attribute, type)
-
-      end
+      def define_identifier(attribute, type); end
 
       def identify(attributes)
         case attributes
         when String
-          where.or(identifier_names(fuzzy_match: true).map {|name| { name => attributes } }).first
+          where.or(identifier_names(fuzzy_match: true).map { |name| { name => attributes } }).first
         when Hash
           where(attributes).first
         end

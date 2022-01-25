@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "dry-container", ">= 0.7.2"
   spec.add_dependency "zeitwerk", ">= 2.4.2"
+  spec.metadata["rubygems_mfa_required"] = "true"
 end

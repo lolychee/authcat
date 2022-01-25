@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe Authcat::Identifier::Types::Email do
-  let(:email) { 'somebody@example.com' }
-  let(:email_masked) { 's*****dy@e******.com' }
+  let(:email) { "somebody@example.com" }
+  let(:email_masked) { "s*****dy@e******.com" }
 
-  it 'does something useful' do
+  it "does something useful" do
     user = User.new(email: email)
     user.save
 

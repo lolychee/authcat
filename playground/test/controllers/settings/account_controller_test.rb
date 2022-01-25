@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
-class Settings::AccountControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+module Settings
+  class AccountControllerTest < ActionDispatch::IntegrationTest
+    # test "the truth" do
+    #   assert true
+    # end
+  end
 end

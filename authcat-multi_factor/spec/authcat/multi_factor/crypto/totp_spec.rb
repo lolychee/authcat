@@ -1,6 +1,16 @@
+# frozen_string_literal: true
+
 RSpec.describe Authcat::MultiFactor::Crypto::TOTP do
   let(:crypto) { described_class.new }
-  let(:validator) { ->(ciphertext) { ::ROTP::Base32.decode(ciphertext) && true rescue false } }
+  let(:validator) do
+    lambda { |ciphertext|
+      begin
+        ::ROTP::Base32.decode(ciphertext) && true
+      rescue StandardError
+        false
+      end
+    }
+  end
 
   describe "#generate" do
     context "with default byte_length" do
@@ -35,7 +45,9 @@ RSpec.describe Authcat::MultiFactor::Crypto::TOTP do
 
     it "verify with block" do
       timestamp = Time.at(1_000_000_000)
-      expect(crypto.verify(ciphertext, otp.at(timestamp), at: timestamp) { |t| expect(t).to eq Time.at(999_999_990) }).to eq true
+      expect(crypto.verify(ciphertext, otp.at(timestamp), at: timestamp) do |t|
+               expect(t).to eq Time.at(999_999_990)
+             end).to eq true
     end
   end
 end

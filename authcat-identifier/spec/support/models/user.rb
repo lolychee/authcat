@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   # serialize :recovery_codes_digest, Array if connection.adapter_name == 'SQLite'
   # has_recovery_codes
 
-  ENV['LOCKBOX_MASTER_KEY'] = '0000000000000000000000000000000000000000000000000000000000000000'
+  ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 
   identifier :email, type: :email
   validates :email, identify: true, on: :email_sign_in

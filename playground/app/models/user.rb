@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include Authcat::Account
 
   has_many :sessions, dependent: :delete_all
 
-  ENV['LOCKBOX_MASTER_KEY'] = '0000000000000000000000000000000000000000000000000000000000000000'
+  ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 
   identifier :email, type: :email
   identifier :phone_number, type: :phone_number

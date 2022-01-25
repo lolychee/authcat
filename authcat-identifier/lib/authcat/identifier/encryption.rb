@@ -7,13 +7,13 @@ module Authcat
         super()
 
         define_singleton_method(:included) do |base|
-          gem 'lockbox'
-          require 'lockbox'
+          gem "lockbox"
+          require "lockbox"
           base.encrypts attribute, **opts
 
           if index
-            gem 'blind_index'
-            require 'blind_index'
+            gem "blind_index"
+            require "blind_index"
             base.blind_index attribute, **(index.is_a?(Hash) ? index : {})
           end
         end

@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 
   has_one_time_password
 
-  serialize :recovery_codes_digest, Array if connection.adapter_name == 'SQLite'
+  serialize :recovery_codes_digest, Array if connection.adapter_name == "SQLite"
   has_recovery_codes
 
   has_webauthn

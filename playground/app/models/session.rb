@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Session < ApplicationRecord
   include Authcat::Identifier::Validators
   include Authcat::Password::Validators
@@ -22,16 +24,19 @@ class Session < ApplicationRecord
       attribute :one_time_password, :string
       attribute :recovery_code, :string
 
-
       state_machine :step, initial: :authentication, action: nil do
-        after_transition authentication: :two_factor_authentication do |record, transition|
+        after_transition authentication: :two_factor_authentication do |record, _transition|
           record.auth_type = record.primary_two_factor
         end
 
         event :next do
-          transition two_factor_authentication: :completed, if: -> (record) { record.valid?(:two_factor_authenticate) }
-          transition authentication: :two_factor_authentication, if: -> (record) { record.valid?(:authenticate) && record.two_factor_authentication_required? }
-          transition authentication: :completed, if: -> (record) { record.valid?(:authenticate) && !record.two_factor_authentication_required? }
+          transition two_factor_authentication: :completed, if: ->(record) { record.valid?(:two_factor_authenticate) }
+          transition authentication: :two_factor_authentication, if: lambda { |record|
+                                                                       record.valid?(:authenticate) && record.two_factor_authentication_required?
+                                                                     }
+          transition authentication: :completed, if: lambda { |record|
+                                                       record.valid?(:authenticate) && !record.two_factor_authentication_required?
+                                                     }
           transition any => same
         end
       end
@@ -77,7 +82,7 @@ class Session < ApplicationRecord
     end
 
     def primary_two_factor
-      'one_time_password'
+      "one_time_password"
     end
 
     def recovery_code
@@ -90,9 +95,9 @@ class Session < ApplicationRecord
 
     def sign_in(attributes = {})
       self.attributes = attributes
-      self.next if self.submit
+      self.next if submit
 
-      self.completed? && run_callbacks(:sign_in) { save }
+      completed? && run_callbacks(:sign_in) { save }
     end
   end
 
@@ -100,15 +105,13 @@ class Session < ApplicationRecord
     class_methods do
       def find_or_create_from_auth_hash(auth_hash)
         user = case auth_hash.provider
-        when "developer"
-          User.find_or_create_by(email: auth_hash.uid)
-        when "github"
-          User.find_or_create_by(github_oauth_token: auth_hash.uid) do |u|
-            u.name = auth_hash.info.nickname
-          end
-        else
-          nil
-        end
+               when "developer"
+                 User.find_or_create_by(email: auth_hash.uid)
+               when "github"
+                 User.find_or_create_by(github_oauth_token: auth_hash.uid) do |u|
+                   u.name = auth_hash.info.nickname
+                 end
+               end
         create(user: user) if user
       end
     end

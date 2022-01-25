@@ -20,8 +20,8 @@ module Authcat
               base.mask attribute, **(mask.is_a?(Hash) ? mask : DEFAULT_MASK_OPTIONS)
             end
             if validations
-              gem 'phonelib'
-              require 'phonelib'
+              gem "phonelib"
+              require "phonelib"
               base.validates attribute, **(validations.is_a?(Hash) ? validations : DEFAULT_VALIDATIONS_OPTIONS)
               base.validates attribute, presence: true, uniqueness: true, on: :save
             end

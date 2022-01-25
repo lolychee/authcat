@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'webauthn/fake_client'
+require "webauthn/fake_client"
 
 RSpec.describe Authcat::MultiFactor::WebAuthn do
-  let(:origin) { 'http://localhost.test' }
+  let(:origin) { "http://localhost.test" }
   let(:client) { WebAuthn::FakeClient.new(origin) }
 
   before do
     WebAuthn.configuration.origin = origin
   end
 
-  it 'has webauthn' do
-    user = User.create(email: 'example@email.com')
+  it "has webauthn" do
+    user = User.create(email: "example@email.com")
     user.generate_webauthn_options
 
     expect(user.webauthn_options).to be_a(WebAuthn::PublicKeyCredential::CreationOptions)

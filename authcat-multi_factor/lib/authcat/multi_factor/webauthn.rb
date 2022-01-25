@@ -5,8 +5,8 @@ module Authcat
     module WebAuthn
       # @return [void]
       def self.included(base)
-        gem 'authcat-password'
-        require 'authcat/password'
+        gem "authcat-password"
+        require "authcat/password"
 
         base.extend ClassMethods
       end
@@ -24,8 +24,8 @@ module Authcat
 
       class InstanceMethodsOnActivation < Module
         def initialize(attribute, column, public_key_column:, sign_count_column:, options_for_create: nil, options_for_get: nil)
-          gem 'webauthn'
-          require 'webauthn'
+          gem "webauthn"
+          require "webauthn"
 
           attr_accessor "#{attribute}_options", "#{attribute}_challenge"
 

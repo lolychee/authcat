@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Authcat::Identifier::Types::PhoneNumber do
-
   before do
     Phonelib.default_country = "CN"
   end
 
-  let(:phone_number) { '13012341234' }
-  let(:phone_number_masked) { '130****1234' }
+  let(:phone_number) { "13012341234" }
+  let(:phone_number_masked) { "130****1234" }
 
-  it 'does something useful' do
+  it "does something useful" do
     user = User.new(phone_number: phone_number)
     user.save
 
@@ -17,7 +16,7 @@ RSpec.describe Authcat::Identifier::Types::PhoneNumber do
     expect(user.phone_number_masked).to eq phone_number_masked
   end
 
-  it 'sign in' do
+  it "sign in" do
     User.new(phone_number: phone_number)
     user = User.new(phone_number: phone_number)
 

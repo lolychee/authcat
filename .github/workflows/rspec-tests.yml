@@ -11,6 +11,9 @@ on:
 jobs:
   rspec:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.gem_name }}
     strategy:
       fail-fast: false
       matrix:
@@ -33,8 +36,5 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
 
-      - name: Install dependencies
-        run: cd ${{ matrix.gem_name }} && bundle install
-
       - name: RSpec run
-        run: cd ${{ matrix.gem_name }} && bundle exec rspec
+        run: bundle exec rspec

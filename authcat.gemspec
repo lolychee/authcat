@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "authcat-multi_factor", version
   spec.add_dependency "authcat-passport",     version
   spec.add_dependency "authcat-password",     version
+  spec.metadata["rubygems_mfa_required"] = "true"
 end

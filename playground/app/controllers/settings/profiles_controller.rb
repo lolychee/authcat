@@ -1,18 +1,21 @@
-class Settings::ProfilesController < SettingsController
-  def show
-  end
+# frozen_string_literal: true
 
-  def update
-    if @user.update_profile(profile_params)
-      render action: :show, status: :ok
-    else
-      render action: :show, status: :unprocessable_entity
+module Settings
+  class ProfilesController < SettingsController
+    def show; end
+
+    def update
+      if @user.update_profile(profile_params)
+        render action: :show, status: :ok
+      else
+        render action: :show, status: :unprocessable_entity
+      end
     end
-  end
 
-  private
+    private
 
-  def profile_params
-    params.required(:profile).permit(:avatar, :name, :about)
+    def profile_params
+      params.required(:profile).permit(:avatar, :name, :about)
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_model/validator"
 
 module Authcat
@@ -56,7 +58,7 @@ module Authcat
         end
 
         def reload(original, found)
-          changes = original.changes.map {|k, v| [k, v.last] }.to_h
+          changes = original.changes.transform_values(&:last)
           # FIX: original.attribute_was bug; ActiveModel::Dirty related
           original.clear_changes_information
 

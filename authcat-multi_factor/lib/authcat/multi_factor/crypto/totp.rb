@@ -1,5 +1,7 @@
-gem 'rotp'
-require 'rotp'
+# frozen_string_literal: true
+
+gem "rotp"
+require "rotp"
 
 module Authcat
   module MultiFactor

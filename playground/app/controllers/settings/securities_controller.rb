@@ -1,2 +1,6 @@
-class Settings::SecuritiesController < SettingsController
+# frozen_string_literal: true
+
+module Settings
+  class SecuritiesController < SettingsController
+  end
 end

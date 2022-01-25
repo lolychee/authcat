@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'zeitwerk'
+require "zeitwerk"
 loader = Zeitwerk::Loader.new
-loader.tag = File.basename(__FILE__, '.rb')
+loader.tag = File.basename(__FILE__, ".rb")
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.inflector.inflect(
-  'webauthn' => 'WebAuthn',
-  'totp' => "TOTP",
-  'hotp' => "HOTP"
+  "webauthn" => "WebAuthn",
+  "totp" => "TOTP",
+  "hotp" => "HOTP"
 )
 loader.push_dir("#{__dir__}/..")
 loader.setup

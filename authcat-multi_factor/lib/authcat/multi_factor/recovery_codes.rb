@@ -5,8 +5,8 @@ module Authcat
     module RecoveryCodes
       # @return [void]
       def self.included(base)
-        gem 'authcat-password'
-        require 'authcat/password'
+        gem "authcat-password"
+        require "authcat/password"
 
         base.extend ClassMethods
       end
@@ -26,10 +26,10 @@ module Authcat
         end
 
         def generate_recovery_codes(len = 8)
-          require 'securerandom'
-          Array.new(len) {
+          require "securerandom"
+          Array.new(len) do
             block_given? ? yield : SecureRandom.hex(8)
-          }
+          end
         end
       end
 

@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
-  before_action :set_session, only: %i[ show update destroy ]
+  before_action :set_session, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token, only: :omniauth
-  around_action(only: %i[create]) { |_controller, action| with_saved_state(@session = Session.new, getter: :sign_in_state, &action) }
+  around_action(only: %i[create]) do |_controller, action|
+    with_saved_state(@session = Session.new, getter: :sign_in_state, &action)
+  end
 
   def omniauth
     @session = Session.find_or_create_from_auth_hash(auth_hash)
@@ -19,8 +23,7 @@ class SessionsController < ApplicationController
   end
 
   # GET /session
-  def show
-  end
+  def show; end
 
   # POST /sign_in
   # POST /session
@@ -51,17 +54,19 @@ class SessionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_session
-      @session = current_session || Session.new
-    end
 
-    # Only allow a list of trusted parameters through.
-    def session_params
-      params.required(:session).permit(:auth_type, :submit, :login, :email, :phone_country_code, :phone_national, :password, :one_time_password, :recovery_code, :remember_me)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_session
+    @session = current_session || Session.new
+  end
 
-    def auth_hash
-      request.env['omniauth.auth']
-    end
+  # Only allow a list of trusted parameters through.
+  def session_params
+    params.required(:session).permit(:auth_type, :submit, :login, :email, :phone_country_code, :phone_national,
+                                     :password, :one_time_password, :recovery_code, :remember_me)
+  end
+
+  def auth_hash
+    request.env["omniauth.auth"]
+  end
 end

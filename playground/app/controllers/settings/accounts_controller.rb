@@ -1,18 +1,21 @@
-class Settings::AccountsController < SettingsController
-  def show
-  end
+# frozen_string_literal: true
 
-  def update
-    if @user.update_account(account_params)
-      render action: :show, status: :ok
-    else
-      render action: :show, status: :unprocessable_entity
+module Settings
+  class AccountsController < SettingsController
+    def show; end
+
+    def update
+      if @user.update_account(account_params)
+        render action: :show, status: :ok
+      else
+        render action: :show, status: :unprocessable_entity
+      end
     end
-  end
 
-  private
+    private
 
-  def account_params
-    params.required(:account).permit(:username, :email, :phone_number)
+    def account_params
+      params.required(:account).permit(:username, :email, :phone_number)
+    end
   end
 end

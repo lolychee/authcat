@@ -10,7 +10,7 @@ module Authcat
       end
 
       module ClassMethods
-        def mask(attribute, pattern: DEFAULT_PATTERN, replacement: '*', &block)
+        def mask(attribute, pattern: DEFAULT_PATTERN, replacement: "*", &block)
           include InstanceMethodsOnActivation.new(attribute, pattern: pattern, replacement: replacement, &block)
         end
       end
@@ -25,7 +25,7 @@ module Authcat
             return if value.nil?
 
             if block
-              block.call(value, pattern: pattern, replacement: replacement)
+              yield(value, pattern: pattern, replacement: replacement)
             else
               m = value.match(pattern)
               m&.names.each { |n| value[m.begin(n)...m.end(n)] = replacement * m[n].size }

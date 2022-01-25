@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module SavedState
   extend ActiveSupport::Concern
 
-  def with_saved_state(record, scope: :saved_state, expires: 10.minutes, setter: :attributes=, getter: :attributes, &block)
+  def with_saved_state(record, scope: :saved_state, expires: 10.minutes, setter: :attributes=, getter: :attributes)
     saved_state = cookies.encrypted[scope]
     record.send(setter, saved_state) if saved_state
 

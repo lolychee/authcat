@@ -5,8 +5,8 @@ module Authcat
     module OneTimePassword
       # @return [void]
       def self.included(base)
-        gem 'authcat-password'
-        require 'authcat/password'
+        gem "authcat-password"
+        require "authcat/password"
 
         base.extend ClassMethods
       end
@@ -18,9 +18,9 @@ module Authcat
                   Authcat::Password::Validators
 
           crypto = case type
-          when :totp then Crypto::TOTP
-          when :hotp then Crypto::HOTP
-          end
+                   when :totp then Crypto::TOTP
+                   when :hotp then Crypto::HOTP
+                   end
 
           result = has_password attribute, crypto: crypto, **opts
           include InstanceMethodsOnActivation.new(attribute)
