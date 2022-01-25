@@ -18,7 +18,5 @@ Rails.application.routes.draw do
     resource :one_time_password
   end
 
-  match "*", to: "home#not_found", via: :all
-
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
