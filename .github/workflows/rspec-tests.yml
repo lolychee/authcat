@@ -1,0 +1,122 @@
+# pulled from repo
+name: "RSpec"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [main]
+  schedule:
+    - cron: "31 6 * * 2"
+
+jobs:
+  authcat-account-rspec:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # If running on a self-hosted runner, check it meets the requirements
+      # listed at https://github.com/ruby/setup-ruby#using-self-hosted-runners
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install dependencies
+        run: cd authcat-account && bundle install
+
+      - name: RSpec run
+        run: cd authcat-account && bundle exec rspec
+
+  authcat-identifier-rspec:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # If running on a self-hosted runner, check it meets the requirements
+      # listed at https://github.com/ruby/setup-ruby#using-self-hosted-runners
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install dependencies
+        run: cd authcat-identifier && bundle install
+
+      - name: RSpec run
+        run: cd authcat-identifier && bundle exec rspec
+
+  authcat-multi_factor-rspec:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # If running on a self-hosted runner, check it meets the requirements
+      # listed at https://github.com/ruby/setup-ruby#using-self-hosted-runners
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install dependencies
+        run: cd authcat-multi_factor && bundle install
+
+      - name: RSpec run
+        run: cd authcat-multi_factor && bundle exec rspec
+
+  authcat-password-rspec:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # If running on a self-hosted runner, check it meets the requirements
+      # listed at https://github.com/ruby/setup-ruby#using-self-hosted-runners
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install dependencies
+        run: cd authcat-password && bundle install
+
+      - name: RSpec run
+        run: cd authcat-password && bundle exec rspec
+
+  playground-rspec:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # If running on a self-hosted runner, check it meets the requirements
+      # listed at https://github.com/ruby/setup-ruby#using-self-hosted-runners
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install dependencies
+        run: cd playground && bundle install
+
+      - name: RSpec run
+        run: cd playground && bundle exec rake test:all
