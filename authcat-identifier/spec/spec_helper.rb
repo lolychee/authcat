@@ -6,7 +6,7 @@ require 'active_record'
 
 ENV['RACK_ENV'] ||= 'test'
 
-ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('support/database.yml', __dir__))
+ActiveRecord::Base.configurations = YAML.load_file(File.expand_path('support/database.yml', __dir__), aliases: true)
 ActiveRecord::Base.establish_connection ENV['RACK_ENV'].to_sym
 
 ActiveRecord::Migrator.migrations_paths = [File.expand_path('supports/db/migrate', __dir__)]
