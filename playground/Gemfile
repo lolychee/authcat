@@ -64,6 +64,9 @@ git 'https://github.com/lolychee/authcat.git', branch: :main do
   gem 'authcat-password'
 end
 
+gem "sentry-ruby", require: ENV.key?("SENTRY_DSN")
+gem "sentry-rails", require: ENV.key?("SENTRY_DSN")
+
 gem 'bcrypt'
 gem 'blind_index'
 gem 'lockbox'
