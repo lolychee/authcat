@@ -20,10 +20,8 @@ ActiveRecord::Schema.define(version: 2021_02_25_085855) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email_ciphertext"
-    t.string "email_bidx"
-    t.string "phone_number_ciphertext"
-    t.string "phone_number_bidx"
+    t.string "email"
+    t.string "phone_number"
     t.string "password"
     t.string "one_time_password"
     t.string "recovery_codes"
@@ -32,8 +30,8 @@ ActiveRecord::Schema.define(version: 2021_02_25_085855) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["email_bidx"], name: "index_users_on_email_bidx", unique: true
-    t.index ["phone_number_bidx"], name: "index_users_on_phone_number_bidx", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
   end
 
   add_foreign_key "sessions", "users"
