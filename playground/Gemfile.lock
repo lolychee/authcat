@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/lolychee/authcat.git
-  revision: 14f28d394b0174f1527307157ed22c6674bd0010
+  revision: 7e92a1652c3bcf310727f56ff8b64b547261abd8
   branch: main
   specs:
     authcat-account (0.1.0)
@@ -364,4 +364,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.3.5
+   2.3.6
