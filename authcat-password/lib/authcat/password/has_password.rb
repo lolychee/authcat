@@ -32,14 +32,14 @@ module Authcat
             validates_confirmation_of attribute, allow_nil: true
           end
 
-          include InstanceMethodsOnActivation.new(attribute, array: array, **opts)
+          include InstanceMethodsOnActivation.new(attribute, **opts)
 
           attribute.to_sym
         end
       end
 
       class InstanceMethodsOnActivation < Module
-        def initialize(attribute, array: false, **_opts)
+        def initialize(attribute, **_opts)
           super()
 
           define_method("verify_#{attribute}") do |plaintext|

@@ -8,7 +8,7 @@ module Authcat
         DEFAULT_MASK_OPTIONS = { pattern: /^.{1}(?<name_mask>.*).{2}@.{1}(?<domain_mask>.*)\..+$/ }.freeze
         DEFAULT_ENCRYPT_OPTIONS = { index: { expression: ->(v) { v&.downcase } } }.freeze
 
-        def initialize(attribute, encrypt: true, mask: true, validations: true)
+        def initialize(attribute, encrypt: false, mask: true, validations: true)
           super()
 
           define_singleton_method(:included) do |base|

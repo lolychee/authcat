@@ -8,7 +8,7 @@ module Authcat
         DEFAULT_MASK_OPTIONS = { pattern: /^\d{3}(?<mask>\d{4})\d{4}$/ }.freeze
         DEFAULT_ENCRYPT_OPTIONS = { index: { expression: ->(v) { Phonelib.parse(v).to_s } } }.freeze
 
-        def initialize(attribute, encrypt: true, mask: true, validations: true)
+        def initialize(attribute, encrypt: false, mask: true, validations: true)
           super()
 
           define_singleton_method(:included) do |base|
