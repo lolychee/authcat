@@ -1,8 +1,22 @@
 # frozen_string_literal: true
+require "dry/container"
 
 module Authcat
   module MultiFactor
     module OneTimePassword
+      class << self
+        extend Forwardable
+
+        def_delegators :registry, :register, :resolve
+
+        def registry
+          @registry ||= Dry::Container.new
+        end
+
+      end
+      register(:totp) { Crypto::TOTP }
+      register(:hotp) { Crypto::HOTP }
+
       # @return [void]
       def self.included(base)
         gem "authcat-password"
@@ -17,12 +31,7 @@ module Authcat
           include Authcat::Password::HasPassword,
                   Authcat::Password::Validators
 
-          crypto = case type
-                   when :totp then Crypto::TOTP
-                   when :hotp then Crypto::HOTP
-                   end
-
-          result = has_password attribute, crypto: crypto, **opts
+          result = has_password attribute, crypto: OneTimePassword.resolve(type), **opts
           include InstanceMethodsOnActivation.new(attribute)
 
           result

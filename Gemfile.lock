@@ -16,6 +16,7 @@ PATH
       zeitwerk (>= 2.4.2)
     authcat-multi_factor (0.1.0)
       authcat-password (~> 0.1.0)
+      dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
     authcat-passport (0.1.0)
     authcat-password (0.1.0)
@@ -192,4 +193,4 @@ DEPENDENCIES
   webauthn
 
 BUNDLED WITH
-   2.3.5
+   2.3.6

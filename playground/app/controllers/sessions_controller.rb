@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  before_action :set_new_session, only: %i[new create]
   before_action :set_session, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token, only: :omniauth
   around_action(only: %i[create]) do |_controller, action|
-    with_saved_state(@session = Session.new, getter: :sign_in_state, &action)
+    with_saved_state(@session, unless: :sign_in_completed?, &action)
   end
 
   def omniauth
@@ -18,9 +19,7 @@ class SessionsController < ApplicationController
   end
 
   # GET /sign_in
-  def new
-    @session = Session.new
-  end
+  def new; end
 
   # GET /session
   def show; end
@@ -54,6 +53,11 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_new_session
+    @session = Session.new
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_session

@@ -13,7 +13,7 @@ class Session < ApplicationRecord
       define_model_callbacks :sign_in
       delegate :verify_password, :verify_one_time_password, :verify_recovery_codes, to: :user, allow_nil: true
 
-      attribute :step, :string, default: "authentication"
+      attribute :sign_in_step, :string, default: :authentication
       attribute :auth_type, :string, default: "password"
       attribute :submit, :boolean, default: true
       attribute :login, :string
@@ -24,7 +24,7 @@ class Session < ApplicationRecord
       attribute :one_time_password, :string
       attribute :recovery_code, :string
 
-      state_machine :step, initial: :authentication, action: nil do
+      state_machine :sign_in_step, namespace: :sign_in, initial: :authentication, action: nil do
         after_transition authentication: :two_factor_authentication do |record, _transition|
           record.auth_type = record.primary_two_factor
         end
@@ -95,9 +95,9 @@ class Session < ApplicationRecord
 
     def sign_in(attributes = {})
       self.attributes = attributes
-      self.next if submit
+      self.next_sign_in if submit
 
-      completed? && run_callbacks(:sign_in) { save }
+      sign_in_completed? && run_callbacks(:sign_in) { save }
     end
   end
 

@@ -29,7 +29,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "authcat-password", "~> #{version}"
+  spec.add_dependency "dry-container", ">= 0.7.2"
   spec.add_dependency "zeitwerk", ">= 2.4.2"
+
+  spec.add_dependency "authcat-password", "~> #{version}"
+
   spec.metadata["rubygems_mfa_required"] = "true"
 end

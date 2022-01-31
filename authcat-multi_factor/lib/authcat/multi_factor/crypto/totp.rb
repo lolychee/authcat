@@ -18,13 +18,18 @@ module Authcat
         end
 
         def verify(ciphertext, other, **verify_opts)
-          otp = ROTP::TOTP.new(ciphertext, **(@opts || {}))
+          otp = ::ROTP::TOTP.new(ciphertext, **(@opts || {}))
           at = otp.verify(other.to_s, **verify_opts.merge(after: @last_used_at))
           return false if at.nil?
 
           @last_used_at = Time.at(at)
           yield(@last_used_at) if block_given?
           true
+        end
+
+        def now(ciphertext)
+          otp = ::ROTP::TOTP.new(ciphertext, **(@opts || {}))
+          otp.now
         end
       end
     end

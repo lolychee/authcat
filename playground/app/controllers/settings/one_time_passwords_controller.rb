@@ -3,7 +3,7 @@
 module Settings
   class OneTimePasswordsController < SettingsController
     around_action(only: %i[create update]) do |_controller, action|
-      with_saved_state(@user, getter: :enable_one_time_password_saved_state, &action)
+      with_saved_state(@user, unless: :enable_one_time_password_completed?, &action)
     end
 
     def show; end

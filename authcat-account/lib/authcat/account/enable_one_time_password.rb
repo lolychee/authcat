@@ -21,13 +21,14 @@ module Authcat
 
           base.define_model_callbacks action_name
 
-          base.attr_writer step
-          base.class_eval <<~METHOD, __FILE__, __LINE__ + 1
-            def #{step}
-              return @#{step} if defined?(@#{step})
-              @#{step} = self.class.state_machines[#{step.inspect}].initial_state(self).value
-            end
-          METHOD
+          # base.attr_writer step
+          # base.class_eval <<~METHOD, __FILE__, __LINE__ + 1
+          #   def #{step}
+          #     return @#{step} if defined?(@#{step})
+          #     @#{step} = self.class.state_machines[#{step.inspect}].initial_state(self).value
+          #   end
+          # METHOD
+          base.attribute step, :string, default: -> { base.state_machines[step].initial_state(base).value }
           base.attr_accessor attempt, "#{recovery_codes_attribute}_plaintext"
 
           intro_name = :"#{action_name}_intro"
@@ -58,14 +59,6 @@ module Authcat
           send("next_#{action_name}")
 
           send("#{action_name}_completed?") && run_callbacks(action_name) { save }
-        end
-
-        define_method("#{action_name}_saved_state") do
-          if send("#{action_name}_completed?")
-            nil
-          else
-            slice(step, attribute, recovery_codes_attribute)
-          end
         end
 
         define_method("disable_#{attribute}!") do

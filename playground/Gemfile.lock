@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/lolychee/authcat.git
-  revision: 41ec5e63929f3b0c64e6f722beed6b09736602ca
+  revision: 14f28d394b0174f1527307157ed22c6674bd0010
   branch: main
   specs:
     authcat-account (0.1.0)
@@ -12,6 +12,7 @@ GIT
       zeitwerk (>= 2.4.2)
     authcat-multi_factor (0.1.0)
       authcat-password (~> 0.1.0)
+      dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
     authcat-password (0.1.0)
       dry-container (>= 0.7.2)

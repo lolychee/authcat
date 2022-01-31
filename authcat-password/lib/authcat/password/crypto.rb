@@ -76,6 +76,8 @@ module Authcat
         self.class.secure_compare(ciphertext, other.to_s)
       end
 
+      alias == verify
+
       private
 
       # @param opts [Hash]
