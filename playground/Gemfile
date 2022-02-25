@@ -66,6 +66,7 @@ git "https://github.com/lolychee/authcat.git", branch: :main do
   gem "authcat-password"
 end
 
+gem "newrelic_rpm", require: ENV.key?("NEW_RELIC_LICENSE_KEY")
 gem "sentry-rails", require: ENV.key?("SENTRY_DSN")
 gem "sentry-ruby", require: ENV.key?("SENTRY_DSN")
 
