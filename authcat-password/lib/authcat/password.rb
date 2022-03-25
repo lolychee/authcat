@@ -7,6 +7,8 @@ loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.push_dir("#{__dir__}/..")
 loader.setup
 
+ require 'delegate'
+
 module Authcat
   class Password < DelegateClass(::String)
     class << self
