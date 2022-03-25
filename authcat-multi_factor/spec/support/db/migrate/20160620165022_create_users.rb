@@ -8,7 +8,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :email, null: false
       t.string :one_time_password
 
-      t.string :recovery_codes_digest
+      t.string :recovery_codes
 
       t.string :security_questions
 

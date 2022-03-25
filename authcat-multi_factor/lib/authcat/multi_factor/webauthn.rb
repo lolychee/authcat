@@ -5,16 +5,13 @@ module Authcat
     module WebAuthn
       # @return [void]
       def self.included(base)
-        gem "authcat-password"
-        require "authcat/password"
-
         base.extend ClassMethods
       end
 
       module ClassMethods
         def has_webauthn(attribute = :webauthn, column: "#{attribute}_id", public_key_column: "#{attribute}_public_key", sign_count_column: "#{attribute}_sign_count", **opts, &block)
-          include Authcat::Password::HasPassword,
-                  Authcat::Password::Validators
+          gem "webauthn"
+          require "webauthn"
 
           include InstanceMethodsOnActivation.new(attribute, column,
                                                   public_key_column: public_key_column, sign_count_column: sign_count_column, **opts, &block)
@@ -24,9 +21,6 @@ module Authcat
 
       class InstanceMethodsOnActivation < Module
         def initialize(attribute, column, public_key_column:, sign_count_column:, options_for_create: nil, options_for_get: nil)
-          gem "webauthn"
-          require "webauthn"
-
           attr_accessor "#{attribute}_options", "#{attribute}_challenge"
 
           define_method("generate_#{attribute}_options") do |**opts|

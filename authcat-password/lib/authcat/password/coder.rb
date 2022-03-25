@@ -13,7 +13,7 @@ module Authcat
         return if data.nil?
 
         if @array
-          JSON.parse(data).each do |str|
+          JSON.parse(data).map do |str|
             Password.new(str, crypto: @crypto, **@opts)
           end
         else

@@ -5,7 +5,7 @@ require "rotp"
 RSpec.describe Authcat::MultiFactor::OneTimePassword do
   it "has one time password" do
     user = User.create(email: "test@email.com")
-    user.one_time_password = 20
+    user.regenerate_one_time_password
 
     otp = ROTP::TOTP.new(user.one_time_password.to_s)
 

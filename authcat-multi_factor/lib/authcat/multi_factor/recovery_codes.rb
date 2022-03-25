@@ -5,18 +5,12 @@ module Authcat
     module RecoveryCodes
       # @return [void]
       def self.included(base)
-        gem "authcat-password"
-        require "authcat/password"
-
         base.extend ClassMethods
       end
 
       module ClassMethods
         # @return [Symbol]
         def has_recovery_codes(attribute = :recovery_codes, burn_after_verify: true, **opts, &block)
-          include Authcat::Password::HasPassword,
-                  Authcat::Password::Validators
-
           column = has_password attribute, array: true, validate: false, **opts
 
           include InstanceMethodsOnActivation.new(attribute, column, burn_after_verify: burn_after_verify, &block)

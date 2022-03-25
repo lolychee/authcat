@@ -12,10 +12,15 @@ loader.inflector.inflect(
 loader.push_dir("#{__dir__}/..")
 loader.setup
 
+require 'authcat/password'
+
 module Authcat
   module MultiFactor
     # @return [void]
     def self.included(base)
+      base.include Authcat::Password::HasPassword,
+                   Authcat::Password::Validators
+
       base.include OneTimePassword,
                    RecoveryCodes,
                    WebAuthn

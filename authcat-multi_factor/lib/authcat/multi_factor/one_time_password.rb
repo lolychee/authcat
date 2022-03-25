@@ -12,25 +12,18 @@ module Authcat
         def registry
           @registry ||= Dry::Container.new
         end
-
       end
       register(:totp) { Crypto::TOTP }
       register(:hotp) { Crypto::HOTP }
 
       # @return [void]
       def self.included(base)
-        gem "authcat-password"
-        require "authcat/password"
-
         base.extend ClassMethods
       end
 
       module ClassMethods
         # @return [Symbol]
         def has_one_time_password(attribute = :one_time_password, type: :totp, **opts)
-          include Authcat::Password::HasPassword,
-                  Authcat::Password::Validators
-
           result = has_password attribute, crypto: OneTimePassword.resolve(type), **opts
           include InstanceMethodsOnActivation.new(attribute)
 

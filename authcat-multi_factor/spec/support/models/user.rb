@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-  include Authcat::MultiFactor::OneTimePassword
-  include Authcat::MultiFactor::RecoveryCodes
-  include Authcat::MultiFactor::SecurityQuestions
-  include Authcat::MultiFactor::WebAuthn
+  include Authcat::MultiFactor
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
   EMAIL_VALIDATE_OPTIONS = { format: EMAIL_REGEX }.freeze
@@ -13,7 +10,6 @@ class User < ActiveRecord::Base
 
   has_one_time_password
 
-  serialize :recovery_codes_digest, Array if connection.adapter_name == "SQLite"
   has_recovery_codes
 
   has_webauthn

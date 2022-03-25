@@ -7,8 +7,8 @@ module Authcat
   module MultiFactor
     module Crypto
       class TOTP < Authcat::Password::Crypto
-        def generate(value)
-          valid?(value) ? value : ::ROTP::Base32.random
+        def generate(value = nil)
+          value.is_a?(String) && valid?(value) ? value : ::ROTP::Base32.random
         end
 
         def valid?(ciphertext)
