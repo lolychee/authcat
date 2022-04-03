@@ -4,7 +4,7 @@ require "dry/container"
 require "forwardable"
 
 module Authcat
-  class Password
+  module Password
     class Crypto
       class << self
         extend Forwardable

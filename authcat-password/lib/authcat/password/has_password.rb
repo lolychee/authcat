@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  class Password
+  module Password
     module HasPassword
       # @return [void]
       def self.included(base)

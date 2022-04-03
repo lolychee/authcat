@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  class Password
+  module Password
     class Coder
       def initialize(crypto:, array: false, **opts)
         @crypto = crypto
@@ -14,10 +14,10 @@ module Authcat
 
         if @array
           JSON.parse(data).map do |str|
-            Password.new(str, crypto: @crypto, **@opts)
+            Password::Value.new(str, crypto: @crypto, **@opts)
           end
         else
-          Password.new(data, crypto: @crypto, **@opts)
+          Password::Value.new(data, crypto: @crypto, **@opts)
         end
       end
 

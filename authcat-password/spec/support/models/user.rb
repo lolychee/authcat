@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-  include Authcat::Password::HasPassword
+  include Authcat::Password
 
   EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
   EMAIL_VALIDATE_OPTIONS = { format: EMAIL_REGEX }.freeze

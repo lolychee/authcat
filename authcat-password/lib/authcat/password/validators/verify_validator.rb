@@ -3,7 +3,7 @@
 require "active_model/validator"
 
 module Authcat
-  class Password
+  module Password
     module Validators
       class VerifyValidator < ActiveModel::EachValidator
         def validate_each(record, attribute, value)

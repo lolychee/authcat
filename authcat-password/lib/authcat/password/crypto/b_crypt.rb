@@ -4,7 +4,7 @@ gem "bcrypt"
 require "bcrypt"
 
 module Authcat
-  class Password
+  module Password
     class Crypto
       class BCrypt < Crypto
         # @return [Integer]

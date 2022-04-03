@@ -7,10 +7,8 @@ loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.push_dir("#{__dir__}/..")
 loader.setup
 
- require 'delegate'
-
 module Authcat
-  class Password < DelegateClass(::String)
+  module Password
     class << self
       # @return [Symbol, String, self]
       attr_accessor :default_crypto
@@ -19,26 +17,15 @@ module Authcat
       def create(*args, crypto:, **opts)
         crypto = Crypto.build(crypto, **opts)
 
-        new(crypto.valid_or_generate(*args), crypto: crypto)
+        Value.new(crypto.valid_or_generate(*args), crypto: crypto)
       end
     end
 
     self.default_crypto = :bcrypt
 
-    # @return [Crypto]
-    attr_reader :crypto
-
-    # @return [self]
-    def initialize(ciphertext, crypto:, **opts)
-      @crypto = Crypto.build(crypto, ciphertext, **opts)
-      super(ciphertext)
+    def self.included(base)
+      base.include HasPassword,
+                   Validators
     end
-
-    # @return [Boolean]
-    def verify(other, **opts)
-      @crypto.verify(self, other, **opts)
-    end
-
-    alias == verify
   end
 end
