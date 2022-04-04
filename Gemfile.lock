@@ -83,7 +83,7 @@ GEM
     parser (3.1.0.0)
       ast (~> 2.4.1)
     pg (1.2.3)
-    phonelib (0.6.55)
+    phonelib (0.6.58)
     psych (4.0.3)
       stringio
     rainbow (3.1.1)
