@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples "a crypto" do
-  let(:crypto) { described_class.new }
+RSpec.shared_examples "a kdf" do
+  let(:kdf) { described_class }
   let(:validator) { ->(_ciphertext) { false } }
 
-  describe "#generate" do
+  describe "#create" do
     context "with empty string" do
       let(:password) { "" }
 
       it "is valid hash string" do
-        ciphertext = crypto.generate(password)
+        ciphertext = kdf.create(password)
         expect(validator.call(ciphertext)).to eq true
+        expect(kdf.compare(password, ciphertext)).to eq true
       end
     end
 
@@ -18,8 +19,9 @@ RSpec.shared_examples "a crypto" do
       let(:password) { "12345678" }
 
       it "is valid hash string" do
-        ciphertext = crypto.generate(password)
+        ciphertext = kdf.create(password)
         expect(validator.call(ciphertext)).to eq true
+        expect(kdf.compare(password, ciphertext)).to eq true
       end
     end
   end
