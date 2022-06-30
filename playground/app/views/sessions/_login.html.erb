@@ -1,20 +1,12 @@
 <div class="space-y-4">
-  <% case "email" %>
-  <% when "login" %>
     <div>
       <%= form.label :login, class: "block text-sm font-medium text-gray-700" %>
       <%= form.text_field :login, placeholder: "Email / Phone Number / Username", autocomplete: "username", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mt-1" %>
     </div>
-  <% when "email" %>
-    <div>
-      <%= form.label :email, class: "block text-sm font-medium text-gray-700" %>
-      <%= form.email_field :email, placeholder: "Email address", autocomplete: "email", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mt-1" %>
-    </div>
-  <% end %>
 
   <div>
-    <%= form.label :password, class: "block text-sm font-medium text-gray-700" %>
-    <%= form.password_field :password, placeholder: "Password", autocomplete: "current-password", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mt-1" %>
+    <%= form.label :password_challenge, "Password", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.password_field :password_challenge, placeholder: "Password", autocomplete: "current-password", required: true, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mt-1" %>
   </div>
 </div>
 

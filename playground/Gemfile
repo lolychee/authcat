@@ -60,9 +60,10 @@ end
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 git "https://github.com/lolychee/authcat.git", branch: :main do
+# path ".." do
   gem "authcat-account"
-  gem "authcat-identifier"
-  gem "authcat-multi_factor"
+  gem "authcat-identity"
+  gem "authcat-mfa"
   gem "authcat-password"
 end
 

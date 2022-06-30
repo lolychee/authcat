@@ -33,9 +33,12 @@ class SessionsController < ApplicationController
 
         format.html { redirect_to root_url }
         format.json { render :show, status: :created, location: @session }
-      else
+      elsif @session.errors.any?
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @session.errors, status: :unprocessable_entity }
+      else
+        format.html { render :new, status: :ok }
+        format.json { render :show, status: :ok }
       end
     end
   end
@@ -66,8 +69,8 @@ class SessionsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def session_params
-    params.required(:session).permit(:auth_type, :submit, :login, :email, :phone_country_code, :phone_national,
-                                     :password, :one_time_password, :recovery_code, :remember_me)
+    params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
+                                     :recovery_codes_challenge, :remember_me, :switch_to)
   end
 
   def auth_hash

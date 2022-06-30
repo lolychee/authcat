@@ -1,59 +1,87 @@
 # frozen_string_literal: true
 
 class Session < ApplicationRecord
-  include Authcat::Identifier::Validators
-  include Authcat::Password::Validators
-  include Authcat::MultiFactor
+  include Authcat::Identity
+  include Authcat::MFA
 
   belongs_to :user, optional: true
-  validates :user, presence: true, on: :save
 
   concerning :SignIn do
     included do
+      validates :user, presence: true, on: :save
+      acts_as_identity :user
+
+      delegate(*%w[
+                 password
+                 one_time_password
+                 recovery_codes
+                 verify_recovery_codes
+               ], to: :user)
+
+      attr_accessor :switch_to
+
       define_model_callbacks :sign_in
-      delegate :verify_password, :verify_one_time_password, :verify_recovery_codes, to: :user, allow_nil: true
 
-      attribute :sign_in_step, :string, default: :authentication
-      attribute :auth_type, :string, default: "password"
-      attribute :submit, :boolean, default: true
       attribute :login, :string
+      validates :login, identify: { with: :user, only: %w[phone_number email] }, on: :login, unless: :user
+      validates :password, challenge: true, on: :login
+
       attribute :email, :string
+      validates :email, identify: { with: :user, only: :email }, on: :email, unless: :user
+
       attribute :phone_number, :string
+      validates :phone_number, identify: { with: :user, only: :phone_number }, on: :phone_number, unless: :user
+
+      validates :password, challenge: true, on: :password
+
+      validates :one_time_password, challenge: true, on: :one_time_password
+
+      validates :recovery_codes, challenge: true, on: :recovery_codes
+
       attribute :remember_me, :boolean
-      attribute :password, :string
-      attribute :one_time_password, :string
-      attribute :recovery_code, :string
 
-      state_machine :sign_in_step, namespace: :sign_in, initial: :authentication, action: nil do
-        after_transition authentication: :two_factor_authentication do |record, _transition|
-          record.auth_type = record.primary_two_factor
+      attribute :sign_in_step, :string
+      state_machine :sign_in_step, namespace: :sign_in, initial: :login, action: nil do
+        state :login do
+          transition to: :one_time_password, on: :submit, if: lambda { |record|
+                                                                record.valid?(:login) && record.primary_tsv_method == :one_time_password
+                                                              }
+          transition to: :completed, on: :submit, if: ->(record) { record.valid?(:login) }
         end
 
-        event :next do
-          transition two_factor_authentication: :completed, if: ->(record) { record.valid?(:two_factor_authenticate) }
-          transition authentication: :two_factor_authentication, if: lambda { |record|
-                                                                       record.valid?(:authenticate) && record.two_factor_authentication_required?
-                                                                     }
-          transition authentication: :completed, if: lambda { |record|
-                                                       record.valid?(:authenticate) && !record.two_factor_authentication_required?
+        state :email do
+          transition to: :password, on: :submit, if: lambda { |record|
+                                                       record.valid?(:email) && record.primary_osv_method == :password
                                                      }
-          transition any => same
         end
-      end
+        state :phone_number do
+          transition to: :password, on: :submit, if: lambda { |record|
+                                                       record.valid?(:phone_number) && record.primary_osv_method == :password
+                                                     }
+        end
 
-      with_options on: :authenticate do
-        validates :email, identify: :user, if: :email?
+        state :password do
+          transition to: :one_time_password, on: :submit, if: lambda { |record|
+                                                                record.valid?(:password) && record.primary_tsv_method == :one_time_password
+                                                              }
+          transition to: :completed, on: :submit, if: ->(record) { record.valid?(:password) }
+        end
+        state :one_time_password do
+          transition to: :recovery_codes, on: :submit, if: ->(record) { record.switch_to == "recovery_codes" }
+          transition to: :completed, on: :submit, if: ->(record) { record.valid?(:one_time_password) }
+        end
+        state :recovery_codes do
+          transition to: :one_time_password, on: :submit, if: ->(record) { record.switch_to == "one_time_password" }
+          transition to: :completed, on: :submit, if: ->(record) { record.valid?(:recovery_codes) }
+        end
 
-        validates :user, presence: true
-        # validate :validate_user_status, if: :user
+        event :submit do
+          transition from: any - [:completed], to: same
+        end
 
-        validates :password, verify: true, if: -> { auth_type == "password" && user }
-      end
-      with_options on: :two_factor_authenticate do
-        validates :user, presence: true
-
-        validates :one_time_password, verify: true, if: -> { auth_type == "one_time_password" && user }
-        validates :recovery_code, verify: :recovery_codes, if: -> { auth_type == "recovery_code" && user }
+        after_transition to: :completed do |record, _transition|
+          record.run_callbacks(:sign_in) { record.save }
+        end
       end
     end
 
@@ -77,27 +105,22 @@ class Session < ApplicationRecord
     #   user.save
     # end
 
-    def two_factor_authentication_required?
-      user&.one_time_password?
+    def primary_osv_method
+      return unless user
+
+      :password if user.password?
     end
 
-    def primary_two_factor
-      "one_time_password"
-    end
+    def primary_tsv_method
+      return unless user
 
-    def recovery_code
-      nil
-    end
-
-    def verify_recovery_code(code)
-      @user&.verify_recovery_codes(code)
+      :one_time_password if user.one_time_password?
     end
 
     def sign_in(attributes = {})
       self.attributes = attributes
-      self.next_sign_in if submit
 
-      sign_in_completed? && run_callbacks(:sign_in) { save }
+      submit_sign_in && sign_in_completed?
     end
   end
 
