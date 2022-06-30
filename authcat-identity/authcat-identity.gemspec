@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-version = File.read(File.expand_path("./AUTHCAT_VERSION", __dir__)).strip
+version = File.read(File.expand_path("../AUTHCAT_VERSION", __dir__)).strip
 
 Gem::Specification.new do |spec|
-  spec.name          = "authcat"
+  spec.name          = "authcat-identity"
   spec.version       = version
   spec.authors       = ["lychee xing"]
   spec.email         = ["lolychee@gmail.com"]
 
-  spec.summary       = "Write a short summary, because RubyGems requires one."
-  spec.description   = "Write a longer description or delete this line."
+  spec.summary       = " Write a short summary, because RubyGems requires one."
+  spec.description   = "dWrite a longer description or delete this line."
   spec.homepage      = "https://github.com/lolychee/authcat"
   spec.license       = "BSD"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
@@ -29,10 +29,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "authcat-account",      version
-  spec.add_dependency "authcat-identity",     version
-  spec.add_dependency "authcat-mfa",          version
-  spec.add_dependency "authcat-passport",     version
-  spec.add_dependency "authcat-password",     version
+  spec.add_dependency "dry-container", ">= 0.7.2"
+  spec.add_dependency "zeitwerk", ">= 2.4.2"
   spec.metadata["rubygems_mfa_required"] = "true"
 end

@@ -9,22 +9,18 @@ module Authcat
 
       def initialize(attribute, action_name: :"change_#{attribute}")
         super()
-        old_password = :"old_#{attribute}"
-        new_password = :"new_#{attribute}"
 
         define_singleton_method(:included) do |base|
           base.define_model_callbacks action_name
 
-          base.attr_accessor old_password, new_password
-
-          base.validates attribute, verify: attribute, on: action_name, if: attribute
-          base.validates new_password, presence: true, on: action_name, confirmation: true
+          base.validates attribute, challenge: { was: true }, if: :"#{attribute}?", on: action_name
+          base.validates attribute, presence: true, confirmation: true, on: action_name
         end
 
         define_method(action_name) do |attrs = {}|
           self.attributes = attrs
           valid?(action_name) && run_callbacks(action_name) do
-            update(attribute => send(new_password))
+            save
           end
         end
       end

@@ -20,8 +20,8 @@ jobs:
         os: [ubuntu-latest]
         gem_name:
           - authcat-account
-          - authcat-identifier
-          - authcat-multi_factor
+          - authcat-identity
+          - authcat-mfa
           - authcat-password
         ruby_version: ["2.6", "2.7"]
     steps:

@@ -10,17 +10,17 @@ loader.setup
 module Authcat
   module Account
     def self.included(base)
-      gem "authcat-identifier"
+      gem "authcat-identity"
       gem "authcat-password"
-      gem "authcat-multi_factor"
+      gem "authcat-mfa"
 
-      require "authcat/identifier"
+      require "authcat/identity"
       require "authcat/password"
-      require "authcat/multi_factor"
+      require "authcat/mfa"
 
-      base.include Authcat::Identifier,
-                   Authcat::Password::HasPassword,
-                   Authcat::MultiFactor
+      base.include Authcat::Identity,
+                   Authcat::Password,
+                   Authcat::MFA
     end
   end
 end

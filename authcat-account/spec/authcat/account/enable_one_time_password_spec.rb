@@ -5,18 +5,21 @@ RSpec.describe Authcat::Account::EnableOneTimePassword do
     include Authcat::Account::EnableOneTimePassword[:one_time_password]
   end
 
-  let(:old_password) { "123456" }
-  let(:new_password) { "qwerty" }
-
   it "enable one_time_password successfully" do
     user = CustomUser.create
 
     expect do
-      user.enable_one_time_password # intro
-      user.enable_one_time_password # recovery_codes
-      otp = ROTP::TOTP.new(user.one_time_password)
+      expect(user.enable_one_time_password_step).to eq "intro"
+      expect(user.enable_one_time_password).to eq false
 
-      user.enable_one_time_password(one_time_password_attempt: otp.now)
+      expect(user.enable_one_time_password_step).to eq "recovery_codes"
+      expect(user.enable_one_time_password).to eq false
+
+      expect(user.enable_one_time_password_step).to eq "verify"
+      expect(user.enable_one_time_password(one_time_password_challenge: user.one_time_password.now)).to eq true
     end.to change(CustomUser.where.not(one_time_password: nil, recovery_codes: nil), :count).by(1)
+                                                                                            .and change(user,
+                                                                                                        :one_time_password)
+      .and change(user, :updated_at)
   end
 end

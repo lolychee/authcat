@@ -14,11 +14,13 @@ RSpec.describe Authcat::Account::ChangePassword do
     expect(user.password).to eq old_password
     expect do
       user.change_password(
-        old_password: old_password,
-        new_password: new_password,
-        new_password_confirmation: new_password
+        password_challenge: old_password,
+        password: new_password,
+        password_confirmation: new_password
       )
     end.to change(user, :password)
+      .and change(user, :updated_at)
+
     expect(user.password).to eq new_password
   end
 end
