@@ -71,7 +71,7 @@ GEM
       concurrent-ruby (~> 1.0)
     ipaddr (1.2.3)
     jwt (2.3.0)
-    lockbox (0.6.6)
+    lockbox (0.6.8)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     mini_mime (1.1.2)
