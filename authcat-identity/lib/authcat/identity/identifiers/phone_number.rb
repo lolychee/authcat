@@ -28,6 +28,8 @@ module Authcat
             super(value, country)
           end
 
+          alias as_json to_s
+
           def inspect
             to_s.inspect
           end

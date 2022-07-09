@@ -5,8 +5,8 @@ module Authcat
     class Type < ActiveModel::Type::String
       attr_reader :attribute
 
-      def initialize(**args)
-        @attribute = args.fetch(:attribute) { raise ArgumentError, ":attribute is required" }
+      def initialize(attribute:, **args)
+        @attribute = attribute
         extend Array if @attribute.array?
         super(**args.slice(:precision, :scale, :limit))
       end
@@ -16,7 +16,9 @@ module Authcat
       end
 
       def serialize(value)
-        value.to_s
+        return if value.nil?
+
+        super.to_s
       end
 
       def cast_value(value)

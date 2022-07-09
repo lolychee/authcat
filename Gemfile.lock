@@ -5,7 +5,6 @@ PATH
       authcat-account (= 0.1.0)
       authcat-identity (= 0.1.0)
       authcat-mfa (= 0.1.0)
-      authcat-passport (= 0.1.0)
       authcat-password (= 0.1.0)
     authcat-account (0.1.0)
       authcat-identity (~> 0.1.0)
@@ -19,7 +18,6 @@ PATH
       authcat-password (~> 0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
-    authcat-passport (0.1.0)
     authcat-password (0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
@@ -194,4 +192,4 @@ DEPENDENCIES
   webauthn
 
 BUNDLED WITH
-   2.3.10
+   2.3.17

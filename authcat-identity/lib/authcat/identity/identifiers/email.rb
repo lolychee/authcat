@@ -30,6 +30,7 @@ module Authcat
           def to_s
             @raw_address
           end
+          alias as_json to_s
 
           def inspect
             to_s.inspect

@@ -3,7 +3,7 @@
 module Authcat
   module Identity
     module Identifiers
-      class Username < Module
+      module Username
       end
     end
   end

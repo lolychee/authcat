@@ -57,29 +57,6 @@ module Authcat
           mod
         end
       end
-
-      def identify(value, **opts)
-        return if identifier_attributes.nil?
-
-        attribute_names =
-          if opts.key?(:only)
-            identifier_attributes & Array(opts[:only]).map(&:to_s)
-          elsif opts.key?(:except)
-            identifier_attributes - Array(opts[:except]).map(&:to_s)
-          else
-            identifier_attributes
-          end
-
-        attribute_names.each do |attribute|
-          identifier = send(attribute)
-          next unless identifier.valid?(value)
-
-          identity = identifier.identify(value)
-          return identity if identity
-        end
-
-        nil
-      end
     end
   end
 end

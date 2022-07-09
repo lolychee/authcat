@@ -19,8 +19,8 @@ class User < ActiveRecord::Base
   ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 
   identifier :email, type: :email
-  # validates :email, identify: true, on: :email_sign_in
+  validates :email, identify: true, on: :email_sign_in
 
   identifier :phone_number, type: :phone_number
-  # validates :phone_number, identify: true, on: :phone_number_sign_in
+  validates :phone_number, identify: true, on: :phone_number_sign_in
 end

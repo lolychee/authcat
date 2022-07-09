@@ -32,7 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "authcat-account",      version
   spec.add_dependency "authcat-identity",     version
   spec.add_dependency "authcat-mfa",          version
-  spec.add_dependency "authcat-passport",     version
   spec.add_dependency "authcat-password",     version
   spec.metadata["rubygems_mfa_required"] = "true"
 end

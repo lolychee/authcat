@@ -3,7 +3,7 @@
 module Authcat
   module Identity
     module Identifiers
-      class Token < Module
+      module Token
         DEFAULT_VALIDATIONS_OPTIONS = { format: /^.+$/, allow_nil: true }.freeze
 
         def initialize(attribute, encrypt: true, mask: false, validations: false)

@@ -12,13 +12,13 @@ module Authcat
       end
 
       def type
-        :password
+        :identifier
       end
 
       def serialize(value)
         return if value.nil?
 
-        value.to_s
+        super.to_s
       end
 
       def cast_value(value)
@@ -38,7 +38,7 @@ module Authcat
           when Array
             value.map { |pwd| super(pwd) }
           when String
-            JSON.parse(value).map { |pwd| super(pwd) }
+            case_value(JSON.parse(value))
           end
         end
       end
