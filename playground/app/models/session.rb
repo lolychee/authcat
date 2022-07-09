@@ -118,9 +118,19 @@ class Session < ApplicationRecord
     end
 
     def sign_in(attributes = {})
-      self.attributes = attributes
+      assign_attributes(attributes)
 
       submit_sign_in && sign_in_completed?
+    end
+  end
+
+  concerning :SignOut do
+    included do
+      define_model_callbacks :sign_out
+    end
+    def sign_out(attributes = {})
+      assign_attributes(attributes)
+      run_callbacks(:sign_out) { destroy }
     end
   end
 

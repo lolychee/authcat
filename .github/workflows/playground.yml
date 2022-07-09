@@ -42,7 +42,7 @@ jobs:
           working-directory: playground
 
       - name: Test run
-        run: bundle exec rails test
+        run: bundle exec rails test:all
 
   deploy:
     needs: test

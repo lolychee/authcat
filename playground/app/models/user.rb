@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 
+  acts_as_identity
+
   identifier :email, type: :email
   identifier :phone_number, type: :phone_number
   # identifier :github_oauth_token, type: :token

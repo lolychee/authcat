@@ -3,6 +3,10 @@
 module Authentication
   extend ActiveSupport::Concern
 
+  included do |base|
+    base.helper_method :current_user
+  end
+
   def current_session
     return @current_session if defined?(@current_session)
 

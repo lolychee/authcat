@@ -6,13 +6,14 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'tailwind', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_link_tag 'inter-font', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body class="antialiased font-sans bg-gray-50">
+    <%= render partial: "layouts/header" %>
     <%= content_for?(:content) ? yield(:content) : yield %>
+    <%= render partial: "layouts/footer" %>
   </body>
 </html>

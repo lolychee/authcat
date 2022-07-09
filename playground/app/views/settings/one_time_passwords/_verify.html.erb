@@ -1,6 +1,6 @@
 <div class="grid grid-cols-3 gap-6">
   <div class="col-span-3 sm:col-span-2">
-    <%= image_tag "https://chart.googleapis.com/chart?chs=300x300&cht=qr&choe=UTF-8chld=M|0&chl=#{URI.encode_www_form_component(@user.one_time_password.provisioning_uri(@user.email))}" %>
+    <%= image_tag "https://chart.googleapis.com/chart?chs=300x300&cht=qr&choe=UTF-8chld=M|0&chl=#{URI.encode_www_form_component(@user.one_time_password.provisioning_uri(@user.email.to_s))}" %>
   </div>
 
   <div class="col-span-3 sm:col-span-2">

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/lolychee/authcat.git
-  revision: c7e46368b2ab37370f52f1664baae4b25d977086
+  revision: b9e0c2b22769ddb846ad73353187894414991ef3
   branch: main
   specs:
     authcat-account (0.1.0)
@@ -108,7 +108,7 @@ GEM
     cbor (0.5.9.6)
     childprocess (4.1.0)
     concurrent-ruby (1.1.10)
-    cose (1.2.0)
+    cose (1.2.1)
       cbor (~> 0.5.9)
       openssl-signature_algorithm (~> 1.0)
     crass (1.0.6)
@@ -153,8 +153,8 @@ GEM
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    minitest (5.16.1)
-    msgpack (1.5.2)
+    minitest (5.16.2)
+    msgpack (1.5.3)
     multi_xml (0.6.0)
     newrelic_rpm (8.8.0)
     nio4r (2.5.8)
@@ -162,13 +162,13 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.6-x86_64-linux)
       racc (~> 1.4)
-    oauth2 (2.0.3)
+    oauth2 (2.0.5)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
       rash_alt (>= 0.4, < 1)
-      version_gem (~> 1.0)
+      version_gem (~> 1.1)
     omniauth (2.1.0)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
@@ -192,7 +192,7 @@ GEM
     puma (5.6.4)
       nio4r (~> 2.0)
     racc (1.6.0)
-    rack (2.2.3.1)
+    rack (2.2.4)
     rack-mini-profiler (2.3.4)
       rack (>= 1.2.0)
     rack-protection (2.2.0)
@@ -279,8 +279,10 @@ GEM
     state_machines-activerecord (0.8.0)
       activerecord (>= 5.1)
       state_machines-activemodel (>= 0.8.0)
-    tailwindcss-rails (0.3.3)
-      rails (>= 6.0.0)
+    tailwindcss-rails (2.0.10-x86_64-darwin)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.0.10-x86_64-linux)
+      railties (>= 6.0.0)
     thor (1.2.1)
     tilt (2.0.10)
     tpm-key_attestation (0.10.0)
@@ -360,7 +362,7 @@ DEPENDENCIES
   spring
   sqlite3 (~> 1.4)
   state_machines-activerecord
-  tailwindcss-rails (~> 0.3.3)
+  tailwindcss-rails
   turbolinks (~> 5)
   tzinfo-data
   valid_email2
@@ -373,4 +375,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.3.10
+   2.3.17

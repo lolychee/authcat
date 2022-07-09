@@ -1,0 +1,24 @@
+<div class="flex items-center gap-x-5 md:gap-x-8">
+	<% if current_user %>
+		<div class="relative inline-block text-left">
+			<div>
+				<button type="button" class="inline-flex justify-center h-8 w-8 rounded-full shadow-sm px-1 py-1 text-sm font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-600" id="menu-button" aria-expanded="true" aria-haspopup="true">
+					<!-- Heroicon name: solid/chevron-down -->
+					  <img class="inline-block h-full w-full rounded-full" src="https://www.gravatar.com/avatar/00000000000000000000000000000000" alt="">
+				</button>
+			</div>
+
+			<div class="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+				<div class="py-1 text-right" role="none">
+					<!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+					<a href="<%= settings_root_path %>" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">Settings</a>
+					<a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">Help</a>
+					<%= button_to "Sign out", sign_out_path, class: "text-gray-700 text-right block w-full px-4 py-2 text-sm", role: "menuitem", tabindex: "-1" %>
+				</div>
+			</div>
+		</div>
+	<% else %>
+		<%= link_to "Sign in", sign_in_path, class: "inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900" %>
+		<%= link_to "Sign up", sign_up_path, class: "group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-blue-600 text-white hover:text-slate-100 hover:bg-blue-500 active:bg-blue-800 active:text-blue-100 focus-visible:outline-blue-600" %>
+	<% end %>
+</div>
