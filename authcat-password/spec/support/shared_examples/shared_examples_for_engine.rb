@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples "a engine" do
+RSpec.shared_examples "an engine" do
   let(:engine) { described_class }
   let(:validator) { ->(_ciphertext) { false } }
 

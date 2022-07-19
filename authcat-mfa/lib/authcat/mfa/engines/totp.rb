@@ -34,6 +34,8 @@ module Authcat
         end
 
         class Value < ::ROTP::TOTP
+          prepend Authcat::Password::Verifiedable
+
           alias to_s secret
           alias as_json to_s
 

@@ -7,7 +7,7 @@ module Authcat
 
       def initialize(attribute:, **args)
         @attribute = attribute
-        extend Array if @attribute.array?
+        extend SupportArray if @attribute.array?
         super(**args.slice(:precision, :scale, :limit))
       end
 
@@ -29,17 +29,17 @@ module Authcat
         end
       end
 
-      module Array
+      module SupportArray
         def serialize(value)
           case value
-          when ::Array
+          when Array
             value.map { |pwd| super(pwd) }.to_json
           end
         end
 
         def cast_value(value)
           case value
-          when ::Array
+          when Array
             value.map { |pwd| super(pwd) }
           when String
             cast_value(JSON.parse(value))

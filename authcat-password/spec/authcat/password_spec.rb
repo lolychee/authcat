@@ -14,5 +14,7 @@ RSpec.describe Authcat::Password do
     expect(user.password).to eq password
     expect(user.password).to be_a ::BCrypt::Password
     expect(user.password?).to eq true
+
+    binding.irb
   end
 end

@@ -35,7 +35,13 @@ module Authcat
           Password.secure_compare(::BCrypt::Engine.hash_secret(plaintext, new(ciphertext).salt), ciphertext)
         end
 
-        class Value < ::BCrypt::Password; end
+        class Value < ::BCrypt::Password
+          prepend Verifiedable
+
+          def verify(plaintext, **_opts)
+            self == plaintext
+          end
+        end
       end
     end
   end

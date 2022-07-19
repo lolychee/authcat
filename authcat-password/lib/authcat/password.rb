@@ -9,6 +9,7 @@ loader.inflector.inflect(
 )
 
 loader.push_dir("#{__dir__}/..")
+loader.collapse("#{__dir__}/password/concerns")
 loader.setup
 
 module Authcat
@@ -55,9 +56,24 @@ module Authcat
           validates_confirmation_of attribute, allow_nil: true
         end
 
+        define_model_callbacks :"verify_#{attribute}"
+
         _password_singleton_module.module_eval do
           define_method(attribute) do
             type_for_attribute(attribute)&.attribute
+          end
+        end
+
+        _password_instance_module.module_eval do
+          define_method("verify_#{attribute}") do |plaintext|
+            run_callbacks(:"verify_#{attribute}") do
+              send("#{attribute}?") && value = send(attribute)
+              if value.respond_to?(:any?)
+                value.any? { |v| v.verify(plaintext) }
+              else
+                value.verify(plaintext)
+              end
+            end
           end
         end
 
@@ -78,7 +94,7 @@ module Authcat
       def _password_instance_module # :nodoc:
         @_password_instance_module ||= begin
           mod = Module.new
-          extend mod
+          include mod
           mod
         end
       end

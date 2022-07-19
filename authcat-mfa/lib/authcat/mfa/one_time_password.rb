@@ -2,6 +2,7 @@
 
 require "authcat/password"
 require "dry/container"
+
 module Authcat
   module MFA
     module OneTimePassword
@@ -13,37 +14,20 @@ module Authcat
 
       module ClassMethods
         # @return [Symbol]
-        def has_one_time_password(attribute = :one_time_password, engine: :totp, validate: false, **opts)
-          engine = Password::Engines.resolve(engine) unless engine.is_a?(Module)
-
+        def has_one_time_password(attribute = :one_time_password, engine: :totp, validate: false, confirmation: false, after_verify: false, **opts)
           result = has_password attribute, engine: engine, validate: validate, **opts
-          include InstanceMethodsOnActivation.new(attribute, engine: engine)
+
+          set_callback :"verify_#{attribute}", :after, after_verify if after_verify
+
+          _password_instance_module.define_method("regenerate_#{attribute}") do |*args|
+            update!(attribute => self.class.send(attribute).create(*args))
+          end
+
+          _password_instance_module.define_method("clear_#{attribute}") do
+            update!(attribute => nil)
+          end
 
           result
-        end
-      end
-
-      class InstanceMethodsOnActivation < Module
-        def initialize(attribute, engine:)
-          super()
-
-          define_method("regenerate_#{attribute}") do
-            send("#{attribute}=", engine.create)
-          end
-
-          define_method("regenerate_#{attribute}!") do
-            send("regenerate_#{attribute}") && save!
-          end
-
-          define_method("verify_#{attribute}") do |code, **opts|
-            return false if code.nil?
-
-            otp = send(attribute)
-
-            !otp.nil? && otp.verify(code, **opts) do
-              update(attribute => otp)
-            end
-          end
         end
       end
     end
