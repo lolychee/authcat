@@ -56,8 +56,8 @@ module Authcat
 
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{action_name}(attributes = {})
-            self.attributes = attributes
-            submit_#{action_name} && #{action_name}_completed?
+            assign_attributes(attributes)
+            submit_#{action_name}
           end
         RUBY
 

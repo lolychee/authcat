@@ -9,7 +9,6 @@ class Session < ApplicationRecord
   concerning :SignIn do
     included do
       validates :user, presence: true, on: :save
-      acts_as_identity :user
 
       delegate(*%w[
                  password
@@ -120,7 +119,7 @@ class Session < ApplicationRecord
     def sign_in(attributes = {})
       assign_attributes(attributes)
 
-      submit_sign_in && sign_in_completed?
+      submit_sign_in
     end
   end
 
@@ -128,6 +127,7 @@ class Session < ApplicationRecord
     included do
       define_model_callbacks :sign_out
     end
+
     def sign_out(attributes = {})
       assign_attributes(attributes)
       run_callbacks(:sign_out) { destroy }

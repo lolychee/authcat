@@ -7,8 +7,6 @@ class User < ApplicationRecord
 
   ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 
-  acts_as_identity
-
   identifier :email, type: :email
   identifier :phone_number, type: :phone_number
   # identifier :github_oauth_token, type: :token
@@ -24,7 +22,7 @@ class User < ApplicationRecord
     end
 
     def update_profile(attributes = {})
-      self.attributes = attributes
+      assign_attributes(attributes)
       valid?(:update_profile) && run_callbacks(:update_profile) { save }
     end
   end

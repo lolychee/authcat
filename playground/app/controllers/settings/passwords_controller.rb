@@ -15,7 +15,7 @@ module Settings
     private
 
     def change_password_params
-      params.required(:change_password).permit(:old_password, :new_password, :new_password_confirmation)
+      params.required(:change_password).permit(:password_challenge, :password, :password_confirmation)
     end
   end
 end

@@ -14,7 +14,12 @@ module Settings
 
     def update
       if @user.enable_one_time_password(one_time_password_params)
-        redirect_to settings_security_url
+        if @user.enable_one_time_password_completed?
+          redirect_to settings_security_url
+        else
+          render action: :show, status: :ok
+        end
+
       else
         render action: :show, status: :unprocessable_entity
       end

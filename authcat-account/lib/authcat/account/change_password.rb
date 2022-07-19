@@ -17,11 +17,9 @@ module Authcat
           base.validates attribute, presence: true, confirmation: true, on: action_name
         end
 
-        define_method(action_name) do |attrs = {}|
-          self.attributes = attrs
-          valid?(action_name) && run_callbacks(action_name) do
-            save
-          end
+        define_method(action_name) do |attributes = {}|
+          assign_attributes(attributes)
+          valid?(action_name) && run_callbacks(action_name) { save }
         end
       end
     end

@@ -29,16 +29,18 @@ class SessionsController < ApplicationController
   def create
     respond_to do |format|
       if @session.sign_in(session_params)
-        self.current_session = @session
+        if @session.sign_in_completed?
+          self.current_session = @session
 
-        format.html { redirect_to root_url }
-        format.json { render :show, status: :created, location: @session }
-      elsif @session.errors.any?
+          format.html { redirect_to root_url }
+          format.json { render :show, status: :created, location: @session }
+        else
+          format.html { render :new, status: :ok }
+          format.json { render :show, status: :ok }
+        end
+      else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @session.errors, status: :unprocessable_entity }
-      else
-        format.html { render :new, status: :ok }
-        format.json { render :show, status: :ok }
       end
     end
   end
