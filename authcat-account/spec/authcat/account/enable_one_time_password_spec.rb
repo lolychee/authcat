@@ -10,10 +10,10 @@ RSpec.describe Authcat::Account::EnableOneTimePassword do
 
     expect do
       expect(user.enable_one_time_password_step).to eq "intro"
-      expect(user.enable_one_time_password).to eq false
+      expect(user.enable_one_time_password).to eq true
 
       expect(user.enable_one_time_password_step).to eq "recovery_codes"
-      expect(user.enable_one_time_password).to eq false
+      expect(user.enable_one_time_password).to eq true
 
       expect(user.enable_one_time_password_step).to eq "verify"
       expect(user.enable_one_time_password(one_time_password_challenge: user.one_time_password.now)).to eq true

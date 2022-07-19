@@ -41,7 +41,9 @@ module Authcat
             state :recovery_codes do
               transition to: :verify, on: :submit, if: ->(record) { record.valid?(:recovery_codes) }
             end
-            after_transition from: :recovery_codes, to: :verify, do: :"regenerate_#{attribute}"
+            after_transition from: :recovery_codes, to: :verify, do: lambda { |record|
+                                                                       record.send("regenerate_#{attribute}")
+                                                                     }
 
             state :verify do
               transition to: :completed, on: :submit, if: ->(record) { record.valid?(:verify) }

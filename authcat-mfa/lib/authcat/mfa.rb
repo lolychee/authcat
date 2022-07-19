@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "zeitwerk"
+require "authcat/password"
+
 loader = Zeitwerk::Loader.new
 loader.tag = File.basename(__FILE__, ".rb")
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
@@ -12,8 +14,6 @@ loader.inflector.inflect(
 )
 loader.push_dir("#{__dir__}/..")
 loader.setup
-
-require "authcat/password"
 
 module Authcat
   module MFA
