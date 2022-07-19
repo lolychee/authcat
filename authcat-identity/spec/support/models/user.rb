@@ -3,7 +3,6 @@
 class User < ActiveRecord::Base
   include Authcat::Identity
 
-  acts_as_identity
   has_many :sessions
 
   # EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
