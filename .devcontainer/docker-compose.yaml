@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        VARIANT: 2.6
-        NODE_VERSION: 14
+        VARIANT: 2.7
+        NODE_VERSION: 16
     volumes:
       - bundle:/usr/local/bundle
       - ..:/workspace:delegated
@@ -21,7 +21,7 @@ services:
     environment:
       - LANG=C.UTF-8
       - BUNDLE_JOBS=8
-    command: ["sleep", "infinity"]
+    command: [ "sleep", "infinity" ]
     # command: ["rails", "s", "-b", "0.0.0.0", "-p", "3000"]
 
   postgres:
