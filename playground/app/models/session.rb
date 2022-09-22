@@ -21,15 +21,17 @@ class Session < ApplicationRecord
 
       define_model_callbacks :sign_in
 
+      set_callback :sign_in, :after, ->(model) { Current.session = model }
+
       attribute :login, :string
-      validates :login, identify: { with: :user, only: %w[phone_number email] }, on: :login, unless: :user
+      validates :login, identify: { only: %w[phone_number email] }, on: :login, unless: :user
       validates :password, challenge: true, on: :login
 
       attribute :email, :string
-      validates :email, identify: { with: :user, only: :email }, on: :email, unless: :user
+      validates :email, identify: { only: :email }, on: :email, unless: :user
 
       attribute :phone_number, :string
-      validates :phone_number, identify: { with: :user, only: :phone_number }, on: :phone_number, unless: :user
+      validates :phone_number, identify: { only: :phone_number }, on: :phone_number, unless: :user
 
       validates :password, challenge: true, on: :password
 
@@ -89,6 +91,12 @@ class Session < ApplicationRecord
         errors.add(:user, :locked)
       elsif user.blocked?
         errors.add(:user, :blocked)
+      end
+    end
+
+    def identify(*args)
+      build_user do |user|
+        user.identify(*args)
       end
     end
 

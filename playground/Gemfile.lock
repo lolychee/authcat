@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/lolychee/authcat.git
-  revision: 3b6363725b8e4e855dfdad227f0127ceaeff60e3
+  revision: 035aa5ff4c5bd2bd91a34a3e1fbbe6cf69f8abad
   branch: main
   specs:
     authcat-account (0.1.0)
@@ -116,13 +116,7 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
-    dry-configurable (0.13.0)
-      concurrent-ruby (~> 1.0)
-      dry-core (~> 0.6)
-    dry-container (0.9.0)
-      concurrent-ruby (~> 1.0)
-      dry-configurable (~> 0.13, >= 0.13.0)
-    dry-core (0.7.1)
+    dry-container (0.11.0)
       concurrent-ruby (~> 1.0)
     erubi (1.10.0)
     faraday (2.3.0)
@@ -375,4 +369,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.3.17
+   2.3.20

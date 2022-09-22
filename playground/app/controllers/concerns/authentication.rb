@@ -22,7 +22,7 @@ module Authentication
   end
 
   def current_user
-    current_session&.user
+    Current.user
   end
 
   def authenticate_user!

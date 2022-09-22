@@ -16,6 +16,17 @@ class User < ApplicationRecord
   has_one_time_password
   has_recovery_codes
 
+  concerning :SignUp do
+    included do
+      define_model_callbacks :sign_up
+    end
+
+    def sign_up(attributes = {})
+      assign_attributes(attributes)
+      valid?(:sign_up) && run_callbacks(:sign_up) { save }
+    end
+  end
+
   concerning :UpdateProfile do
     included do
       define_model_callbacks :update_profile

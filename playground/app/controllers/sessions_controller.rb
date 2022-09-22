@@ -10,7 +10,6 @@ class SessionsController < ApplicationController
 
   def omniauth
     @session = Session.find_or_create_from_auth_hash(auth_hash)
-    self.current_session = @session
 
     respond_to do |format|
       format.html { redirect_to root_url }
@@ -30,13 +29,12 @@ class SessionsController < ApplicationController
     respond_to do |format|
       if @session.sign_in(session_params)
         if @session.sign_in_completed?
-          self.current_session = @session
 
           format.html { redirect_to root_url }
           format.json { render :show, status: :created, location: @session }
         else
-          format.html { render :new, status: :ok }
-          format.json { render :show, status: :ok }
+          format.html { render :new, status: :accepted }
+          format.json { render :show, status: :accepted }
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -49,7 +47,6 @@ class SessionsController < ApplicationController
   # POST /sign_out
   def destroy
     @session.sign_out
-    self.current_session = nil
 
     respond_to do |format|
       format.html { redirect_to root_url }
@@ -71,8 +68,12 @@ class SessionsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def session_params
-    params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
-                                     :recovery_codes_challenge, :remember_me, :switch_to)
+    if auth_hash.present?
+      auth_hash
+    else
+      params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
+                                       :recovery_codes_challenge, :remember_me, :switch_to)
+    end
   end
 
   def auth_hash
