@@ -94,9 +94,9 @@ class Session < ApplicationRecord
       end
     end
 
-    def identify(*args)
+    def identify(*args, **opts)
       build_user do |user|
-        user.identify(*args)
+        user.identify(*args, **opts)
       end
     end
 

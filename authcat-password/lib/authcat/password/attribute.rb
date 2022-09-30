@@ -3,48 +3,87 @@
 module Authcat
   module Password
     class Attribute
-      attr_reader :engine
+      attr_reader :model, :attribute_name, :options
 
-      def initialize(klass, attribute_name, engine: Password.default_engine, array: false, **opts)
-        @klass = klass
-        @attribute_name = attribute_name
-        @array = array
-        extend SupportArray if @array
-        @engine = engine.is_a?(Module) ? engine : Engines.resolve(engine)
-        @opts = opts
+      class << self
+        attr_accessor :default_algorithm
       end
+      self.default_algorithm = :bcrypt
 
-      def array?
-        @array
+      def initialize(model, attribute_name, algorithm: self.class.default_algorithm, **options)
+        @model = model
+        @attribute_name = attribute_name
+        @options = options
+
+        @algorithm = algorithm.is_a?(Module) ? algorithm : Algorithms.resolve(algorithm)
+
+        extend Array if options[:array]
       end
 
       def valid?(ciphertext)
-        @engine.valid?(ciphertext, **@opts)
+        @algorithm.valid?(ciphertext, **@options)
       end
 
       def new(ciphertext)
-        @engine.new(ciphertext, **@opts)
+        @algorithm.new(ciphertext, **@options)
       end
 
       def create(*args)
-        @engine.create(*args, **@opts)
+        @algorithm.create(*args, **@options)
       end
 
       def verify(plaintext, ciphertext)
-        @engine.verify(plaintext, ciphertext)
+        !plaintext.nil? && !ciphertext.nil? && ciphertext.verify(plaintext)
       end
 
-      def to_type
-        Type.new(attribute: self)
+      def load(value)
+        new(value) if valid?(value)
       end
 
-      module SupportArray
-        def create(passwords = [], *args)
-          Array(passwords).map { |pwd| super(pwd, *args) }
+      def dump(value)
+        return if value.nil?
+
+        (load(value) || create(value)).to_s
+      end
+
+      def setup!
+        define_attribute!
+        define_class_methods!
+        define_instance_methods!
+        self
+      end
+
+      private
+
+      def define_attribute!
+        model.attribute attribute_name, @attribute_options do |cast_type|
+          ActiveRecord::Type::Serialized.new(cast_type, self)
         end
+      end
 
-        def verify(plaintext, ciphertext)
-          Array(ciphertext).any? { |pwd| super(plaintext, pwd) }
+      def define_instance_methods!
+        define_verifier!
+      end
+
+      def define_class_methods!
+        define_class_getter!
+      end
+
+      def define_verifier!
+        model.define_model_callbacks :"verify_#{attribute_name}"
+        model.class_eval <<~RUBY, __FILE__, __LINE__ + 1
+          def verify_#{attribute_name}(value)
+            run_callbacks(:verify_#{attribute_name}) do
+              #{attribute_name}? && self.class.#{attribute_name}.verify(value, #{attribute_name})
+            end
+          end
+        RUBY
+      end
+
+      def define_class_getter!
+        attribute = self
+        model.define_singleton_method(attribute_name) do
+          attribute
         end
       end
     end

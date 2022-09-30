@@ -20,10 +20,9 @@ module Authcat
     # @return [void]
     def self.included(base)
       base.include OneTimePassword,
-                   RecoveryCodes,
                    WebAuthn
     end
 
-    Password::Engines.register(:totp) { Engines::TOTP }
+    Password::Algorithms.register(:totp) { Algorithms::TOTP }
   end
 end

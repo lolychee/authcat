@@ -5,7 +5,7 @@ require "forwardable"
 
 module Authcat
   module Password
-    module Engines
+    module Algorithms
       class << self
         extend Forwardable
 

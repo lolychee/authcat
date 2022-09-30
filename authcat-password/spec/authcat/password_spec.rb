@@ -5,6 +5,10 @@ RSpec.describe Authcat::Password do
 
   before { User.has_password }
 
+  it "eager loads all files" do
+    expect { Zeitwerk::Loader.eager_load_all }.not_to raise_error
+  end
+
   # after { Object.send :remove_const, :User }
 
   it "does something useful" do
@@ -14,7 +18,5 @@ RSpec.describe Authcat::Password do
     expect(user.password).to eq password
     expect(user.password).to be_a ::BCrypt::Password
     expect(user.password?).to eq true
-
-    binding.irb
   end
 end

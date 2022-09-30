@@ -5,19 +5,19 @@ require "rotp"
 
 module Authcat
   module MFA
-    module Engines
+    module Algorithms
       module TOTP
         module_function
 
         def create(*args, **opts)
-          new(::ROTP::Base32.random(*args), **opts)
+          new(::ROTP::Base32.random, **opts)
         end
 
         def new(ciphertext, **opts)
           Value.new(ciphertext.to_s, **opts)
         end
 
-        def valid?(ciphertext)
+        def valid?(ciphertext, **opts)
           !ciphertext.nil? && ::ROTP::Base32.decode(ciphertext.to_s) && true
         rescue ::ROTP::Base32::Base32Error
           false

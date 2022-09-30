@@ -1,7 +1,5 @@
-GIT
-  remote: https://github.com/lolychee/authcat.git
-  revision: 035aa5ff4c5bd2bd91a34a3e1fbbe6cf69f8abad
-  branch: main
+PATH
+  remote: ..
   specs:
     authcat-account (0.1.0)
       authcat-identity (~> 0.1.0)

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post :sign_out, to: "sessions#destroy", as: :sign_out
   match "/auth/:provider/callback", to: "sessions#omniauth", via: %i[get post]
 
-  resources :users
+  resources :users, only: %i[index show new create]
   get  :sign_up,  to: "users#new", as: :sign_up
   post :sign_up,  to: "users#create"
 

@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   has_password
   has_one_time_password
-  has_recovery_codes
+  has_one_time_password :recovery_codes, algorithm: :bcrypt, array: true, burn_after_verify: true
 
   concerning :SignUp do
     included do

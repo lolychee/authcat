@@ -10,14 +10,8 @@ class User < ActiveRecord::Base
 
   has_one_time_password
 
-  has_one_time_password :recovery_code, engine: :bcrypt
-  has_one_time_password :recovery_codes, array: true, engine: :bcrypt, after_verify: lambda {
-                                                                                       update_column(:recovery_codes, recovery_codes.select do |code|
-                                                                                                                        !code.last_verified?
-                                                                                                                      end)
-                                                                                     }
-
-  # has_recovery_codes
+  has_one_time_password :recovery_code, algorithm: :bcrypt
+  has_one_time_password :recovery_codes, array: true, algorithm: :bcrypt
 
   has_webauthn
 end

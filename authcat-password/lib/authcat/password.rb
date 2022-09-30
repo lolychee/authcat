@@ -32,71 +32,14 @@ module Authcat
       end
     end
 
-    self.default_engine = :bcrypt
     module ClassMethods
       # @param Attribute [Symbol, String]
       # @param suffix [Symbol, String]
       # @param column_name [Symbol, String]
       # @param validate [Boolean]
       # @return [Symbol]
-      def has_password(
-        attribute = :password,
-        validate: true,
-        **opts
-      )
-        cast_type = Attribute.new(self, attribute, **opts).to_type
-
-        attribute attribute, cast_type
-
-        if validate
-          include ActiveModel::Validations
-
-          validates_presence_of attribute, allow_nil: true
-
-          validates_confirmation_of attribute, allow_nil: true
-        end
-
-        define_model_callbacks :"verify_#{attribute}"
-
-        _password_singleton_module.module_eval do
-          define_method(attribute) do
-            type_for_attribute(attribute)&.attribute
-          end
-        end
-
-        _password_instance_module.module_eval do
-          define_method("verify_#{attribute}") do |plaintext|
-            run_callbacks(:"verify_#{attribute}") do
-              send("#{attribute}?") && value = send(attribute)
-              if value.respond_to?(:any?)
-                value.any? { |v| v.verify(plaintext) }
-              else
-                value.verify(plaintext)
-              end
-            end
-          end
-        end
-
-        self.password_attributes ||= Set.new
-        self.password_attributes |= [attribute.to_s]
-
-        attribute.to_sym
-      end
-
-      def _password_singleton_module # :nodoc:
-        @_password_singleton_module ||= begin
-          mod = Module.new
-          extend mod
-          mod
-        end
-      end
-
-      def _password_instance_module # :nodoc:
-        @_password_instance_module ||= begin
-          mod = Module.new
-          include mod
-          mod
-        end
+      def has_password(attribute = :password, **opts, &block)
+        Attribute.new(self, attribute, **opts, &block).setup!
       end
     end
   end

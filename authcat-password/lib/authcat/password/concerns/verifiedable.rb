@@ -9,16 +9,16 @@ module Authcat
         !@last_verified_at.nil?
       end
 
+      def last_verified=(value)
+        @last_verified_at = value ? Time.now : nil
+      end
+
       def ==(*)
-        super.tap do |verified|
-          @last_verified_at = verified ? Time.now : nil
-        end
+        super.tap {|verified| self.last_verified = verified }
       end
 
       def verify(*)
-        super.tap do |verified|
-          @last_verified_at = verified ? Time.now : nil
-        end
+        super.tap {|verified| self.last_verified = verified }
       end
     end
   end

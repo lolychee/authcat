@@ -5,7 +5,7 @@ require "bcrypt"
 
 module Authcat
   module Password
-    module Engines
+    module Algorithms
       module BCrypt
         module_function
 
@@ -31,7 +31,7 @@ module Authcat
         # @param plaintext [#to_s]
         # @param ciphertext [#to_s]
         # @return [Boolean]
-        def verify(plaintext, ciphertext)
+        def verify(plaintext, ciphertext, &block)
           Password.secure_compare(::BCrypt::Engine.hash_secret(plaintext, new(ciphertext).salt), ciphertext)
         end
 
@@ -39,7 +39,7 @@ module Authcat
           prepend Verifiedable
 
           def verify(plaintext, **_opts)
-            self == plaintext
+            Algorithms::BCrypt.verify(plaintext, to_s)
           end
         end
       end
