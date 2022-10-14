@@ -14,11 +14,11 @@ module Authcat
       end
 
       def ==(*)
-        super.tap {|verified| self.last_verified = verified }
+        super.tap { |verified| self.last_verified = verified }
       end
 
       def verify(*)
-        super.tap {|verified| self.last_verified = verified }
+        super.tap { |verified| self.last_verified = verified }
       end
     end
   end

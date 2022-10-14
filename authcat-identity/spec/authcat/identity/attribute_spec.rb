@@ -8,7 +8,7 @@ RSpec.describe Authcat::Identity::Attribute do
   end
 
   describe "#identify" do
-    subject { described_class.new(User, :email, type: :email) }
+    subject { described_class.new(User, :email, format: :email) }
 
     it "returns the value of the attribute" do
       user = User.create(email: "test@email.com", phone_number: "123456789")

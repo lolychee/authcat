@@ -21,9 +21,15 @@ class User < ApplicationRecord
       define_model_callbacks :sign_up
     end
 
-    def sign_up(attributes = {})
-      assign_attributes(attributes)
-      valid?(:sign_up) && run_callbacks(:sign_up) { save }
+    def sign_up(attributes = {}, &block)
+      with_transaction_returning_status do
+        assign_attributes(attributes)
+        valid?(:sign_up) && run_callbacks(:sign_up) { _sign_up(&block) }
+      end
+    end
+
+    def _sign_up(**)
+      save
     end
   end
 
@@ -32,9 +38,15 @@ class User < ApplicationRecord
       define_model_callbacks :update_profile
     end
 
-    def update_profile(attributes = {})
-      assign_attributes(attributes)
-      valid?(:update_profile) && run_callbacks(:update_profile) { save }
+    def update_profile(attributes = {}, &block)
+      with_transaction_returning_status do
+        assign_attributes(attributes)
+        valid?(:update_profile) && run_callbacks(:update_profile) { _update_profile(&block) }
+      end
+    end
+
+    def _update_profile(**)
+      save
     end
   end
 

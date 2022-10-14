@@ -31,7 +31,7 @@ module Authcat
         # @param plaintext [#to_s]
         # @param ciphertext [#to_s]
         # @return [Boolean]
-        def verify(plaintext, ciphertext, &block)
+        def verify(plaintext, ciphertext)
           Password.secure_compare(::BCrypt::Engine.hash_secret(plaintext, new(ciphertext).salt), ciphertext)
         end
 

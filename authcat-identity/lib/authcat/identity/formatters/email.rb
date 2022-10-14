@@ -5,7 +5,7 @@ require "valid_email2"
 
 module Authcat
   module Identity
-    module Identifiers
+    module Formatters
       module Email
         module_function
 

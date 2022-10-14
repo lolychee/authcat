@@ -79,10 +79,6 @@ class Session < ApplicationRecord
         event :submit do
           transition from: any - [:completed], to: same
         end
-
-        after_transition to: :completed do |record, _transition|
-          record.run_callbacks(:sign_in) { record.save }
-        end
       end
     end
 
@@ -124,10 +120,14 @@ class Session < ApplicationRecord
       :one_time_password if user.one_time_password?
     end
 
-    def sign_in(attributes = {})
+    def sign_in(attributes = {}, &block)
       assign_attributes(attributes)
 
-      submit_sign_in
+      submit_sign_in && sign_in_completed? && run_callbacks(:sign_in) { _sign_in(&block) }
+    end
+
+    def _sign_in(**)
+      save
     end
   end
 
@@ -137,8 +137,14 @@ class Session < ApplicationRecord
     end
 
     def sign_out(attributes = {})
-      assign_attributes(attributes)
-      run_callbacks(:sign_out) { destroy }
+      with_transaction_returning_status do
+        assign_attributes(attributes)
+        run_callbacks(:sign_out) { _sign_out(&block) }
+      end
+    end
+
+    def _sign_out(**)
+      destroy
     end
   end
 

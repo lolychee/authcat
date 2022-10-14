@@ -31,7 +31,7 @@ RSpec.describe Authcat::MFA::OneTimePassword do
 
     expect do
       expect(user.verify_recovery_codes(passwords.first)).not_to eq false
-      end
+    end
     # end.to change(user, :recovery_codes).to([])
     # expect(user.recovery_codes.first.last_verified?).to eq true
   end

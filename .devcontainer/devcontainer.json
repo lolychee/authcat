@@ -20,12 +20,12 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"eamodio.gitlens",
-		"soutaro.steep-vscode",
+		"shopify.ruby-extensions-pack",
 		"redhat.vscode-yaml",
-		"mutantdino.resourcemonitor",
-		"castwide.solargraph",
-		"castwide.ruby-debug",
-		"kaiwood.endwise"
+		"mutantdino.resourcemonitor"
+		// "castwide.solargraph",
+		// "castwide.ruby-debug",
+		// "kaiwood.endwise"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [

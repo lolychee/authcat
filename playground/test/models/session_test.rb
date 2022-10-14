@@ -21,7 +21,7 @@ class SessionTest < ActiveSupport::TestCase
     session = Session.new(sign_in_step: "email")
 
     assert session.sign_in_step, "email"
-    assert session.sign_in(email: user.email)
+    assert_not session.sign_in(email: user.email)
 
     assert session.sign_in_step, "password"
     assert session.sign_in(password_challenge: "123456")
@@ -36,10 +36,10 @@ class SessionTest < ActiveSupport::TestCase
     session = Session.new(sign_in_step: "email")
 
     assert session.sign_in_step, "email"
-    assert session.sign_in(email: user.email)
+    assert_not session.sign_in(email: user.email)
 
     assert session.sign_in_step, "password"
-    assert session.sign_in(password_challenge: "123456")
+    assert_not session.sign_in(password_challenge: "123456")
 
     assert session.sign_in_step, "one_time_password"
     assert session.sign_in(one_time_password_challenge: user.one_time_password.now)
@@ -54,13 +54,13 @@ class SessionTest < ActiveSupport::TestCase
     session = Session.new(sign_in_step: "email")
 
     assert session.sign_in_step, "email"
-    assert session.sign_in(email: user.email)
+    assert_not session.sign_in(email: user.email)
 
     assert session.sign_in_step, "password"
-    assert session.sign_in(password_challenge: "123456")
+    assert_not session.sign_in(password_challenge: "123456")
 
     assert session.sign_in_step, "one_time_password"
-    assert session.sign_in(switch_to: "recovery_codes")
+    assert_not session.sign_in(switch_to: "recovery_codes")
 
     assert session.sign_in_step, "recoverey_codes"
     assert_difference "session.user.recovery_codes.size", -1 do

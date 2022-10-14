@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Authcat::Identity::Identifiers::PhoneNumber do
+RSpec.describe Authcat::Identity::Formatters::PhoneNumber do
   before do
     Phonelib.default_country = "CN"
   end

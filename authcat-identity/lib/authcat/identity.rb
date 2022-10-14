@@ -21,15 +21,7 @@ module Authcat
       # @param attribute [Symbol, String]
       # @return [Symbol]
       def identifier(attribute, type: :token, **opts)
-        cast_type = Attribute.new(self, attribute, type: type, **opts).to_type
-
-        attribute attribute, cast_type
-
-        generated_identity_class_methods.module_eval do
-          define_method(attribute) do
-            type_for_attribute(attribute)&.attribute
-          end
-        end
+        Attribute.new(self, attribute, **opts).setup!
 
         self.identifier_attributes ||= Set.new
         self.identifier_attributes |= [attribute.to_s]
@@ -93,7 +85,7 @@ module Authcat
         @previously_new_record = false if instance_variable_defined?(:@previously_new_record)
       end
 
-      identity
+      self
     end
   end
 end

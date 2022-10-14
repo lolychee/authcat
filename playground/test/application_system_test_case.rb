@@ -8,5 +8,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     options.args << "--disable-gpu"
     # Sandbox cannot be used inside unprivileged Docker container
     options.args << "--no-sandbox"
+    options.args << "--disable-dev-shm-usage"
   end
 end

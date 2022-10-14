@@ -56,7 +56,7 @@ module Authcat
       private
 
       def define_attribute!
-        model.attribute attribute_name, @attribute_options do |cast_type|
+        model.attribute attribute_name do |cast_type|
           ActiveRecord::Type::Serialized.new(cast_type, self)
         end
       end

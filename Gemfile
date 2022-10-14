@@ -41,3 +41,7 @@ gem "valid_email2", require: false
 gem "webauthn",     require: false
 
 gem "state_machines-activerecord", require: false
+
+group :development do
+  gem "ruby-lsp", "~> 0.3.4"
+end
