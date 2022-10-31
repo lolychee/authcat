@@ -9,7 +9,7 @@ module Authcat
       module TOTP
         module_function
 
-        def create(*args, **opts)
+        def create(*_args, **opts)
           new(::ROTP::Base32.random, **opts)
         end
 
@@ -17,7 +17,7 @@ module Authcat
           Value.new(ciphertext.to_s, **opts)
         end
 
-        def valid?(ciphertext, **opts)
+        def valid?(ciphertext, **_opts)
           !ciphertext.nil? && ::ROTP::Base32.decode(ciphertext.to_s) && true
         rescue ::ROTP::Base32::Base32Error
           false

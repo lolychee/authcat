@@ -2,13 +2,13 @@
 
 require "zeitwerk"
 require "authcat/password"
+require "authcat/webauthn"
 
 loader = Zeitwerk::Loader.new
 loader.tag = File.basename(__FILE__, ".rb")
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.inflector.inflect(
   "mfa" => "MFA",
-  "webauthn" => "WebAuthn",
   "totp" => "TOTP",
   "hotp" => "HOTP"
 )
@@ -20,7 +20,7 @@ module Authcat
     # @return [void]
     def self.included(base)
       base.include OneTimePassword,
-                   WebAuthn
+                   Authcat::WebAuthn
     end
 
     Password::Algorithms.register(:totp) { Algorithms::TOTP }

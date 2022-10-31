@@ -65,6 +65,7 @@ path ".." do
   gem "authcat-identity"
   gem "authcat-mfa"
   gem "authcat-password"
+  gem "authcat-webauthn"
 end
 
 gem "newrelic_rpm", require: ENV.key?("NEW_RELIC_LICENSE_KEY")

@@ -9,7 +9,7 @@ ENV["RACK_ENV"] ||= "test"
 ActiveRecord::Base.configurations = YAML.load_file(File.expand_path("support/database.yml", __dir__), aliases: true)
 ActiveRecord::Base.establish_connection ENV["RACK_ENV"].to_sym
 
-ActiveRecord::Migrator.migrations_paths = [File.expand_path("supports/db/migrate", __dir__)]
+ActiveRecord::Migrator.migrations_paths = [File.expand_path("support/db/migrate", __dir__)]
 ActiveRecord::Migration.maintain_test_schema!
 
 Dir[File.expand_path("support/**/*.rb", __dir__)].sort.each { |f| require f }

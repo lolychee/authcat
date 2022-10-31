@@ -11,10 +11,14 @@ PATH
       zeitwerk (>= 2.4.2)
     authcat-mfa (0.1.0)
       authcat-password (~> 0.1.0)
+      authcat-webauthn (~> 0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
     authcat-password (0.1.0)
       dry-container (>= 0.7.2)
+      zeitwerk (>= 2.4.2)
+    authcat-webauthn (0.1.0)
+      webauthn (>= 2.5.1)
       zeitwerk (>= 2.4.2)
 
 GEM
@@ -335,6 +339,7 @@ DEPENDENCIES
   authcat-identity!
   authcat-mfa!
   authcat-password!
+  authcat-webauthn!
   bcrypt
   blind_index
   bootsnap (>= 1.4.4)
@@ -374,4 +379,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.3.20
+   2.3.23

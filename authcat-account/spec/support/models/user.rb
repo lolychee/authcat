@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_password
   has_one_time_password
 
-  has_recovery_codes
+  has_one_time_password :recovery_codes, array: true, algorithm: :bcrypt
 
   ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 

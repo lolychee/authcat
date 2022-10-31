@@ -12,6 +12,4 @@ class User < ActiveRecord::Base
 
   has_one_time_password :recovery_code, algorithm: :bcrypt
   has_one_time_password :recovery_codes, array: true, algorithm: :bcrypt
-
-  has_webauthn
 end

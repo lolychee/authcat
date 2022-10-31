@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", ">= 2.4.2"
 
   spec.add_dependency "authcat-password", "~> #{version}"
+  spec.add_dependency "authcat-webauthn", "~> #{version}"
 
   spec.metadata["rubygems_mfa_required"] = "true"
 end
