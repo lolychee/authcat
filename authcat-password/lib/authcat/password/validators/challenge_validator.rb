@@ -30,6 +30,8 @@ module Authcat
           klass.attr_writer(*attributes.map do |attribute|
             :"#{attribute}_challenge" unless klass.method_defined?(:"#{attribute}_challenge=")
           end.compact)
+
+          klass.delegate(*attributes, to: options[:delegate]) if options[:delegate]
         end
 
         def challenge_value_equal?(record, attribute, _value, challenge)

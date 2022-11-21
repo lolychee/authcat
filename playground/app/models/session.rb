@@ -10,13 +10,6 @@ class Session < ApplicationRecord
     included do
       validates :user, presence: true, on: :save
 
-      delegate(*%w[
-                 password
-                 one_time_password
-                 recovery_codes
-                 verify_recovery_codes
-               ], to: :user)
-
       attr_accessor :switch_to
 
       define_model_callbacks :sign_in
@@ -33,36 +26,43 @@ class Session < ApplicationRecord
       attribute :phone_number, :string
       validates :phone_number, identify: { only: :phone_number }, on: :phone_number, unless: :user
 
-      validates :password, challenge: true, on: :password
+      attribute :omniauth_hash
+      validates :omniauth_hash, identify: { only: :omniauth_hash }, on: :omniauth_hash, unless: :user
 
-      validates :one_time_password, challenge: true, on: :one_time_password
+      validates :password, challenge: { delegate: :user }, on: :password
 
-      validates :recovery_codes, challenge: true, on: :recovery_codes
+      validates :one_time_password, challenge: { delegate: :user }, on: :one_time_password
+
+      validates :recovery_codes, challenge: { delegate: :user }, on: :recovery_codes
 
       attribute :remember_me, :boolean
 
       attribute :sign_in_step, :string
       state_machine :sign_in_step, namespace: :sign_in, initial: :login, action: nil do
         state :login do
-          transition to: :one_time_password, on: :submit, if: lambda { |record|
+          transition to: :one_time_password, on: :submit, if: ->(record) {
                                                                 record.valid?(:login) && record.primary_tsv_method == :one_time_password
                                                               }
           transition to: :completed, on: :submit, if: ->(record) { record.valid?(:login) }
         end
 
         state :email do
-          transition to: :password, on: :submit, if: lambda { |record|
+          transition to: :password, on: :submit, if: ->(record) {
                                                        record.valid?(:email) && record.primary_osv_method == :password
                                                      }
         end
         state :phone_number do
-          transition to: :password, on: :submit, if: lambda { |record|
+          transition to: :password, on: :submit, if: ->(record) {
                                                        record.valid?(:phone_number) && record.primary_osv_method == :password
                                                      }
         end
 
+        state :omniauth_hash do
+          transition to: :completed, on: :submit, if: ->(record) { record.valid?(:omniauth_hash) }
+        end
+
         state :password do
-          transition to: :one_time_password, on: :submit, if: lambda { |record|
+          transition to: :one_time_password, on: :submit, if: ->(record) {
                                                                 record.valid?(:password) && record.primary_tsv_method == :one_time_password
                                                               }
           transition to: :completed, on: :submit, if: ->(record) { record.valid?(:password) }
@@ -136,7 +136,7 @@ class Session < ApplicationRecord
       define_model_callbacks :sign_out
     end
 
-    def sign_out(attributes = {})
+    def sign_out(attributes = {}, &block)
       with_transaction_returning_status do
         assign_attributes(attributes)
         run_callbacks(:sign_out) { _sign_out(&block) }
@@ -145,22 +145,6 @@ class Session < ApplicationRecord
 
     def _sign_out(**)
       destroy
-    end
-  end
-
-  concerning :OmniAuth do
-    class_methods do
-      def find_or_create_from_auth_hash(auth_hash)
-        user = case auth_hash.provider
-               when "developer"
-                 User.find_or_create_by(email: auth_hash.uid)
-               when "github"
-                 User.find_or_create_by(github_oauth_token: auth_hash.uid) do |u|
-                   u.name = auth_hash.info.nickname
-                 end
-               end
-        create(user: user) if user
-      end
     end
   end
 end

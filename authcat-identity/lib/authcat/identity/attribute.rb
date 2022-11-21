@@ -5,23 +5,39 @@ module Authcat
     class Attribute
       attr_reader :model, :attribute_name, :options
 
-      def initialize(model, attribute_name, format: :token, **options)
+      def initialize(model, attribute_name, format: nil, **options, &block)
         @model = model
         @attribute_name = attribute_name
-        @formater = format.is_a?(Module) ? format : Formatters.resolve(format)
+        @formater = format.is_a?(Module) ? format : Formatters.resolve(format) unless format.nil?
         @options = options
+        @block = block
       end
 
       def identify(value)
-        model.find_by(attribute_name => parse(value))
+        parsed_value = parse(value)
+        if @formater.respond_to?(:identify)
+          @formater.identify(model, parsed_value)
+        elsif @block.respond_to?(:call)
+          @block.call(parsed_value)
+        else
+          model.find_by(attribute_name => parsed_value)
+        end
       end
 
       def parse(value)
-        @formater.parse(value, **options)
+        if @formater.respond_to?(:parse)
+          @formater.parse(value, **options)
+        else
+         value
+        end
       end
 
       def valid?(value)
-        @formater.valid?(value, **options)
+        if @formater.respond_to?(:parse)
+          @formater.valid?(value, **options)
+        else
+          true
+        end
       end
 
       def load(value)

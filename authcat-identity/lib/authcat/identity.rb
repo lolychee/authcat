@@ -20,8 +20,8 @@ module Authcat
     module ClassMethods
       # @param attribute [Symbol, String]
       # @return [Symbol]
-      def identifier(attribute, type: :token, **opts)
-        Attribute.new(self, attribute, **opts).setup!
+      def identifier(attribute, type: :token, **opts, &block)
+        Attribute.new(self, attribute, **opts, &block).setup!
 
         self.identifier_attributes ||= Set.new
         self.identifier_attributes |= [attribute.to_s]

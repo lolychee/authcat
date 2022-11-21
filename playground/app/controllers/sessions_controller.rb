@@ -1,20 +1,11 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  before_action :set_new_session, only: %i[new create]
-  before_action :set_session, only: %i[show update destroy]
+  before_action :set_new_session, only: %i[new create omniauth]
+  before_action :set_session, only: %i[show destroy]
   skip_before_action :verify_authenticity_token, only: :omniauth
   around_action(only: %i[create]) do |_controller, action|
     with_saved_state(@session, unless: :sign_in_completed?, &action)
-  end
-
-  def omniauth
-    @session = Session.find_or_create_from_auth_hash(auth_hash)
-
-    respond_to do |format|
-      format.html { redirect_to root_url }
-      format.json { render :show, status: :created, location: @session }
-    end
   end
 
   # GET /sign_in
@@ -42,6 +33,7 @@ class SessionsController < ApplicationController
       end
     end
   end
+  alias omniauth create
 
   # DELETE /session
   # POST /sign_out
@@ -68,15 +60,12 @@ class SessionsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def session_params
-    if auth_hash.present?
-      auth_hash
+    case action_name
+    when 'omniauth'
+      {sign_in_step: :omniauth_hash, omniauth_hash: request.env["omniauth.auth"], remember_me: true}
     else
       params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
                                        :recovery_codes_challenge, :remember_me, :switch_to)
     end
-  end
-
-  def auth_hash
-    request.env["omniauth.auth"]
   end
 end

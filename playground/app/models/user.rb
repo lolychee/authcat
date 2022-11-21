@@ -5,12 +5,25 @@ class User < ApplicationRecord
 
   has_many :sessions, dependent: :delete_all
 
+  has_many_webauthn_credentials
+
   ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 
-  identifier :email, type: :email
-  identifier :phone_number, type: :phone_number
-  # identifier :github_oauth_token, type: :token
-  # identifier :google_oauth_token, type: :token
+  identifier :email, format: :email
+  identifier :phone_number, format: :phone_number
+  # identifier :github_oauth_token, format: :token
+  # identifier :google_oauth_token, format: :token
+
+  identifier :omniauth_hash do |auth_hash|
+    case auth_hash.provider
+    when "developer"
+      User.email.identify(auth_hash.uid)
+    when "github"
+      User.find_or_create_by(github_oauth_token: auth_hash.uid) do |u|
+        u.name = auth_hash.info.nickname
+      end
+    end
+  end
 
   has_password
   has_one_time_password

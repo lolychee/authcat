@@ -3,26 +3,29 @@
 module Authentication
   extend ActiveSupport::Concern
 
-  included do |base|
-    base.helper_method :current_user
+  included do |controller|
+    controller.around_action :authenticate_session
+    controller.helper_method :current_user
   end
 
-  def current_session
-    return @current_session if defined?(@current_session)
+  def authenticate_session
+    Current.session = Session.find_signed(cookies[:access_token], purpose: :access_token)
 
-    @current_session = Session.find_signed(cookies[:access_token], purpose: :access_token)
-  end
+    yield
 
-  def current_session=(session)
-    if session.nil?
+    if Current.session.nil? || Current.session.destroyed?
       cookies.delete(:access_token)
-    else
-      (session.remember_me ? cookies.permanent : cookies)[:access_token] = session.signed_id(purpose: :access_token)
+    elsif Current.session.persisted? && Current.session.previously_new_record?
+      (Current.session.remember_me ? cookies.permanent : cookies)[:access_token] = Current.session.signed_id(purpose: :access_token)
     end
   end
 
   def current_user
     Current.user
+  end
+
+  def current_session
+    Current.session
   end
 
   def authenticate_user!

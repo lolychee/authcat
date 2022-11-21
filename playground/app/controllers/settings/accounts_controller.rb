@@ -5,7 +5,7 @@ module Settings
     def show; end
 
     def update
-      if @user.update_account(account_params)
+      if @user.update_profile(account_params)
         render action: :show, status: :ok
       else
         render action: :show, status: :unprocessable_entity
