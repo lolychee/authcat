@@ -12,6 +12,8 @@ loader.inflector.inflect(
 loader.push_dir("#{__dir__}/..")
 loader.setup
 
+require 'authcat/webauthn/railtie' if defined?(Rails::Railtie)
+
 module Authcat
   module WebAuthn
     def self.included(base)
@@ -21,7 +23,7 @@ module Authcat
     module ClassMethods
       def has_many_webauthn_credentials
         attribute :webauthn_user_id, default: -> { ::WebAuthn.generate_user_id }
-        has_many :webauthn_credentials, class_name: "::Authcat::WebAuthn::Credential", as: :identity do
+        has_many :webauthn_credentials, class_name: "#{self.name}WebAuthnCredential" do
           def options_for_create
             identity = @association.owner
             user_info = {
