@@ -40,7 +40,12 @@ module Authcat
           if record.respond_to?("verify_#{attribute}")
             record.public_send("verify_#{attribute}", challenge)
           else
-            record.send(attribute) == challenge
+            value = record.send(attribute)
+            if value.respond_to?(:verify)
+              value.verify(challenge)
+            else
+              value == challenge
+            end
           end
         end
       end

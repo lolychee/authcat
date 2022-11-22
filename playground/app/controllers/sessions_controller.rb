@@ -11,38 +11,34 @@ class SessionsController < ApplicationController
   # GET /sign_in
   def new; end
 
-  # GET /session
   def show; end
 
   # POST /sign_in
-  # POST /session
-  def create
+  def create(params = nil)
     respond_to do |format|
-      if @session.sign_in(session_params)
+      if @session.sign_in(params || session_params)
         if @session.sign_in_completed?
 
           format.html { redirect_to root_url }
-          format.json { render :show, status: :created, location: @session }
         else
           format.html { render :new, status: :accepted }
-          format.json { render :show, status: :accepted }
         end
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @session.errors, status: :unprocessable_entity }
       end
     end
   end
-  alias omniauth create
 
-  # DELETE /session
+  def omniauth
+    create({ sign_in_step: :omniauth_hash, omniauth_hash: request.env["omniauth.auth"], remember_me: true })
+  end
+
   # POST /sign_out
   def destroy
     @session.sign_out
 
     respond_to do |format|
       format.html { redirect_to root_url }
-      format.json { head :no_content }
     end
   end
 
@@ -60,12 +56,7 @@ class SessionsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def session_params
-    case action_name
-    when 'omniauth'
-      {sign_in_step: :omniauth_hash, omniauth_hash: request.env["omniauth.auth"], remember_me: true}
-    else
-      params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
-                                       :recovery_codes_challenge, :remember_me, :switch_to)
-    end
+    params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
+                                     :recovery_codes_challenge, :remember_me, :switch_to)
   end
 end

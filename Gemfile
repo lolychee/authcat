@@ -25,7 +25,6 @@ group :doc do
   gem "rdoc"
 end
 
-gem "activerecord", "~> 6.1"
 gem "rails", "~> 6.1"
 
 gem "database_cleaner", "~> 2.0"
@@ -44,5 +43,7 @@ gem "webauthn",     require: false
 gem "state_machines-activerecord", require: false
 
 group :development do
+  gem "debug"
+  gem "listen", "~> 3.3"
   gem "ruby-lsp", "~> 0.3.4"
 end

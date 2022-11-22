@@ -38,6 +38,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "debug"
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem "web-console", ">= 4.1.0"
   # Display performance information such as SQL time and flame graphs for each request in your browser.
@@ -83,8 +84,8 @@ gem "webauthn"
 
 gem "omniauth", "~> 2.0"
 gem "omniauth-github"
-gem "omniauth-twitter"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem "omniauth-twitter"
 
 gem "tailwindcss-rails"

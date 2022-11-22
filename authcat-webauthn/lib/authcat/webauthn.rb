@@ -12,7 +12,12 @@ loader.inflector.inflect(
 loader.push_dir("#{__dir__}/..")
 loader.setup
 
-require 'authcat/webauthn/railtie' if defined?(Rails::Railtie)
+begin
+  require "rails/railtie"
+rescue LoadError
+else
+  require "authcat/webauthn/railtie"
+end
 
 module Authcat
   module WebAuthn
@@ -23,36 +28,33 @@ module Authcat
     module ClassMethods
       def has_many_webauthn_credentials
         attribute :webauthn_user_id, default: -> { ::WebAuthn.generate_user_id }
-        has_many :webauthn_credentials, class_name: "#{self.name}WebAuthnCredential" do
+        has_many :webauthn_credentials, class_name: "#{name}WebAuthnCredential" do
           def options_for_create
             identity = @association.owner
             user_info = {
               id: identity.webauthn_user_id,
               name: identity.name
             }
-            options = ::WebAuthn::Credential.options_for_create(
+            ::WebAuthn::Credential.options_for_create(
               user: user_info,
-              exclude: identity.webauthn_credential_ids
+              exclude: pluck(:webauthn_id)
             )
-            options.extend ChallengeSaver.new(identity, :webauthn_challenge)
-            options
           end
 
           def options_for_get
-            identity = @association.owner
-            options = ::WebAuthn::Credential.options_for_get(allow: identity.webauthn_credential_ids)
-            options.extend ChallengeSaver.new(identity, :webauthn_challenge)
-            options
+            ::WebAuthn::Credential.options_for_get(allow: pluck(:webauthn_id))
           end
-        end
-      end
-    end
 
-    class ChallengeSaver < Module
-      def initialize(identity, column_name)
-        define_method(:challenge) do
-          super().tap do |challenge|
-            identity.update(column_name => challenge)
+          def verify(credential)
+            credential = JSON.parse(credential) if credential.is_a?(String)
+            case credential
+            when Hash
+              record = find(credential["id"])
+              credential = ::WebAuthn::Credential.from_get(credential)
+              record.verify(credential: credential)
+            else
+              false
+            end
           end
         end
       end

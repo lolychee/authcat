@@ -10,6 +10,7 @@ PATH
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
     authcat-mfa (0.1.0)
+      authcat-identity (~> 0.1.0)
       authcat-password (~> 0.1.0)
       authcat-webauthn (~> 0.1.0)
       dry-container (>= 0.7.2)
@@ -114,6 +115,9 @@ GEM
       cbor (~> 0.5.9)
       openssl-signature_algorithm (~> 1.0)
     crass (1.0.6)
+    debug (1.7.0)
+      irb (>= 1.5.0)
+      reline (>= 0.3.1)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -137,7 +141,10 @@ GEM
     hashie (5.0.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
+    io-console (0.6.0)
     ipaddr (1.2.4)
+    irb (1.6.2)
+      reline (>= 0.3.0)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -155,11 +162,15 @@ GEM
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.0)
     minitest (5.16.2)
     msgpack (1.5.3)
     multi_xml (0.6.0)
     newrelic_rpm (8.8.0)
     nio4r (2.5.8)
+    nokogiri (1.13.6)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.13.6-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.6-x86_64-linux)
@@ -249,6 +260,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.5.0)
+    reline (0.3.2)
+      io-console (~> 0.5)
     rexml (3.2.5)
     rotp (6.2.0)
     ruby2_keywords (0.0.5)
@@ -297,6 +310,8 @@ GEM
     state_machines-activerecord (0.8.0)
       activerecord (>= 5.1)
       state_machines-activemodel (>= 0.8.0)
+    tailwindcss-rails (2.0.10)
+      railties (>= 6.0.0)
     tailwindcss-rails (2.0.10-x86_64-darwin)
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.10-x86_64-linux)
@@ -346,6 +361,7 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
+  ruby
   x86_64-darwin-20
   x86_64-linux
 
@@ -360,6 +376,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
+  debug
   dotenv-rails
   jbuilder (~> 2.7)
   listen (~> 3.3)
@@ -396,4 +413,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   2.3.25
+   2.3.26

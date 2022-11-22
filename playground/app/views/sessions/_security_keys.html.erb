@@ -1,0 +1,28 @@
+<div class="rounded-md shadow-sm -space-y-px">
+  <div>
+    <%= form.label :webauthn_credential, "Security Key", class: "sr-only" %>
+    <%= form.hidden_field :webauthn_options_json, value: form.object.user.webauthn_credentials.options_for_get.to_json %>
+    <%= form.hidden_field :webauthn_credential_json %>
+  </div>
+</div>
+
+<div>
+  <%= form.button "Use Secrity Key", type: :button, onclick: <<~JS, class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      var f = this.form;
+      console.log(f.elements["session[webauthn_options_json]"].value);
+      WebAuthnJSON.get({ "publicKey": JSON.parse(f.elements["session[webauthn_options_json]"].value) }).then(function(credential) {
+        f.elements["session[webauthn_credential_json]"].value = JSON.stringify(credential);
+        f.submit();
+      }).catch(function(error) {
+        console.log(error);
+      });
+
+      console.log("Verify public key credential...");
+    JS
+
+</div>
+
+<% content_for(:bottom) do %>
+  <%= button_to "Use one time password", sign_in_path, params: { session: { switch_to: :one_time_password }}  %>
+  <%= button_to "Use recovery code", sign_in_path, params: { session: { switch_to: :recovery_codes }}  %>
+<% end %>

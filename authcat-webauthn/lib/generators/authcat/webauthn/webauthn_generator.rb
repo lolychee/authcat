@@ -1,19 +1,24 @@
 require "rails/generators/active_record"
+require "active_support"
+
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.acronym "WebAuthn"
+end
 
 class Authcat::WebauthnGenerator < ActiveRecord::Generators::Base
-  source_root File.expand_path('templates', __dir__)
+  source_root File.expand_path("templates", __dir__)
 
   argument :attributes, type: :array, default: [], banner: "field[:type][:index] field[:type][:index]"
 
-  class_option :migration, type: :boolean
-  class_option :timestamps, type: :boolean
+  class_option :migration, type: :boolean, default: true
+  class_option :timestamps, type: :boolean, default: true
   class_option :parent, type: :string, default: "ApplicationRecord", desc: "The parent class for the generated model"
   class_option :indexes, type: :boolean, default: true, desc: "Add indexes for references and belongs_to columns"
   class_option :primary_key_type, type: :string, desc: "The type for primary key"
-  class_option :database, type: :string, aliases: %i(--db), desc: "The database for your model's migration. By default, the current environment's primary database is used."
+  class_option :database, type: :string, aliases: %i[--db],
+                          desc: "The database for your model's migration. By default, the current environment's primary database is used."
 
   def create_migration_file
-    binding.irb
     # return if skip_migration_creation?
     # attributes.each { |a| a.attr_options.delete(:index) if a.reference? && !a.has_index? } if options[:indexes] == false
     migration_template "create_table_migration.rb", File.join(db_migrate_path, "create_#{table_name}.rb")
@@ -21,6 +26,11 @@ class Authcat::WebauthnGenerator < ActiveRecord::Generators::Base
 
   def create_model_file
     generate_abstract_class if database && !custom_parent?
+
+    generate "migration AddWebAuthnColumnsTo#{identity_name} webauthn_user_id:string webauthn_challenge:string"
+    inject_into_file "app/models/#{identity_singular_name}.rb", "  has_many_webauthn_credentials\n",
+                     after: /class #{identity_name}.*\n/
+
     template "model.rb", File.join("app/models", class_path, "#{file_name}.rb")
   end
 
@@ -39,10 +49,10 @@ class Authcat::WebauthnGenerator < ActiveRecord::Generators::Base
   def parse_attributes!
     self.attributes = [
       Rails::Generators::GeneratedAttribute.parse("#{identity_singular_name}:belongs_to"),
-      Rails::Generators::GeneratedAttribute.new("webauthn_id", "string", false, {null: false}),
-      Rails::Generators::GeneratedAttribute.new("name", "string", false, {null: false}),
-      Rails::Generators::GeneratedAttribute.new("public_key", "string", false, {null: false}),
-      Rails::Generators::GeneratedAttribute.new("sign_count", "integer", false, {null: false}),
+      Rails::Generators::GeneratedAttribute.new("webauthn_id", "string", false, { null: false }),
+      Rails::Generators::GeneratedAttribute.new("name", "string", false, { null: false }),
+      Rails::Generators::GeneratedAttribute.new("public_key", "string", false, { null: false }),
+      Rails::Generators::GeneratedAttribute.new("sign_count", "integer", false, { null: false })
     ] + super
   end
 
@@ -50,7 +60,7 @@ class Authcat::WebauthnGenerator < ActiveRecord::Generators::Base
     attributes.select { |a| !a.reference? && a.has_index? }
   end
 
-# Used by the migration template to determine the parent name of the model
+  # Used by the migration template to determine the parent name of the model
   def parent_class_name
     if custom_parent?
       parent

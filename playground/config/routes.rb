@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resource :password
     resource :security
     resource :one_time_password
+    resources :webauthn_credentials
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -9,8 +9,7 @@ DatabaseTasks.env = ENV["RACK_ENV"] || "development"
 DatabaseTasks.root = File.expand_path(".", __dir__)
 DatabaseTasks.db_dir = File.expand_path("spec/support/db", __dir__)
 DatabaseTasks.migrations_paths = [
-  File.expand_path("spec/support/db/migrate", __dir__),
-  File.expand_path("db/migrate", __dir__)
+  File.expand_path("spec/support/db/migrate", __dir__)
 ]
 DatabaseTasks.database_configuration = YAML.load_file(File.expand_path("spec/support/database.yml", __dir__),
                                                       aliases: true)
@@ -21,6 +20,7 @@ task :environment do
   ActiveRecord::Base.establish_connection DatabaseTasks.env.to_sym
 end
 load "active_record/railties/databases.rake"
+require "authcat/webauthn"
 
 RSpec::Core::RakeTask.new(:spec)
 

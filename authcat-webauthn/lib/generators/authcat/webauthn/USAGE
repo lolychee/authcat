@@ -2,7 +2,8 @@ Description:
     Explain the generator
 
 Example:
-    bin/rails generate authcat:webauthn Thing
+    bin/rails generate authcat:webauthn User
 
     This will create:
-        what/will/it/create
+        db/migrate/20221122100916_create_user_webauthn_credentials.rb
+        app/models/user_webauthn_credential.rb

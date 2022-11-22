@@ -34,25 +34,26 @@ class Session < ApplicationRecord
       validates :one_time_password, challenge: { delegate: :user }, on: :one_time_password
 
       validates :recovery_codes, challenge: { delegate: :user }, on: :recovery_codes
+      validates :webauthn_credentials, challenge: { delegate: :user }, on: :security_keys
 
       attribute :remember_me, :boolean
 
       attribute :sign_in_step, :string
       state_machine :sign_in_step, namespace: :sign_in, initial: :login, action: nil do
         state :login do
-          transition to: :one_time_password, on: :submit, if: ->(record) {
+          transition to: :one_time_password, on: :submit, if: lambda { |record|
                                                                 record.valid?(:login) && record.primary_tsv_method == :one_time_password
                                                               }
           transition to: :completed, on: :submit, if: ->(record) { record.valid?(:login) }
         end
 
         state :email do
-          transition to: :password, on: :submit, if: ->(record) {
+          transition to: :password, on: :submit, if: lambda { |record|
                                                        record.valid?(:email) && record.primary_osv_method == :password
                                                      }
         end
         state :phone_number do
-          transition to: :password, on: :submit, if: ->(record) {
+          transition to: :password, on: :submit, if: lambda { |record|
                                                        record.valid?(:phone_number) && record.primary_osv_method == :password
                                                      }
         end
@@ -62,18 +63,25 @@ class Session < ApplicationRecord
         end
 
         state :password do
-          transition to: :one_time_password, on: :submit, if: ->(record) {
+          transition to: :one_time_password, on: :submit, if: lambda { |record|
                                                                 record.valid?(:password) && record.primary_tsv_method == :one_time_password
                                                               }
           transition to: :completed, on: :submit, if: ->(record) { record.valid?(:password) }
         end
         state :one_time_password do
           transition to: :recovery_codes, on: :submit, if: ->(record) { record.switch_to == "recovery_codes" }
+          transition to: :security_keys, on: :submit, if: ->(record) { record.switch_to == "security_keys" }
           transition to: :completed, on: :submit, if: ->(record) { record.valid?(:one_time_password) }
         end
         state :recovery_codes do
           transition to: :one_time_password, on: :submit, if: ->(record) { record.switch_to == "one_time_password" }
+          transition to: :security_keys, on: :submit, if: ->(record) { record.switch_to == "security_keys" }
           transition to: :completed, on: :submit, if: ->(record) { record.valid?(:recovery_codes) }
+        end
+        state :security_keys do
+          transition to: :one_time_password, on: :submit, if: ->(record) { record.switch_to == "one_time_password" }
+          transition to: :recovery_codes, on: :submit, if: ->(record) { record.switch_to == "recovery_codes" }
+          transition to: :completed, on: :submit, if: ->(record) { record.valid?(:security_keys) }
         end
 
         event :submit do

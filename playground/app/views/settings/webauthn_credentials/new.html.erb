@@ -1,0 +1,42 @@
+<%= form_with(model: @webauthn_credential, scope: :webauthn_credential, url: settings_webauthn_credentials_url) do |form| %>
+
+  <% if @webauthn_credential.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@webauthn_credential.errors.count, "error") %> prohibited this webauthn_credential from being saved:</h2>
+
+      <ul>
+        <% @webauthn_credential.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+      <div>
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Add Security Keys</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          This information will be displayed publicly so be careful what you share.
+        </p>
+      </div>
+      <%= render "form", form: form %>
+    </div>
+    <div class="px-4 py-3 bg-gray-50 text-left sm:px-6 space-x-4">
+      <%= form.button "Add", type: :button, onclick: <<~JS, class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        var f = this.form;
+        console.log(f.elements["webauthn_credential[options_json]"].value);
+        WebAuthnJSON.create({ "publicKey": JSON.parse(f.elements["webauthn_credential[options_json]"].value) }).then(function(credential) {
+          f.elements["webauthn_credential[credential_json]"].value = JSON.stringify(credential);
+          f.submit();
+        }).catch(function(error) {
+          console.log(error);
+        });
+
+        console.log("Creating new public key credential...");
+      JS
+    </div>
+  </div>
+
+<% end %>
+<% console %>
