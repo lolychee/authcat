@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.summary       = "Write a short summary, because RubyGems requires one."
   spec.description   = "Write a longer description or delete this line."
   spec.homepage      = "https://github.com/lolychee/authcat"
-  spec.license       = "BSD"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.license       = "MIT"
+  spec.required_ruby_version = ">= 2.7.0"
 
   spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
