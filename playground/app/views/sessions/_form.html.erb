@@ -30,10 +30,10 @@
     <% end %>
 
     <div class="grid">
-      <%= button_to "developer", '/auth/developer' %>
-      <%= button_to "github", '/auth/github' %>
-      <%= button_to "google", '/auth/google_oauth2' %>
-      <%= button_to "twitter", '/auth/twitter' %>
+      <%= button_to "developer", sign_in_idp_path(provider: :developer) %>
+      <%= button_to "github", sign_in_idp_path(provider: :github) %>
+      <%= button_to "google", sign_in_idp_path(provider: :google_oauth2) %>
+      <%= button_to "twitter", sign_in_idp_path(provider: :twitter) %>
     </div>
 
     <%= yield :bottom %>

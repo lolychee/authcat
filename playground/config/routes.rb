@@ -3,15 +3,21 @@
 Rails.application.routes.draw do
   root to: "home#index"
 
-  resource :session, only: %i[show create destroy]
-  get  :sign_in,  to: "sessions#new", as: :sign_in
-  post :sign_in,  to: "sessions#create"
-  post :sign_out, to: "sessions#destroy", as: :sign_out
-  match "/auth/:provider/callback", to: "sessions#omniauth", via: %i[get post]
+  scope :sign_in, as: :sign_in do
+    get  :/, to: "sessions#new"
+    post :/, to: "sessions#create"
 
-  resources :users, only: %i[index show new create]
-  get  :sign_up,  to: "users#new", as: :sign_up
-  post :sign_up,  to: "users#create"
+    scope "idp/:provider", as: :idp, controller: "sessions/idp" do
+      post :/, action: :new
+      match :callback, via: %i[get post]
+    end
+  end
+  post :sign_out, to: "sessions#destroy", as: :sign_out
+
+  scope :sign_up, as: :sign_up do
+    get  :/,  to: "users#new"
+    post :/,  to: "users#create"
+  end
 
   namespace :settings do
     root to: redirect("/settings/profile")

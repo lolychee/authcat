@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_24_110057) do
+ActiveRecord::Schema.define(version: 2022_12_31_152211) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -42,10 +42,20 @@ ActiveRecord::Schema.define(version: 2022_12_24_110057) do
 
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.datetime "expired_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "user_id_providers", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "provider", null: false
+    t.string "token", null: false
+    t.string "metadata", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "provider"], name: "index_user_id_providers_on_user_id_and_provider", unique: true
+    t.index ["user_id"], name: "index_user_id_providers_on_user_id"
   end
 
   create_table "user_webauthn_credentials", force: :cascade do |t|
@@ -80,5 +90,6 @@ ActiveRecord::Schema.define(version: 2022_12_24_110057) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "sessions", "users"
+  add_foreign_key "user_id_providers", "users"
   add_foreign_key "user_webauthn_credentials", "users"
 end

@@ -9,6 +9,9 @@ PATH
     authcat-identity (0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
+    authcat-idp (0.1.0)
+      omniauth (>= 2.0)
+      zeitwerk (>= 2.4.2)
     authcat-mfa (0.1.0)
       authcat-identity (~> 0.1.0)
       authcat-password (~> 0.1.0)
@@ -87,14 +90,10 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     android_key_attestation (0.3.0)
-    argon2-kdf (0.1.7)
     awrence (1.2.1)
     bcrypt (3.1.18)
     bindata (2.4.10)
     bindex (0.8.1)
-    blind_index (2.3.0)
-      activesupport (>= 5.2)
-      argon2-kdf (>= 0.1.1)
     bootsnap (1.12.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -152,7 +151,6 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    lockbox (1.0.0)
     loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -368,11 +366,11 @@ PLATFORMS
 DEPENDENCIES
   authcat-account!
   authcat-identity!
+  authcat-idp!
   authcat-mfa!
   authcat-password!
   authcat-webauthn!
   bcrypt
-  blind_index
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
@@ -380,7 +378,6 @@ DEPENDENCIES
   dotenv-rails
   jbuilder (~> 2.7)
   listen (~> 3.3)
-  lockbox
   newrelic_rpm
   omniauth (~> 2.0)
   omniauth-github
@@ -405,12 +402,11 @@ DEPENDENCIES
   tzinfo-data
   valid_email2
   web-console (>= 4.1.0)
-  webauthn
   webdrivers
   webpacker (~> 5.0)
 
 RUBY VERSION
-   ruby 2.6.6p146
+   ruby 2.7.7p221
 
 BUNDLED WITH
-   2.3.26
+   2.4.1
