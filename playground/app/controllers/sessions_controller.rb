@@ -11,8 +11,6 @@ class SessionsController < ApplicationController
   # GET /sign_in
   def new; end
 
-  def show; end
-
   # POST /sign_in
   def create(params = nil)
     respond_to do |format|
@@ -57,6 +55,6 @@ class SessionsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def session_params
     params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
-                                     :recovery_codes_challenge, :remember_me, :switch_to)
+                                     :recovery_codes_challenge, :remember_me)
   end
 end
