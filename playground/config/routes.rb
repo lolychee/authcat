@@ -9,6 +9,30 @@ Rails.application.routes.draw do
   post :sign_out, to: "sessions#destroy", as: :sign_out
   match "/auth/:provider/callback", to: "sessions#omniauth", via: %i[get post]
 
+  scope :sign_in, as: :sign_in do
+    get  :/, to: "sessions#new"
+    post :/, to: "sessions#create"
+
+    scope :email, as: :email do
+      get  :/, to: "sessions/email#new"
+      post :/, to: "sessions/email#create"
+    end
+    scope :phone, as: :phone do
+      get  :/, to: "sessions/phone#new"
+      post :/, to: "sessions/phone#create"
+    end
+    scope "idp/:provider", as: :idp do
+      post :/, to: "sessions/idp#new"
+      get :setup, to: "sessions/idp#setup"
+      match :callback, to: "sessions/idp#callback", via: %i[get post]
+    end
+
+    scope "challenge/:factor", as: :challenge do
+      get  :/, to: "sessions/challenge#new"
+      post :/, to: "sessions/challenge#create"
+    end
+  end
+
   resources :users, only: %i[index show new create]
   get  :sign_up,  to: "users#new", as: :sign_up
   post :sign_up,  to: "users#create"

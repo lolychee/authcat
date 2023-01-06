@@ -2,7 +2,7 @@
 
 class Current < ActiveSupport::CurrentAttributes
   attribute :session, :user
-  attribute :request_id, :user_agent, :ip_address
+  attribute :request, :request_id, :user_agent, :ip_address
 
   # resets { Time.zone = nil }
 

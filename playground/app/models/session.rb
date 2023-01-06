@@ -4,7 +4,7 @@ class Session < ApplicationRecord
   include Authcat::Identity
   include Authcat::MFA
 
-  belongs_to :user, optional: true
+  belongs_to :user
 
   concerning :SignIn do
     included do
@@ -17,7 +17,7 @@ class Session < ApplicationRecord
       set_callback :sign_in, :after, ->(model) { Current.session = model }
 
       attribute :login, :string
-      validates :login, identify: { only: %w[phone_number email] }, on: :login, unless: :user
+      validates :login, identify: { only: %w[phone_number email] }, on: :login, unless: -> { user.persisted? }
       validates :password, challenge: true, on: :login
 
       attribute :email, :string

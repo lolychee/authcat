@@ -2,12 +2,12 @@
 
 class User < ApplicationRecord
   include Authcat::Account
+  include Authcat::Session
 
-  has_many :sessions, dependent: :delete_all
+  # has_many :sessions, dependent: :delete_all
 
   has_many_webauthn_credentials
-
-  ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
+  has_many_sessions
 
   identifier :email, format: :email
   identifier :phone_number, format: :phone_number

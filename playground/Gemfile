@@ -67,6 +67,7 @@ path ".." do
   gem "authcat-mfa"
   gem "authcat-password"
   gem "authcat-webauthn"
+  gem "authcat-session"
 end
 
 gem "newrelic_rpm", require: ENV.key?("NEW_RELIC_LICENSE_KEY")
@@ -74,13 +75,10 @@ gem "sentry-rails", require: ENV.key?("SENTRY_DSN")
 gem "sentry-ruby", require: ENV.key?("SENTRY_DSN")
 
 gem "bcrypt"
-gem "blind_index"
-gem "lockbox"
 gem "phonelib"
 gem "rotp"
 gem "state_machines-activerecord"
 gem "valid_email2"
-gem "webauthn"
 
 gem "omniauth", "~> 2.0"
 gem "omniauth-github"
