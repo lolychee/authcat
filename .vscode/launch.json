@@ -6,9 +6,9 @@
 	"configurations": [
 		{
 			"name": "Rails server",
-			"type": "Ruby",
+			"type": "rdbg",
 			"request": "launch",
-			"program": "${workspaceRoot}/playground/bin/rails",
+			"script": "${workspaceRoot}/playground/bin/rails",
 			"args": [
 				"server"
 			]

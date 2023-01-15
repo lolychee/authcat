@@ -1,7 +1,7 @@
 version: "3"
 services:
   dev:
-    user: vscode
+    user: vscode:vscode
     platform: linux/x86_64
     build:
       context: .
@@ -11,9 +11,9 @@ services:
         NODE_VERSION: 14
     volumes:
       - bundle:/usr/local/bundle
-      # - ..:/workspace:delegated
-      - tmp_cache:/workspace/playground/tmp/cache
-      - node_modules:/workspace/playground/node_modules
+      - gems:/usr/local/rvm/gems
+      - tmp_cache:/workspaces/authcat/playground/tmp/cache
+      - node_modules:/workspaces/authcat/playground/node_modules
 
     # ports:
     #   - 3000:3000
@@ -35,6 +35,7 @@ services:
 
 volumes:
   bundle:
+  gems:
   postgres:
   tmp_cache:
   node_modules:
