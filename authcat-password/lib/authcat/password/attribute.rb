@@ -1,39 +1,33 @@
 # frozen_string_literal: true
 
+require "dry/container"
+require "forwardable"
+
 module Authcat
   module Password
     class Attribute
       attr_reader :model, :attribute_name, :options
 
       class << self
-        attr_accessor :default_algorithm
-      end
-      self.default_algorithm = :bcrypt
+        extend Forwardable
 
-      def initialize(model, attribute_name, algorithm: self.class.default_algorithm, **options)
+        def_delegators :registry, :register, :resolve
+
+        # @return [Dry::Container]
+        def registry
+          @registry ||= Dry::Container.new
+        end
+      end
+
+      register(:digest) { Digest }
+      register(:one_time_password) { OneTimePassword }
+
+      def initialize(model, attribute_name, **options)
         @model = model
         @attribute_name = attribute_name
         @options = options
 
-        @algorithm = algorithm.is_a?(Module) ? algorithm : Algorithms.resolve(algorithm)
-
         extend Array if options[:array]
-      end
-
-      def valid?(ciphertext)
-        @algorithm.valid?(ciphertext, **@options)
-      end
-
-      def new(ciphertext)
-        @algorithm.new(ciphertext, **@options)
-      end
-
-      def create(*args)
-        @algorithm.create(*args, **@options)
-      end
-
-      def verify(plaintext, ciphertext)
-        !plaintext.nil? && !ciphertext.nil? && ciphertext.verify(plaintext)
       end
 
       def load(value)

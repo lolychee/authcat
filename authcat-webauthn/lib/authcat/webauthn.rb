@@ -26,9 +26,9 @@ module Authcat
     end
 
     module ClassMethods
-      def has_many_webauthn_credentials
+      def has_many_webauthn_credentials(**opts)
         attribute :webauthn_user_id, default: -> { ::WebAuthn.generate_user_id }
-        has_many :webauthn_credentials, class_name: "#{name}WebAuthnCredential" do
+        has_many :webauthn_credentials, class_name: "#{name}WebAuthnCredential", **opts do
           def options_for_create
             identity = @association.owner
             user_info = {

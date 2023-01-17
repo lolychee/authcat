@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Authcat::MFA::Algorithms::TOTP do
+RSpec.describe Authcat::Password::Algorithms::TOTP do
   let(:algorithm) { described_class }
   let(:validator) do
     lambda { |ciphertext|

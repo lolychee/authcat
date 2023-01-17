@@ -2,7 +2,7 @@
 
 require "rotp"
 
-RSpec.describe Authcat::MFA::OneTimePassword do
+RSpec.describe Authcat::Password::Attribute::OneTimePassword do
   it "has one time password" do
     user = User.create(email: "test@email.com")
     user.regenerate_one_time_password

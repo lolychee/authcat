@@ -14,7 +14,10 @@ ActiveRecord::Schema.define(version: 2016_06_20_165022) do
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
-    t.string "password", null: false
+    t.string "password"
+    t.string "one_time_password"
+    t.string "recovery_code"
+    t.string "recovery_codes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

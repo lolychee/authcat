@@ -22,8 +22,8 @@ module Authcat
     end
 
     module ClassMethods
-      def has_many_id_providers
-        has_many :id_providers, class_name: "#{name}IdProvider"
+      def has_many_id_providers(**opts)
+        has_many :id_providers, class_name: "#{name}IdProvider", **opts
       end
     end
   end

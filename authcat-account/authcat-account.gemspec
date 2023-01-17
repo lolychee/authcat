@@ -33,7 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", ">= 2.4.2"
 
   spec.add_dependency "authcat-identity",     "~> #{version}"
-  spec.add_dependency "authcat-mfa",          "~> #{version}"
   spec.add_dependency "authcat-password",     "~> #{version}"
 
   # For more information and examples about making a new gem, checkout our

@@ -1,27 +1,7 @@
-# frozen_string_literal: true
-
-require "authcat/password"
-require "dry/container"
-
 module Authcat
-  module MFA
-    module OneTimePassword
-      DEFAULT_OPTIONS = { burn_after_verify: false }.freeze
-
-      # @return [void]
-      def self.included(base)
-        base.include Authcat::Password
-        base.extend ClassMethods
-      end
-
-      module ClassMethods
-        # @return [Symbol]
-        def has_one_time_password(attribute = :one_time_password, **opts, &block)
-          Attribute.new(self, attribute, **DEFAULT_OPTIONS.merge(opts), &block).setup!
-        end
-      end
-
-      class Attribute < Password::Attribute
+  module Password
+    class Attribute
+      class OneTimePassword < Digest
         self.default_algorithm = :totp
 
         def define_instance_methods!

@@ -1,6 +1,5 @@
 class UserSession < ApplicationRecord
   include Authcat::Session::SessionRecord
-  include ExtraAction
 
   belongs_to :user
 

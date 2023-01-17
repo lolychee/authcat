@@ -3,7 +3,6 @@ PATH
   specs:
     authcat-account (0.1.0)
       authcat-identity (~> 0.1.0)
-      authcat-mfa (~> 0.1.0)
       authcat-password (~> 0.1.0)
       zeitwerk (>= 2.4.2)
     authcat-identity (0.1.0)
@@ -11,12 +10,6 @@ PATH
       zeitwerk (>= 2.4.2)
     authcat-idp (0.1.0)
       omniauth (>= 2.0)
-      zeitwerk (>= 2.4.2)
-    authcat-mfa (0.1.0)
-      authcat-identity (~> 0.1.0)
-      authcat-password (~> 0.1.0)
-      authcat-webauthn (~> 0.1.0)
-      dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
     authcat-password (0.1.0)
       dry-container (>= 0.7.2)
@@ -387,7 +380,6 @@ DEPENDENCIES
   authcat-account!
   authcat-identity!
   authcat-idp!
-  authcat-mfa!
   authcat-password!
   authcat-session!
   authcat-webauthn!

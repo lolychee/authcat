@@ -9,9 +9,9 @@ class User < ActiveRecord::Base
   # validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
   has_password
-  has_one_time_password
+  has_password :one_time_password, as: :one_time_password
 
-  has_one_time_password :recovery_codes, array: true, algorithm: :bcrypt
+  has_password :recovery_codes, as: :one_time_password, array: true, algorithm: :bcrypt
 
   ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
 

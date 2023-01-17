@@ -12,15 +12,12 @@ module Authcat
     def self.included(base)
       gem "authcat-identity"
       gem "authcat-password"
-      gem "authcat-mfa"
 
       require "authcat/identity"
       require "authcat/password"
-      require "authcat/mfa"
 
       base.include Authcat::Identity,
-                   Authcat::Password,
-                   Authcat::MFA
+                   Authcat::Password
     end
   end
 end

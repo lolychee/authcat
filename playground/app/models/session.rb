@@ -2,7 +2,6 @@
 
 class Session < ApplicationRecord
   include Authcat::Identity
-  include Authcat::MFA
 
   belongs_to :user
 

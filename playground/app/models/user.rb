@@ -5,11 +5,9 @@ class User < ApplicationRecord
   include Authcat::Session
   include Authcat::IdP
 
-  # has_many :sessions, dependent: :delete_all
-
-  has_many_webauthn_credentials
-  has_many_sessions
-  has_many_id_providers
+  has_many_sessions dependent: :delete_all
+  has_many_webauthn_credentials dependent: :delete_all
+  has_many_id_providers dependent: :delete_all
 
   identifier :email, as: :email
   identifier :phone_number, as: :phone_number
@@ -26,42 +24,13 @@ class User < ApplicationRecord
   end
 
   has_password
-  has_one_time_password
-  has_one_time_password :recovery_codes, algorithm: :bcrypt, array: true, burn_after_verify: true
+  has_password :one_time_password, as: :one_time_password
+  has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true,
+                                burn_after_verify: true
 
-  concerning :SignUp do
-    included do
-      define_model_callbacks :sign_up
-    end
+  extra_action :sign_up, do: :save
 
-    def sign_up(attributes = {}, &block)
-      with_transaction_returning_status do
-        assign_attributes(attributes)
-        valid?(:sign_up) && run_callbacks(:sign_up) { _sign_up(&block) }
-      end
-    end
-
-    def _sign_up(**)
-      save
-    end
-  end
-
-  concerning :UpdateProfile do
-    included do
-      define_model_callbacks :update_profile
-    end
-
-    def update_profile(attributes = {}, &block)
-      with_transaction_returning_status do
-        assign_attributes(attributes)
-        valid?(:update_profile) && run_callbacks(:update_profile) { _update_profile(&block) }
-      end
-    end
-
-    def _update_profile(**)
-      save
-    end
-  end
+  extra_action :update_profile, do: :save
 
   include Authcat::Account::ChangePassword[:password]
   include Authcat::Account::EnableOneTimePassword[:one_time_password]

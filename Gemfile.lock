@@ -2,26 +2,23 @@ PATH
   remote: .
   specs:
     authcat (0.1.0)
-      authcat-account (= 0.1.0)
       authcat-identity (= 0.1.0)
-      authcat-mfa (= 0.1.0)
+      authcat-idp (= 0.1.0)
       authcat-password (= 0.1.0)
-    authcat-account (0.1.0)
-      authcat-identity (~> 0.1.0)
-      authcat-mfa (~> 0.1.0)
-      authcat-password (~> 0.1.0)
-      zeitwerk (>= 2.4.2)
+      authcat-session (= 0.1.0)
+      authcat-webauthn (= 0.1.0)
     authcat-identity (0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
-    authcat-mfa (0.1.0)
-      authcat-identity (~> 0.1.0)
-      authcat-password (~> 0.1.0)
-      authcat-webauthn (~> 0.1.0)
-      dry-container (>= 0.7.2)
+    authcat-idp (0.1.0)
+      omniauth (>= 2.0)
       zeitwerk (>= 2.4.2)
     authcat-password (0.1.0)
       dry-container (>= 0.7.2)
+      zeitwerk (>= 2.4.2)
+    authcat-session (0.1.0)
+      device_detector (>= 1.1.0)
+      geocoder (>= 1.8.0)
       zeitwerk (>= 2.4.2)
     authcat-webauthn (0.1.0)
       webauthn (>= 2.5.1)
@@ -90,14 +87,10 @@ GEM
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
     android_key_attestation (0.3.0)
-    argon2-kdf (0.1.7)
     ast (2.4.2)
     awrence (1.2.1)
     bcrypt (3.1.16)
     bindata (2.4.10)
-    blind_index (2.2.0)
-      activesupport (>= 5)
-      argon2-kdf (>= 0.1.1)
     builder (3.2.4)
     cbor (0.5.9.6)
     concurrent-ruby (1.1.10)
@@ -115,6 +108,7 @@ GEM
     debug (1.7.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    device_detector (1.1.0)
     diff-lcs (1.4.4)
     dry-configurable (0.13.0)
       concurrent-ruby (~> 1.0)
@@ -126,8 +120,10 @@ GEM
       concurrent-ruby (~> 1.0)
     erubi (1.12.0)
     ffi (1.15.5)
+    geocoder (1.8.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    hashie (5.0.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
@@ -139,7 +135,6 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    lockbox (0.6.6)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -166,6 +161,10 @@ GEM
     nokogiri (1.14.0)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
+    omniauth (2.1.0)
+      hashie (>= 3.4.6)
+      rack (>= 2.2.3)
+      rack-protection
     openssl (2.2.1)
       ipaddr
     openssl-signature_algorithm (1.1.1)
@@ -180,6 +179,8 @@ GEM
       stringio
     racc (1.6.2)
     rack (2.2.5)
+    rack-protection (3.0.5)
+      rack
     rack-test (2.0.2)
       rack (>= 1.3)
     rails (6.1.7)
@@ -314,11 +315,9 @@ PLATFORMS
 DEPENDENCIES
   authcat!
   bcrypt
-  blind_index
   database_cleaner (~> 2.0)
   debug
   listen (~> 3.3)
-  lockbox
   pg
   phonelib
   rails (~> 6.1)

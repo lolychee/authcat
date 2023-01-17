@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   # validates :email, presence: true, uniqueness: true, on: :save
   # validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
-  # has_one_time_password
+  # has_password :one_time_password, as: :one_time_password
 
   # serialize :recovery_codes_digest, Array if connection.adapter_name == 'SQLite'
   # has_recovery_codes

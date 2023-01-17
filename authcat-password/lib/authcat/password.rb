@@ -5,7 +5,9 @@ loader = Zeitwerk::Loader.new
 loader.tag = File.basename(__FILE__, ".rb")
 loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
 loader.inflector.inflect(
-  "bcrypt" => "BCrypt"
+  "bcrypt" => "BCrypt",
+  "totp" => "TOTP",
+  "hotp" => "HOTP"
 )
 
 loader.push_dir("#{__dir__}/..")
@@ -33,13 +35,12 @@ module Authcat
     end
 
     module ClassMethods
-      # @param Attribute [Symbol, String]
-      # @param suffix [Symbol, String]
-      # @param column_name [Symbol, String]
-      # @param validate [Boolean]
+      # @param attribute [Symbol, String]
+      # @param as [Symbol]
       # @return [Symbol]
-      def has_password(attribute = :password, **opts, &block)
-        Attribute.new(self, attribute, **opts, &block).setup!
+      def has_password(attribute = :password, as: :digest, **opts, &block)
+        klass = Attribute.resolve(as)
+        klass.new(self, attribute, **opts, &block).setup!
       end
     end
   end

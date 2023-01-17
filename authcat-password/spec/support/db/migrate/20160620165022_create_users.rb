@@ -5,8 +5,11 @@ class CreateUsers < ActiveRecord::Migration[5.2]
     enable_extension :hstore
 
     create_table :users do |t|
-      t.string :email,      null: false
-      t.string :password,   null: false
+      t.string :email, null: false
+      t.string :password
+      t.string :one_time_password
+      t.string :recovery_code
+      t.string :recovery_codes
 
       t.timestamps null: false
     end

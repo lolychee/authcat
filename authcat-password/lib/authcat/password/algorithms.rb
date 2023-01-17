@@ -19,6 +19,7 @@ module Authcat
 
       register(:plaintext) { Plaintext }
       register(:bcrypt) { BCrypt }
+      register(:totp) { TOTP }
     end
   end
 end

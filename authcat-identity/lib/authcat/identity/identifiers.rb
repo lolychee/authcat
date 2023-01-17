@@ -21,7 +21,6 @@ module Authcat
       register(:phone_number) { PhoneNumber }
       register(:token) { Token }
       register(:username) { Username }
-      register(:omniauth) { Omniauth }
     end
   end
 end

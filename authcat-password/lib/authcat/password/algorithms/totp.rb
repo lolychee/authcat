@@ -4,7 +4,7 @@ gem "rotp"
 require "rotp"
 
 module Authcat
-  module MFA
+  module Password
     module Algorithms
       module TOTP
         module_function

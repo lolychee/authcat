@@ -12,6 +12,11 @@ class User < ActiveRecord::Base
   PASSWORD_VALIDATE_OPTIONS = { length: { minimum: 6, maximum: 72 } }.freeze
   # validates :password, allow_nil: true, **PASSWORD_VALIDATE_OPTIONS
 
+  has_password :one_time_password, as: :one_time_password
+  has_password :recovery_code, as: :one_time_password, algorithm: :bcrypt
+  has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true,
+                                burn_after_verify: true
+
   # concerning :SendResetPasswordVerification do
   #   included do |base|
   #     base.define_callbacks :send_reset_password_verification

@@ -15,7 +15,6 @@ else
   require "authcat/session/railtie"
 end
 
-
 module Authcat
   module Session
     def self.included(base)
@@ -23,8 +22,8 @@ module Authcat
     end
 
     module ClassMethods
-      def has_many_sessions
-        has_many :sessions, class_name: "#{name}Session"
+      def has_many_sessions(**opts, &block)
+        has_many :sessions, class_name: "#{name}Session", **opts, &block
       end
     end
   end
