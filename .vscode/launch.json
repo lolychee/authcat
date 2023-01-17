@@ -8,10 +8,11 @@
 			"name": "Rails server",
 			"type": "rdbg",
 			"request": "launch",
-			"script": "${workspaceRoot}/playground/bin/rails",
+			"cwd": "${workspaceFolder}/playground",
+			"script": "bin/rails",
 			"args": [
 				"server"
-			]
+			],
 		}
 	]
 }
