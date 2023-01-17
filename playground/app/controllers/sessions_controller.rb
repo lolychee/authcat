@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  before_action :set_new_session, only: %i[new create omniauth]
-  before_action :set_session, only: %i[show destroy]
-  skip_before_action :verify_authenticity_token, only: :omniauth
+  before_action :set_new_session, only: %i[new create]
+  before_action :set_session, only: %i[destroy]
   around_action(only: %i[create]) do |_controller, action|
     with_saved_state(@session, unless: :sign_in_completed?, &action)
   end
@@ -12,9 +11,9 @@ class SessionsController < ApplicationController
   def new; end
 
   # POST /sign_in
-  def create(params = nil)
+  def create
     respond_to do |format|
-      if @session.sign_in(params || session_params)
+      if @session.sign_in(session_params)
         if @session.sign_in_completed?
 
           format.html { redirect_to root_url }
@@ -25,10 +24,6 @@ class SessionsController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
       end
     end
-  end
-
-  def omniauth
-    create({ sign_in_step: :omniauth_hash, omniauth_hash: request.env["omniauth.auth"], remember_me: true })
   end
 
   # POST /sign_out

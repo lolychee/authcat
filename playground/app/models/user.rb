@@ -3,11 +3,13 @@
 class User < ApplicationRecord
   include Authcat::Account
   include Authcat::Session
+  include Authcat::IdP
 
   # has_many :sessions, dependent: :delete_all
 
   has_many_webauthn_credentials
   has_many_sessions
+  has_many_id_providers
 
   identifier :email, format: :email
   identifier :phone_number, format: :phone_number

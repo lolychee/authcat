@@ -54,7 +54,8 @@ ActiveRecord::Schema.define(version: 2023_01_02_143812) do
     t.string "metadata", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "provider"], name: "index_user_id_providers_on_user_id_and_provider", unique: true
+    t.index ["provider", "token"], name: "index_user_id_providers_on_provider_and_token", unique: true
+    t.index ["user_id", "provider", "token"], name: "index_user_id_providers_on_user_id_and_provider_and_token", unique: true
     t.index ["user_id"], name: "index_user_id_providers_on_user_id"
   end
 
