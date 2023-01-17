@@ -11,10 +11,8 @@ class User < ApplicationRecord
   has_many_sessions
   has_many_id_providers
 
-  identifier :email, format: :email
-  identifier :phone_number, format: :phone_number
-  # identifier :github_oauth_token, format: :token
-  # identifier :google_oauth_token, format: :token
+  identifier :email, as: :email
+  identifier :phone_number, as: :phone_number
 
   identifier :omniauth_hash do |auth_hash|
     case auth_hash.provider

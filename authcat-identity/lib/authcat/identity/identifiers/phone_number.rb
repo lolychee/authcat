@@ -5,7 +5,7 @@ require "phonelib"
 
 module Authcat
   module Identity
-    module Formatters
+    module Identifiers
       module PhoneNumber
         module_function
 

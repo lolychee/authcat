@@ -2,7 +2,7 @@
 
 module Authcat
   module Identity
-    module Formatters
+    module Identifiers
       module Username
       end
     end

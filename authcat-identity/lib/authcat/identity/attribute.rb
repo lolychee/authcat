@@ -5,18 +5,18 @@ module Authcat
     class Attribute
       attr_reader :model, :attribute_name, :options
 
-      def initialize(model, attribute_name, format: nil, **options, &block)
+      def initialize(model, attribute_name, as: nil, **options, &block)
         @model = model
         @attribute_name = attribute_name
-        @formater = format.is_a?(Module) ? format : Formatters.resolve(format) unless format.nil?
+        @identifier = as.is_a?(Module) ? as : Identifiers.resolve(as) unless as.nil?
         @options = options
         @block = block
       end
 
       def identify(value)
         parsed_value = parse(value)
-        if @formater.respond_to?(:identify)
-          @formater.identify(model, parsed_value)
+        if @aser.respond_to?(:identify)
+          @aser.identify(model, parsed_value)
         elsif @block.respond_to?(:call)
           @block.call(parsed_value)
         else
@@ -25,16 +25,16 @@ module Authcat
       end
 
       def parse(value)
-        if @formater.respond_to?(:parse)
-          @formater.parse(value, **options)
+        if @aser.respond_to?(:parse)
+          @aser.parse(value, **options)
         else
-         value
+          value
         end
       end
 
       def valid?(value)
-        if @formater.respond_to?(:parse)
-          @formater.valid?(value, **options)
+        if @aser.respond_to?(:parse)
+          @aser.valid?(value, **options)
         else
           true
         end

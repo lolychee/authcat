@@ -6,7 +6,7 @@ require "forwardable"
 
 module Authcat
   module Identity
-    module Formatters
+    module Identifiers
       class << self
         extend Forwardable
 
