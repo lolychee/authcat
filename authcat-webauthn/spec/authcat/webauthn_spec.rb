@@ -40,7 +40,6 @@ RSpec.describe Authcat::WebAuthn do
       expect(credential.verify(credential_json: credential_json, challenge: challenge)).to be true
     end.to change(credential, :sign_count).by(1)
 
-
     user.reload
     options = user.webauthn_credentials.options_for_get
     expect(options).to be_a(WebAuthn::PublicKeyCredential::RequestOptions)

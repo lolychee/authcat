@@ -38,11 +38,14 @@ module Authcat
             ::WebAuthn::Credential.options_for_create(
               user: user_info,
               exclude: pluck(:webauthn_id)
-            )
+            ).tap { |options| identity.update_columns(webauthn_challenge: options.challenge) }
           end
 
           def options_for_get
-            ::WebAuthn::Credential.options_for_get(allow: pluck(:webauthn_id))
+            identity = @association.owner
+            ::WebAuthn::Credential.options_for_get(allow: pluck(:webauthn_id)).tap do |options|
+              identity.update_columns(webauthn_challenge: options.challenge)
+            end
           end
 
           def verify(credential)

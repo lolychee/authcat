@@ -26,34 +26,35 @@ module Authcat
         @options ||= begin
           identity = send(self.class.identity_name)
           credentials = identity.webauthn_credentials
-          options = new_record? ? credentials.options_for_create : credentials.options_for_get
-          identity.update_columns(webauthn_challenge: options.challenge)
-          options
+          new_record? ? credentials.options_for_create : credentials.options_for_get
         end
       end
 
       attr_reader :credential
 
       def credential=(credential)
+        return if credential.nil?
+
         if credential.is_a?(Hash)
-          if new_record?
-            credential = ::WebAuthn::Credential.from_create(credential)
-            assign_attributes(
-              webauthn_id: credential.id,
-              public_key: credential.public_key,
-              sign_count: credential.sign_count
-            )
-          else
-            credential = ::WebAuthn::Credential.from_get(credential)
-          end
-        else
-          credential = nil
+          credential = if new_record?
+                         ::WebAuthn::Credential.from_create(credential)
+                       else
+                         ::WebAuthn::Credential.from_get(credential)
+                       end
+        end
+
+        if new_record?
+          assign_attributes(
+            webauthn_id: credential.id,
+            public_key: credential.public_key,
+            sign_count: credential.sign_count
+          )
         end
         @credential = credential
       end
 
       def credential_json=(json)
-        self.credential = JSON.parse(json)
+        self.credential = JSON.parse(json) if json.is_a?(String)
       end
 
       def verify(attributes = {})
