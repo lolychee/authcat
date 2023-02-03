@@ -14,19 +14,21 @@
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
 	"workspaceFolder": "/workspaces/authcat",
-	// "settings": {
-	// 	"terminal.integrated.shell.linux": "/bin/zsh"
-	// },
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"eamodio.gitlens",
-		"shopify.ruby-extensions-pack",
-		"redhat.vscode-yaml",
-		"mutantdino.resourcemonitor"
-		// "castwide.solargraph",
-		// "castwide.ruby-debug",
-		// "kaiwood.endwise"
-	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"eamodio.gitlens",
+				"shopify.ruby-extensions-pack",
+				"connorshea.vscode-ruby-test-adapter",
+				"redhat.vscode-yaml",
+				// "mutantdino.resourcemonitor"
+				// "castwide.solargraph",
+				// "castwide.ruby-debug",
+				// "kaiwood.endwise"
+			]
+		}
+	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		3000
@@ -36,7 +38,8 @@
 	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
 	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode",
+	// "remoteUser": "vscode",
 	"postCreateCommand": ".devcontainer/post_create.sh",
 	// "postStartCommand": "cd playground && bin/rails s -d"
+	"shutdownAction": "stopCompose",
 }

@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../authcat-identity"
+		},
+		{
+			"path": "../authcat-idp"
+		},
+		{
+			"path": "../authcat-password"
+		},
+		{
+			"path": "../authcat-session"
+		},
+		{
+			"path": "../authcat-webauthn"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"authcat-*/": true
+		},
+		"terminal.integrated.defaultProfile.linux": "zsh",
+		"[ruby]": {
+			"editor.defaultFormatter": "Shopify.ruby-lsp",
+		},
+		"editor.tabSize": 2,
+		"editor.formatOnSave": true,
+		"editor.insertSpaces": true,
+		"editor.semanticHighlighting.enabled": true,
+	},
+}
