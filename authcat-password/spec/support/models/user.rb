@@ -3,8 +3,7 @@
 class User < ActiveRecord::Base
   include Authcat::Password
 
-  EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
-  EMAIL_VALIDATE_OPTIONS = { format: EMAIL_REGEX }.freeze
+  EMAIL_VALIDATE_OPTIONS = { format: URI::MailTo::EMAIL_REGEXP }.freeze
   validates :email, presence: true, uniqueness: true, on: :save
   validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 

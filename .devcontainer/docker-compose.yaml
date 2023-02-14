@@ -2,13 +2,13 @@ version: "3"
 services:
   dev:
     user: vscode:vscode
-    platform: linux/amd64
+    platform: linux/x86_64
     working_dir: /workspaces/authcat
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        VARIANT: 2.7
+        VARIANT: 3.1
         NODE_VERSION: 14
     volumes:
       - bundle:/usr/local/bundle

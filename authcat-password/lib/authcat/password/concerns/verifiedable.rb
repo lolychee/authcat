@@ -13,11 +13,11 @@ module Authcat
         @last_verified_at = value ? Time.now : nil
       end
 
-      def ==(*)
+      def ==(*, **)
         super.tap { |verified| self.last_verified = verified }
       end
 
-      def verify(*)
+      def verify(*, **)
         super.tap { |verified| self.last_verified = verified }
       end
     end

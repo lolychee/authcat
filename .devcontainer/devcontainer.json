@@ -19,8 +19,10 @@
 		"vscode": {
 			"extensions": [
 				"eamodio.gitlens",
-				"shopify.ruby-extensions-pack",
+				"Shopify.ruby-lsp",
+				"KoichiSasada.vscode-rdbg",
 				"connorshea.vscode-ruby-test-adapter",
+				"soutaro.steep-vscode",
 				"redhat.vscode-yaml",
 				// "mutantdino.resourcemonitor"
 				// "castwide.solargraph",
@@ -33,13 +35,17 @@
 	"forwardPorts": [
 		3000
 	],
+	"portsAttributes": {
+		"3000": {
+			"label": "Playground",
+			"onAutoForward": "openBrowserOnce"
+		}
+	},
 	// Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
 	// "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
 	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	// "remoteUser": "vscode",
+	"remoteUser": "vscode",
 	"postCreateCommand": ".devcontainer/post_create.sh",
-	// "postStartCommand": "cd playground && bin/rails s -d"
-	"shutdownAction": "stopCompose",
 }

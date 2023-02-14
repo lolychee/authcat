@@ -19,11 +19,12 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         gem_name:
-          - authcat-account
           - authcat-identity
-          - authcat-mfa
+          - authcat-idp
           - authcat-password
-        ruby_version: ["2.6", "2.7"]
+          - authcat-session
+          - authcat-webauthn
+        ruby_version: ["3.0", "3.1", "3.2"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

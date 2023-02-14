@@ -7,7 +7,7 @@ module Authcat
         end
         self.default_algorithm = :bcrypt
 
-        def initialize(*)
+        def initialize(*, **)
           super
 
           algorithm = options.fetch(:algorithm, self.class.default_algorithm)

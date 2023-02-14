@@ -12,12 +12,12 @@ module Authcat
         end
 
         def validate_each(record, attribute, value)
-          if !(challenge = record.public_send("#{attribute}_challenge")).nil? && !challenge_value_equal?(record,
-                                                                                                         attribute, value, challenge)
-            human_attribute_name = record.class.human_attribute_name(attribute)
-            record.errors.add(:"#{attribute}_challenge", :challenge,
-                              **options.except(:case_sensitive).merge!(attribute: human_attribute_name))
-          end
+          challenge = record.public_send("#{attribute}_challenge")
+          return if challenge_value_equal?(record, attribute, value, challenge)
+
+          human_attribute_name = record.class.human_attribute_name(attribute)
+          record.errors.add(:"#{attribute}_challenge", :challenge,
+                            **options.except(:case_sensitive).merge!(attribute: human_attribute_name))
         end
 
         private

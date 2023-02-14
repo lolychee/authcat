@@ -9,6 +9,8 @@ gem "rake", "~> 13.0"
 
 group :test do
   gem "rspec", "~> 3.0"
+  gem 'simplecov', require: false
+  gem 'simplecov-lcov', require: false
 end
 
 group :lint do

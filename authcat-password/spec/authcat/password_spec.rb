@@ -16,7 +16,7 @@ RSpec.describe Authcat::Password do
 
     expect(user).to be_persisted
     expect(user.password).to eq password
-    expect(user.password).to be_a ::BCrypt::Password
-    expect(user.password?).to eq true
+    expect(user.password).to be_a BCrypt::Password
+    expect(user.password?).to be true
   end
 end
