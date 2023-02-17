@@ -36,8 +36,6 @@ module Authcat
         end
 
         class Value < ::BCrypt::Password
-          prepend Verifiedable
-
           def verify(plaintext, **_opts)
             Algorithms::BCrypt.verify(plaintext, to_s)
           end

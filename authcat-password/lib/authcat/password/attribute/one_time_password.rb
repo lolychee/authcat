@@ -7,7 +7,7 @@ module Authcat
         def define_instance_methods!
           super
           define_regenerator_method!
-          setup_callback!
+          # setup_callback!
         end
 
         def define_regenerator_method!
@@ -22,13 +22,13 @@ module Authcat
           RUBY
         end
 
-        def setup_callback!
-          if options[:burn_after_verify]
-            model.instance_eval <<-RUBY, __FILE__, __LINE__ + 1
-              set_callback :verify_#{attribute_name}, :after, -> { update_column(#{attribute_name.inspect}, #{attribute_name}.select {|code| !code.last_verified? }) }
-            RUBY
-          end
-        end
+        # def setup_callback!
+        #   if options[:burn_after_verify]
+        #     model.instance_eval <<-RUBY, __FILE__, __LINE__ + 1
+        #       set_callback :verify_#{attribute_name}, :after, -> { update_column(#{attribute_name.inspect}, #{attribute_name}.select {|code| !code.last_verified? }) }
+        #     RUBY
+        #   end
+        # end
       end
     end
   end

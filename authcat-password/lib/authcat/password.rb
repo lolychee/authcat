@@ -11,7 +11,6 @@ loader.inflector.inflect(
 )
 
 loader.push_dir("#{__dir__}/..")
-loader.collapse("#{__dir__}/password/concerns")
 loader.setup
 
 module Authcat
@@ -39,8 +38,9 @@ module Authcat
       # @param as [Symbol]
       # @return [Symbol]
       def has_password(attribute = :password, as: :digest, **opts, &block)
-        klass = Attribute.resolve(as)
-        klass.new(self, attribute, **opts, &block).setup!
+        Attribute.resolve(as).new(self, attribute, **opts, &block).setup!
+
+        attribute.to_sym
       end
     end
   end

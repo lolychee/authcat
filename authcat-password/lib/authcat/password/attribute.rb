@@ -50,7 +50,10 @@ module Authcat
       private
 
       def define_attribute!
-        model.attribute attribute_name do |cast_type|
+        model.password_attributes ||= Set.new
+        model.password_attributes << attribute_name
+
+        model.attribute(attribute_name) do |cast_type|
           ActiveRecord::Type::Serialized.new(cast_type, self)
         end
       end
@@ -64,10 +67,11 @@ module Authcat
       end
 
       def define_verifier!
-        model.define_model_callbacks :"verify_#{attribute_name}"
+        method_name = :"verify_#{attribute_name}"
+        model.define_model_callbacks method_name
         model.class_eval <<~RUBY, __FILE__, __LINE__ + 1
-          def verify_#{attribute_name}(value)
-            run_callbacks(:verify_#{attribute_name}) do
+          def #{method_name}(value)
+            run_callbacks(#{method_name.inspect}) do
               #{attribute_name}? && self.class.#{attribute_name}.verify(value, #{attribute_name})
             end
           end
