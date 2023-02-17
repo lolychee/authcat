@@ -12,29 +12,37 @@ module Authcat
         end
 
         def validate_each(record, attribute, value)
-          challenge = record.public_send("#{attribute}_challenge")
+          challenge = record.public_send(challenge_attribute_name(attribute))
           return if challenge_value_equal?(record, attribute, value, challenge)
 
           human_attribute_name = record.class.human_attribute_name(attribute)
-          record.errors.add(:"#{attribute}_challenge", :challenge,
+          record.errors.add(challenge_attribute_name(attribute), :challenge,
                             **options.except(:case_sensitive).merge!(attribute: human_attribute_name))
         end
 
         private
 
         def setup!(klass)
-          klass.attr_reader(*attributes.map do |attribute|
-            :"#{attribute}_challenge" unless klass.method_defined?(:"#{attribute}_challenge")
-          end.compact)
+          klass.attr_reader(*attributes.filter_map do |attribute|
+            challenge_attribute_name(attribute) unless klass.method_defined?(challenge_attribute_name(attribute))
+          end)
 
-          klass.attr_writer(*attributes.map do |attribute|
-            :"#{attribute}_challenge" unless klass.method_defined?(:"#{attribute}_challenge=")
-          end.compact)
+          klass.attr_writer(*attributes.filter_map do |attribute|
+            challenge_attribute_name(attribute) unless klass.method_defined?("#{challenge_attribute_name(attribute)}=")
+          end)
 
           klass.delegate(*attributes, to: options[:delegate]) if options[:delegate]
         end
 
+        def challenge_attribute_name(attribute)
+          "#{attribute}#{options.fetch(:suffix, "_challenge")}".to_sym
+        end
+
         def challenge_value_equal?(record, attribute, _value, challenge)
+          case options[:with]
+          when String, Symbol
+            attribute = options[:with]
+          end
           attribute = "#{attribute}_was" if options[:was]
 
           if record.respond_to?("verify_#{attribute}")
