@@ -21,7 +21,7 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-*/": true
+			"authcat-*": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
 		"[ruby]": {

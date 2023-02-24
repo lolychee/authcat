@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        VARIANT: 3.1
+        VARIANT: 3.2
         NODE_VERSION: 14
     volumes:
       - bundle:/usr/local/bundle
