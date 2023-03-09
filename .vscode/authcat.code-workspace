@@ -17,11 +17,15 @@
 		},
 		{
 			"path": "../authcat-webauthn"
+		},
+		{
+			"path": "../playground"
 		}
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-*": true,
+			"authcat-{identity,idp,password,session,webauthn}": true,
+			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
 		"[ruby]": {
