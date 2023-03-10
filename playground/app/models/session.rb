@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Session < ApplicationRecord
-  include Authcat::Identity
+  include Authcat::Session::SessionRecord
 
   belongs_to :user
 

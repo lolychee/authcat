@@ -1,9 +1,9 @@
 RSpec.describe Authcat::IdP do
-  it "has a version number" do
-    expect(Authcat::IdP::VERSION).not_to be nil
-  end
+  let(:user) { User.create(email: Faker::Internet.email) }
+  let(:idp) { OmniAuth::AuthHash.new(Faker::Omniauth.google) }
+  let!(:user_id_provider) { user.id_providers.create(idp) }
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "has_many_id_providers" do
+    expect(user.id_providers.verify(idp)).to be true
   end
 end

@@ -23,7 +23,15 @@ module Authcat
 
     module ClassMethods
       def has_many_id_providers(**opts)
-        has_many :id_providers, class_name: "#{name}IdProvider", **opts
+        # self.identifier_attributes << :id_providers
+        has_many :id_providers, class_name: "#{name}IdProvider", **opts do
+          def verify(idp)
+            case idp
+            when OmniAuth::AuthHash
+              where(new(idp).slice(:provider, :token)).exists?
+            end
+          end
+        end
       end
     end
   end

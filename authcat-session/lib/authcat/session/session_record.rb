@@ -4,7 +4,10 @@ module Authcat
       def self.included(base)
         base.extend ClassMethods
 
-        base.attribute :request, default: -> { Current.request }
+        require "authcat/identity"
+        base.include Authcat::Identity::Validators
+        require "authcat/password"
+        base.include Authcat::Password::Validators
       end
 
       module ClassMethods

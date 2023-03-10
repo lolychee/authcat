@@ -5,15 +5,12 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   scope :sign_in, as: :sign_in do
-    scope "(:method)" do
+    scope "(:auth_method)", defaults: { auth_method: "password" } do
       get  :/, to: "sessions#new"
       post :/, to: "sessions#create"
-    end
 
-    scope "idp/:provider", as: :idp, controller: "sessions/idp" do
-      post :/, action: :new
-      get :setup
-      match :callback, via: %i[get post]
+      # omniauth callback
+      match :callback, to: "sessions#create", via: %i[get post]
     end
   end
   post :sign_out, to: "sessions#destroy", as: :sign_out

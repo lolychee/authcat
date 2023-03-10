@@ -7,10 +7,36 @@ class SessionsController < ApplicationController
     with_saved_state(@session, unless: :sign_in_completed?, &action)
   end
 
-  # GET /sign_in
+  skip_before_action :verify_authenticity_token, if: -> { request.env["omniauth.strategy"]&.on_callback_path? }
+
+  use OmniAuth::Builder do
+    configure do |config|
+      config.path_prefix = "/sign_in"
+    end
+
+    provider :developer if Rails.env.development?
+
+    if true # ENV.key?("OMNIAUTH_TWITTER_KEY")
+      provider :twitter, ENV.fetch("OMNIAUTH_TWITTER_KEY", nil),
+               ENV.fetch("OMNIAUTH_TWITTER_SECRET", nil)
+    end
+
+    if true # ENV.key?("OMNIAUTH_GITHUB_KEY")
+      provider :github, ENV.fetch("OMNIAUTH_GITHUB_KEY", nil),
+               ENV.fetch("OMNIAUTH_GITHUB_SECRET", nil)
+    end
+
+    if true # ENV.key?("OMNIAUTH_GOOGLE_KEY")
+      provider :google_oauth2, ENV.fetch("OMNIAUTH_GOOGLE_KEY", nil),
+               ENV.fetch("OMNIAUTH_GOOGLE_SECRET", nil)
+    end
+  end
+
+
+  # GET /sign_in(/:auth_method)
   def new; end
 
-  # POST /sign_in
+  # POST /sign_in(/:auth_method)
   def create
     respond_to do |format|
       if @session.sign_in(session_params)
@@ -44,12 +70,17 @@ class SessionsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_session
-    @session = current_session || Session.new
+    @session = current_session || Session.new(auth_method: params[:auth_method])
   end
 
   # Only allow a list of trusted parameters through.
   def session_params
-    params.required(:session).permit(:login, :email, :phone_number, :password_challenge, :one_time_password_challenge,
-                                     :recovery_codes_challenge, :remember_me)
+    params.required(:user_session).permit(
+      :login, :email, :phone_number,
+      :password_challenge, :one_time_password_challenge, :recovery_codes_challenge,
+      :remember_me
+    ).merge(auth_method: params[:auth_method]).tap do |hash|
+      hash[:idp] = request.env["omniauth.auth"]
+    end
   end
 end

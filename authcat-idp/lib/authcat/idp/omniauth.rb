@@ -1,3 +1,5 @@
+require "omniauth"
+
 module Authcat
   module IdP
     module Omniauth
@@ -6,21 +8,17 @@ module Authcat
       end
 
       module ClassMethods
-        def omniauth_provider(_name)
+        def omniauth
           @omniauth_middleware = Builder.new(&block)
         end
       end
 
-      attr_reader :omniauth_hash
-
-      def omniauth_hash=(hash)
-        case hash
+      def initialize(idp)
+        case idp
         when OmniAuth::AuthHash
-          @omniauth_hash = hash
-
-          self.provider = hash.provider
-          self.token = hash.uid
-          self.metadata = hash.info
+          super({ provider: idp.provider, token: idp.uid, metadata: idp.info })
+        else
+          super
         end
       end
     end
