@@ -28,7 +28,7 @@ module Authcat
               yield(value, pattern: pattern, replacement: replacement)
             else
               m = value.match(pattern)
-              m&.names.each { |n| value[m.begin(n)...m.end(n)] = replacement * m[n].size }
+              m&.names&.each { |n| value[m.begin(n)...m.end(n)] = replacement * m[n].size }
               value
             end
           end

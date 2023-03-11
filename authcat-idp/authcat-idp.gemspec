@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 version = File.read(File.expand_path("../AUTHCAT_VERSION", __dir__)).strip
 
 Gem::Specification.new do |spec|

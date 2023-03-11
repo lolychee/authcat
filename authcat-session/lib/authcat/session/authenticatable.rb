@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Session
     module Authenticatable

@@ -8,8 +8,8 @@ RSpec.describe Authcat::Identity do
 
     user = User.new(email: email)
 
-    expect(user.valid?(:email_sign_in)).to eq true
+    expect(user.valid?(:email_sign_in)).to be true
     expect(user.id).to be_present
-    expect(user.new_record?).to eq false
+    expect(user.new_record?).to be false
   end
 end

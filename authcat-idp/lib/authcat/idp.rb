@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "zeitwerk"
 loader = Zeitwerk::Loader.new
 loader.tag = File.basename(__FILE__, ".rb")
@@ -24,14 +26,16 @@ module Authcat
     module ClassMethods
       def has_many_id_providers(**opts)
         # self.identifier_attributes << :id_providers
-        has_many :id_providers, class_name: "#{name}IdProvider", **opts do
-          def verify(idp)
-            case idp
-            when OmniAuth::AuthHash
-              where(new(idp).slice(:provider, :token)).exists?
-            end
-          end
-        end
+        has_many :id_providers, class_name: "#{name}IdProvider", extend: Extension, **opts
+      end
+    end
+  end
+
+  module Extension
+    def verify(idp)
+      case idp
+      when OmniAuth::AuthHash
+        where(new(idp).slice(:provider, :token)).exists?
       end
     end
   end

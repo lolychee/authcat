@@ -2,6 +2,6 @@
 
 RSpec.describe Authcat do
   it "has a version number" do
-    expect(Authcat::VERSION).not_to be nil
+    expect(Authcat::VERSION).not_to be_nil
   end
 end

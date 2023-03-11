@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authcat
   module Session
     module SessionRecord
@@ -11,7 +13,6 @@ module Authcat
       end
 
       module ClassMethods
-
       end
     end
   end

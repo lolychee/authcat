@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Authcat::IdP do
   let(:user) { User.create(email: Faker::Internet.email) }
   let(:idp) { OmniAuth::AuthHash.new(Faker::Omniauth.google) }

@@ -22,8 +22,13 @@ AllCops:
   TargetRubyVersion: 2.7
   Exclude:
     - Gemfile.lock
+    - "**/bin/*"
     - "**/db/schema.rb"
     - "*/node_modules/**/*"
+
+Style/Documentation:
+  Exclude:
+    - "**/db/migrate/*"
 
 Style/StringLiterals:
   Enabled: true

@@ -5,7 +5,7 @@ RSpec.describe Authcat::Password::Algorithms::TOTP do
   let(:validator) do
     lambda { |ciphertext|
       begin
-        ::ROTP::Base32.decode(ciphertext) && true
+        ROTP::Base32.decode(ciphertext) && true
       rescue StandardError
         false
       end
@@ -16,7 +16,7 @@ RSpec.describe Authcat::Password::Algorithms::TOTP do
     context "with default byte_length" do
       it "is valid hash string" do
         ciphertext = algorithm.create
-        expect(validator.call(ciphertext.secret)).to eq true
+        expect(validator.call(ciphertext.secret)).to be true
       end
     end
 
@@ -25,29 +25,29 @@ RSpec.describe Authcat::Password::Algorithms::TOTP do
 
       it "is valid hash string" do
         ciphertext = algorithm.create(length)
-        expect(validator.call(ciphertext.secret)).to eq true
+        expect(validator.call(ciphertext.secret)).to be true
       end
     end
   end
 
   describe "#verify" do
     let(:ciphertext) { "MCRVVCCEN2EAZ7MG3IYLRRCKMYNPAUI3" }
-    let(:otp) { ::ROTP::TOTP.new(ciphertext) }
+    let(:otp) { ROTP::TOTP.new(ciphertext) }
 
     it "verify at now" do
-      expect(algorithm.verify(ciphertext, otp.now)).to eq true
+      expect(algorithm.verify(ciphertext, otp.now)).to be true
     end
 
     it "verify at sometimes" do
       timestamp = Time.at(1_000_000_000)
-      expect(algorithm.verify(ciphertext, otp.at(timestamp), at: timestamp)).to eq true
+      expect(algorithm.verify(ciphertext, otp.at(timestamp), at: timestamp)).to be true
     end
 
     it "verify with block" do
       timestamp = Time.at(1_000_000_000)
       expect(algorithm.verify(ciphertext, otp.at(timestamp), at: timestamp) do |t|
                expect(t).to eq Time.at(999_999_990)
-             end).to eq true
+             end).to be true
     end
   end
 end

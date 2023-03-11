@@ -7,7 +7,8 @@ module Authcat
         alias [] new
       end
 
-      def initialize(attribute = :one_time_password, action_name: :"enable_#{attribute}", recovery_codes_attribute: :recovery_codes)
+      def initialize(attribute = :one_time_password, action_name: :"enable_#{attribute}",
+                     recovery_codes_attribute: :recovery_codes)
         super()
 
         step = :"#{action_name}_step"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUserIdProviders < ActiveRecord::Migration[6.1]
   def change
     create_table :user_id_providers do |t|

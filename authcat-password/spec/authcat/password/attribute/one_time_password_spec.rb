@@ -18,7 +18,7 @@ RSpec.describe Authcat::Password::Attribute::OneTimePassword do
 
     expect(user).to be_persisted
 
-    expect(user.verify_recovery_code(password)).not_to eq false
+    expect(user.verify_recovery_code(password)).not_to be false
     # expect(user.recovery_code.last_verified?).to eq true
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Authcat::Password::Attribute::OneTimePassword do
     expect(user).to be_persisted
 
     expect do
-      expect(user.verify_recovery_codes(passwords.first)).not_to eq false
+      expect(user.verify_recovery_codes(passwords.first)).not_to be false
     end
     # end.to change(user, :recovery_codes).to([])
     # expect(user.recovery_codes.first.last_verified?).to eq true

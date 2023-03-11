@@ -10,8 +10,8 @@ RSpec.shared_examples "an engine" do
 
       it "is valid hash string" do
         ciphertext = engine.create(password)
-        expect(validator.call(ciphertext)).to eq true
-        expect(engine.verify(password, ciphertext)).to eq true
+        expect(validator.call(ciphertext)).to be true
+        expect(engine.verify(password, ciphertext)).to be true
       end
     end
 
@@ -20,8 +20,8 @@ RSpec.shared_examples "an engine" do
 
       it "is valid hash string" do
         ciphertext = engine.create(password)
-        expect(validator.call(ciphertext)).to eq true
-        expect(engine.verify(password, ciphertext)).to eq true
+        expect(validator.call(ciphertext)).to be true
+        expect(engine.verify(password, ciphertext)).to be true
       end
     end
   end

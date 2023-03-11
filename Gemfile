@@ -8,11 +8,11 @@ gemspec
 gem "rake", "~> 13.0"
 
 group :test do
+  gem "faker"
   gem "rspec", "~> 3.0"
-  gem 'faker'
 
-  gem 'simplecov', require: false
-  gem 'simplecov-lcov', require: false
+  gem "simplecov", require: false
+  gem "simplecov-lcov", require: false
 end
 
 group :lint do
@@ -47,4 +47,5 @@ gem "state_machines-activerecord", require: false
 group :development do
   gem "debug"
   gem "listen", "~> 3.3"
+  gem "ruby-lsp", require: false
 end
