@@ -8,8 +8,18 @@ module Authcat
       end
 
       module ClassMethods
-        def omniauth
-          @omniauth_middleware = Builder.new(&block)
+        attr_writer :omniauth_options
+
+        def omniauth_options
+          @omniauth_options ||= {}
+        end
+
+        def omniauth_providers
+          @omniauth_providers ||= {}
+        end
+
+        def omniauth_provider(name, *args, **opts, &block)
+          omniauth_providers[name] = [name, args, opts, block]
         end
       end
 

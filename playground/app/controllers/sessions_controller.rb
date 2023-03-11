@@ -10,28 +10,14 @@ class SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token, if: -> { request.env["omniauth.strategy"]&.on_callback_path? }
 
   use OmniAuth::Builder do
-    configure do |config|
-      config.path_prefix = "/sign_in"
-    end
+    klass = User.reflect_on_association(:id_providers).klass
 
-    provider :developer if Rails.env.development?
+    options klass.omniauth_options.merge(path_prefix: "/sign_in")
 
-    if true # ENV.key?("OMNIAUTH_TWITTER_KEY")
-      provider :twitter, ENV.fetch("OMNIAUTH_TWITTER_KEY", nil),
-               ENV.fetch("OMNIAUTH_TWITTER_SECRET", nil)
-    end
-
-    if true # ENV.key?("OMNIAUTH_GITHUB_KEY")
-      provider :github, ENV.fetch("OMNIAUTH_GITHUB_KEY", nil),
-               ENV.fetch("OMNIAUTH_GITHUB_SECRET", nil)
-    end
-
-    if true # ENV.key?("OMNIAUTH_GOOGLE_KEY")
-      provider :google_oauth2, ENV.fetch("OMNIAUTH_GOOGLE_KEY", nil),
-               ENV.fetch("OMNIAUTH_GOOGLE_SECRET", nil)
+    klass.omniauth_providers.each_value do |name, args, opts, block|
+      provider name, *args, **opts, &block
     end
   end
-
 
   # GET /sign_in(/:auth_method)
   def new; end
@@ -80,7 +66,7 @@ class SessionsController < ApplicationController
       :password_challenge, :one_time_password_challenge, :recovery_codes_challenge,
       :remember_me
     ).merge(auth_method: params[:auth_method]).tap do |hash|
-      hash[:idp] = request.env["omniauth.auth"]
+      hash[:id_provider] = request.env["omniauth.auth"]
     end
   end
 end

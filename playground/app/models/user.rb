@@ -4,6 +4,7 @@ class User < ApplicationRecord
   include Authcat::Account
   include Authcat::Session
   include Authcat::IdP
+  include Authcat::WebAuthn
 
   has_many_sessions dependent: :delete_all
   has_many_webauthn_credentials dependent: :delete_all
