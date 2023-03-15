@@ -2,6 +2,19 @@
 
 require "authcat/session"
 
+require "active_record"
+require "faker"
+
+ENV["RACK_ENV"] ||= "test"
+
+ActiveRecord::Base.configurations = YAML.load_file(File.expand_path("support/database.yml", __dir__), aliases: true)
+ActiveRecord::Base.establish_connection ENV["RACK_ENV"].to_sym
+
+ActiveRecord::Migrator.migrations_paths = [File.expand_path("support/db/migrate", __dir__)]
+ActiveRecord::Migration.maintain_test_schema!
+
+Dir[File.expand_path("support/**/*.rb", __dir__)].sort.each { |f| require f }
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserSession < ActiveRecord::Base
-  include Authcat::Session::SignIn
+  include Authcat::Session::SessionRecord
 
   belongs_to :user
 end

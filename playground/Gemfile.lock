@@ -15,8 +15,8 @@ PATH
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.4.2)
     authcat-session (0.1.0)
-      device_detector (>= 1.1.0)
-      geocoder (>= 1.8.0)
+      authcat-identity (= 0.1.0)
+      authcat-password (= 0.1.0)
       zeitwerk (>= 2.4.2)
     authcat-webauthn (0.1.0)
       webauthn (>= 2.5.1)
@@ -114,7 +114,6 @@ GEM
     debug (1.7.1)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
-    device_detector (1.1.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -127,7 +126,6 @@ GEM
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
     ffi (1.15.5)
-    geocoder (1.8.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
@@ -417,4 +415,4 @@ RUBY VERSION
    ruby 2.7.7p221
 
 BUNDLED WITH
-   2.4.8
+   2.4.7

@@ -15,6 +15,8 @@ module Authcat
       end
 
       module ClassMethods
+        attr_writer :identity_name
+
         def identity_name
           @identity_name ||= name.delete_suffix("WebAuthnCredential").downcase
         end

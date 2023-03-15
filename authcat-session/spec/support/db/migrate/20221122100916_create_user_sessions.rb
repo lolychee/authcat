@@ -9,6 +9,6 @@ class CreateUserSessions < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    # add_index :user_sessions, %i[user_id], unique: true
+    add_index :user_sessions, %i[user_id token], unique: true
   end
 end
