@@ -7,5 +7,5 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, on: :save
   validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
-  has_many_id_providers
+  has_many_idp_credentials
 end

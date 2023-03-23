@@ -13,6 +13,8 @@ module Authcat
 
         def validate_each(record, attribute, value)
           challenge = record.public_send(challenge_attribute_name(attribute))
+          record = record.public_send(options[:delegate]) if options[:delegate]
+
           return if challenge_value_equal?(record, attribute, value, challenge)
 
           human_attribute_name = record.class.human_attribute_name(attribute)
@@ -30,8 +32,6 @@ module Authcat
           klass.attr_writer(*attributes.filter_map do |attribute|
             challenge_attribute_name(attribute) unless klass.method_defined?("#{challenge_attribute_name(attribute)}=")
           end)
-
-          klass.delegate(*attributes, to: options[:delegate]) if options[:delegate]
         end
 
         def challenge_attribute_name(attribute)

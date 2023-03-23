@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   # validates :password, allow_nil: true, **PASSWORD_VALIDATE_OPTIONS
 
   has_password :one_time_password, as: :one_time_password
-  has_password :recovery_code, as: :one_time_password, algorithm: :bcrypt
+  has_password :one_time_code, as: :one_time_password, algorithm: :bcrypt
   has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true,
                                 burn_after_verify: true
 

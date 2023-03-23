@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   has_many_sessions dependent: :delete_all
   has_many_webauthn_credentials dependent: :delete_all
-  has_many_id_providers dependent: :delete_all
+  has_many_idp_credentials dependent: :delete_all
 
   identifier :email, as: :email
   identifier :phone_number, as: :phone_number

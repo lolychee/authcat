@@ -5,5 +5,5 @@ Example:
     bin/rails generate authcat:idp User
 
     This will create:
-        db/migrate/20221122100916_create_user_id_providers.rb
-        app/models/user_id_provider.rb
+        db/migrate/20221122100916_create_user_idp_credentials.rb
+        app/models/user_idp_credential.rb

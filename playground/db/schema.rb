@@ -47,16 +47,16 @@ ActiveRecord::Schema.define(version: 2023_01_02_143812) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "user_id_providers", force: :cascade do |t|
+  create_table "user_idp_credentials", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "provider", null: false
     t.string "token", null: false
     t.string "metadata", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["provider", "token"], name: "index_user_id_providers_on_provider_and_token", unique: true
-    t.index ["user_id", "provider", "token"], name: "index_user_id_providers_on_user_id_and_provider_and_token", unique: true
-    t.index ["user_id"], name: "index_user_id_providers_on_user_id"
+    t.index ["provider", "token"], name: "index_user_idp_credentials_on_provider_and_token", unique: true
+    t.index ["user_id", "provider", "token"], name: "index_user_idp_credentials_on_user_id_and_provider_and_token", unique: true
+    t.index ["user_id"], name: "index_user_idp_credentials_on_user_id"
   end
 
   create_table "user_sessions", force: :cascade do |t|
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2023_01_02_143812) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "sessions", "users"
-  add_foreign_key "user_id_providers", "users"
+  add_foreign_key "user_idp_credentials", "users"
   add_foreign_key "user_sessions", "users"
   add_foreign_key "user_webauthn_credentials", "users"
 end

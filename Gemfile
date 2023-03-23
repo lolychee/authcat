@@ -47,5 +47,4 @@ gem "state_machines-activerecord", require: false
 group :development do
   gem "debug"
   gem "listen", "~> 3.3"
-  gem "ruby-lsp", require: false
 end

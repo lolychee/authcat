@@ -11,15 +11,14 @@ RSpec.describe Authcat::Password::Attribute::OneTimePassword do
     expect(user.one_time_password).to eq user.one_time_password.now
   end
 
-  it "has recovery_code" do
+  it "has one_time_code" do
     user = User.create(email: "test@email.com")
     password = "abc123456"
-    user.regenerate_recovery_code(password)
+    user.regenerate_one_time_code(password)
 
     expect(user).to be_persisted
 
-    expect(user.verify_recovery_code(password)).not_to be false
-    # expect(user.recovery_code.last_verified?).to eq true
+    expect(user.verify_one_time_code(password)).not_to be false
   end
 
   it "has recovery_codes" do

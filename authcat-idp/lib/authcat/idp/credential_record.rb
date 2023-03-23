@@ -2,7 +2,7 @@
 
 module Authcat
   module IdP
-    module IdProviderRecord
+    module CredentialRecord
       def self.included(base)
         base.extend ClassMethods
         base.include Authcat::IdP::Omniauth
@@ -15,7 +15,7 @@ module Authcat
         attr_writer :identity_name
 
         def identity_name
-          @identity_name ||= name.delete_suffix("IdProvider").downcase
+          @identity_name ||= name.delete_suffix("IdPCredential").downcase
         end
       end
     end

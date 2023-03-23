@@ -31,7 +31,7 @@ module Authcat
       generate_abstract_class if database && !custom_parent?
 
       # generate "migration AddWebAuthnColumnsTo#{identity_name} webauthn_user_id:string webauthn_challenge:string"
-      inject_into_file "app/models/#{identity_singular_name}.rb", "  has_many_id_providers\n",
+      inject_into_file "app/models/#{identity_singular_name}.rb", "  has_many_idp_credentials\n",
                        after: /class #{identity_name}.*\n/
 
       template "model.rb", File.join("app/models", class_path, "#{file_name}.rb")
@@ -46,7 +46,7 @@ module Authcat
     end
 
     def name
-      "#{identity_name}IdProvider"
+      "#{identity_name}IdPCredential"
     end
 
     def parse_attributes!

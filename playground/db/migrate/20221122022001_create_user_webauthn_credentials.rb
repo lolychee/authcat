@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUserWebAuthnCredentials < ActiveRecord::Migration[6.1]
   def change
     create_table :user_webauthn_credentials do |t|
@@ -9,6 +11,6 @@ class CreateUserWebAuthnCredentials < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_index :user_webauthn_credentials, [:user_id, :webauthn_id], unique: true
+    add_index :user_webauthn_credentials, %i[user_id webauthn_id], unique: true
   end
 end

@@ -67,7 +67,7 @@ module Authcat
       end
 
       def define_verifier!
-        method_name = :"verify_#{attribute_name}"
+        method_name = :"verify_#{attribute_name.to_s.singularize}"
         model.define_model_callbacks method_name
         model.class_eval <<~RUBY, __FILE__, __LINE__ + 1
           def #{method_name}(value)

@@ -12,16 +12,16 @@
 
 ActiveRecord::Schema.define(version: 2022_11_22_100916) do
 
-  create_table "user_id_providers", force: :cascade do |t|
+  create_table "user_idp_credentials", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "provider", null: false
     t.string "token", null: false
     t.string "metadata", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["provider", "token"], name: "index_user_id_providers_on_provider_and_token", unique: true
-    t.index ["provider", "user_id"], name: "index_user_id_providers_on_provider_and_user_id", unique: true
-    t.index ["user_id"], name: "index_user_id_providers_on_user_id"
+    t.index ["provider", "token"], name: "index_user_idp_credentials_on_provider_and_token", unique: true
+    t.index ["provider", "user_id"], name: "index_user_idp_credentials_on_provider_and_user_id", unique: true
+    t.index ["user_id"], name: "index_user_idp_credentials_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -32,5 +32,5 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "user_id_providers", "users"
+  add_foreign_key "user_idp_credentials", "users"
 end

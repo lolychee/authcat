@@ -44,13 +44,13 @@ module Authcat
       "#{identity_name}Session"
     end
 
-  def parse_attributes!
-    self.attributes = [
-      Rails::Generators::GeneratedAttribute.parse("#{identity_singular_name}:belongs_to"),
-      Rails::Generators::GeneratedAttribute.new("token", "string", false, { null: false }),
-      Rails::Generators::GeneratedAttribute.new("name", "string", false, { null: false }),
-    ] + super
-  end
+    def parse_attributes!
+      self.attributes = [
+        Rails::Generators::GeneratedAttribute.parse("#{identity_singular_name}:belongs_to"),
+        Rails::Generators::GeneratedAttribute.new("token", "string", false, { null: false }),
+        Rails::Generators::GeneratedAttribute.new("name", "string", false, { null: false })
+      ] + super
+    end
 
     def attributes_with_index
       attributes.select { |a| !a.reference? && a.has_index? }

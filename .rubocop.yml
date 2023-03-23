@@ -27,6 +27,7 @@ AllCops:
     - "*/node_modules/**/*"
 
 Style/Documentation:
+  Enabled: false
   Exclude:
     - "**/db/migrate/*"
 

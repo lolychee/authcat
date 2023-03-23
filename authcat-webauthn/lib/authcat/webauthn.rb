@@ -29,6 +29,10 @@ module Authcat
       def has_many_webauthn_credentials(**opts)
         attribute :webauthn_user_id, default: -> { ::WebAuthn.generate_user_id }
         has_many :webauthn_credentials, class_name: "#{name}WebAuthnCredential", extend: Extension, **opts
+
+        define_method(:verify_webauthn_credential) do |credential|
+          webauthn_credentials.verify(credential)
+        end
       end
     end
 

@@ -24,9 +24,13 @@ module Authcat
     end
 
     module ClassMethods
-      def has_many_id_providers(**opts)
-        # self.identifier_attributes << :id_providers
-        has_many :id_providers, class_name: "#{name}IdProvider", extend: Extension, **opts
+      def has_many_idp_credentials(**opts)
+        # self.identifier_attributes << :idp_credentials
+        has_many :idp_credentials, class_name: "#{name}IdPCredential", extend: Extension, **opts
+
+        define_method(:verify_idp_credential) do |idp|
+          idp_credentials.verify(idp)
+        end
       end
     end
   end
