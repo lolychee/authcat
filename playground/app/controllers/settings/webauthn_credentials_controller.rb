@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Settings
-  class WebAuthnCredentialsController < SettingsController
+  class WebAuthnCredentialsController < BaseController
     before_action :set_webauthn_credential, only: %i[show update destroy]
 
     def new

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Settings
-  class OneTimePasswordsController < SettingsController
+  class OneTimePasswordsController < BaseController
     around_action(only: %i[create update]) do |_controller, action|
       with_saved_state(@user, unless: :enable_one_time_password_completed?, &action)
     end

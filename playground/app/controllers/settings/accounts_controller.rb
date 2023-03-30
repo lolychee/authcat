@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Settings
-  class AccountsController < SettingsController
+  class AccountsController < BaseController
     def show; end
 
     def update

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Settings
-  class SecuritiesController < SettingsController
+  class SecuritiesController < BaseController
   end
 end

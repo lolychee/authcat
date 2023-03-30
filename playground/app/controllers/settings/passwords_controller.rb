@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Settings
-  class PasswordsController < SettingsController
+  class PasswordsController < BaseController
     def show; end
 
     def update

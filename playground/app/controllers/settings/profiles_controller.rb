@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Settings
-  class ProfilesController < SettingsController
+  class ProfilesController < BaseController
     def show; end
 
     def update
