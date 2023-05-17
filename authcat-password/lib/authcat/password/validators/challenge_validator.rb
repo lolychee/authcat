@@ -13,7 +13,6 @@ module Authcat
 
         def validate_each(record, attribute, value)
           challenge = record.public_send(challenge_attribute_name(attribute))
-          record = record.public_send(options[:delegate]) if options[:delegate]
 
           return if challenge_value_equal?(record, attribute, value, challenge)
 
@@ -39,6 +38,8 @@ module Authcat
         end
 
         def challenge_value_equal?(record, attribute, _value, challenge)
+          record = record.public_send(options[:delegate]) if options[:delegate]
+
           case options[:with]
           when String, Symbol
             attribute = options[:with]
