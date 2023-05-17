@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
-class SessionsController < ApplicationController
-  before_action :set_new_session, only: %i[new create]
-  before_action :set_session, only: %i[destroy]
-  around_action(only: %i[create]) do |_controller, action|
-    with_saved_state(@session, unless: :sign_in_completed?, &action)
-  end
+class UserSessionsController < ApplicationController
+  before_action :set_user_session
 
   skip_before_action :verify_authenticity_token, if: -> { request.env["omniauth.strategy"]&.on_callback_path? }
 
   use OmniAuth::Builder do
-    klass = User.reflect_on_association(:id_providers).klass
+    klass = User.reflect_on_association(:idp_credentials).klass
 
     options klass.omniauth_options.merge(path_prefix: "/sign_in")
 
@@ -25,9 +21,8 @@ class SessionsController < ApplicationController
   # POST /sign_in(/:auth_method)
   def create
     respond_to do |format|
-      if @session.sign_in(session_params)
-        if @session.sign_in_completed?
-
+      if @user_session.sign_in(user_session_params)
+        if @user_session.authenticated?
           format.html { redirect_to root_url }
         else
           format.html { render :new, status: :accepted }
@@ -40,7 +35,7 @@ class SessionsController < ApplicationController
 
   # POST /sign_out
   def destroy
-    @session.sign_out
+    @user_session&.sign_out
 
     respond_to do |format|
       format.html { redirect_to root_url }
@@ -50,23 +45,24 @@ class SessionsController < ApplicationController
   private
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_new_session
-    @session = Session.new
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_session
-    @session = current_session || Session.new(auth_method: params[:auth_method])
+  def set_user_session
+    @user_session = current_session || UserSession.new
+    @user_session.tap do |s|
+      if request.env["omniauth.auth"].present?
+        s.assign_attributes(auth_method: "idp", idp_credential: request.env["omniauth.auth"])
+      elsif !s.valid_auth_method?(params[:auth_method])
+        redirect_to action: :new, auth_method: s.default_auth_method
+      end
+      s.assign_attributes(params.permit(:auth_method))
+    end
   end
 
   # Only allow a list of trusted parameters through.
-  def session_params
+  def user_session_params
     params.required(:user_session).permit(
       :login, :email, :phone_number,
       :password_challenge, :one_time_password_challenge, :recovery_codes_challenge,
       :remember_me
-    ).merge(auth_method: params[:auth_method]).tap do |hash|
-      hash[:id_provider] = request.env["omniauth.auth"]
-    end
+    )
   end
 end

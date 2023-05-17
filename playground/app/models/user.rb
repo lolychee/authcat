@@ -7,6 +7,7 @@ class User < ApplicationRecord
   include Authcat::WebAuthn
 
   has_many_sessions dependent: :delete_all
+  # has_many_password_credentials dependent: :delete_all
   has_many_webauthn_credentials dependent: :delete_all
   has_many_idp_credentials dependent: :delete_all
 
@@ -32,6 +33,30 @@ class User < ApplicationRecord
   extra_action :sign_up, do: :save
 
   extra_action :update_profile, do: :save
+
+  def two_factor_authentication_required?
+    one_time_password?
+  end
+
+  def default_auth_method
+    "password"
+  end
+
+  def avaliable_identify_auth_methods
+    %w[login]
+  end
+
+  def avaliable_auth_methods
+    %w[password]
+  end
+
+  def avaliable_two_factor_auth_methods
+    %w[one_time_password recovery_code]
+  end
+
+  def default_two_factor_auth_method
+    one_time_password? ? "one_time_password" : "recovery_code"
+  end
 
   include Authcat::Account::ChangePassword[:password]
   include Authcat::Account::EnableOneTimePassword[:one_time_password]

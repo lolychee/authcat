@@ -2,14 +2,14 @@
 
 one:
   id: 1
-  email: test@email.com
-  password: "$2a$12$Q3/DF6wq/pDct2iRXzTwlupxkI6fg5S.Z9FJI.ecM3eEJ633yHAsG"
   name: User 1
+  email: user1@email.com
+  password: "<%= User.password.create('123456') %>"
 
 two:
   id: 2
-  email: test2@email.com
-  password: "$2a$12$Q3/DF6wq/pDct2iRXzTwlupxkI6fg5S.Z9FJI.ecM3eEJ633yHAsG"
-  one_time_password: "JRUDLDI6VGJ7SFWLYOU5RQ5MXKDIZRWO"
-  recovery_codes: '["$2a$12$hmD3qKfK9Zzi/iHEK.V.teudmg0yX.zIM28yFmyXy5UcmqXI4AdA6", "$2a$12$RBTyRVgVUDpw.EURIJ.ic.afrGZmDhHKGNWWslSmuOUpfikm5F6aW"]'
   name: User 2
+  email: user2@email.com
+  password: "<%= User.password.create('123456') %>"
+  one_time_password: "<%= User.one_time_password.create %>"
+  recovery_codes: '<%= User.recovery_codes.create(["qwerty", "123456"]).to_json %>'

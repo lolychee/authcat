@@ -9,14 +9,15 @@ module Authentication
   end
 
   def authenticate_session
-    Current.session = Session.find_signed(cookies[:access_token], purpose: :access_token)
+    Current.session = UserSession.find_signed(cookies[:access_token], purpose: :access_token)
 
     yield
 
     if Current.session.nil? || Current.session.destroyed?
       cookies.delete(:access_token)
     elsif Current.session.persisted? && Current.session.previously_new_record?
-      (Current.session.remember_me ? cookies.permanent : cookies)[:access_token] = Current.session.signed_id(purpose: :access_token)
+      (Current.session.remember_me ? cookies.permanent : cookies)[:access_token] =
+        Current.session.signed_id(purpose: :access_token)
     end
   end
 
@@ -29,10 +30,10 @@ module Authentication
   end
 
   def authenticate_user!
-    if current_user.nil?
-      respond_to do |format|
-        format.html { redirect_to sign_in_url }
-      end
+    return unless current_user.nil?
+
+    respond_to do |format|
+      format.html { redirect_to sign_in_url }
     end
   end
 end
