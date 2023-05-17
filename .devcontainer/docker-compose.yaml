@@ -11,8 +11,8 @@ services:
         VARIANT: 3.2
         NODE_VERSION: 14
     volumes:
-      - bundle:/usr/local/bundle
       - rvm:/usr/local/rvm
+
       - tmp_cache:/workspaces/authcat/playground/tmp/cache
       - node_modules:/workspaces/authcat/playground/node_modules
 
@@ -35,7 +35,6 @@ services:
       - POSTGRES_PASSWORD=authcat
 
 volumes:
-  bundle:
   rvm:
   postgres:
   tmp_cache:

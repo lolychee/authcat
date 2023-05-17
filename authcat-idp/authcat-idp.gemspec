@@ -30,7 +30,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "omniauth", ">= 2.0"
-  spec.add_dependency "zeitwerk", ">= 2.4.2"
+  spec.add_dependency "zeitwerk", ">= 2.6.8"
+
+  spec.add_dependency "authcat", version
 
   spec.metadata["rubygems_mfa_required"] = "true"
 end

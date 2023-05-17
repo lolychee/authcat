@@ -36,15 +36,27 @@ gem "database_cleaner", "~> 2.0"
 gem "pg", require: false
 gem "sqlite3"
 
+gem "dry-container"
+
 gem "bcrypt"
 gem "phonelib",     require: false
 gem "rotp",         require: false
 gem "valid_email2", require: false
 gem "webauthn",     require: false
+gem "omniauth",     require: false
 
 gem "state_machines-activerecord", require: false
 
 group :development do
   gem "debug"
   gem "listen", "~> 3.3"
+end
+
+path "." do
+  gem "authcat-account",  require: false
+  gem "authcat-identity", require: false
+  gem "authcat-idp",      require: false
+  gem "authcat-password", require: false
+  gem "authcat-session",  require: false
+  gem "authcat-webauthn", require: false
 end

@@ -1,26 +1,31 @@
 PATH
   remote: ..
   specs:
+    authcat (0.1.0)
     authcat-account (0.1.0)
       authcat-identity (~> 0.1.0)
       authcat-password (~> 0.1.0)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-identity (0.1.0)
+      authcat (= 0.1.0)
       dry-container (>= 0.7.2)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-idp (0.1.0)
+      authcat (= 0.1.0)
       omniauth (>= 2.0)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-password (0.1.0)
+      authcat (= 0.1.0)
       dry-container (>= 0.7.2)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-session (0.1.0)
       authcat-identity (= 0.1.0)
       authcat-password (= 0.1.0)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-webauthn (0.1.0)
+      authcat (= 0.1.0)
       webauthn (>= 2.5.1)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
 
 GEM
   remote: https://rubygems.org/
@@ -354,7 +359,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   x86_64-darwin-20
@@ -403,7 +408,7 @@ DEPENDENCIES
   webpacker (~> 5.0)
 
 RUBY VERSION
-   ruby 3.2.1p31
+   ruby 3.2.2p53
 
 BUNDLED WITH
-   2.4.9
+   2.4.13

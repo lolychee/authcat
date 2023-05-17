@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "zeitwerk", ">= 2.4.2"
+  spec.add_dependency "zeitwerk", ">= 2.6.8"
 
   spec.add_dependency "authcat-identity",     "~> #{version}"
   spec.add_dependency "authcat-password",     "~> #{version}"

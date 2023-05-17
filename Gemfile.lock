@@ -1,28 +1,35 @@
 PATH
   remote: .
   specs:
-    authcat (0.1.0)
-      authcat-identity (= 0.1.0)
-      authcat-idp (= 0.1.0)
-      authcat-password (= 0.1.0)
-      authcat-session (= 0.1.0)
-      authcat-webauthn (= 0.1.0)
+    authcat-account (0.1.0)
+      authcat-identity (~> 0.1.0)
+      authcat-password (~> 0.1.0)
+      zeitwerk (>= 2.6.8)
     authcat-identity (0.1.0)
+      authcat (= 0.1.0)
       dry-container (>= 0.7.2)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-idp (0.1.0)
+      authcat (= 0.1.0)
       omniauth (>= 2.0)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-password (0.1.0)
+      authcat (= 0.1.0)
       dry-container (>= 0.7.2)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-session (0.1.0)
       authcat-identity (= 0.1.0)
       authcat-password (= 0.1.0)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
     authcat-webauthn (0.1.0)
+      authcat (= 0.1.0)
       webauthn (>= 2.5.1)
-      zeitwerk (>= 2.4.2)
+      zeitwerk (>= 2.6.8)
+
+PATH
+  remote: .
+  specs:
+    authcat (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -302,18 +309,26 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
   authcat!
+  authcat-account!
+  authcat-identity!
+  authcat-idp!
+  authcat-password!
+  authcat-session!
+  authcat-webauthn!
   bcrypt
   database_cleaner (~> 2.0)
   debug
+  dry-container
   faker
   listen (~> 3.3)
+  omniauth
   pg
   phonelib
   rails (~> 6.1)
@@ -336,4 +351,4 @@ DEPENDENCIES
   webauthn
 
 BUNDLED WITH
-   2.4.9
+   2.4.13

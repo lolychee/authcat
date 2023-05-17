@@ -4,6 +4,9 @@
 			"path": ".."
 		},
 		{
+			"path": "../authcat-account"
+		},
+		{
 			"path": "../authcat-identity"
 		},
 		{
@@ -24,7 +27,7 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-{identity,idp,password,session,webauthn}": true,
+			"authcat-{account,identity,idp,password,session,webauthn}": true,
 			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
@@ -35,5 +38,6 @@
 		"editor.formatOnSave": true,
 		"editor.insertSpaces": true,
 		"editor.semanticHighlighting.enabled": true,
+		"rubyTestExplorer.testFramework": "rspec",
 	},
 }

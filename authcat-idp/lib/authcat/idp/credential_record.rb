@@ -5,7 +5,7 @@ module Authcat
     module CredentialRecord
       def self.included(base)
         base.extend ClassMethods
-        base.include Authcat::IdP::Omniauth
+        base.include Omniauth
 
         base.validates :provider, presence: true, uniqueness: { scope: :"#{base.identity_name}_id" }
         base.validates :token, presence: true, uniqueness: { scope: :provider }
