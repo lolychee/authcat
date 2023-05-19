@@ -7,6 +7,9 @@
 			"path": "../authcat-account"
 		},
 		{
+			"path": "../authcat-credential"
+		},
+		{
 			"path": "../authcat-identity"
 		},
 		{
@@ -27,7 +30,7 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-{account,identity,idp,password,session,webauthn}": true,
+			"authcat-{account,redential,identity,idp,password,session,webauthn}": true,
 			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
