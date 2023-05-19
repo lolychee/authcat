@@ -30,7 +30,7 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-{account,redential,identity,idp,password,session,webauthn}": true,
+			"authcat-{account,credential,identity,idp,password,session,webauthn}": true,
 			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",

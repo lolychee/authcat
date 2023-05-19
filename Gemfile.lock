@@ -2,8 +2,7 @@ PATH
   remote: .
   specs:
     authcat-account (0.1.0)
-      authcat-identity (~> 0.1.0)
-      authcat-password (~> 0.1.0)
+      authcat (= 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-identity (0.1.0)
       authcat (= 0.1.0)

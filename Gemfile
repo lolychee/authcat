@@ -39,11 +39,11 @@ gem "sqlite3"
 gem "dry-container"
 
 gem "bcrypt"
+gem "omniauth",     require: false
 gem "phonelib",     require: false
 gem "rotp",         require: false
 gem "valid_email2", require: false
 gem "webauthn",     require: false
-gem "omniauth",     require: false
 
 gem "state_machines-activerecord", require: false
 
