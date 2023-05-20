@@ -3,7 +3,7 @@
 version = File.read(File.expand_path("../AUTHCAT_VERSION", __dir__)).strip
 
 Gem::Specification.new do |spec|
-  spec.name          = "authcat-account"
+  spec.name          = "authcat-credential"
   spec.version       = version
   spec.authors       = ["lychee xing"]
   spec.email         = ["lolychee@gmail.com"]
@@ -33,6 +33,9 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "zeitwerk", ">= 2.6.8"
+
+  spec.add_dependency "activesupport", ">= 6.1.0"
+  spec.add_dependency "dry-container", ">= 0.7.2"
 
   spec.add_dependency "authcat", version
 
