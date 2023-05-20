@@ -2,8 +2,8 @@
 
 module Authcat
   module Identity
-    module Identifiers
-      module Username
+    module Type
+      class Identifier < Authcat::Credential::Type::Credential
       end
     end
   end

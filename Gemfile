@@ -53,10 +53,11 @@ group :development do
 end
 
 path "." do
-  gem "authcat-account",  require: false
-  gem "authcat-identity", require: false
-  gem "authcat-idp",      require: false
-  gem "authcat-password", require: false
-  gem "authcat-session",  require: false
-  gem "authcat-webauthn", require: false
+  gem "authcat-account",      require: false
+  gem "authcat-credential",   require: false
+  gem "authcat-identity",     require: false
+  gem "authcat-idp",          require: false
+  gem "authcat-password",     require: false
+  gem "authcat-session",      require: false
+  gem "authcat-webauthn",     require: false
 end
