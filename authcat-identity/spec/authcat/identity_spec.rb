@@ -2,6 +2,7 @@
 
 RSpec.describe Authcat::Identity do
   let(:email) { "email@example.com" }
+  let(:token) { "token" }
   let(:public_email) { "public_email@example.com" }
   let(:phone_number) { "13012345678" }
 
@@ -11,6 +12,14 @@ RSpec.describe Authcat::Identity do
     user = User.new
 
     expect(user.identify({ email: email })).to be_persisted
+  end
+
+  it "identify by token" do
+    User.create(token: token)
+
+    user = User.new
+
+    expect(user.identify({ token: token })).to be_persisted
   end
 
   it "identify by phone number" do

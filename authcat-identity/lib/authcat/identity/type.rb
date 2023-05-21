@@ -7,7 +7,7 @@ module Authcat
 
       register(:email) { Email }
       register(:phone_number) { PhoneNumber }
-      # register(:token) { Token }
+      register(:token) { Token }
       # register(:username) { Username }
     end
   end

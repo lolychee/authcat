@@ -7,7 +7,7 @@ module Authcat
         def initialize(owner, name, options)
           as = options.delete(:as) || :identifier
           super
-          @type = Identity::Type.resolve(as)
+          @type_klass = Identity::Type.resolve(as)
           @type_options = options
         end
 
@@ -22,7 +22,7 @@ module Authcat
 
         def setup_attribute!
           owner.attribute name do |cast_type|
-            @type.new(cast_type, **@type_options)
+            @type_klass.new(cast_type, **@type_options)
           end
         end
 

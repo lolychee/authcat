@@ -6,6 +6,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
 
     create_table :users do |t|
       t.string :email, index: { unique: true }
+      t.string :token, index: { unique: true }
 
       # t.string :email_ciphertext
       # t.string :email_bidx, index: { unique: true }
