@@ -5,7 +5,7 @@ module Authcat
     module Association
       class HasOne < Authcat::Credential::Association::HasOne
         def initialize(owner, name, options)
-          @identifier_type = options.delete(:as)
+          @type = options.delete(:as)
           options[:inverse_of] = owner.name.underscore.to_sym
           options[:class_name] ||= "#{owner.name}Identifier"
 
@@ -33,7 +33,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{owner.name.underscore}_id: id, identifier: value, identifier_type: "#{@identifier_type}")
+                build_#{name}(#{owner.name.underscore}_id: id, identifier: value, type: "#{@type}")
               end
             end
           CODE

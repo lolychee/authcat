@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identity
+  module Password
     module Association
-      class HasMany < Authcat::Credential::Association::HasMany
+      class HasOne < Authcat::Credential::Association::HasOne
         def initialize(owner, name, options)
           @type = options.delete(:as)
           options[:inverse_of] = owner.name.underscore.to_sym
-          options[:class_name] ||= "#{owner.name}Identifier"
+          options[:class_name] ||= "#{owner.name}Password"
 
           super(owner, name, options)
         end
@@ -23,7 +23,7 @@ module Authcat
 
         def setup_relation!
           name = self.name
-          owner.has_many(name, -> { where(name: name) }, **options)
+          owner.has_one(name, -> { where(name: name) }, **options)
         end
 
         def setup_instance_methods!
@@ -33,7 +33,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{owner.name.underscore}_id: id, identifier: value, type: "#{@type}")
+                build_#{name}(#{owner.name.underscore}_id: id, identifier: value, identifier_type: "#{@type}")
               end
             end
           CODE

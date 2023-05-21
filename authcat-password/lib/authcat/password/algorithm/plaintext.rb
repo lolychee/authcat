@@ -2,6 +2,9 @@
 
 module Authcat
   module Password
-    VERSION = "0.1.0"
+    module Algorithm
+      class Plaintext < ::String
+      end
+    end
   end
 end
