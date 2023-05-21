@@ -10,8 +10,7 @@ RSpec.describe Authcat::Identity do
 
     user = User.new
 
-    expect(user.identify({ email: email })).to be_a User
-    expect(user.persisted?).to be true
+    expect(user.identify({ email: email })).to be_persisted
   end
 
   it "identify by phone number" do
@@ -19,8 +18,7 @@ RSpec.describe Authcat::Identity do
 
     user = User.new
 
-    expect(user.identify({ phone_number: phone_number })).to be_a User
-    expect(user.persisted?).to be true
+    expect(user.identify({ phone_number: phone_number })).to be_persisted
   end
 
   it "identify by public_email" do
@@ -28,8 +26,7 @@ RSpec.describe Authcat::Identity do
 
     user = User.new
 
-    expect(user.identify({ public_email: public_email })).to be_a User
-    expect(user.persisted?).to be true
+    expect(user.identify({ public_email: public_email })).to be_persisted
   end
 
   it "identify by emails" do
@@ -39,7 +36,7 @@ RSpec.describe Authcat::Identity do
 
     user = User.new
 
-    expect(user.identify({ emails: "2#{public_email}" })).to be_a User
-    expect(user.persisted?).to be true
+    expect(user.identify({ emails: "2#{public_email}" })).to be_persisted
+    expect(user.identify({ emails: "3#{public_email}" })).to be_persisted
   end
 end
