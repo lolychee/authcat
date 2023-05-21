@@ -15,7 +15,7 @@ module Authcat
           credential = JSON.parse(credential) if credential.is_a?(String)
           case credential
           when Hash
-            owner.includes(name).find_by(name => { webauthn_id: credential["id"] }).tap do |r|
+            owner.includes(name).find_by(name => { name: name, webauthn_id: credential["id"] }).tap do |r|
               return nil unless r && r.send(name).first.verify(credential: ::WebAuthn::Credential.from_get(credential))
             end
           end

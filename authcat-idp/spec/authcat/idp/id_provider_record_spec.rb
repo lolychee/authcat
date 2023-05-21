@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Authcat::IdP::CredentialRecord do
+RSpec.describe Authcat::IdP::Record do
   let(:user) { User.create(email: Faker::Internet.email) }
   let(:idp) { OmniAuth::AuthHash.new(Faker::Omniauth.google) }
   let(:user_idp_credential) { user.idp_credentials.create(idp) }

@@ -46,7 +46,6 @@ RSpec.describe Authcat::Identity do
     user = User.new
 
     expect(user.identify({ emails: "2#{public_email}" })).to be_persisted
-    binding.irb
     expect(user.identify({ emails: "3#{public_email}" })).to be_persisted
   end
 end

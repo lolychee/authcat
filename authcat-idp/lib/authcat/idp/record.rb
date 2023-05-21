@@ -2,7 +2,7 @@
 
 module Authcat
   module IdP
-    module CredentialRecord
+    module Record
       def self.included(base)
         base.extend ClassMethods
         base.include Omniauth

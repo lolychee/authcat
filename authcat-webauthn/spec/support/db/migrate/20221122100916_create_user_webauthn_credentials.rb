@@ -12,7 +12,8 @@ class CreateUserWebAuthnCredentials < ActiveRecord::Migration[6.1]
       t.string :challenge
 
       t.timestamps
+
+      t.index %i[name user_id webauthn_id], unique: true
     end
-    add_index :user_webauthn_credentials, %i[user_id webauthn_id], unique: true
   end
 end

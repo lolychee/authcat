@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserIdPCredential < ApplicationRecord
-  include Authcat::IdP::CredentialRecord
+  include Authcat::IdP::Record
 
   belongs_to :user
 
