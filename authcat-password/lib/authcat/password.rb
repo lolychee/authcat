@@ -21,7 +21,7 @@ module Authcat
 
     module ClassMethods
       def passwords
-        credentials.filter do |credential|
+        credentials.select do |_, credential|
           case credential
           when Association::Attribute, Association::HasOne, Association::HasMany
             true

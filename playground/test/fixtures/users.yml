@@ -4,12 +4,12 @@ one:
   id: 1
   name: User 1
   email: user1@email.com
-  password: "<%= User.password.create('123456') %>"
+  password: "<%= User.passwords[:password].create('123456') %>"
 
 two:
   id: 2
   name: User 2
   email: user2@email.com
-  password: "<%= User.password.create('123456') %>"
-  one_time_password: "<%= User.one_time_password.create %>"
-  recovery_codes: '<%= User.recovery_codes.create(["qwerty", "123456"]).to_json %>'
+  password: "<%= User.passwords[:password].create('123456') %>"
+  one_time_password: "<%= User.passwords[:one_time_password].create('') %>"
+  recovery_codes: '<%= User.passwords[:recovery_codes].create(["qwerty", "123456"]).to_json %>'

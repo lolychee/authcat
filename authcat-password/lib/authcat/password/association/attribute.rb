@@ -11,9 +11,9 @@ module Authcat
           @type_options = options
         end
 
-        # def identify(value)
-        #   owner.find_by(name => value)
-        # end
+        def create(value)
+          owner.type_for_attribute(name).encoder.parse(Algorithm::Plaintext.new(value.to_s))
+        end
 
         def setup!
           setup_attribute!

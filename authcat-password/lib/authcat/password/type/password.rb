@@ -6,13 +6,17 @@ module Authcat
       class Password < Authcat::Credential::Type::Credential
         attr_reader :options
 
+        # @return [Symbol, String, self]
+        class_attribute :default_algorithm
+
         def initialize(cast_type, **options)
+          options[:algorithm] ||= default_algorithm
           @options = options
           super(cast_type, encoder)
         end
 
         def encoder
-          @encoder ||= Encoder.new(Value, **options)
+          @encoder ||= Encoder.new(Algorithm.resolve(options.delete(:algorithm)), **options)
         end
 
         def serialize(value)

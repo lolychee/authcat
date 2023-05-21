@@ -3,7 +3,7 @@
 module Authcat
   module Password
     module Type
-      class OneTimePassword < Digest
+      class OneTimePassword < Password
         # @return [Symbol, String, self]
         self.default_algorithm = :totp
       end

@@ -12,8 +12,8 @@ module Authcat
           super(owner, name, options)
         end
 
-        def identify(value)
-          owner.includes(name).find_by(name => { identifier: value })
+        def create(value)
+          owner.type_for_attribute(name).encoder.parse(Algorithm::Plaintext.new(value.to_s))
         end
 
         def setup!

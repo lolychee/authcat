@@ -43,6 +43,9 @@ module Authcat
             load(value).to_s
           end
         end
+
+        class Value < String
+        end
       end
     end
   end

@@ -5,6 +5,7 @@ module Authcat
     module Type
       include Authcat::Credential::Registryable
 
+      register(:identifier) { Identifier }
       register(:email) { Email }
       register(:phone_number) { PhoneNumber }
       register(:token) { Token }
