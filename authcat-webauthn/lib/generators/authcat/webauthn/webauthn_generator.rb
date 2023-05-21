@@ -54,6 +54,7 @@ module Authcat
         Rails::Generators::GeneratedAttribute.parse("#{identity_singular_name}:belongs_to"),
         Rails::Generators::GeneratedAttribute.new("webauthn_id", "string", false, { null: false }),
         Rails::Generators::GeneratedAttribute.new("name", "string", false, { null: false }),
+        Rails::Generators::GeneratedAttribute.new("title", "string", false, { null: false }),
         Rails::Generators::GeneratedAttribute.new("public_key", "string", false, { null: false }),
         Rails::Generators::GeneratedAttribute.new("sign_count", "integer", false, { null: false })
       ] + super

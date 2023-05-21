@@ -35,8 +35,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "webauthn", ">= 2.5.1"
   spec.add_dependency "zeitwerk", ">= 2.6.8"
 
-  spec.add_dependency "authcat", version
+  spec.add_dependency "authcat-credential", version
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
+  spec.metadata["rubygems_mfa_required"] = "true"
 end

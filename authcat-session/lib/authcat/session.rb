@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_support"
+
 require "authcat"
 require "zeitwerk"
 
@@ -15,14 +17,8 @@ end
 
 module Authcat
   module Session
-    def self.included(base)
-      base.extend ClassMethods
-    end
+    extend ActiveSupport::Concern
 
-    module ClassMethods
-      def has_many_sessions(**opts, &block)
-        has_many :sessions, class_name: "#{name}Session", **opts, &block
-      end
-    end
+    include Marcos
   end
 end

@@ -33,7 +33,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{owner.name.underscore}_id: id, identifier: value, identifier_type: "#{@type}")
+                build_#{name}(#{options[:inverse_of]}: self, identifier: value, identifier_type: "#{@type}")
               end
             end
           CODE

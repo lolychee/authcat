@@ -1,29 +1,28 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identity
+  module Session
     module Association
-      class HasOne < Authcat::Credential::Association::HasOne
+      class HasMany < Authcat::Credential::Association::HasMany
         def initialize(owner, name, options)
-          @type = options.delete(:as)
           options[:inverse_of] = owner.name.underscore.to_sym
-          options[:class_name] ||= "#{owner.name}Identifier"
+          options[:class_name] ||= "#{owner.name}Session"
 
           super(owner, name, options)
         end
 
         def identify(value)
-          owner.includes(name).find_by(name => { identifier: value })
+          owner.includes(name).find_by(name => { token: value })
         end
 
         def setup!
           setup_relation!
-          setup_instance_methods!
+          # setup_instance_methods!
         end
 
         def setup_relation!
           name = self.name
-          owner.has_one(name, -> { where(name: name) }, **options)
+          owner.has_many(name, -> { where(name: name) }, **options)
         end
 
         def setup_instance_methods!
@@ -33,7 +32,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{options[:inverse_of]}: self, identifier: value, identifier_type: "#{@type}")
+                build_#{name}(#{options[:inverse_of]}: self, token: value)
               end
             end
           CODE

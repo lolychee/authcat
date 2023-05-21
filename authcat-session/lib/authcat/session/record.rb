@@ -2,7 +2,7 @@
 
 module Authcat
   module Session
-    module SessionRecord
+    module Record
       def self.included(base)
         base.extend ClassMethods
 

@@ -6,10 +6,10 @@ RSpec.describe Authcat::WebAuthn do
   let(:origin) { "http://localhost.test" }
   let(:user) { User.create(email: "user@email.com") }
   let(:user2) { User.create(email: "user2@email.com") }
-  let(:client) { ::WebAuthn::FakeClient.new(origin) }
+  let(:client) { WebAuthn::FakeClient.new(origin) }
 
   before do
-    ::WebAuthn.configuration.origin = origin
+    WebAuthn.configuration.origin = origin
   end
 
   it "has_many_webauthn_credentials" do
@@ -21,7 +21,7 @@ RSpec.describe Authcat::WebAuthn do
 
     challenge = options.challenge
     credential_json = client.create(challenge: challenge).to_json
-    credential = user.webauthn_credentials.create(name: :test, credential_json: credential_json, challenge: challenge)
+    credential = user.webauthn_credentials.create(title: :test, credential_json: credential_json, challenge: challenge)
 
     expect(credential).to be_persisted
     expect(credential.public_key).not_to be_empty
@@ -47,6 +47,6 @@ RSpec.describe Authcat::WebAuthn do
     challenge = options.challenge
     credential_json = client.get(challenge: challenge).to_json
 
-    expect(user.webauthn_credentials.verify(credential_json)).to eq true
+    expect(user.webauthn_credentials.verify(credential_json)).to be true
   end
 end

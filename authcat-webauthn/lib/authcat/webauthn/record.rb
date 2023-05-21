@@ -2,7 +2,7 @@
 
 module Authcat
   module WebAuthn
-    module CredentialRecord
+    module Record
       def self.included(base)
         base.extend ClassMethods
 

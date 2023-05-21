@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
     t.integer "user_id", null: false
     t.string "webauthn_id", null: false
     t.string "name", null: false
+    t.string "title", null: false
     t.string "public_key", null: false
     t.integer "sign_count", null: false
     t.string "challenge"

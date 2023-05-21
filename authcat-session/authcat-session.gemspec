@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "zeitwerk", ">= 2.6.8"
 
+  spec.add_dependency "authcat-credential", version
   spec.add_dependency "authcat-identity", version
   spec.add_dependency "authcat-password", version
 

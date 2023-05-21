@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserSession < ApplicationRecord
-  include Authcat::Session::SessionRecord
+  include Authcat::Session::Record
 
   belongs_to :user, optional: true, default: -> { User.new }
 
