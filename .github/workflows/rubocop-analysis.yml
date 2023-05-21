@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
 
     steps:
       - name: Checkout repository
