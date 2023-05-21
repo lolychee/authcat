@@ -6,8 +6,8 @@ module Authcat
       def self.included(base)
         base.extend ClassMethods
 
-        require "authcat/identity"
-        base.include Authcat::Identity::Validators
+        require "authcat/identifier"
+        base.include Authcat::Identifier::Validators
         require "authcat/password"
         base.include Authcat::Password::Validators
       end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identity
+  module Identifier
     module Association
       class HasOne < Authcat::Credential::Association::HasOne
         def initialize(owner, name, options)

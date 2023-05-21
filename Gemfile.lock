@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     authcat-account (0.1.0)
-      authcat-identity (~> 0.1.0)
+      authcat-identifier (~> 0.1.0)
       authcat-password (~> 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-credential (0.1.0)
@@ -10,7 +10,7 @@ PATH
       authcat (= 0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.6.8)
-    authcat-identity (0.1.0)
+    authcat-identifier (0.1.0)
       authcat-credential (= 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-idp (0.1.0)
@@ -22,7 +22,7 @@ PATH
       zeitwerk (>= 2.6.8)
     authcat-session (0.1.0)
       authcat-credential (= 0.1.0)
-      authcat-identity (= 0.1.0)
+      authcat-identifier (= 0.1.0)
       authcat-password (= 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-webauthn (0.1.0)
@@ -322,7 +322,7 @@ DEPENDENCIES
   authcat!
   authcat-account!
   authcat-credential!
-  authcat-identity!
+  authcat-identifier!
   authcat-idp!
   authcat-password!
   authcat-session!

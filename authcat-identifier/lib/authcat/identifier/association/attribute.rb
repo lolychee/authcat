@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identity
+  module Identifier
     module Association
       class Attribute < Authcat::Credential::Association::Attribute
         def initialize(owner, name, options)
           as = options.delete(:as) || :identifier
           super
-          @type_klass = Identity::Type.resolve(as)
+          @type_klass = Identifier::Type.resolve(as)
           @type_options = options
         end
 

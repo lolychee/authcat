@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", ">= 2.6.8"
 
   spec.add_dependency "authcat-credential", version
-  spec.add_dependency "authcat-identity", version
+  spec.add_dependency "authcat-identifier", version
   spec.add_dependency "authcat-password", version
 
   # For more information and examples about making a new gem, check out our

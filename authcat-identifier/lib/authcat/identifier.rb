@@ -8,7 +8,7 @@ loader = Zeitwerk::Loader.for_gem_extension(Authcat)
 loader.setup
 
 module Authcat
-  module Identity
+  module Identifier
     extend ActiveSupport::Concern
 
     include Marcos

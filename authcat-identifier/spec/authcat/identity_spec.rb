@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Authcat::Identity do
+RSpec.describe Authcat::Identifier do
   let(:email) { "email@example.com" }
   let(:token) { "token" }
   let(:public_email) { "public_email@example.com" }

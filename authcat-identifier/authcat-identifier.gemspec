@@ -3,7 +3,7 @@
 version = File.read(File.expand_path("../AUTHCAT_VERSION", __dir__)).strip
 
 Gem::Specification.new do |spec|
-  spec.name          = "authcat-identity"
+  spec.name          = "authcat-identifier"
   spec.version       = version
   spec.authors       = ["lychee xing"]
   spec.email         = ["lolychee@gmail.com"]

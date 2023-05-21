@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
-require "phonelib"
+require "valid_email2"
 
 module Authcat
-  module Identity
+  module Identifier
     module Type
-      class PhoneNumber < Identifier
+      class Email < Identifier
         def encoder
           @encoder ||= Encoder.new(Value, **options)
         end
 
-        class Value < Phonelib::Phone
-          def initialize(value, **opts)
-            country = opts.delete(:country)
-            super(value, country)
+        class Value < ValidEmail2::Address
+          def initialize(value, **_opts)
+            super(value)
           end
 
+          def to_s
+            @raw_address
+          end
           alias as_json to_s
 
           def inspect

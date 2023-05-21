@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identity
+  module Identifier
     module Type
       class Identifier < Authcat::Credential::Type::Credential
         attr_reader :options

@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # spec.add_dependency "authcat-identity",     version
+  # spec.add_dependency "authcat-identifier",     version
   # spec.add_dependency "authcat-idp",          version
   # spec.add_dependency "authcat-password",     version
   # spec.add_dependency "authcat-session",      version

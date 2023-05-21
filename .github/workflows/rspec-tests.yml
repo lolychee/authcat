@@ -19,7 +19,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         gem_name:
-          - authcat-identity
+          - authcat-credential
+          - authcat-identifier
           - authcat-idp
           - authcat-password
           - authcat-session

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identity
+  module Identifier
     module Type
       class Token < Identifier
         def encoder

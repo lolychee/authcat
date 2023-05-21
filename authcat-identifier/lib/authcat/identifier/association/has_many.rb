@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identity
+  module Identifier
     module Association
       class HasMany < Authcat::Credential::Association::HasMany
         def initialize(owner, name, options)

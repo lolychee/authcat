@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-  include Authcat::Identity
+  include Authcat::Identifier
 
   has_many :sessions
 

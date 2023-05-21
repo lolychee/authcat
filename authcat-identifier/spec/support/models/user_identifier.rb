@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserIdentifier < ActiveRecord::Base
-  include Authcat::Identity::Record
+  include Authcat::Identifier::Record
 
   belongs_to :user
 end

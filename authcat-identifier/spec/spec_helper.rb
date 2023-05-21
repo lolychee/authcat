@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "authcat/identity"
+require "authcat/identifier"
 require "active_record"
 
 ENV["RACK_ENV"] ||= "test"

@@ -3,7 +3,7 @@
 require "authcat/credential"
 
 module Authcat
-  module Identity
+  module Identifier
     module Marcos
       extend ActiveSupport::Concern
       include Authcat::Credential::Marcos
