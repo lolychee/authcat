@@ -21,85 +21,28 @@ module Authcat
     class_option :database, type: :string, aliases: %i[--db],
                             desc: "The database for your model's migration. By default, the current environment's primary database is used."
 
-    def create_migration_file
-      # return if skip_migration_creation?
-      # attributes.each { |a| a.attr_options.delete(:index) if a.reference? && !a.has_index? } if options[:indexes] == false
-      migration_template "create_table_migration.rb", File.join(db_migrate_path, "create_#{table_name}.rb")
+    def generate_model
+      invoke "active_record:model",
+             [model_name, "#{singular_name}:belongs_to", "webauthn_id:string", "name:string", "title:string", "public_key:string", "sign_count:integer", *attributes], **options
     end
 
-    def create_model_file
-      generate_abstract_class if database && !custom_parent?
-
-      generate "migration AddWebAuthnColumnsTo#{identity_name} webauthn_user_id:string webauthn_challenge:string"
-      inject_into_file "app/models/#{identity_singular_name}.rb", "  has_many_webauthn_credentials\n",
-                       after: /class #{identity_name}.*\n/
-
-      template "model.rb", File.join("app/models", class_path, "#{file_name}.rb")
+    def inject_marco_content
+      inject_into_file "app/models/#{model_singular_name}.rb", "  include Authcat::WebAuthn::Record \n  self.primary_key = :webauthn_id\m\n",
+                       after: /class #{model_name}.*\n/
+      inject_into_file "app/models/#{singular_name}.rb", "  has_many_webauthn_credentials\n",
+                       after: /class #{name}.*\n/
     end
 
-    private
-
-    alias identity_name name
-
-    def identity_singular_name
-      @identity_singular_name ||= identity_name.underscore.singularize
+    def model_name
+      "#{name}WebAuthnCredential"
     end
 
-    def name
-      "#{identity_name}WebAuthnCredential"
+    def model_singular_name
+      @model_singular_name ||= model_name.underscore.singularize
     end
 
-    def parse_attributes!
-      self.attributes = [
-        Rails::Generators::GeneratedAttribute.parse("#{identity_singular_name}:belongs_to"),
-        Rails::Generators::GeneratedAttribute.new("webauthn_id", "string", false, { null: false }),
-        Rails::Generators::GeneratedAttribute.new("name", "string", false, { null: false }),
-        Rails::Generators::GeneratedAttribute.new("title", "string", false, { null: false }),
-        Rails::Generators::GeneratedAttribute.new("public_key", "string", false, { null: false }),
-        Rails::Generators::GeneratedAttribute.new("sign_count", "integer", false, { null: false })
-      ] + super
-    end
-
-    def attributes_with_index
-      attributes.select { |a| !a.reference? && a.has_index? }
-    end
-
-    # Used by the migration template to determine the parent name of the model
-    def parent_class_name
-      if custom_parent?
-        parent
-      elsif database
-        abstract_class_name
-      else
-        parent
-      end
-    end
-
-    def generate_abstract_class
-      path = File.join("app/models", "#{database.underscore}_record.rb")
-      return if File.exist?(path)
-
-      template "abstract_base_class.rb", path
-    end
-
-    def abstract_class_name
-      "#{database.camelize}Record"
-    end
-
-    def database
-      options[:database]
-    end
-
-    def parent
-      options[:parent]
-    end
-
-    def custom_parent?
-      parent != self.class.class_options[:parent].default
-    end
-
-    def migration
-      options[:migration]
+    def singular_name
+      @singular_name ||= name.underscore.singularize
     end
   end
 end
