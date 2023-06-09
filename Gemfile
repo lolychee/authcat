@@ -55,7 +55,7 @@ end
 path "." do
   gem "authcat-account",      require: false
   gem "authcat-credential",   require: false
-  gem "authcat-identifier",     require: false
+  gem "authcat-identifier",   require: false
   gem "authcat-idp",          require: false
   gem "authcat-password",     require: false
   gem "authcat-session",      require: false

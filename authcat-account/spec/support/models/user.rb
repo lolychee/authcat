@@ -10,13 +10,11 @@ class User < ActiveRecord::Base
   has_password
   has_password :one_time_password, as: :one_time_password
 
-  has_password :recovery_codes, as: :one_time_password, array: true, algorithm: :bcrypt
+  has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true
 
-  ENV["LOCKBOX_MASTER_KEY"] = "0000000000000000000000000000000000000000000000000000000000000000"
-
-  identifier :email, as: :email
+  has_identifier :email, as: :email
   validates :email, identify: true, on: :email_sign_in
 
-  identifier :phone_number, as: :phone_number
+  has_identifier :phone_number, as: :phone_number
   validates :phone_number, identify: true, on: :phone_number_sign_in
 end

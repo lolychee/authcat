@@ -32,8 +32,8 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "zeitwerk", ">= 2.6.8"
 
-  spec.add_dependency "authcat-identifier",     "~> #{version}"
-  spec.add_dependency "authcat-password",     "~> #{version}"
+  spec.add_dependency "authcat-identifier", "~> #{version}"
+  spec.add_dependency "authcat-password", "~> #{version}"
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
