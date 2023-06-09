@@ -4,11 +4,8 @@ module Authcat
   module IdP
     module Association
       class HasMany < Authcat::Credential::Association::HasMany
-        def initialize(owner, name, options)
-          options[:inverse_of] = owner.name.underscore.to_sym
-          options[:class_name] ||= "#{owner.name}IdPCredential"
-
-          super(owner, name, options)
+        def relation_class_name
+          @relation_class_name ||= "#{owner.name}IdPCredential"
         end
 
         def identify(idp)
@@ -18,14 +15,8 @@ module Authcat
           end
         end
 
-        def setup!
-          setup_relation!
-          # setup_instance_methods!
-        end
-
-        def setup_relation!
-          name = self.name
-          owner.has_many(name, -> { where(name: name) }, extend: Extension, **options)
+        def relation_options
+          @relation_options.merge(extend: Extension)
         end
 
         def setup_instance_methods!
@@ -35,7 +26,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{options[:inverse_of]}: self, token: value)
+                build_#{name}(#{relation_options[:inverse_of]}: self, token: value)
               end
             end
           CODE
