@@ -12,11 +12,15 @@ module Authcat
         end
 
         def encoder
-          @encoder ||= Encoder.new(Value, **options)
+          @encoder ||= Encoder.new(value_klass, **options)
+        end
+
+        def value_klass
+          Value
         end
 
         def serialize(value)
-          encoder.dump(encoder.load(value))
+          encoder.dump(value)
         end
 
         class Encoder
@@ -32,7 +36,7 @@ module Authcat
           end
 
           def load(value)
-            return nil if value.nil?
+            return if value.nil?
 
             parse(value)
           end

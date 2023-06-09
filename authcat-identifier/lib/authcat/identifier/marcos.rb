@@ -9,13 +9,13 @@ module Authcat
       include Authcat::Credential::Marcos
 
       MACRO_MAPPING = {
-        identifier: Association::Attribute,
+        has_identifier: Association::Attribute,
         has_one_identifier: Association::HasOne,
         has_many_identifiers: Association::HasMany
       }.freeze
 
       module ClassMethods
-        def identifier(name, **opts, &block)
+        def has_identifier(name, **opts, &block)
           define_credential!(__method__, name, **opts, &block)
         end
 

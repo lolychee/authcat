@@ -4,8 +4,8 @@ module Authcat
   module Identifier
     module Type
       class Token < Identifier
-        def encoder
-          @encoder ||= Encoder.new(Value, **options)
+        def value_klass
+          Value
         end
 
         class Value < String

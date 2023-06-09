@@ -18,7 +18,6 @@ RSpec.describe Authcat::Identifier do
     User.create(token: token)
 
     user = User.new
-
     expect(user.identify({ token: token })).to be_persisted
   end
 

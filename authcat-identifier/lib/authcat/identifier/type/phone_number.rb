@@ -6,8 +6,8 @@ module Authcat
   module Identifier
     module Type
       class PhoneNumber < Identifier
-        def encoder
-          @encoder ||= Encoder.new(Value, **options)
+        def value_klass
+          Value
         end
 
         class Value < Phonelib::Phone

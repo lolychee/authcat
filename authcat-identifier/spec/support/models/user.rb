@@ -13,10 +13,11 @@ class User < ActiveRecord::Base
 
   # has_recovery_codes
 
-  identifier :email, as: :email
+  has_identifier :email, as: :email
+  has_identifier :token
   # validates :email, identify: true
 
-  identifier :phone_number, as: :phone_number, country: "CN"
+  has_identifier :phone_number, as: :phone_number, country: "CN"
   # validates :phone_number, identify: true
 
   has_one_identifier :public_email, as: :email

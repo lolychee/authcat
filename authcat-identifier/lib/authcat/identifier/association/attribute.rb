@@ -4,25 +4,17 @@ module Authcat
   module Identifier
     module Association
       class Attribute < Authcat::Credential::Association::Attribute
-        def initialize(owner, name, options)
-          as = options.delete(:as) || :identifier
+        def initialize(owner, name, **options, &block)
           super
-          @type_klass = Identifier::Type.resolve(as)
+          @type_klass = Identifier::Type.resolve(@type || :identifier)
           @type_options = options
         end
 
         def identify(value)
-          owner.find_by(name => value)
-        end
-
-        def setup!
-          setup_attribute!
-          setup_instance_methods!
-        end
-
-        def setup_attribute!
-          owner.attribute name do |cast_type|
-            @type_klass.new(cast_type, **@type_options)
+          if @block
+            @block.call(value)
+          else
+            owner.find_by(name => value)
           end
         end
 

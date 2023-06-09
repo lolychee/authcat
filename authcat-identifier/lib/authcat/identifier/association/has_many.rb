@@ -4,12 +4,8 @@ module Authcat
   module Identifier
     module Association
       class HasMany < Authcat::Credential::Association::HasMany
-        def initialize(owner, name, options)
-          @type = options.delete(:as)
-          options[:inverse_of] = owner.name.underscore.to_sym
-          options[:class_name] ||= "#{owner.name}Identifier"
-
-          super(owner, name, options)
+        def relation_class_name
+          @relation_class_name ||= "#{owner.name}Identifier"
         end
 
         def identify(value)
@@ -21,11 +17,6 @@ module Authcat
           # setup_instance_methods!
         end
 
-        def setup_relation!
-          name = self.name
-          owner.has_many(name, -> { where(name: name) }, **options)
-        end
-
         def setup_instance_methods!
           owner.class_eval <<-CODE, __FILE__, __LINE__ + 1
             # frozen_string_literal: true
@@ -33,7 +24,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{options[:inverse_of]}: self, identifier: value, identifier_type: "#{@type}")
+                build_#{name}(#{relation_options[:inverse_of]}: self, identifier: value, identifier_type: "#{@type}")
               end
             end
           CODE

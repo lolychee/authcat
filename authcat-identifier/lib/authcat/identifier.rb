@@ -36,10 +36,14 @@ module Authcat
         #     identifier_attributes
         #   end
 
-        identifiers.each_value.each do |identifier|
+        identifiers.each_value do |identifier|
+          next unless value.key?(identifier.name)
+
           found = identifier.identify(value[identifier.name])
           return found if found
         end
+
+        nil
       end
     end
 
