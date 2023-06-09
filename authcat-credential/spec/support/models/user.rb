@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   # validates :email, presence: true, uniqueness: true, on: :save
   # validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
-  validates :email, identify: true, on: :email_sign_in
+  # validates :email, identify: true, on: :email_sign_in
 
-  validates :phone_number, identify: true
+  # validates :phone_number, identify: true
 end

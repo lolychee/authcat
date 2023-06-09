@@ -35,7 +35,7 @@ module Authcat
         end
 
         def define_credential!(macro_name, name, **options, &block)
-          lookup_credential_klass(macro_name).new(self, name, options, &block).tap do |assoc|
+          lookup_credential_klass(macro_name).new(self, name, **options, &block).tap do |assoc|
             assoc.setup!
             self.credentials = credentials.merge(name => assoc)
           end

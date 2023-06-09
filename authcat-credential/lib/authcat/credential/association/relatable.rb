@@ -6,9 +6,10 @@ module Authcat
       module Relatable
         attr_reader :owner, :name, :options
 
-        def initialize(owner, name, options, &block)
+        def initialize(owner, name, **options, &block)
           @owner = owner
           @name = name
+          @type = options.delete(:as)
           @options = options
           @block = block
         end
