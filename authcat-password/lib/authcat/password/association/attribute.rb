@@ -4,26 +4,14 @@ module Authcat
   module Password
     module Association
       class Attribute < Authcat::Credential::Association::Attribute
-        def initialize(owner, name, options)
-          as = options.delete(:as) || :digest
+        def initialize(owner, name, **options, &block)
           super
-          @type_klass = Password::Type.resolve(as)
+          @type_klass = Password::Type.resolve(@type || :digest)
           @type_options = options
         end
 
         def create(value)
-          owner.type_for_attribute(name).encoder.parse(Algorithm::Plaintext.new(value.to_s))
-        end
-
-        def setup!
-          setup_attribute!
-          setup_instance_methods!
-        end
-
-        def setup_attribute!
-          owner.attribute name do |cast_type|
-            @type_klass.new(cast_type, **@type_options)
-          end
+          owner.type_for_attribute(name).serialize(Algorithm::Plaintext.new(value.to_s))
         end
 
         def setup_instance_methods!
@@ -31,9 +19,7 @@ module Authcat
             # frozen_string_literal: true
 
             def #{name}=(value)
-              if value.respond_to?(:to_s)
-                super(Algorithm::Plaintext.new(value.to_s))
-              end
+                super(self.class.passwords[:#{name}].create(value))
             end
           CODE
         end

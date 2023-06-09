@@ -4,26 +4,8 @@ module Authcat
   module Password
     module Association
       class HasOne < Authcat::Credential::Association::HasOne
-        def initialize(owner, name, options)
-          @type = options.delete(:as)
-          options[:inverse_of] = owner.name.underscore.to_sym
-          options[:class_name] ||= "#{owner.name}Password"
-
-          super(owner, name, options)
-        end
-
-        def create(value)
-          owner.type_for_attribute(name).encoder.parse(Algorithm::Plaintext.new(value.to_s))
-        end
-
-        def setup!
-          setup_relation!
-          # setup_instance_methods!
-        end
-
-        def setup_relation!
-          name = self.name
-          owner.has_one(name, -> { where(name: name) }, **options)
+        def relation_class_name
+          @relation_class_name ||= "#{owner.name}Password"
         end
 
         def setup_instance_methods!
@@ -33,7 +15,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{options[:inverse_of]}: self, identifier: value, identifier_type: "#{@type}")
+                build_#{name}(#{relation_options[:inverse_of]}: self, password: value)
               end
             end
           CODE

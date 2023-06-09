@@ -1,0 +1,9 @@
+Description:
+    Explain the generator
+
+Example:
+    bin/rails generate authcat:password User
+
+    This will create:
+        db/migrate/20221122100916_create_user_passwords.rb
+        app/models/user_password.rb
