@@ -4,10 +4,6 @@ module Authcat
   module Identifier
     module Association
       class HasOne < Authcat::Credential::Association::HasOne
-        def relation_class_name
-          @relation_class_name ||= "#{owner.name}Identifier"
-        end
-
         def identify(value)
           owner.includes(name).find_by(name => { identifier: value })
         end
@@ -24,7 +20,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{@relation_options[:inverse_of]}: self, identifier: value, identifier_type: "#{@type}")
+                build_#{name}(#{@relation_options[:inverse_of]}: self, identifier: value)
               end
             end
           CODE

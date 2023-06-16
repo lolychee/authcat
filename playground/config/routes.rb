@@ -22,12 +22,13 @@ Rails.application.routes.draw do
   resources :users
 
   namespace :settings do
-    root to: "profile#show"
+    root to: "profiles#show"
     resource :profile, only: %i[show update]
     resource :account, only: %i[show update]
     resource :password, only: %i[show update]
     resource :security, only: %i[show update]
     resource :one_time_password, only: %i[show update]
+    resource :recovery_codes, only: %i[show update]
     resources :webauthn_credentials
   end
 

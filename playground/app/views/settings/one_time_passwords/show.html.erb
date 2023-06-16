@@ -20,7 +20,17 @@
           This information will be displayed publicly so be careful what you share.
         </p>
       </div>
-      <%= render @user.enable_one_time_password_step, form: form %>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="col-span-3 sm:col-span-2">
+          <% provisioning_uri = @user.one_time_password.provisioning_uri(@user.email.to_s) %>
+          <%= image_tag "https://chart.googleapis.com/chart?chs=300x300&cht=qr&choe=UTF-8chld=M|0&chl=#{URI.encode_www_form_component(provisioning_uri)}" %>
+        </div>
+
+        <div class="col-span-3 sm:col-span-2">
+          <%= form.label :one_time_password_confirmation, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.text_field :one_time_password_confirmation, value: @user.one_time_password.now, autocomplete: "one-time-code", class: "focus:ring-blue-500 focus:border-blue-500 flex-1 block mt-1 w-full rounded-none rounded-md sm:text-sm border-gray-300"  %>
+        </div>
+      </div>
     </div>
     <div class="px-4 py-3 bg-gray-50 text-left sm:px-6 space-x-4">
       <%= form.button "Next", type: :submit, class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>

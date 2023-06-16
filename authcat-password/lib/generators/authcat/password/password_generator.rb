@@ -17,7 +17,7 @@ module Authcat
 
     def generate_model
       invoke "active_record:model",
-             [model_name, "#{singular_name}:belongs_to", "name:string", "password:string", *attributes], **options
+             [model_name, "#{singular_name}:belongs_to", "password:string", *attributes], **options
     end
 
     def inject_marco_content

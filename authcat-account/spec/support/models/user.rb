@@ -8,13 +8,13 @@ class User < ActiveRecord::Base
   # validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
   has_password
-  has_password :one_time_password, as: :one_time_password
+  has_password :one_time_password, type: :one_time_password
 
-  has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true
+  has_password :recovery_codes, type: :one_time_password, algorithm: :bcrypt, array: true
 
-  has_identifier :email, as: :email
+  has_identifier :email, type: :email
   validates :email, identify: true, on: :email_sign_in
 
-  has_identifier :phone_number, as: :phone_number
+  has_identifier :phone_number, type: :phone_number
   validates :phone_number, identify: true, on: :phone_number_sign_in
 end

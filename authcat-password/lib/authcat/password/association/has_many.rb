@@ -4,8 +4,17 @@ module Authcat
   module Password
     module Association
       class HasMany < Authcat::Credential::Association::HasMany
-        def relation_class_name
-          @relation_class_name ||= "#{owner.name}Password"
+        def type_class
+          Password::Type.resolve(@type || :digest_password)
+        end
+
+        def type_options
+          options
+        end
+
+        def relation_options
+          type = type_class.new(ActiveRecord::Type::String.new, **type_options)
+          @relation_options.merge(extend: Extension.new(type))
         end
 
         def setup_instance_methods!
@@ -19,6 +28,18 @@ module Authcat
               end
             end
           CODE
+        end
+
+        class Extension < Module
+          def initialize(type)
+            super()
+            define_method(:verify) do |pwd|
+              load_target.each do |record|
+                return true if type.deserialize(record.password) == pwd
+              end
+              false
+            end
+          end
         end
       end
     end

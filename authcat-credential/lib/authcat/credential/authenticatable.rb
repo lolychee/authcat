@@ -25,7 +25,7 @@ module Authcat
 
         def define_states!
           state :authenticating, initial: true
-          state :authenticated, :expired
+          state :authenticated
           state(*steps.keys)
         end
 
@@ -124,7 +124,13 @@ module Authcat
 
           def validate_verifier(record, name, verifier_name)
             verified = with_identity(record) do |identity|
-              identity.send(verifier_name) == record.send(name)
+              verifier = identity.send(verifier_name)
+              value = record.send(name)
+              if verifier.respond_to?(:verify)
+                verifier.verify(value)
+              else
+                verifier == value
+              end
             end
             record.errors.add(name, :incorrect) unless verified
           end

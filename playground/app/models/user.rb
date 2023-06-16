@@ -7,14 +7,18 @@ class User < ApplicationRecord
   include Authcat::WebAuthn
 
   has_many_sessions dependent: :delete_all
-  # has_many_password_credentials dependent: :delete_all
+  # has_many_passwords dependent: :delete_all
   has_many_webauthn_credentials dependent: :delete_all
   has_many_idp_credentials dependent: :delete_all
 
-  identifier :email, as: :email
-  identifier :phone_number, as: :phone_number
+  has_identifier :email, type: :email
+  has_identifier :phone_number, type: :phone_number
 
-  identifier :omniauth_hash do |auth_hash|
+  has_identifier :login do |login|
+    User.identify({ email: login, phone_number: login })
+  end
+
+  has_identifier :omniauth_hash do |auth_hash|
     case auth_hash.provider
     when "developer"
       User.email.identify(auth_hash.uid)
@@ -26,9 +30,8 @@ class User < ApplicationRecord
   end
 
   has_password
-  has_password :one_time_password, as: :one_time_password
-  has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true,
-                                burn_after_verify: true
+  has_password :one_time_password, type: :one_time_password
+  has_many_passwords :recovery_codes, type: :one_time_password, algorithm: :bcrypt
 
   extra_action :sign_up, do: :save
 
@@ -60,4 +63,5 @@ class User < ApplicationRecord
 
   include Authcat::Account::ChangePassword[:password]
   include Authcat::Account::EnableOneTimePassword[:one_time_password]
+  include Authcat::Account::EnableRecoveryCodes[:recovery_codes]
 end

@@ -14,14 +14,12 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
 
   create_table "user_idp_credentials", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.string "name", null: false
     t.string "provider", null: false
     t.string "token", null: false
     t.string "metadata", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["name", "user_id", "provider"], name: "index_user_idp_credentials_on_name_and_user_id_and_provider", unique: true
-    t.index ["provider", "token"], name: "index_user_idp_credentials_on_provider_and_token", unique: true
+    t.index ["user_id", "provider", "token"], name: "index_user_idp_credentials_on_user_id_and_provider_and_token", unique: true
     t.index ["user_id"], name: "index_user_idp_credentials_on_user_id"
   end
 

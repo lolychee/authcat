@@ -4,7 +4,7 @@ module Authcat
   module Credential
     module Association
       class Attribute
-        module Base
+        module Core
           def setup!
             setup_attribute!
             setup_instance_methods!
@@ -17,8 +17,8 @@ module Authcat
           end
         end
 
-        include Relatable
         include Base
+        include Core
         include Array
       end
     end

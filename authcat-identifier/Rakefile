@@ -21,4 +21,8 @@ load "active_record/railties/databases.rake"
 
 RSpec::Core::RakeTask.new(:spec)
 
-task default: :spec
+require "rubocop/rake_task"
+
+RuboCop::RakeTask.new
+
+task default: %i[spec rubocop]

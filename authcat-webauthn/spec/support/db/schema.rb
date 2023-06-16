@@ -15,14 +15,13 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
   create_table "user_webauthn_credentials", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "webauthn_id", null: false
-    t.string "name", null: false
     t.string "title", null: false
     t.string "public_key", null: false
     t.integer "sign_count", null: false
     t.string "challenge"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "webauthn_id"], name: "index_user_webauthn_credentials_on_user_id_and_webauthn_id", unique: true
+    t.index "\"user_id\", \"attribute_name\"", name: "index_user_webauthn_credentials_on_user_id_and_attribute_name"
     t.index ["user_id"], name: "index_user_webauthn_credentials_on_user_id"
   end
 

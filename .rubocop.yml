@@ -44,3 +44,6 @@ Layout/LineLength:
 
 Naming/PredicateName:
   Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false

@@ -7,7 +7,7 @@ class Current < ActiveSupport::CurrentAttributes
   # resets { Time.zone = nil }
 
   def session=(session)
-    self.user = session.user if !session.nil? && session.persisted?
+    self.user = session.user if !session.nil? && session.persisted? && session.authenticated?
     super
   end
 end

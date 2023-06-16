@@ -21,8 +21,9 @@ class UserSessionsController < ApplicationController
   # POST /sign_in(/:auth_method)
   def create
     respond_to do |format|
-      if @user_session.sign_in(user_session_params)
+      if @user_session.authenticate!(user_session_params)
         if @user_session.authenticated?
+          Current.session = @user_session
           format.html { redirect_to root_url }
         else
           format.html { render :new, status: :accepted }
@@ -53,7 +54,7 @@ class UserSessionsController < ApplicationController
       elsif !s.valid_auth_method?(params[:auth_method])
         redirect_to action: :new, auth_method: s.default_auth_method
       end
-      s.assign_attributes(params.permit(:auth_method))
+      s.assign_attributes({ auth_method: s.default_auth_method }.merge(params.permit(:auth_method)))
     end
   end
 
@@ -61,7 +62,7 @@ class UserSessionsController < ApplicationController
   def user_session_params
     params.required(:user_session).permit(
       :login, :email, :phone_number,
-      :password_challenge, :one_time_password_challenge, :recovery_codes_challenge,
+      :password, :one_time_password, :recovery_code,
       :remember_me
     )
   end

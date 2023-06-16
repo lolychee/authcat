@@ -1,0 +1,24 @@
+<%= form_with(model: @user, scope: :recovery_codes, url: settings_recovery_codes_url) do |form| %>
+
+  <%= hidden_field_tag :back_to, params[:back_to] if params[:back_to].present? %>
+
+  <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+      <div>
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Enable Recovery Codes</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          This information will be displayed publicly so be careful what you share.
+        </p>
+      </div>
+      <ul>
+        <% @user.generated_recovery_codes.each do |code| %>
+          <li><%= code %></li>
+        <% end %>
+      </ul>
+      <%= form.hidden_field :generated_recovery_codes %>
+    </div>
+    <div class="px-4 py-3 bg-gray-50 text-left sm:px-6 space-x-4">
+      <%= form.button "Next", type: :submit, class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+  </div>
+<% end %>

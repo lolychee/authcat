@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
+require "authcat/identifier"
+require "authcat/password"
+
 module Authcat
   module Session
     module Record
-      def self.included(base)
-        base.extend ClassMethods
+      extend ActiveSupport::Concern
 
-        require "authcat/identifier"
-        base.include Authcat::Identifier::Validators
-        require "authcat/password"
-        base.include Authcat::Password::Validators
-      end
+      include Authcat::Identifier::Validators
+      include Authcat::Password::Validators
+      include Authcat::Credential::Authenticatable
 
       module ClassMethods
       end

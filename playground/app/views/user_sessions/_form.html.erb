@@ -13,20 +13,20 @@
       </p>
     </div>
 
-    <%= form_with(model: session, url: sign_in_path, class: "mt-8 space-y-6") do |form| %>
-      <% if session.errors.any? %>
+    <%= form_with(model: user_session, url: sign_in_path(auth_method: user_session.auth_method), class: "mt-8 space-y-6") do |form| %>
+      <% if user_session.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(session.errors.count, "error") %> prohibited this sign_in_password from being saved:</h2>
+          <h2><%= pluralize(user_session.errors.count, "error") %> prohibited this sign_in_password from being saved:</h2>
 
           <ul>
-            <% session.errors.each do |error| %>
+            <% user_session.errors.each do |error| %>
               <li><%= error.full_message %></li>
             <% end %>
           </ul>
         </div>
       <% end %>
 
-      <%= render session.sign_in_step, form: form %>
+      <%= render user_session.auth_method, form: form %>
     <% end %>
 
     <div class="grid">

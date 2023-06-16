@@ -39,8 +39,8 @@ RSpec.describe Authcat::Identifier do
 
   it "identify by emails" do
     u = User.create(email: "2#{email}")
-    u.emails.create(identifier: "2#{public_email}", identifier_type: "email")
-    u.emails.create(identifier: "3#{public_email}", identifier_type: "email")
+    u.emails.create(identifier: "2#{public_email}")
+    u.emails.create(identifier: "3#{public_email}")
 
     user = User.new
 

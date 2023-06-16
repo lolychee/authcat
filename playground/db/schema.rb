@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_02_143812) do
+ActiveRecord::Schema.define(version: 2023_06_05_042412) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -42,32 +42,46 @@ ActiveRecord::Schema.define(version: 2023_01_02_143812) do
 
   create_table "user_idp_credentials", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.string "attribute_name", null: false
     t.string "provider", null: false
     t.string "token", null: false
     t.string "metadata", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["provider", "token"], name: "index_user_idp_credentials_on_provider_and_token", unique: true
+    t.index ["user_id", "attribute_name"], name: "index_user_idp_credentials_on_user_id_and_attribute_name"
     t.index ["user_id", "provider", "token"], name: "index_user_idp_credentials_on_user_id_and_provider_and_token", unique: true
     t.index ["user_id"], name: "index_user_idp_credentials_on_user_id"
   end
 
+  create_table "user_recovery_codes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "password", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_recovery_codes_on_user_id"
+  end
+
   create_table "user_sessions", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.string "name"
     t.string "state", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "name"], name: "index_user_sessions_on_user_id_and_name"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
   end
 
   create_table "user_webauthn_credentials", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.string "attribute_name", null: false
     t.string "webauthn_id", null: false
-    t.string "name", null: false
+    t.string "title", null: false
     t.string "public_key", null: false
     t.integer "sign_count", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "attribute_name"], name: "index_user_webauthn_credentials_on_user_id_and_attribute_name"
     t.index ["user_id", "webauthn_id"], name: "index_user_webauthn_credentials_on_user_id_and_webauthn_id", unique: true
     t.index ["user_id"], name: "index_user_webauthn_credentials_on_user_id"
   end
@@ -92,6 +106,7 @@ ActiveRecord::Schema.define(version: 2023_01_02_143812) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "user_idp_credentials", "users"
+  add_foreign_key "user_recovery_codes", "users"
   add_foreign_key "user_sessions", "users"
   add_foreign_key "user_webauthn_credentials", "users"
 end

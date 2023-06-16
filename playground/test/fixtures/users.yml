@@ -12,4 +12,3 @@ two:
   email: user2@email.com
   password: "<%= User.passwords[:password].create('123456') %>"
   one_time_password: "<%= User.passwords[:one_time_password].create('') %>"
-  recovery_codes: '<%= User.passwords[:recovery_codes].create(["qwerty", "123456"]).to_json %>'

@@ -4,14 +4,10 @@ module Authcat
   module IdP
     module Association
       class HasMany < Authcat::Credential::Association::HasMany
-        def relation_class_name
-          @relation_class_name ||= "#{owner.name}IdPCredential"
-        end
-
         def identify(idp)
           case idp
           when OmniAuth::AuthHash
-            owner.includes(name).find_by(idp_credentials: { name: name, provider: idp.provider, token: idp.uid })
+            owner.includes(name).find_by(name => { provider: idp.provider, token: idp.uid })
           end
         end
 

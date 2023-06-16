@@ -2,9 +2,7 @@
 
 module Settings
   class OneTimePasswordsController < BaseController
-    around_action(only: %i[create update]) do |_controller, action|
-      with_saved_state(@user, unless: :enable_one_time_password_completed?, &action)
-    end
+    before_action :recovery_codes_required!
 
     def show; end
 
@@ -14,12 +12,7 @@ module Settings
 
     def update
       if @user.enable_one_time_password(one_time_password_params)
-        if @user.enable_one_time_password_completed?
-          redirect_to settings_security_url
-        else
-          render action: :show, status: :ok
-        end
-
+        redirect_to settings_security_url
       else
         render action: :show, status: :unprocessable_entity
       end
@@ -33,8 +26,14 @@ module Settings
 
     private
 
+    def recovery_codes_required!
+      return if @user.recovery_codes.present?
+
+      redirect_to settings_recovery_codes_url(back_to: settings_one_time_password_path)
+    end
+
     def one_time_password_params
-      params.fetch(:one_time_password, {}).permit(:one_time_password_attempt)
+      params.required(:one_time_password).permit(:one_time_password_attempt)
     end
   end
 end

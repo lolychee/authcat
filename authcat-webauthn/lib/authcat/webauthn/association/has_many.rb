@@ -4,10 +4,6 @@ module Authcat
   module WebAuthn
     module Association
       class HasMany < Authcat::Credential::Association::HasMany
-        def relation_class_name
-          @relation_class_name ||= "#{owner.name}WebAuthnCredential"
-        end
-
         def relation_options
           @relation_options.merge(extend: Extension)
         end

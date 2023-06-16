@@ -11,9 +11,9 @@ class User < ActiveRecord::Base
   PASSWORD_VALIDATE_OPTIONS = { length: { minimum: 6, maximum: 72 } }.freeze
   # validates :password, allow_nil: true, **PASSWORD_VALIDATE_OPTIONS
 
-  has_password :one_time_password, as: :one_time_password
-  has_password :one_time_code, as: :one_time_password, algorithm: :bcrypt
-  has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true,
+  has_password :one_time_password, type: :one_time_password
+  has_password :one_time_code, type: :one_time_password, algorithm: :bcrypt
+  has_password :recovery_codes, type: :one_time_password, algorithm: :bcrypt, array: true,
                                 burn_after_verify: true
 
   has_password :polymorphic_password, polymorphic: true

@@ -7,6 +7,7 @@ PATH
       authcat-password (~> 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-credential (0.1.0)
+      aasm (>= 5.5.0)
       activesupport (>= 6.1.0)
       authcat (= 0.1.0)
       dry-container (>= 0.7.2)
@@ -34,6 +35,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (5.5.0)
+      concurrent-ruby (~> 1.0)
     actioncable (6.1.7.2)
       actionpack (= 6.1.7.2)
       activesupport (= 6.1.7.2)

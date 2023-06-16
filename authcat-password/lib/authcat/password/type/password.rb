@@ -34,6 +34,7 @@ module Authcat
 
             if value.is_a?(Algorithm::Plaintext)
               @value_klass.create(value.to_s, **@opts.merge(opts))
+            # elsif @value_klass.valid?(value)
             else
               @value_klass.new(value.to_s, **@opts.merge(opts))
             end

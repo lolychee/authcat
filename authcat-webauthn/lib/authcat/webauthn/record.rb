@@ -7,7 +7,6 @@ module Authcat
         base.extend ClassMethods
 
         base.primary_key = :webauthn_id
-        base.validates :name, uniqueness: { scope: :"#{base.identity_name}_id" }
         base.validates :public_key, uniqueness: true
         base.define_model_callbacks :verify
         base.validates :credential, presence: true, on: %i[create verify]

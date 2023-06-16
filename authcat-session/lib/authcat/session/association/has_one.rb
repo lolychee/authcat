@@ -4,25 +4,8 @@ module Authcat
   module Session
     module Association
       class HasOne < Authcat::Credential::Association::HasOne
-        def initialize(owner, name, options)
-          options[:inverse_of] = owner.name.underscore.to_sym
-          options[:class_name] ||= "#{owner.name}Session"
-
-          super(owner, name, options)
-        end
-
         def identify(value)
           owner.includes(name).find_by(name => { token: value })
-        end
-
-        def setup!
-          setup_relation!
-          # setup_instance_methods!
-        end
-
-        def setup_relation!
-          name = self.name
-          owner.has_one(name, -> { where(name: name) }, **options)
         end
 
         def setup_instance_methods!
@@ -32,7 +15,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{options[:inverse_of]}: self, token: value)
+                build_#{name}(#{relation_options[:inverse_of]}: self, token: value)
               end
             end
           CODE

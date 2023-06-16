@@ -4,10 +4,12 @@ module Authcat
   module Identifier
     module Association
       class Attribute < Authcat::Credential::Association::Attribute
-        def initialize(owner, name, **options, &block)
-          super
-          @type_klass = Identifier::Type.resolve(@type || :identifier)
-          @type_options = options
+        def type_class
+          Identifier::Type.resolve(@type || :identifier)
+        end
+
+        def type_options
+          options
         end
 
         def identify(value)

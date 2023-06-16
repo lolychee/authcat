@@ -23,7 +23,7 @@ module Authcat
 
     def generate_model
       invoke "active_record:model",
-             [model_name, "#{singular_name}:belongs_to", "webauthn_id:string", "name:string", "title:string", "public_key:string", "sign_count:integer", *attributes], **options
+             [model_name, "#{singular_name}:belongs_to", "attribute_name:string", "webauthn_id:string", "title:string", "public_key:string", "sign_count:integer", *attributes], **options
     end
 
     def inject_marco_content
