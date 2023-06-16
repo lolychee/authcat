@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   has_password :recovery_codes, as: :one_time_password, algorithm: :bcrypt, array: true,
                                 burn_after_verify: true
 
+  has_password :polymorphic_password, polymorphic: true
+
   # concerning :SendResetPasswordVerification do
   #   included do |base|
   #     base.define_callbacks :send_reset_password_verification

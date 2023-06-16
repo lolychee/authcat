@@ -19,4 +19,8 @@ RSpec.describe Authcat::Password do
       .and be_a BCrypt::Password
     expect(user.password?).to be true
   end
+
+  it "has_password support polymorphic" do
+    user = User.create(email: "abc@email.com", password: password)
+  end
 end

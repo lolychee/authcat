@@ -9,14 +9,14 @@ module Authcat
         # @return [Symbol, String, self]
         class_attribute :default_algorithm
 
-        def initialize(cast_type, **options)
-          options[:algorithm] ||= default_algorithm
+        def initialize(cast_type, algorithm: default_algorithm, **options)
+          @algorithm = algorithm
           @options = options
           super(cast_type, encoder)
         end
 
         def encoder
-          @encoder ||= Encoder.new(Algorithm.resolve(options.delete(:algorithm)), **options)
+          @encoder ||= Encoder.new(Algorithm.resolve(@algorithm), **options)
         end
 
         def serialize(value)

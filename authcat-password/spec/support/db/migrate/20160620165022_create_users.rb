@@ -11,6 +11,9 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :recovery_code
       t.string :recovery_codes
 
+      t.string :polymorphic_password
+      t.string :polymorphic_password_type
+
       t.timestamps null: false
     end
   end

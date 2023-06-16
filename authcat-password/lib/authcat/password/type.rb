@@ -5,7 +5,7 @@ module Authcat
     module Type
       include Authcat::Credential::Registryable
 
-      register(:digest) { Digest }
+      register(:digest_password) { DigestPassword }
       register(:one_time_password) { OneTimePassword }
     end
   end

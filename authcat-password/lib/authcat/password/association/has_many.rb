@@ -15,7 +15,7 @@ module Authcat
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{@relation_options[:inverse_of]}: self, password: value)
+                build_#{name}(#{relation_options[:inverse_of]}: self, password: value)
               end
             end
           CODE
