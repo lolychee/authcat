@@ -5,6 +5,9 @@ module Authcat
     module Association
       class Attribute
         module Array
+          def array?
+            options[:array]
+          end
         end
       end
     end

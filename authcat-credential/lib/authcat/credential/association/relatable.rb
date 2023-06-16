@@ -9,9 +9,13 @@ module Authcat
         def initialize(owner, name, **options, &block)
           @owner = owner
           @name = name
+          extract_options!(options)
+          @block = block
+        end
+
+        def extract_options!(options)
           @type = options.delete(:as)
           @options = options
-          @block = block
         end
 
         def setup!

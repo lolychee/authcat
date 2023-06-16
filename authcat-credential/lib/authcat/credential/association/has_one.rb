@@ -7,12 +7,17 @@ module Authcat
         include Relatable
         attr_reader :relation_options
 
-        def initialize(owner, name, **, &block)
+        def extract_options!(*)
           super
-          @relation_options = options.extract!(*ActiveRecord::Associations::Builder::HasOne.send(:valid_options,
-                                                                                                 options))
-          @relation_options[:inverse_of] = owner.name.underscore.to_sym
-          @relation_options[:class_name] ||= relation_class_name
+          extract_relation_options!(options)
+        end
+
+        def extract_relation_options!(options)
+          valid_option_keys = ActiveRecord::Associations::Builder::HasOne.send(:valid_options, options)
+          @relation_options = {
+            inverse_of: owner.name.underscore.to_sym,
+            class_name: relation_class_name
+          }.merge(options.extract!(*valid_option_keys))
         end
 
         def relation_class_name
