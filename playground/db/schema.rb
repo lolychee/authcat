@@ -54,6 +54,18 @@ ActiveRecord::Schema.define(version: 2023_06_05_042412) do
     t.index ["user_id"], name: "index_user_idp_credentials_on_user_id"
   end
 
+  create_table "user_passkeys", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "webauthn_id", null: false
+    t.string "title", null: false
+    t.string "public_key", null: false
+    t.integer "sign_count", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "webauthn_id"], name: "index_user_passkeys_on_user_id_and_webauthn_id", unique: true
+    t.index ["user_id"], name: "index_user_passkeys_on_user_id"
+  end
+
   create_table "user_recovery_codes", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "password", null: false
@@ -72,20 +84,6 @@ ActiveRecord::Schema.define(version: 2023_06_05_042412) do
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
   end
 
-  create_table "user_webauthn_credentials", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "attribute_name", null: false
-    t.string "webauthn_id", null: false
-    t.string "title", null: false
-    t.string "public_key", null: false
-    t.integer "sign_count", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "attribute_name"], name: "index_user_webauthn_credentials_on_user_id_and_attribute_name"
-    t.index ["user_id", "webauthn_id"], name: "index_user_webauthn_credentials_on_user_id_and_webauthn_id", unique: true
-    t.index ["user_id"], name: "index_user_webauthn_credentials_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "phone_number"
@@ -97,7 +95,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_042412) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "webauthn_user_id"
+    t.string "webauthn_id"
     t.string "webauthn_challenge"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
@@ -106,7 +104,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_042412) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "user_idp_credentials", "users"
+  add_foreign_key "user_passkeys", "users"
   add_foreign_key "user_recovery_codes", "users"
   add_foreign_key "user_sessions", "users"
-  add_foreign_key "user_webauthn_credentials", "users"
 end

@@ -19,6 +19,10 @@ PATH
       authcat-credential (= 0.1.0)
       omniauth (>= 2.0)
       zeitwerk (>= 2.6.8)
+    authcat-passkey (0.1.0)
+      authcat-credential (= 0.1.0)
+      webauthn (>= 2.5.1)
+      zeitwerk (>= 2.6.8)
     authcat-password (0.1.0)
       authcat-credential (= 0.1.0)
       zeitwerk (>= 2.6.8)
@@ -26,10 +30,6 @@ PATH
       authcat-credential (= 0.1.0)
       authcat-identifier (= 0.1.0)
       authcat-password (= 0.1.0)
-      zeitwerk (>= 2.6.8)
-    authcat-webauthn (0.1.0)
-      authcat-credential (= 0.1.0)
-      webauthn (>= 2.5.1)
       zeitwerk (>= 2.6.8)
 
 GEM
@@ -220,9 +220,9 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    openssl (3.0.2)
-    openssl-signature_algorithm (1.2.1)
-      openssl (> 2.0, < 3.1)
+    openssl (3.1.0)
+    openssl-signature_algorithm (1.3.0)
+      openssl (> 2.0)
     pg (1.4.5)
     phonelib (0.7.7)
     public_suffix (5.0.1)
@@ -324,9 +324,9 @@ GEM
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.1)
-    tpm-key_attestation (0.11.0)
+    tpm-key_attestation (0.12.0)
       bindata (~> 2.4)
-      openssl (> 2.0, < 3.1)
+      openssl (> 2.0)
       openssl-signature_algorithm (~> 1.0)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
@@ -342,15 +342,15 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webauthn (2.5.2)
+    webauthn (3.0.0)
       android_key_attestation (~> 0.3.0)
       awrence (~> 1.1)
       bindata (~> 2.4)
       cbor (~> 0.5.9)
       cose (~> 1.1)
-      openssl (>= 2.2, < 3.1)
+      openssl (>= 2.2)
       safety_net_attestation (~> 0.4.0)
-      tpm-key_attestation (~> 0.11.0)
+      tpm-key_attestation (~> 0.12.0)
     webdrivers (5.2.0)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
@@ -376,9 +376,9 @@ DEPENDENCIES
   authcat-account!
   authcat-identifier!
   authcat-idp!
+  authcat-passkey!
   authcat-password!
   authcat-session!
-  authcat-webauthn!
   bcrypt
   bootsnap (>= 1.4.4)
   byebug

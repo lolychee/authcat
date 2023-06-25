@@ -18,6 +18,10 @@ PATH
       authcat-credential (= 0.1.0)
       omniauth (>= 2.0)
       zeitwerk (>= 2.6.8)
+    authcat-passkey (0.1.0)
+      authcat-credential (= 0.1.0)
+      webauthn (>= 2.5.1)
+      zeitwerk (>= 2.6.8)
     authcat-password (0.1.0)
       authcat-credential (= 0.1.0)
       zeitwerk (>= 2.6.8)
@@ -25,10 +29,6 @@ PATH
       authcat-credential (= 0.1.0)
       authcat-identifier (= 0.1.0)
       authcat-password (= 0.1.0)
-      zeitwerk (>= 2.6.8)
-    authcat-webauthn (0.1.0)
-      authcat-credential (= 0.1.0)
-      webauthn (>= 2.5.1)
       zeitwerk (>= 2.6.8)
 
 PATH
@@ -327,9 +327,9 @@ DEPENDENCIES
   authcat-credential!
   authcat-identifier!
   authcat-idp!
+  authcat-passkey!
   authcat-password!
   authcat-session!
-  authcat-webauthn!
   bcrypt
   database_cleaner (~> 2.0)
   debug

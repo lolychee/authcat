@@ -59,5 +59,5 @@ path "." do
   gem "authcat-idp",          require: false
   gem "authcat-password",     require: false
   gem "authcat-session",      require: false
-  gem "authcat-webauthn",     require: false
+  gem "authcat-passkey",      require: false
 end

@@ -1,0 +1,10 @@
+Description:
+    Explain the generator
+
+Example:
+    bin/rails generate authcat:passkey User
+
+    This will create:
+        db/migrate/20221122100913_add_webauthn_columns_to_user.rb
+        db/migrate/20221122100916_create_user_passkeys.rb
+        app/models/user_passkey.rb

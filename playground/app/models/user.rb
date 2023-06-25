@@ -4,11 +4,11 @@ class User < ApplicationRecord
   include Authcat::Account
   include Authcat::Session
   include Authcat::IdP
-  include Authcat::WebAuthn
+  include Authcat::Passkey
 
   has_many_sessions dependent: :delete_all
   # has_many_passwords dependent: :delete_all
-  has_many_webauthn_credentials dependent: :delete_all
+  has_many_passkeys dependent: :delete_all
   has_many_idp_credentials dependent: :delete_all
 
   has_identifier :email, type: :email

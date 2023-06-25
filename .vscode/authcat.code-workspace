@@ -16,13 +16,13 @@
 			"path": "../authcat-idp"
 		},
 		{
+			"path": "../authcat-passkey"
+		},
+		{
 			"path": "../authcat-password"
 		},
 		{
 			"path": "../authcat-session"
-		},
-		{
-			"path": "../authcat-webauthn"
 		},
 		{
 			"path": "../playground"
@@ -30,7 +30,7 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-{account,credential,identifier,idp,password,session,webauthn}": true,
+			"authcat-{account,credential,identifier,idp,passkey,password,session}": true,
 			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
