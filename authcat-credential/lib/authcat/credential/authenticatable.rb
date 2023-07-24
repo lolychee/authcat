@@ -14,19 +14,26 @@ module Authcat
       class Authenticator < AASM::Base
         attr_reader :options
 
-        def setup!
-          klass.enum auth_method: auth_methods.keys, _prefix: true
+        def steps
+          @steps ||= {}
+        end
 
-          define_states!
-          define_events!
+        def auth_method_names
+          steps.flat_map { |step| step.auth_methods.keys }.uniq
+        end
 
-          self
+        def step_names
+          steps.keys
+        end
+
+        def define_enum!
+          klass.enum auth_method: auth_method_names, _prefix: true
         end
 
         def define_states!
           state :authenticating, initial: true
+          state(*step_names)
           state :authenticated
-          state(*steps.keys)
         end
 
         def define_events!
@@ -43,23 +50,34 @@ module Authcat
           end
         end
 
-        def auth_methods
-          @auth_methods ||= {}
+        def setup!
+          define_enum!
+          define_states!
+          define_events!
+
+          self
         end
 
-        def steps
-          @steps ||= Hash.new { |hash, key| hash[key] = [] }
+        class AuthStep
+          attr_reader :name, :options
+
+          def initialize(name)
+            @name = name
+          end
+
+          def auth_methods
+            @auth_methods ||= {}
+          end
+
+          def auth_method(name, **options)
+            validator = MethodValidator.new(name, options)
+            auth_methods[name] = validator
+            klass.validate validator,
+                           { on: :authenticate, if: :"auth_method_#{validator.name}?" }
+          end
         end
 
-        def auth_method(name, **options)
-          validator = AuthMethod.new(name, options)
-          auth_methods[name] = validator
-          steps[validator.step] << validator
-          klass.validate validator,
-                         { on: :authenticate, if: [:"#{validator.step}?", :"auth_method_#{validator.name}?"] }
-        end
-
-        class AuthMethod
+        class MethodValidator
           attr_reader :name, :options
 
           def initialize(name, options)

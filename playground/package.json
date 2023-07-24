@@ -2,15 +2,20 @@
   "name": "playground",
   "private": true,
   "dependencies": {
-    "@rails/actioncable": "^6.0.0",
+    "@github/webauthn-json": "0.4.1",
+    "@hotwired/turbo-rails": "^7.0.0",
     "@rails/activestorage": "^6.0.0",
-    "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5.2.1",
-    "turbolinks": "^5.2.0",
-    "@github/webauthn-json": "0.4.1"
+    "autoprefixer": "^10.4.14",
+    "esbuild": "^0.18.9",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
   },
   "version": "0.1.0",
   "devDependencies": {
     "webpack-dev-server": "^3.11.2"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
   }
 }

@@ -13,7 +13,7 @@
       </p>
     </div>
 
-    <%= form_with(model: user_session, url: sign_in_path(auth_method: user_session.auth_method), class: "mt-8 space-y-6") do |form| %>
+    <%= form_with(model: user_session, method: :post, url: sign_in_path(auth_method: user_session.auth_method), class: "mt-8 space-y-6") do |form| %>
       <% if user_session.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(user_session.errors.count, "error") %> prohibited this sign_in_password from being saved:</h2>

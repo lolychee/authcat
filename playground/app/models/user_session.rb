@@ -10,6 +10,7 @@ class UserSession < ApplicationRecord
   attribute :password
   attribute :one_time_password
   attribute :recovery_code
+  attribute :passkey
 
   attribute :remember_me
 
@@ -19,10 +20,11 @@ class UserSession < ApplicationRecord
     auth_method :one_time_password, step: :two_factor_authenticating, with: :user
     auth_method :recovery_code, verifier: [recovery_code: :recovery_codes], step: :two_factor_authenticating,
                                 with: :user
+    auth_method :passkey, verifier: [passkey: :passkeys], step: :two_factor_authenticating, with: :user
   end
 
   def two_factor_authenticating_required?
-    user.one_time_password?
+    user.one_time_password? || user.passkeys.any?
   end
 
   def valid_auth_method?(_auth_method)
@@ -32,4 +34,6 @@ class UserSession < ApplicationRecord
   def default_auth_method
     :password
   end
+
+  extra_action :sign_out, do: :destroy
 end

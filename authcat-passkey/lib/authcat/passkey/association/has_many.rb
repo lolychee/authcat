@@ -64,8 +64,8 @@ module Authcat
             credential = JSON.parse(credential) if credential.is_a?(String)
             case credential
             when Hash
-              record = find(credential["id"])
-              record.verify(credential: ::WebAuthn::Credential.from_get(credential))
+              record = find_by(webauthn_id: credential["id"])
+              record&.verify(credential: ::WebAuthn::Credential.from_get(credential))
             else
               false
             end

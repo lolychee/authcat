@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     resource :security, only: %i[show update]
     resource :one_time_password, only: %i[show update]
     resource :recovery_codes, only: %i[show update]
-    resources :webauthn_credentials
+    resources :passkeys
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -22,8 +22,8 @@ class UserSessionsController < ApplicationController
   def create
     respond_to do |format|
       if @user_session.authenticate!(user_session_params)
+        Current.session = @user_session
         if @user_session.authenticated?
-          Current.session = @user_session
           format.html { redirect_to root_url }
         else
           format.html { render :new, status: :accepted }
@@ -62,7 +62,9 @@ class UserSessionsController < ApplicationController
   def user_session_params
     params.required(:user_session).permit(
       :login, :email, :phone_number,
-      :password, :one_time_password, :recovery_code,
+      :password, :one_time_password,
+      :recovery_code,
+      :passkey,
       :remember_me
     )
   end

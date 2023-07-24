@@ -1,11 +1,11 @@
-<%= form_with(model: @webauthn_credential, scope: :webauthn_credential, url: settings_webauthn_credentials_url) do |form| %>
+<%= form_with(model: @passkey, scope: :passkey, url: settings_passkeys_url) do |form| %>
 
-  <% if @webauthn_credential.errors.any? %>
+  <% if @passkey.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@webauthn_credential.errors.count, "error") %> prohibited this webauthn_credential from being saved:</h2>
+      <h2><%= pluralize(@passkey.errors.count, "error") %> prohibited this passkey from being saved:</h2>
 
       <ul>
-        <% @webauthn_credential.errors.each do |error| %>
+        <% @passkey.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -25,9 +25,11 @@
     <div class="px-4 py-3 bg-gray-50 text-left sm:px-6 space-x-4">
       <%= form.button "Add", type: :button, onclick: <<~JS, class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
         var f = this.form;
-        console.log(f.elements["webauthn_credential[options_json]"].value);
-        WebAuthnJSON.create({ "publicKey": JSON.parse(f.elements["webauthn_credential[options_json]"].value) }).then(function(credential) {
-          f.elements["webauthn_credential[credential_json]"].value = JSON.stringify(credential);
+        var passkey = f.elements["passkey[credential_json]"];
+        var options_json = passkey.dataset["webauthnOptionsForCreate"];
+
+        WebAuthnJSON.create({ "publicKey": JSON.parse(options_json)}).then(function(credential) {
+          passkey.value = JSON.stringify(credential);
           f.submit();
         }).catch(function(error) {
           console.log(error);
@@ -39,4 +41,3 @@
   </div>
 
 <% end %>
-<% console %>

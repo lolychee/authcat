@@ -1,0 +1,8 @@
+<div class="grid grid-cols-3 gap-6">
+  <div class="col-span-3 sm:col-span-2">
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title, required: true, class: "focus:ring-blue-500 focus:border-blue-500 flex-1 block mt-1 w-full rounded-none rounded-md sm:text-sm border-gray-300"  %>
+
+    <%= form.hidden_field :credential_json, data: {webauthn_options_for_create: form.object.user.passkeys.options_for_create} %>
+  </div>
+</div>

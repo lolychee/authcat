@@ -6,7 +6,6 @@ module Authcat
       def self.included(base)
         base.extend ClassMethods
 
-        base.primary_key = :webauthn_id
         base.validates :public_key, uniqueness: true
         base.define_model_callbacks :verify
         base.validates :credential, presence: true, on: %i[create verify]
@@ -26,7 +25,7 @@ module Authcat
       def options
         @options ||= begin
           identity = send(self.class.identity_name)
-          credentials = identity.webauthn_credentials
+          credentials = identity.passkeys
           new_record? ? credentials.options_for_create : credentials.options_for_get
         end
       end

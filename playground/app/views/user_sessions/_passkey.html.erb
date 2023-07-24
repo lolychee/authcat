@@ -1,0 +1,29 @@
+<div class="rounded-md shadow-sm -space-y-px">
+  <div>
+  </div>
+</div>
+
+<div>
+  <%= form.label :passkey, "Passkey", class: "sr-only" %>
+  <%= form.hidden_field :passkey, data: {webauthn_options_for_get: form.object.user.passkeys.options_for_get} %>
+  <%= form.button "Use Passkey", onclick: <<~JS, class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      var f = this.form;
+      var passkey = f.elements["passkey"];
+      var options_json = passkey.dataset["webauthnOptionsForGet"];
+
+      await WebAuthnJSON.get({ "publicKey": JSON.parse(options_json) }).then(function(credential) {
+        passkey.value = JSON.stringify(credential);
+        f.submit();
+      }).catch(function(error) {
+        console.log(error);
+      });
+
+      console.log("Verify public key credential...");
+    JS
+
+</div>
+
+<% content_for(:bottom) do %>
+  <%= link_to "Use one time password", sign_in_path(auth_method: :one_time_password)  %>
+  <%= link_to "Use recovery code", sign_in_path(auth_method: :recovery_code)  %>
+<% end %>

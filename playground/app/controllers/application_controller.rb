@@ -7,4 +7,6 @@ class ApplicationController < ActionController::Base
   rescue_from(ActionController::RoutingError) do
     render :not_found, status: :not_found
   end
+
+  before_action { console }
 end
