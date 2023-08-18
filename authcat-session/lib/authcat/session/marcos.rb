@@ -5,8 +5,10 @@ require "authcat/credential"
 module Authcat
   module Session
     module Marcos
-      extend ActiveSupport::Concern
-      include Authcat::Credential::Marcos
+      def self.included(base)
+        base.include Authcat::Credential::Marcos
+        base.extend ClassMethods
+      end
 
       MACRO_MAPPING = {
         has_one_session: Association::HasOne,
@@ -14,12 +16,12 @@ module Authcat
       }.freeze
 
       module ClassMethods
-        def has_one_session(name = :session, **opts, &block)
-          define_credential!(__method__, name, **opts, &block)
+        def has_one_session(name = :session, **opts, &)
+          define_credential!(__method__, name, **opts, &)
         end
 
-        def has_many_sessions(name = :sessions, **opts, &block)
-          define_credential!(__method__, name, **opts, &block)
+        def has_many_sessions(name = :sessions, **opts, &)
+          define_credential!(__method__, name, **opts, &)
         end
 
         def lookup_credential_klass(macro_name)

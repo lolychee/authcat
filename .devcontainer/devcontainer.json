@@ -22,12 +22,7 @@
 				"Shopify.ruby-lsp",
 				"KoichiSasada.vscode-rdbg",
 				"connorshea.vscode-ruby-test-adapter",
-				"soutaro.steep-vscode",
 				"redhat.vscode-yaml",
-				// "mutantdino.resourcemonitor"
-				// "castwide.solargraph",
-				// "castwide.ruby-debug",
-				// "kaiwood.endwise"
 			]
 		}
 	},

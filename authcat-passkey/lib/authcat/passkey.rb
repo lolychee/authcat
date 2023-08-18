@@ -20,8 +20,8 @@ end
 
 module Authcat
   module Passkey
-    extend ActiveSupport::Concern
-
-    include Marcos
+    def self.included(base)
+      base.include Marcos
+    end
   end
 end

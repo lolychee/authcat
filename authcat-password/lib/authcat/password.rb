@@ -14,10 +14,10 @@ loader.setup
 
 module Authcat
   module Password
-    extend ActiveSupport::Concern
-
-    include Marcos
-    include Validators
+    def self.included(base)
+      base.extend ClassMethods
+      base.include Marcos
+    end
 
     module ClassMethods
       def passwords

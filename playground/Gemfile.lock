@@ -6,9 +6,13 @@ PATH
       authcat-identifier (~> 0.1.0)
       authcat-password (~> 0.1.0)
       zeitwerk (>= 2.6.8)
+    authcat-authenticator (0.1.0)
+      authcat (= 0.1.0)
+      authcat-identifier (= 0.1.0)
+      authcat-password (= 0.1.0)
+      zeitwerk (>= 2.6.8)
     authcat-credential (0.1.0)
       aasm (>= 5.5.0)
-      activesupport (>= 6.1.0)
       authcat (= 0.1.0)
       dry-container (>= 0.7.2)
       zeitwerk (>= 2.6.8)
@@ -16,6 +20,7 @@ PATH
       authcat-credential (= 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-idp (0.1.0)
+      activesupport (>= 6.1.0)
       authcat-credential (= 0.1.0)
       omniauth (>= 2.0)
       zeitwerk (>= 2.6.8)
@@ -27,9 +32,8 @@ PATH
       authcat-credential (= 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-session (0.1.0)
+      authcat-authenticator (= 0.1.0)
       authcat-credential (= 0.1.0)
-      authcat-identifier (= 0.1.0)
-      authcat-password (= 0.1.0)
       zeitwerk (>= 2.6.8)
 
 GEM
@@ -365,6 +369,7 @@ PLATFORMS
 
 DEPENDENCIES
   authcat-account!
+  authcat-authenticator!
   authcat-identifier!
   authcat-idp!
   authcat-passkey!
@@ -410,4 +415,4 @@ RUBY VERSION
    ruby 3.2.2p53
 
 BUNDLED WITH
-   2.4.13
+   2.4.19

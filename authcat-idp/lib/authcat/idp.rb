@@ -19,8 +19,8 @@ end
 
 module Authcat
   module IdP
-    extend ActiveSupport::Concern
-
-    include Marcos
+    def self.included(base)
+      base.include Marcos
+    end
   end
 end

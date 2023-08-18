@@ -35,7 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", ">= 2.6.8"
 
   spec.add_dependency "aasm", ">= 5.5.0"
-  spec.add_dependency "activesupport", ">= 6.1.0"
   spec.add_dependency "dry-container", ">= 0.7.2"
 
   spec.add_dependency "authcat", version

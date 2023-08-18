@@ -3,7 +3,7 @@
 require "active_model/validator"
 
 module Authcat
-  module Password
+  module Authenticator
     module Validators
       class ChallengeValidator < ActiveModel::EachValidator
         def initialize(options)

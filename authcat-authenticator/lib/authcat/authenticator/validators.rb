@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Password
+  module Authenticator
     module Validators
     end
   end

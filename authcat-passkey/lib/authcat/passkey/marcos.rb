@@ -5,16 +5,18 @@ require "authcat/credential"
 module Authcat
   module Passkey
     module Marcos
-      extend ActiveSupport::Concern
-      include Authcat::Credential::Marcos
+      def self.included(base)
+        base.include Authcat::Credential::Marcos
+        base.extend ClassMethods
+      end
 
       MACRO_MAPPING = {
         has_many_passkeys: Association::HasMany
       }.freeze
 
       module ClassMethods
-        def has_many_passkeys(name = :passkeys, **opts, &block)
-          define_credential!(__method__, name, **opts, &block)
+        def has_many_passkeys(name = :passkeys, **opts, &)
+          define_credential!(__method__, name, **opts, &)
         end
 
         def lookup_credential_klass(macro_name)

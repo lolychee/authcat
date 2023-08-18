@@ -5,10 +5,9 @@ require "aasm"
 module Authcat
   module Credential
     module Authenticatable
-      extend ActiveSupport::Concern
-
-      included do
-        include AASM
+      def self.included(base)
+        base.extend ClassMethods
+        base.include AASM
       end
 
       class Authenticator < AASM::Base
@@ -43,7 +42,7 @@ module Authcat
                 guard: -> { @_authenticate_valid },
                 after: -> { @_authenticate_valid = nil } do
             steps.each_cons(2).each do |from, to|
-              transitions from: from, to: to, if: :"#{to}_required?"
+              transitions from:, to:, if: :"#{to}_required?"
               transitions from: to, to: :authenticated
             end
             transitions from: :authenticating, to: :authenticated
@@ -177,8 +176,8 @@ module Authcat
       end
 
       module ClassMethods
-        def authenticatable(name = :authenticator, *args, **options, &block)
-          aasm(name, *args, **options.reverse_merge(AASM_OPTIONS), &block).setup!
+        def authenticatable(name = :authenticator, *args, **options, &)
+          aasm(name, *args, **options.reverse_merge(AASM_OPTIONS), &).setup!
           prepend Prepend
         end
 

@@ -17,8 +17,8 @@ end
 
 module Authcat
   module Session
-    extend ActiveSupport::Concern
-
-    include Marcos
+    def self.included(base)
+      base.include Marcos
+    end
   end
 end

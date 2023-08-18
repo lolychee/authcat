@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Authcat
-  module Identifier
-    module Validators
-    end
+  module Authenticator
+    VERSION = "0.1.0"
   end
 end
