@@ -5,11 +5,12 @@ require "authcat"
 require "zeitwerk"
 require "webauthn"
 
-loader = Zeitwerk::Loader.for_gem_extension(Authcat)
-loader.inflector.inflect(
-  "webauthn" => "WebAuthn"
-)
-loader.setup
+Zeitwerk::Loader.for_gem_extension(Authcat).tap do |loader|
+  loader.inflector.inflect(
+    "webauthn" => "WebAuthn"
+  )
+  loader.setup
+end
 
 begin
   require "rails/railtie"

@@ -4,13 +4,14 @@ require "active_support"
 require "authcat"
 require "zeitwerk"
 
-loader = Zeitwerk::Loader.for_gem_extension(Authcat)
-loader.inflector.inflect(
-  "bcrypt" => "BCrypt",
-  "totp" => "TOTP",
-  "hotp" => "HOTP"
-)
-loader.setup
+Zeitwerk::Loader.for_gem_extension(Authcat).tap do |loader|
+  loader.inflector.inflect(
+    "bcrypt" => "BCrypt",
+    "totp" => "TOTP",
+    "hotp" => "HOTP"
+  )
+  loader.setup
+end
 
 module Authcat
   module Password

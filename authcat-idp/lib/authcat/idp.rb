@@ -4,11 +4,12 @@ require "active_support"
 require "authcat"
 require "zeitwerk"
 
-loader = Zeitwerk::Loader.for_gem_extension(Authcat)
-loader.inflector.inflect(
-  "idp" => "IdP"
-)
-loader.setup
+Zeitwerk::Loader.for_gem_extension(Authcat).tap do |loader|
+  loader.inflector.inflect(
+    "idp" => "IdP"
+  )
+  loader.setup
+end
 
 begin
   require "rails/railtie"
