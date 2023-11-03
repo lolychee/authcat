@@ -84,7 +84,7 @@ GEM
     psych (4.0.3)
       stringio
     rainbow (3.1.1)
-    rake (13.0.6)
+    rake (13.1.0)
     rdoc (6.4.0)
       psych (>= 4.0.0)
     regexp_parser (2.3.1)
@@ -172,7 +172,7 @@ DEPENDENCIES
   lockbox
   pg
   phonelib
-  rake (~> 13.0)
+  rake (~> 13.1)
   rdoc
   rotp
   rspec (~> 3.0)
