@@ -3,7 +3,7 @@
 require "dry/container"
 
 module Authcat
-  module Credential
+  module Utils
     module Registryable
       def self.included(base)
         base.extend ClassMethods

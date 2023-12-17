@@ -3,7 +3,7 @@
 module Authcat
   module Identifier
     module Type
-      include Authcat::Credential::Registryable
+      include Authcat::Utils::Registryable
 
       register(:identifier) { Identifier }
       register(:email) { Email }

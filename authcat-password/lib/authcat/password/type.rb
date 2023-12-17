@@ -3,7 +3,7 @@
 module Authcat
   module Password
     module Type
-      include Authcat::Credential::Registryable
+      include Authcat::Utils::Registryable
 
       register(:digest_password) { DigestPassword }
       register(:one_time_password) { OneTimePassword }

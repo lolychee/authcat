@@ -3,7 +3,7 @@
 module Authcat
   module Password
     module Algorithm
-      include Authcat::Credential::Registryable
+      include Authcat::Utils::Registryable
 
       register(:plaintext) { Plaintext }
       register(:bcrypt) { BCrypt }
