@@ -14,7 +14,7 @@ module Authcat
         end
 
         def setup_instance_methods!
-          owner.class_eval <<-CODE, __FILE__, __LINE__ + 1
+          owner.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             # frozen_string_literal: true
 
             def #{name}=(value)
