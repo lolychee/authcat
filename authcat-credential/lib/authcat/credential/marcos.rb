@@ -30,7 +30,7 @@ module Authcat
         end
 
         def lookup_credential_klass(macro_name)
-          MACRO_MAPPING[macro_name]
+          MACRO_MAPPING.fetch(macro_name)
         end
 
         def define_credential!(macro_name, name, **options, &)
