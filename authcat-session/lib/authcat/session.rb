@@ -2,10 +2,7 @@
 
 require "active_support"
 
-require "authcat"
 require "zeitwerk"
-
-Zeitwerk::Loader.for_gem_extension(Authcat).tap(&:setup)
 
 begin
   require "rails/railtie"
@@ -16,6 +13,12 @@ end
 
 module Authcat
   module Session
+    def self.loader
+      @loader ||= Zeitwerk::Loader.for_gem_extension(Authcat)
+    end
+
+    loader.setup
+
     def self.included(base)
       base.include Marcos
     end

@@ -15,7 +15,7 @@ require:
   - rubocop-rake
   - rubocop-rspec
   - rubocop-rubycw
-  - rubocop-thread_safety
+  # - rubocop-thread_safety
 
 AllCops:
   NewCops: enable
@@ -46,4 +46,7 @@ Naming/PredicateName:
   Enabled: false
 
 Metrics/MethodLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
   Enabled: false

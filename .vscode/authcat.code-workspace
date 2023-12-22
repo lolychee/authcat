@@ -28,12 +28,15 @@
 			"path": "../authcat-session"
 		},
 		{
+			"path": "../authcat-support"
+		},
+		{
 			"path": "../playground"
 		}
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-{account,authenticator,credential,identifier,idp,passkey,password,session}": true,
+			"authcat-{account,authenticator,credential,identifier,idp,passkey,password,session,support}": true,
 			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",

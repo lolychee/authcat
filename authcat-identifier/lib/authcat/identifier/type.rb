@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require "authcat/support"
+
 module Authcat
   module Identifier
     module Type
-      include Authcat::Utils::Registryable
+      include Authcat::Support::Registryable
 
       register(:identifier) { Identifier }
       register(:email) { Email }

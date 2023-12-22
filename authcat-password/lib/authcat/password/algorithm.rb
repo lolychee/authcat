@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require "authcat/support"
+
 module Authcat
   module Password
     module Algorithm
-      include Authcat::Utils::Registryable
+      include Authcat::Support::Registryable
 
       register(:plaintext) { Plaintext }
       register(:bcrypt) { BCrypt }

@@ -23,7 +23,7 @@ module Authcat
                 build_#{name}(#{@relation_options[:inverse_of]}: self, identifier: value)
               end
             end
-          CODE
+          RUBY
         end
       end
     end

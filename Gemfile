@@ -52,15 +52,17 @@ gem "state_machines-activerecord", require: false
 group :development do
   gem "debug"
   gem "listen", "~> 3.3"
+  gem "steep"
 end
 
 path "." do
-  gem "authcat-account", require: false
-  gem "authcat-authenticator", require: false
-  gem "authcat-credential",   require: false
-  gem "authcat-identifier",   require: false
-  gem "authcat-idp",          require: false
-  gem "authcat-passkey",      require: false
-  gem "authcat-password",     require: false
-  gem "authcat-session",      require: false
+  gem "authcat-account",        require: false
+  gem "authcat-authenticator",  require: false
+  gem "authcat-credential",     require: false
+  gem "authcat-identifier",     require: false
+  gem "authcat-idp",            require: false
+  gem "authcat-passkey",        require: false
+  gem "authcat-password",       require: false
+  gem "authcat-session",        require: false
+  gem "authcat-support",        require: false
 end

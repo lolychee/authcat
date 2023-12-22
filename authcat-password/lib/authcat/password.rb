@@ -1,20 +1,21 @@
 # frozen_string_literal: true
 
 require "active_support"
-require "authcat"
 require "zeitwerk"
-
-Zeitwerk::Loader.for_gem_extension(Authcat).tap do |loader|
-  loader.inflector.inflect(
-    "bcrypt" => "BCrypt",
-    "totp" => "TOTP",
-    "hotp" => "HOTP"
-  )
-  loader.setup
-end
 
 module Authcat
   module Password
+    def self.loader
+      @loader ||= Zeitwerk::Loader.for_gem_extension(Authcat)
+    end
+
+    loader.inflector.inflect(
+      "bcrypt" => "BCrypt",
+      "totp" => "TOTP",
+      "hotp" => "HOTP"
+    )
+    loader.setup
+
     def self.included(base)
       base.extend ClassMethods
       base.include Marcos

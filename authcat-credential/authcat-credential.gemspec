@@ -37,8 +37,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aasm", ">= 5.5.0"
   spec.add_dependency "dry-container", ">= 0.7.2"
 
-  spec.add_dependency "authcat", version
-
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
   spec.metadata["rubygems_mfa_required"] = "true"
