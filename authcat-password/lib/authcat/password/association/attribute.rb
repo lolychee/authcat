@@ -12,6 +12,10 @@ module Authcat
           options
         end
 
+        def identifiable?
+          false
+        end
+
         def create(value)
           owner.type_for_attribute(name).cast(Algorithm::Plaintext.new(value.to_s))
         end

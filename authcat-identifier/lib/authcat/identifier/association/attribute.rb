@@ -19,8 +19,6 @@ module Authcat
             owner.find_by(name => value)
           end
         end
-
-        def setup_instance_methods!; end
       end
     end
   end

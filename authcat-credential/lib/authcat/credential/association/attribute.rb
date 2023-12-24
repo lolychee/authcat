@@ -15,6 +15,8 @@ module Authcat
               type_class.new(cast_type, **type_options)
             end
           end
+
+          def setup_instance_methods!; end
         end
 
         include Base

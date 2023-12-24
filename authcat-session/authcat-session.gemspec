@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "authcat-authenticator", version
   spec.add_dependency "authcat-credential", version
+  spec.add_dependency "authcat-identifier", version
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

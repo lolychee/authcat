@@ -21,6 +21,10 @@ module Authcat
         def setup!
           raise NotImplementedError
         end
+
+        def identifiable?
+          true
+        end
       end
     end
   end

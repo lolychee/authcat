@@ -8,6 +8,10 @@ module Authcat
           @relation_options.merge(extend: Extension)
         end
 
+        def identifiable?
+          false
+        end
+
         def identify(credential)
           credential = JSON.parse(credential) if credential.is_a?(String)
           case credential

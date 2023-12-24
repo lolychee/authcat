@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require "authcat/identifier"
+
 class User < ActiveRecord::Base
+  include Authcat::Identifier
   include Authcat::Session
 
   EMAIL_VALIDATE_OPTIONS = { format: URI::MailTo::EMAIL_REGEXP }.freeze

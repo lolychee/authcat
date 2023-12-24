@@ -8,11 +8,6 @@ module Authcat
           owner.includes(name).find_by(name => { identifier: value })
         end
 
-        def setup!
-          setup_relation!
-          setup_instance_methods!
-        end
-
         def setup_instance_methods!
           owner.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             # frozen_string_literal: true

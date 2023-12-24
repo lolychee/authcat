@@ -18,12 +18,7 @@ module Authcat
     module ClassMethods
       def identifiers
         credentials.select do |_, credential|
-          case credential
-          when Association::Attribute, Association::HasOne, Association::HasMany
-            true
-          else
-            false
-          end
+          credential.identifiable?
         end
       end
 
@@ -48,8 +43,8 @@ module Authcat
       end
     end
 
-    def identify(value, **opts)
-      identity = self.class.identify(value, **opts)
+    def identify(value, **)
+      identity = self.class.identify(value, **)
 
       if identity
         if instance_variable_defined?(:@association_cache)

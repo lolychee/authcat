@@ -12,6 +12,10 @@ module Authcat
           options
         end
 
+        def identifiable?
+          false
+        end
+
         def relation_options
           type = type_class.new(ActiveRecord::Type::String.new, **type_options)
           @relation_options.merge(extend: Extension.new(type))
