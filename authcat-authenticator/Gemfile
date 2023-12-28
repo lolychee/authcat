@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+eval_gemfile(File.expand_path("../Gemfile", __dir__))
+
+gem "bcrypt"
+gem "rotp"
+
+gem "phonelib"
+gem "valid_email2"

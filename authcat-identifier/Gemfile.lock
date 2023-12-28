@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     authcat (0.1.0)
       zeitwerk (>= 2.6.8)
@@ -186,7 +186,17 @@ GEM
     net-smtp (0.4.0)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.16.0-aarch64-linux)
+      racc (~> 1.4)
+    nokogiri (1.16.0-arm-linux)
+      racc (~> 1.4)
+    nokogiri (1.16.0-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.0-x86-linux)
+      racc (~> 1.4)
+    nokogiri (1.16.0-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     omniauth (2.1.2)
       hashie (>= 3.4.6)
@@ -200,6 +210,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
+    phonelib (0.8.6)
     psych (5.1.2)
       stringio
     racc (1.7.3)
@@ -241,7 +252,7 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rbs (3.4.0)
+    rbs (3.4.1)
       abbrev
     rdoc (6.6.2)
       psych (>= 4.0.0)
@@ -281,7 +292,7 @@ GEM
       rubocop (~> 1.33)
     rubocop-packaging (0.5.2)
       rubocop (>= 1.33, < 2.0)
-    rubocop-performance (1.20.0)
+    rubocop-performance (1.20.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
     rubocop-rake (0.6.0)
@@ -312,7 +323,12 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.9-x86_64-linux)
+    sqlite3 (1.7.0-aarch64-linux)
+    sqlite3 (1.7.0-arm-linux)
+    sqlite3 (1.7.0-arm64-darwin)
+    sqlite3 (1.7.0-x86-linux)
+    sqlite3 (1.7.0-x86_64-darwin)
+    sqlite3 (1.7.0-x86_64-linux)
     steep (1.6.0)
       activesupport (>= 5.1)
       concurrent-ruby (>= 1.1.10)
@@ -341,6 +357,9 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
+    valid_email2 (5.1.1)
+      activemodel (>= 3.2)
+      mail (~> 2.5)
     webauthn (3.1.0)
       android_key_attestation (~> 0.3.0)
       awrence (~> 1.1)
@@ -356,6 +375,11 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
+  aarch64-linux
+  arm-linux
+  arm64-darwin
+  x86-linux
+  x86_64-darwin
   x86_64-linux
 
 DEPENDENCIES
@@ -375,6 +399,7 @@ DEPENDENCIES
   faker
   listen (~> 3.3)
   pg
+  phonelib
   rails (~> 6.1)
   rake (~> 13.0)
   rdoc
@@ -390,6 +415,7 @@ DEPENDENCIES
   simplecov-lcov
   sqlite3
   steep
+  valid_email2
 
 BUNDLED WITH
    2.5.2

@@ -7,6 +7,7 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in authcat.gemspec
 gemspec
 
+gem "erb"
 gem "rake", "~> 13.0"
 
 group :test do
@@ -38,24 +39,13 @@ gem "database_cleaner", "~> 2.0"
 gem "pg", require: false
 gem "sqlite3"
 
-gem "dry-container"
-
-gem "bcrypt"
-gem "omniauth",     require: false
-gem "phonelib",     require: false
-gem "rotp",         require: false
-gem "valid_email2", require: false
-gem "webauthn",     require: false
-
-gem "state_machines-activerecord", require: false
-
 group :development do
   gem "debug"
   gem "listen", "~> 3.3"
   gem "steep"
 end
 
-path "." do
+path __dir__ do
   gem "authcat-account",        require: false
   gem "authcat-authenticator",  require: false
   gem "authcat-credential",     require: false
