@@ -2,7 +2,9 @@
 
 require "bundler/setup"
 require "authcat/account"
+
 require "active_record"
+require "database_cleaner/active_record"
 
 ENV["RACK_ENV"] ||= "test"
 
@@ -23,5 +25,16 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 end
