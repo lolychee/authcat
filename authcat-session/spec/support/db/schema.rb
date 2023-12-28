@@ -14,11 +14,11 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
 
   create_table "user_sessions", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.string "token", null: false
     t.string "name", null: false
+    t.string "token", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "token"], name: "index_user_sessions_on_user_id_and_token", unique: true
+    t.index ["user_id", "name"], name: "index_user_sessions_on_user_id_and_name"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
   end
 

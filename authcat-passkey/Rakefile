@@ -3,16 +3,17 @@
 require "bundler/gem_tasks"
 require "rspec/core/rake_task"
 require "active_record"
+require "erb"
 
 include ActiveRecord::Tasks
-DatabaseTasks.env = ENV["RACK_ENV"] || "development"
-DatabaseTasks.root = File.expand_path(".", __dir__)
-DatabaseTasks.db_dir = File.expand_path("spec/support/db", __dir__)
-DatabaseTasks.migrations_paths = [
-  File.expand_path("spec/support/db/migrate", __dir__)
-]
-DatabaseTasks.database_configuration = YAML.load_file(File.expand_path("spec/support/database.yml", __dir__),
-                                                      aliases: true)
+DatabaseTasks.env = ENV["RACK_ENV"] ||= "development"
+DatabaseTasks.root = File.expand_path("spec/support", __dir__)
+DatabaseTasks.db_dir = File.expand_path("db", DatabaseTasks.root)
+DatabaseTasks.migrations_paths = [File.expand_path("db/migrate", DatabaseTasks.root)]
+DatabaseTasks.database_configuration = YAML.load(
+  ERB.new(File.read(File.expand_path("database.yml", DatabaseTasks.root))).result,
+  aliases: true
+)
 # other settings...
 
 task :environment do
