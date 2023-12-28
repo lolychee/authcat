@@ -36,7 +36,7 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-{account,authenticator,credential,identifier,idp,passkey,password,session,support}": true,
+			"authcat-*": true,
 			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
