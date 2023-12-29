@@ -31,8 +31,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "zeitwerk", ">= 2.6.8"
 
-  spec.add_dependency "activesupport", ">= 6.1.0"
-  spec.add_dependency "authcat-credential", version
+  spec.add_dependency "authcat-credential", "~> #{version}"
+
   spec.add_dependency "omniauth", ">= 2.0"
 
   spec.metadata["rubygems_mfa_required"] = "true"
