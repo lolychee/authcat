@@ -36,7 +36,7 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"authcat-*": true,
+			"authcat-*[^.gemspec]": true,
 			"playground": true,
 		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
