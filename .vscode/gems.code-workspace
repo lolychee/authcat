@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"path": ".."
+			"path": "..",
 		},
 		{
 			"path": "../authcat-account"
@@ -35,16 +35,9 @@
 		}
 	],
 	"settings": {
-		"files.exclude": {
-			"authcat-*[^.gemspec]": true,
-			"playground": true,
-		},
 		"terminal.integrated.defaultProfile.linux": "zsh",
-		"[ruby]": {
-			"editor.defaultFormatter": "Shopify.ruby-lsp",
-		},
+		"editor.defaultFormatter": "Shopify.ruby-lsp",
 		"editor.tabSize": 2,
-		"editor.formatOnSave": true,
 		"editor.insertSpaces": true,
 		"editor.semanticHighlighting.enabled": true,
 		"rubyTestExplorer.testFramework": "rspec",
