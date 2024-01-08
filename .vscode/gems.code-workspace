@@ -16,7 +16,7 @@
 			"path": "../authcat-identifier"
 		},
 		{
-			"path": "../authcat-idp"
+			"path": "../authcat-identity_provider"
 		},
 		{
 			"path": "../authcat-passkey"

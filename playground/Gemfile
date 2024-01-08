@@ -66,7 +66,7 @@ path ".." do
   gem "authcat-account"
   gem "authcat-authenticator"
   gem "authcat-identifier"
-  gem "authcat-idp"
+  gem "authcat-identity_provider"
   gem "authcat-passkey"
   gem "authcat-password"
   gem "authcat-session"

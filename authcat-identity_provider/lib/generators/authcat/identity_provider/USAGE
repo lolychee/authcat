@@ -1,0 +1,9 @@
+Description:
+    Explain the generator
+
+Example:
+    bin/rails generate authcat:identity_provider User
+
+    This will create:
+        db/migrate/20221122100916_create_user_identity_providers.rb
+        app/models/user_identity_provider.rb

@@ -22,7 +22,7 @@ jobs:
           - authcat-authenticator
           - authcat-credential
           - authcat-identifier
-          - authcat-idp
+          - authcat-identity_provider
           - authcat-passkey
           - authcat-password
           - authcat-session

@@ -114,8 +114,6 @@ GEM
     android_key_attestation (0.3.0)
     ast (2.4.2)
     awrence (1.2.1)
-    base64 (0.2.0)
-    bcrypt (3.1.20)
     bindata (2.4.15)
     builder (3.2.4)
     cbor (0.5.9.8)
@@ -215,8 +213,7 @@ GEM
       stringio
     racc (1.7.3)
     rack (2.2.8)
-    rack-protection (3.2.0)
-      base64 (>= 0.1.0)
+    rack-protection (3.1.0)
       rack (~> 2.2, >= 2.2.4)
     rack-test (2.1.0)
       rack (>= 1.3)
@@ -261,7 +258,6 @@ GEM
     reline (0.4.1)
       io-console (~> 0.5)
     rexml (3.2.6)
-    rotp (6.3.0)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -392,17 +388,16 @@ DEPENDENCIES
   authcat-password!
   authcat-session!
   authcat-support!
-  bcrypt
   database_cleaner (~> 2.0)
   debug
   erb
   faker
   listen (~> 3.3)
+  omniauth
   pg
   rails (~> 6.1)
   rake (~> 13.0)
   rdoc
-  rotp
   rspec (~> 3.0)
   rubocop
   rubocop-packaging

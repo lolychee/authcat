@@ -26,7 +26,7 @@ PATH
       authcat-credential (~> 0.1.0)
       authcat-support (~> 0.1.0)
       zeitwerk (>= 2.6.8)
-    authcat-idp (0.1.0)
+    authcat-identity_provider (0.1.0)
       authcat-credential (~> 0.1.0)
       omniauth (>= 2.0)
       zeitwerk (>= 2.6.8)
@@ -385,7 +385,7 @@ DEPENDENCIES
   authcat-authenticator!
   authcat-credential!
   authcat-identifier!
-  authcat-idp!
+  authcat-identity_provider!
   authcat-passkey!
   authcat-password!
   authcat-session!

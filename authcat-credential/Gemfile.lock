@@ -26,7 +26,7 @@ PATH
       authcat-credential (~> 0.1.0)
       authcat-support (~> 0.1.0)
       zeitwerk (>= 2.6.8)
-    authcat-idp (0.1.0)
+    authcat-identity_provider (0.1.0)
       authcat-credential (~> 0.1.0)
       omniauth (>= 2.0)
       zeitwerk (>= 2.6.8)
@@ -114,9 +114,10 @@ GEM
     android_key_attestation (0.3.0)
     ast (2.4.2)
     awrence (1.2.1)
+    base64 (0.2.0)
     bindata (2.4.15)
     builder (3.2.4)
-    cbor (0.5.9.6)
+    cbor (0.5.9.8)
     cgi (0.4.1)
     concurrent-ruby (1.2.2)
     cose (1.3.0)
@@ -213,7 +214,8 @@ GEM
       stringio
     racc (1.7.3)
     rack (2.2.8)
-    rack-protection (3.1.0)
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
       rack (~> 2.2, >= 2.2.4)
     rack-test (2.1.0)
       rack (>= 1.3)
@@ -383,7 +385,7 @@ DEPENDENCIES
   authcat-authenticator!
   authcat-credential!
   authcat-identifier!
-  authcat-idp!
+  authcat-identity_provider!
   authcat-passkey!
   authcat-password!
   authcat-session!
