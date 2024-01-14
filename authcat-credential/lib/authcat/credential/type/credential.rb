@@ -5,7 +5,7 @@ require "active_record/type"
 module Authcat
   module Credential
     module Type
-      class Credential < ActiveRecord::Type::Serialized
+      class Credential < ActiveRecord::Type::String
       end
     end
   end

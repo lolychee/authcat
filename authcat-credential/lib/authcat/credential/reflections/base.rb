@@ -2,8 +2,12 @@
 
 module Authcat
   module Credential
-    module Association
+    module Reflections
       module Base
+        def self.included(base)
+          base.include Identifiable
+        end
+
         attr_reader :owner, :name, :options
 
         def initialize(owner, name, **options, &block)
@@ -14,16 +18,11 @@ module Authcat
         end
 
         def extract_options!(options)
-          @type = options.delete(:type)
           @options = options
         end
 
         def setup!
           raise NotImplementedError
-        end
-
-        def identifiable?
-          true
         end
       end
     end

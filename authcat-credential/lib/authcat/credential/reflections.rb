@@ -2,7 +2,7 @@
 
 module Authcat
   module Credential
-    module Association
+    module Reflections
     end
   end
 end

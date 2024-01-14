@@ -3,40 +3,24 @@
 module Authcat
   module Credential
     module Marcos
-      MACRO_MAPPING = {
-        has_credential: Association::Attribute,
-        has_one_credential: Association::HasOne,
-        has_many_credentials: Association::HasMany
-      }.freeze
+      MACRO_MAPPING = {}.freeze
 
       def self.included(base)
         base.extend ClassMethods
 
-        base.class_attribute :credentials
-        base.credentials = {}
+        base.class_attribute :credential_reflections
+        base.credential_reflections = {}
       end
 
       module ClassMethods
-        def has_credential(name, **options, &)
-          define_credential!(__method__, name, **options, &)
-        end
-
-        def has_one_credential(name, **options, &)
-          define_credential!(__method__, name, **options, &)
-        end
-
-        def has_many_credentials(name, **options, &)
-          define_credential!(__method__, name, **options, &)
-        end
-
-        def lookup_credential_klass(macro_name)
+        def lookup_credential_reflection_class(macro_name)
           MACRO_MAPPING.fetch(macro_name)
         end
 
-        def define_credential!(macro_name, name, **options, &)
-          lookup_credential_klass(macro_name).new(self, name, **options, &).tap do |assoc|
-            assoc.setup!
-            self.credentials = credentials.merge(name => assoc)
+        def define_credential!(macro_name, name, **, &)
+          lookup_credential_reflection_class(macro_name).new(self, name, **, &).tap do |reflection|
+            reflection.setup!
+            self.credential_reflections = credential_reflections.merge(name => reflection)
           end
         end
       end
