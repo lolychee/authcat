@@ -5,7 +5,7 @@ require "authcat/support"
 module Authcat
   module Identifier
     module Type
-      include Authcat::Support::Registryable
+      include Authcat::Support::ActsAsRegistry
 
       register(:identifier) { Identifier }
       register(:email) { Email }

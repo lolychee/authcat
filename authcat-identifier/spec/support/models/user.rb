@@ -3,8 +3,6 @@
 class User < ActiveRecord::Base
   include Authcat::Identifier
 
-  has_many :sessions
-
   # EMAIL_VALIDATE_OPTIONS = { format: URI::MailTo::EMAIL_REGEXP }.freeze
   # validates :email, presence: true, uniqueness: true, on: :save
   # validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
@@ -13,13 +11,14 @@ class User < ActiveRecord::Base
 
   # has_recovery_codes
 
-  has_identifier :email, type: :email
-  has_identifier :token
+  # has_identifier :email, type: :email
+  # has_identifier :token
   # validates :email, identify: true
 
-  has_identifier :phone_number, type: :phone_number, country: "CN"
+  # has_identifier :phone_number, type: :phone_number, country: "CN"
   # validates :phone_number, identify: true
 
-  has_one_identifier :public_email, class_name: "UserEmail"
-  has_many_identifiers :emails
+  # has_one_identifier :public_email, class_name: "Email", inverse_of: :user,
+  #                                   identify: { identifier: :identifier }
+  # has_many_identifiers :emails, identify: { identifier: :identifier }
 end

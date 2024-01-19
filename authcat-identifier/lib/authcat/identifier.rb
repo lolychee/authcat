@@ -16,12 +16,6 @@ module Authcat
     end
 
     module ClassMethods
-      def identifiers
-        credentials.select do |_, credential|
-          credential.identifiable?
-        end
-      end
-
       def identify(value, **_opts)
         # attribute_names =
         #   if opts.key?(:only)
@@ -31,12 +25,25 @@ module Authcat
         #   else
         #     identifier_attributes
         #   end
+        identifiers = credential_reflections.select do |_, credential|
+          credential.identifiable?
+        end
 
-        identifiers.each_value do |identifier|
-          next unless value.key?(identifier.name)
+        if value.is_a?(Hash)
+          value.each do |key, value|
+            next if !value.present? || !identifiers.key?(key.to_sym)
 
-          found = identifier.identify(value[identifier.name])
-          return found if found
+            found = identifiers[key.to_sym].identify(value)
+            return found if found
+          end
+        else
+          value = value.to_s
+          identifiers.each_value do |identifier|
+            next if !value.present? || !identifier.identifiable? || !identifier.fuzzy_search?
+
+            found = identifier.identify(value)
+            return found if found
+          end
         end
 
         nil
