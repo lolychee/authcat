@@ -4,7 +4,7 @@ require "dry/container"
 
 module Authcat
   module Support
-    module Registryable
+    module ActsAsRegistry
       def self.included(base)
         base.extend ClassMethods
       end
@@ -19,7 +19,9 @@ module Authcat
         end
 
         def resolve(...)
-          registry.resolve(...)
+          registry.resolve(...).then do |value|
+            block_given? ? yield(value) : value
+          end
         end
       end
     end
