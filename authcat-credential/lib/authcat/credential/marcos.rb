@@ -7,12 +7,14 @@ module Authcat
 
       def self.included(base)
         base.extend ClassMethods
-
-        base.class_attribute :credential_reflections
-        base.credential_reflections = {}
       end
 
       module ClassMethods
+        def self.extended(base)
+          base.class_attribute :credential_reflections
+          base.credential_reflections = {}
+        end
+
         def lookup_credential_reflection_class(macro_name)
           MACRO_MAPPING.fetch(macro_name)
         end

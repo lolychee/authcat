@@ -7,7 +7,7 @@ module Authcat
         include Base
         include Relatable
 
-        def valid_option_keys(options)
+        def relation_option_keys(options)
           ActiveRecord::Associations::Builder::HasOne.send(:valid_options, options)
         end
 

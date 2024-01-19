@@ -21,8 +21,12 @@ module Authcat
           @options = options
         end
 
+        def setup_class_methods!; end
+        def setup_instance_methods!; end
+
         def setup!
-          raise NotImplementedError
+          setup_class_methods!
+          setup_instance_methods!
         end
       end
     end

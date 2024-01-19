@@ -10,28 +10,32 @@ module Authcat
         attr_reader :attribute_options
 
         def extract_attribute_options!(options)
-          @attribute_options = options.fetch(:attribute, {})
+          @attribute_options = options.extract!(:default)
 
           options
         end
 
-        def extract_options!(*)
+        def extract_options!(options)
           extract_attribute_options!(super)
         end
 
-        def type
-          Type::Credential.new
+        def type_class
+          Type::Credential
+        end
+
+        def type_options
+          {}
         end
 
         def setup_attribute!
-          owner.attribute name, type, **attribute_options
+          owner.attribute(name, **attribute_options) do |cast_type|
+            type_class.new(cast_type, **type_options)
+          end
         end
-
-        def setup_instance_methods!; end
 
         def setup!
           setup_attribute!
-          setup_instance_methods!
+          super
         end
       end
     end
