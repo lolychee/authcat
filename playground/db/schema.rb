@@ -39,7 +39,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_151640) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "user_idp_credentials", force: :cascade do |t|
+  create_table "user_identity_provider_credentials", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "attribute_name", null: false
     t.string "provider", null: false
@@ -47,10 +47,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_151640) do
     t.string "metadata", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provider", "token"], name: "index_user_idp_credentials_on_provider_and_token", unique: true
-    t.index ["user_id", "attribute_name"], name: "index_user_idp_credentials_on_user_id_and_attribute_name"
-    t.index ["user_id", "provider", "token"], name: "index_user_idp_credentials_on_user_id_and_provider_and_token", unique: true
-    t.index ["user_id"], name: "index_user_idp_credentials_on_user_id"
+    t.index ["provider", "token"], name: "index_user_identity_provider_credentials_on_provider_and_token", unique: true
+    t.index ["user_id", "attribute_name"], name: "index_user_identity_provider_credentials_on_user_id_and_attribute_name"
+    t.index ["user_id", "provider", "token"], name: "index_user_identity_provider_credentials_on_user_id_and_provider_and_token", unique: true
+    t.index ["user_id"], name: "index_user_identity_provider_credentials_on_user_id"
   end
 
   create_table "user_passkeys", force: :cascade do |t|
@@ -102,7 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_151640) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "user_idp_credentials", "users"
+  add_foreign_key "user_identity_provider_credentials", "users"
   add_foreign_key "user_passkeys", "users"
   add_foreign_key "user_recovery_codes", "users"
   add_foreign_key "user_sessions", "users"

@@ -2,8 +2,8 @@
 
 module Authcat
   module Passkey
-    module Association
-      class HasMany < Authcat::Credential::Association::HasMany
+    module Reflections
+      class HasMany < Authcat::Credential::Reflections::HasMany
         def relation_options
           @relation_options.merge(extend: Extension)
         end
@@ -32,20 +32,23 @@ module Authcat
         end
 
         def setup_instance_methods!
+          return
+          inverse_of_name = owner.reflect_on_association(name).send(:inverse_name)
+
           owner.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             # frozen_string_literal: true
 
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{relation_options[:inverse_of]}: self, token: value)
+                build_#{name}(#{inverse_of_name}: self, token: value)
               end
             end
           RUBY
         end
 
         module Extension
-          def options_for_create
+          def options_for_create(_options = {})
             identity = @association.owner
             user_info = {
               id: identity.webauthn_id,
@@ -66,13 +69,11 @@ module Authcat
 
           def verify(credential)
             credential = JSON.parse(credential) if credential.is_a?(String)
-            case credential
-            when Hash
-              record = find_by(webauthn_id: credential["id"])
-              record&.verify(credential: ::WebAuthn::Credential.from_get(credential))
-            else
-              false
-            end
+            credential = ::WebAuthn::Credential.from_get(credential)
+
+            record = find_by(webauthn_id: credential.id)
+            binding.irb
+            record&.verify(credential:)
           end
         end
       end

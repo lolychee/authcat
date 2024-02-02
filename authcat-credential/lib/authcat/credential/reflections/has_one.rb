@@ -3,10 +3,7 @@
 module Authcat
   module Credential
     module Reflections
-      class HasOne
-        include Base
-        include Relatable
-
+      class HasOne < Relation
         def relation_option_keys(options)
           ActiveRecord::Associations::Builder::HasOne.send(:valid_options, options)
         end

@@ -11,7 +11,7 @@ RSpec.describe Authcat::Session do
 
     user = User.new
 
-    expect(user.identify({ sessions: "#{token}1" })).to be_persisted
-    expect(user.identify({ sessions: "#{token}2" })).to be_persisted
+    expect(User.includes(:sessions).where(sessions: { token: "#{token}1" })).to be_exists
+    expect(User.includes(:sessions).where(sessions: { token: "#{token}2" })).to be_exists
   end
 end

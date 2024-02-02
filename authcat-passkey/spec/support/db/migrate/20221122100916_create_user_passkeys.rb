@@ -2,7 +2,7 @@
 
 class CreateUserPasskeys < ActiveRecord::Migration[6.1]
   def change
-    create_table :user_passkeys do |t|
+    create_table :passkeys do |t|
       t.belongs_to :user, null: false, foreign_key: true
       t.string :webauthn_id, null: false
       t.string :title, null: false

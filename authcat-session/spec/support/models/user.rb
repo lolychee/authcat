@@ -10,5 +10,5 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, on: :save
   validates :email, allow_nil: true, **EMAIL_VALIDATE_OPTIONS
 
-  has_many_sessions
+  has_many_sessions class_name: "UserSession", inverse_of: :user
 end

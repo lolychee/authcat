@@ -11,6 +11,10 @@ module Authcat
           alias valid? valid_hash?
         end
 
+        def initialize(hash, **)
+          super(hash)
+        end
+
         alias verify ==
       end
     end

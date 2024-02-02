@@ -30,9 +30,6 @@
 		{
 			"path": "../authcat-support"
 		},
-		{
-			"path": "../playground"
-		}
 	],
 	"settings": {
 		"terminal.integrated.defaultProfile.linux": "zsh",

@@ -2,14 +2,10 @@
 
 module Authcat
   module Password
-    module Association
-      class Attribute < Authcat::Credential::Association::Attribute
+    module Reflections
+      class Attribute < Authcat::Credential::Reflections::Attribute
         def type_class
-          Password::Type.resolve(@type || :digest_password)
-        end
-
-        def type_options
-          options
+          Password::Type.resolve(@type || :password)
         end
 
         def identifiable?
@@ -25,7 +21,7 @@ module Authcat
             # frozen_string_literal: true
 
             def #{name}=(value)
-                super(self.class.passwords[:#{name}].create(value))
+              super(self.class.credential_reflections[:#{name}].create(value))
             end
           RUBY
         end

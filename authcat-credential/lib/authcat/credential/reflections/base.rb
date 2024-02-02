@@ -4,10 +4,6 @@ module Authcat
   module Credential
     module Reflections
       module Base
-        def self.included(base)
-          base.include Identifiable
-        end
-
         attr_reader :owner, :name, :options
 
         def initialize(owner, name, **options, &block)

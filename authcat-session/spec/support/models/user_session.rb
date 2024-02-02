@@ -5,5 +5,5 @@ class UserSession < ActiveRecord::Base
 
   belongs_to :user
 
-  has_identifier :token
+  # identifier :token
 end

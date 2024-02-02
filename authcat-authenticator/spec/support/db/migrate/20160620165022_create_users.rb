@@ -13,9 +13,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       # t.string :phone_number_ciphertext
       # t.string :phone_number_bidx, index: { unique: true }
 
-      t.string :password
-      t.string :one_time_password
-      t.string :recovery_codes
+      t.string :password_digest
 
       t.timestamps null: false
     end

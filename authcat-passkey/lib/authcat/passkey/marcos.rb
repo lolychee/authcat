@@ -10,16 +10,16 @@ module Authcat
         base.extend ClassMethods
       end
 
-      MACRO_MAPPING = {
-        has_many_passkeys: Association::HasMany
-      }.freeze
-
       module ClassMethods
-        def has_many_passkeys(name = :passkeys, **opts, &)
-          define_credential!(__method__, name, **opts, &)
+        MACRO_MAPPING = {
+          has_many_passkeys: Reflections::HasMany
+        }.freeze
+
+        def has_many_passkeys(name = :passkeys, **, &)
+          define_credential!(__method__, name, **, &)
         end
 
-        def lookup_credential_klass(macro_name)
+        def credential_reflection_class_for(macro_name)
           MACRO_MAPPING.fetch(macro_name) { super }
         end
       end

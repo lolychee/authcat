@@ -5,9 +5,9 @@ require "authcat/support"
 module Authcat
   module Password
     module Type
-      include Authcat::Support::Registryable
+      include Authcat::Support::ActsAsRegistry
 
-      register(:digest_password) { DigestPassword }
+      register(:password) { Password }
       register(:one_time_password) { OneTimePassword }
     end
   end

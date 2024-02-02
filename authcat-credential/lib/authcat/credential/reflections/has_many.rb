@@ -3,10 +3,7 @@
 module Authcat
   module Credential
     module Reflections
-      class HasMany
-        include Base
-        include Relatable
-
+      class HasMany < Relation
         def relation_option_keys(options)
           ActiveRecord::Associations::Builder::HasMany.send(:valid_options, options)
         end

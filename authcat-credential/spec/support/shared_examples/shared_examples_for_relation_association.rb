@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples_for "relatable reflection" do
+RSpec.shared_examples_for "relation reflection" do
+  it_behaves_like "base reflection"
+
   it_behaves_like "identifiable reflection" do
     before do
       subject.setup_relation!

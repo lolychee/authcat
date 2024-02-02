@@ -25,7 +25,7 @@ module Authcat
       def passwords
         credentials.select do |_, credential|
           case credential
-          when Association::Attribute, Association::HasOne, Association::HasMany
+          when Reflections::Attribute, Reflections::HasOne, Reflections::HasMany
             true
           else
             false

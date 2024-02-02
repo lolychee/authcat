@@ -2,8 +2,8 @@
 
 module Authcat
   module IdentityProvider
-    module Association
-      class HasMany < Authcat::Credential::Association::HasMany
+    module Reflections
+      class HasMany < Authcat::Credential::Reflections::HasMany
         def identify(identity_provider)
           case identity_provider
           when OmniAuth::AuthHash

@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2022_11_22_100916) do
 
-  create_table "user_passkeys", force: :cascade do |t|
+  create_table "passkeys", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "webauthn_id", null: false
     t.string "title", null: false
@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
     t.string "challenge"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"user_id\", \"attribute_name\"", name: "index_user_passkeys_on_user_id_and_attribute_name"
-    t.index ["user_id"], name: "index_user_passkeys_on_user_id"
+    t.index "\"user_id\", \"attribute_name\"", name: "index_passkeys_on_user_id_and_attribute_name"
+    t.index ["user_id"], name: "index_passkeys_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -35,5 +35,5 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "user_passkeys", "users"
+  add_foreign_key "passkeys", "users"
 end

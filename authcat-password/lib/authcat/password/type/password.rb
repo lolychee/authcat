@@ -4,39 +4,26 @@ module Authcat
   module Password
     module Type
       class Password < Authcat::Credential::Type::Credential
-        attr_reader :options
+        self.default_options = { algorithm: :bcrypt }
 
-        # @return [Symbol, String, self]
-        class_attribute :default_algorithm
-
-        def initialize(cast_type, algorithm: default_algorithm, **options)
-          @algorithm = algorithm
-          @options = options
-          super(cast_type, encoder)
+        def build_coder(options)
+          Coder.new(**options)
         end
 
-        def encoder
-          @encoder ||= Encoder.new(Algorithm.resolve(@algorithm), **options)
-        end
-
-        def serialize(value)
-          encoder.dump(encoder.load(value))
-        end
-
-        class Encoder
-          def initialize(value_klass, **opts)
-            @value_klass = value_klass
-            @opts = opts
+        class Coder
+          def initialize(algorithm:, **options)
+            @klass = Algorithm.resolve(algorithm)
+            @options = options
           end
 
-          def parse(value, **opts)
-            return value if value.is_a?(@value_klass)
+          def parse(value, **options)
+            return value if value.is_a?(@klass)
 
             if value.is_a?(Algorithm::Plaintext)
-              @value_klass.create(value.to_s, **@opts.merge(opts))
+              @klass.create(value.to_s, **@options.merge(options))
             # elsif @value_klass.valid?(value)
             else
-              @value_klass.new(value.to_s, **@opts.merge(opts))
+              @klass.new(value.to_s, **@options.merge(options))
             end
           end
 

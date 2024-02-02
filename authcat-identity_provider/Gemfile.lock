@@ -13,8 +13,6 @@ PATH
       authcat-password (~> 0.1.0)
       zeitwerk (>= 2.6.8)
     authcat-authenticator (0.1.0)
-      authcat-identifier (~> 0.1.0)
-      authcat-password (~> 0.1.0)
       authcat-support (~> 0.1.0)
       dry-transformer (~> 1.0)
       zeitwerk (>= 2.6.8)

@@ -11,6 +11,5 @@ RSpec.describe Authcat::Credential::Reflections::HasMany do
   let(:options) { { releation: {} } }
   let(:block) { nil }
 
-  it_behaves_like "base reflection"
-  it_behaves_like "relatable reflection"
+  it_behaves_like "relation reflection"
 end

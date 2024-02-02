@@ -35,9 +35,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "zeitwerk", ">= 2.6.8"
 
-  spec.add_dependency "authcat", version
-  spec.add_dependency "authcat-identifier", version
-  spec.add_dependency "authcat-password", version
+  spec.add_dependency "authcat-support", "~> #{version}"
+
+  spec.add_dependency "dry-transformer", "~> 1.0"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

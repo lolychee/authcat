@@ -3,15 +3,26 @@
 module Authcat
   module Credential
     module Reflections
-      module Relatable
+      class Relation
+        include Base
+
         attr_reader :relation_options
 
-        def identify_scope(credential)
-          owner.includes(name).where(name => { identify_options.fetch(:identifier, name) => credential })
+        def identify_where_clause(credential)
+          reflection = relation_class.credential_reflections[:data]
+          owner.includes(name).where(name => reflection.identify_where_clause(credential).where_values_hash)
         end
 
-        def extract_options!(*)
-          extract_relation_options!(super)
+        def relation_class
+          owner.reflect_on_association(name).klass
+        end
+
+        def relation_marco_name
+          raise NotImplementedError
+        end
+
+        def relation_scope
+          nil
         end
 
         def relation_option_keys(*)
@@ -27,12 +38,8 @@ module Authcat
           options
         end
 
-        def relation_marco_name
-          raise NotImplementedError
-        end
-
-        def relation_scope
-          nil
+        def extract_options!(*)
+          extract_relation_options!(super)
         end
 
         def setup_relation!

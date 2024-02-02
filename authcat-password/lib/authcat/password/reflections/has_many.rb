@@ -2,10 +2,10 @@
 
 module Authcat
   module Password
-    module Association
-      class HasMany < Authcat::Credential::Association::HasMany
-        def type_class
-          Password::Type.resolve(@type || :digest_password)
+    module Reflections
+      class HasMany < Authcat::Credential::Reflections::HasMany
+        def type
+          Type.resolve(options.fetch(:type, :password)).new(**type_options)
         end
 
         def type_options
@@ -22,13 +22,15 @@ module Authcat
         end
 
         def setup_instance_methods!
+          inverse_of_name = owner.reflect_on_association(name).send(:inverse_name)
+
           owner.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             # frozen_string_literal: true
 
             def #{name}=(value)
               case value
               when String
-                build_#{name}(#{relation_options[:inverse_of]}: self, password: value)
+                build_#{name}(#{inverse_of_name}: self, password: value)
               end
             end
           RUBY

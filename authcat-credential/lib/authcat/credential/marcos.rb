@@ -3,24 +3,23 @@
 module Authcat
   module Credential
     module Marcos
-      MACRO_MAPPING = {}.freeze
-
       def self.included(base)
         base.extend ClassMethods
       end
 
       module ClassMethods
+        MACRO_MAPPING = {}.freeze
+
         def self.extended(base)
-          base.class_attribute :credential_reflections
-          base.credential_reflections = {}
+          base.class_attribute :credential_reflections, default: {}
         end
 
-        def lookup_credential_reflection_class(macro_name)
+        def credential_reflection_class_for(macro_name)
           MACRO_MAPPING.fetch(macro_name)
         end
 
         def define_credential!(macro_name, name, **, &)
-          lookup_credential_reflection_class(macro_name).new(self, name, **, &).tap do |reflection|
+          credential_reflection_class_for(macro_name).new(self, name, **, &).tap do |reflection|
             reflection.setup!
             self.credential_reflections = credential_reflections.merge(name => reflection)
           end

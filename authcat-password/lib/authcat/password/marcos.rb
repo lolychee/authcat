@@ -10,26 +10,26 @@ module Authcat
         base.extend ClassMethods
       end
 
-      MACRO_MAPPING = {
-        has_password: Association::Attribute,
-        has_one_password: Association::HasOne,
-        has_many_passwords: Association::HasMany
-      }.freeze
-
       module ClassMethods
-        def has_password(name = :password, **opts, &)
-          define_credential!(__method__, name, **opts, &)
+        MACRO_MAPPING = {
+          has_password: Reflections::Attribute,
+          has_one_password: Reflections::HasOne,
+          has_many_passwords: Reflections::HasMany
+        }.freeze
+
+        def has_password(name = :password, **, &)
+          define_credential!(__method__, name, **, &)
         end
 
-        def has_one_password(name = :password, **opts, &)
-          define_credential!(__method__, name, **opts, &)
+        def has_one_password(name = :password, **, &)
+          define_credential!(__method__, name, **, &)
         end
 
-        def has_many_passwords(name = :passwords, **opts, &)
-          define_credential!(__method__, name, **opts, &)
+        def has_many_passwords(name = :passwords, **, &)
+          define_credential!(__method__, name, **, &)
         end
 
-        def lookup_credential_klass(macro_name)
+        def credential_reflection_class_for(macro_name)
           MACRO_MAPPING.fetch(macro_name) { super }
         end
       end

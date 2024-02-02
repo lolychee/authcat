@@ -6,7 +6,7 @@ class UserSessionsController < ApplicationController
   skip_before_action :verify_authenticity_token, if: -> { request.env["omniauth.strategy"]&.on_callback_path? }
 
   use OmniAuth::Builder do
-    klass = User.reflect_on_association(:idp_credentials).klass
+    klass = User.reflect_on_association(:identity_provider_credentials).klass
 
     options klass.omniauth_options.merge(path_prefix: "/sign_in")
 
@@ -50,7 +50,7 @@ class UserSessionsController < ApplicationController
     @user_session = current_session || UserSession.new
     @user_session.tap do |s|
       if request.env["omniauth.auth"].present?
-        s.assign_attributes(auth_method: "idp", idp_credential: request.env["omniauth.auth"])
+        s.assign_attributes(auth_method: "identity_provider", identity_provider_credential: request.env["omniauth.auth"])
       elsif !s.valid_auth_method?(params[:auth_method])
         redirect_to action: :new, auth_method: s.default_auth_method
       end

@@ -20,8 +20,8 @@ RSpec.describe Authcat::Passkey do
     expect(options).to be_a(WebAuthn::PublicKeyCredential::CreationOptions)
 
     challenge = options.challenge
-    credential_json = client.create(challenge: challenge).to_json
-    credential = user.passkeys.create(title: :test, credential_json: credential_json, challenge: challenge)
+    credential_json = client.create(challenge:).to_json
+    credential = user.passkeys.create(title: :test, credential_json:, challenge:)
 
     expect(credential).to be_persisted
     expect(credential.public_key).not_to be_empty
@@ -34,10 +34,10 @@ RSpec.describe Authcat::Passkey do
     expect(options).to be_a(WebAuthn::PublicKeyCredential::RequestOptions)
 
     challenge = options.challenge
-    credential_json = client.get(challenge: challenge).to_json
+    credential_json = client.get(challenge:).to_json
 
     expect do
-      expect(credential.verify(credential_json: credential_json, challenge: challenge)).to be true
+      expect(credential.verify(credential_json:, challenge:)).to be true
     end.to change(credential, :sign_count).by(1)
 
     user.reload
@@ -45,7 +45,7 @@ RSpec.describe Authcat::Passkey do
     expect(options).to be_a(WebAuthn::PublicKeyCredential::RequestOptions)
 
     challenge = options.challenge
-    credential_json = client.get(challenge: challenge).to_json
+    credential_json = client.get(challenge:).to_json
 
     expect(user.passkeys.verify(credential_json)).to be true
   end

@@ -25,32 +25,28 @@ module Authcat
       def options
         @options ||= begin
           identity = send(self.class.identity_name)
-          credentials = identity.passkeys
-          new_record? ? credentials.options_for_create : credentials.options_for_get
+          relation = identity.passkeys
+          new_record? ? relation.options_for_create : relation.options_for_get
         end
       end
 
       attr_reader :credential
 
       def credential=(credential)
-        return if credential.nil?
+        return if credential.nil? || !credential.is_a?(Hash)
 
-        if credential.is_a?(Hash)
-          credential = if new_record?
-                         ::WebAuthn::Credential.from_create(credential)
-                       else
-                         ::WebAuthn::Credential.from_get(credential)
-                       end
-        end
-
-        if new_record?
-          assign_attributes(
-            webauthn_id: credential.id,
-            public_key: credential.public_key,
-            sign_count: credential.sign_count
-          )
-        end
-        @credential = credential
+        @credential =
+          if new_record?
+            ::WebAuthn::Credential.from_create(credential).tap do |credential|
+              assign_attributes(
+                webauthn_id: credential.id,
+                public_key: credential.public_key,
+                sign_count: credential.sign_count
+              )
+            end
+          else
+            ::WebAuthn::Credential.from_get(credential)
+          end
       end
 
       def credential_json=(json)
@@ -75,7 +71,7 @@ module Authcat
           if new_record?
             credential.verify(challenge)
           else
-            credential.verify(challenge, public_key: public_key, sign_count: sign_count)
+            credential.verify(challenge, public_key:, sign_count:)
           end
 
         if verified

@@ -5,7 +5,6 @@ module Authcat
     module Reflections
       class Attribute
         include Base
-        include Identifiable
 
         attr_reader :attribute_options
 
@@ -24,7 +23,7 @@ module Authcat
         end
 
         def type_options
-          {}
+          options
         end
 
         def setup_attribute!

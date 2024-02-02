@@ -29,12 +29,12 @@ module Authcat
           end)
 
           klass.attr_writer(*attributes.filter_map do |attribute|
-            challenge_attribute_name(attribute) unless klass.method_defined?("#{challenge_attribute_name(attribute)}=")
+            challenge_attribute_name(attribute) unless klass.method_defined?(:"#{challenge_attribute_name(attribute)}=")
           end)
         end
 
         def challenge_attribute_name(attribute)
-          "#{attribute}#{options.fetch(:suffix, "_challenge")}".to_sym
+          :"#{attribute}#{options.fetch(:suffix, "_challenge")}"
         end
 
         def challenge_value_equal?(record, attribute, _value, challenge)
@@ -46,8 +46,8 @@ module Authcat
           end
           attribute = "#{attribute}_was" if options[:was]
 
-          if record.respond_to?("verify_#{attribute}")
-            record.public_send("verify_#{attribute}", challenge)
+          if record.respond_to?(:"verify_#{attribute}")
+            record.public_send(:"verify_#{attribute}", challenge)
           else
             value = record.send(attribute)
             if value.respond_to?(:verify)
