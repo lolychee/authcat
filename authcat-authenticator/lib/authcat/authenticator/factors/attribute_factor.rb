@@ -3,8 +3,9 @@
 module Authcat
   module Authenticator
     module Factors
-      class Attribute
+      class AttributeFactor
         include Base
+        include Serializable
       end
     end
   end

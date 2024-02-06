@@ -3,7 +3,7 @@
 module Authcat
   module Authenticator
     module Factors
-      class Relation
+      class RelationFactor
         include Base
 
         def where_chain(where_chain, value)

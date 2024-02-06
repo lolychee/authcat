@@ -9,15 +9,6 @@ module Authcat
 
       register(:base64) { Base64 }
       register(:jwt) { JWT }
-
-      def serializers
-        @serializers ||= {}
-      end
-
-      def serializer(name, *, **, &)
-        klass = Serializers.resolve(name)
-        serializers[name] = klass.new(*, **, &)
-      end
     end
   end
 end
