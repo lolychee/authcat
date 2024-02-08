@@ -14,22 +14,21 @@ ActiveRecord::Schema.define(version: 2022_11_22_100916) do
 
   create_table "passkeys", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.string "webauthn_id", null: false
-    t.string "title", null: false
-    t.string "public_key", null: false
-    t.integer "sign_count", null: false
+    t.string "webauthn_id"
+    t.string "title"
+    t.string "public_key"
+    t.integer "sign_count"
     t.string "challenge"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"user_id\", \"attribute_name\"", name: "index_passkeys_on_user_id_and_attribute_name"
     t.index ["user_id"], name: "index_passkeys_on_user_id"
+    t.index ["webauthn_id"], name: "index_passkeys_on_webauthn_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email", null: false
     t.string "webauthn_id"
-    t.string "webauthn_challenge"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

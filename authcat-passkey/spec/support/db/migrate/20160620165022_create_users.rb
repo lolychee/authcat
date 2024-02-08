@@ -9,7 +9,6 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :email, null: false, index: { unique: true }
       # t.string :password,   null: false
       t.string :webauthn_id
-      t.string :webauthn_challenge
 
       t.timestamps null: false
     end

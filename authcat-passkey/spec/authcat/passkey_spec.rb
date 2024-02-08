@@ -15,19 +15,23 @@ RSpec.describe Authcat::Passkey do
   it "has_many_passkeys" do
     expect(user.webauthn_id).not_to be_empty
 
-    options = user.passkeys.options_for_create
+    options = nil
+    expect do
+      options = user.passkeys.options_for_create
+    end.to change(user.passkeys.unsigned, :count).by(1)
 
     expect(options).to be_a(WebAuthn::PublicKeyCredential::CreationOptions)
 
     challenge = options.challenge
     credential_json = client.create(challenge:).to_json
-    credential = user.passkeys.create(title: :test, credential_json:, challenge:)
+    expect(user.passkeys.verify(credential_json)).to be true
 
-    expect(credential).to be_persisted
-    expect(credential.public_key).not_to be_empty
-    expect(credential.public_key.class).to eq(String)
-    expect(credential.public_key.encoding).not_to eq(Encoding::BINARY)
-    expect(credential.sign_count).to eq(0)
+    passkey = user.passkeys.signed.take
+    expect(passkey).to be_persisted
+    expect(passkey.public_key).not_to be_empty
+    expect(passkey.public_key.class).to eq(String)
+    expect(passkey.public_key.encoding).not_to eq(Encoding::BINARY)
+    expect(passkey.sign_count).to eq(0)
 
     user.reload
     options = user.passkeys.options_for_get
@@ -37,8 +41,8 @@ RSpec.describe Authcat::Passkey do
     credential_json = client.get(challenge:).to_json
 
     expect do
-      expect(credential.verify(credential_json:, challenge:)).to be true
-    end.to change(credential, :sign_count).by(1)
+      expect(user.passkeys.verify(credential_json)).to be true
+    end.to change { passkey.reload.sign_count }.by(1)
 
     user.reload
     options = user.passkeys.options_for_get
