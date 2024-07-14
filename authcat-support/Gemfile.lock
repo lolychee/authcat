@@ -113,7 +113,7 @@ GEM
     ast (2.4.2)
     awrence (1.2.1)
     base64 (0.2.0)
-    bindata (2.4.15)
+    bindata (2.5.0)
     builder (3.2.4)
     cbor (0.5.9.8)
     cgi (0.4.1)
@@ -156,7 +156,8 @@ GEM
       rdoc
       reline (>= 0.3.8)
     json (2.7.1)
-    jwt (2.7.1)
+    jwt (2.8.2)
+      base64
     language_server-protocol (3.17.0.3)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -410,5 +411,8 @@ DEPENDENCIES
   sqlite3
   steep
 
+RUBY VERSION
+   ruby 3.2.4p170
+
 BUNDLED WITH
-   2.5.2
+   2.5.15
